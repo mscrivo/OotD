@@ -20,7 +20,8 @@
     <ProjectGuid>{C38D62CC-0544-4D90-83B9-B222CB5A8EF1}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>App.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>OutlookDesktop</AssemblyName>
@@ -119,7 +120,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App.ico" />
     <None Include="Icons\1.ico" />
     <None Include="Icons\2.ico" />
     <None Include="Icons\3.ico" />
@@ -152,7 +152,6 @@
     <None Include="Icons\30.ico" />
     <None Include="Icons\31.ico" />
     <None Include="Icons\paypal.gif" />
-    <Content Include="notifyIcon.ico" />
     <Compile Include="AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,6 +196,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="smrkey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icons\App.ico" />
+    <Content Include="Icons\notifyIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

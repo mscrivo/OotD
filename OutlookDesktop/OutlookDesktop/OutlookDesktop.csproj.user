@@ -10,7 +10,7 @@
     <CopyProjectUncPath>
     </CopyProjectUncPath>
     <CopyProjectOption>0</CopyProjectOption>
-    <ProjectView>ProjectFiles</ProjectView>
+    <ProjectView>ShowAllFiles</ProjectView>
     <ProjectTrust>0</ProjectTrust>
     <PublishUrlHistory>publish\</PublishUrlHistory>
     <InstallUrlHistory>
