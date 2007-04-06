@@ -45,9 +45,9 @@ Name: installdotnet; Description: Download and Install Microsoft .NET Framework 
 
 [Files]
 Source: OutlookDesktop\bin\x86\Release\OutlookDesktop.exe; DestDir: {app}; Flags: ignoreversion
-Source: OutlookDesktop\bin\Release\outlookAX.html; DestDir: {app}; Flags: ignoreversion
-Source: OutlookDesktop\bin\Release\OutlookDesktop.exe.manifest; DestDir: {app}; Flags: ignoreversion
-Source: OutlookDesktop\App.ico; DestDir: {app}; Flags: ignoreversion
+Source: OutlookDesktop\RequiredFiles\outlookAX.html; DestDir: {app}; Flags: ignoreversion
+Source: OutlookDesktop\RequiredFiles\OutlookDesktop.exe.manifest; DestDir: {app}; Flags: ignoreversion
+Source: OutlookDesktop\Icons\App.ico; DestDir: {app}; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
