@@ -15,7 +15,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf}\{#MyAppName}
+DefaultDirName=C:\{#MyAppName}
 DefaultGroupName={#MyAppName}
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoCopyright={#MyAppCopyright}
@@ -34,6 +34,7 @@ MinVersion=0,5.0.2195
 AllowUNCPath=false
 UninstallLogMode=append
 UninstallDisplayIcon={app}\App.ico
+PrivilegesRequired=none
 
 [Languages]
 Name: eng; MessagesFile: compiler:Default.isl
@@ -45,9 +46,12 @@ Name: installdotnet; Description: Download and Install Microsoft .NET Framework 
 
 [Files]
 Source: OutlookDesktop\bin\x86\Release\OutlookDesktop.exe; DestDir: {app}; Flags: ignoreversion
-Source: OutlookDesktop\RequiredFiles\outlookAX.html; DestDir: {app}; Flags: ignoreversion
 Source: OutlookDesktop\RequiredFiles\OutlookDesktop.exe.manifest; DestDir: {app}; Flags: ignoreversion
 Source: OutlookDesktop\Icons\App.ico; DestDir: {app}; Flags: ignoreversion
+Source: OutlookDesktop\bin\x86\Release\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll; DestDir: {app}; Flags: ignoreversion
+Source: OutlookDesktop\bin\x86\Release\Microsoft.Office.Interop.Outlook.dll; DestDir: {app}; Flags: ignoreversion
+Source: OutlookDesktop\bin\x86\Release\Microsoft.Office.Interop.OutlookViewCtl.dll; DestDir: {app}; Flags: ignoreversion
+Source: OutlookDesktop\bin\x86\Release\Office.dll; DestDir: {app}; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}

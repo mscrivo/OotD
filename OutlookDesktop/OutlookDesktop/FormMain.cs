@@ -30,7 +30,6 @@ namespace OutlookDesktop
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem menuPrefs;
         private System.Windows.Forms.MenuItem menuExit;
-        private WebBrowser webBrowser;
         private Timer updateTimer;
         private MenuItem menuInbox;
         private MenuItem menuCalendar;
@@ -39,6 +38,7 @@ namespace OutlookDesktop
         private MenuItem menuTasks;
         private MenuItem menuNotes;
         private MenuItem menuAbout;
+        private MenuItem menuSelectFolder;
 
         private Preferences prefs;
 
@@ -47,8 +47,14 @@ namespace OutlookDesktop
         private const int SWP_NOSIZE = 0x1;
         private const int SWP_NOZORDER = 0x4;
         private const int SWP_NOACTIVATE = 0x10;
-        private MenuItem menuHide;
         private const int HWND_BOTTOM = 0x1;
+
+        private MenuItem menuHide;
+        private Microsoft.Office.Interop.Outlook.Application oApp;
+        private Microsoft.Office.Interop.Outlook.NameSpace oNsp;
+        private DateTime prevDateTime;
+        private AxMicrosoft.Office.Interop.OutlookViewCtl.AxViewCtl axOutlookViewControl;
+        private String customFolder;
                 
         public FormMain()
         {
@@ -57,6 +63,11 @@ namespace OutlookDesktop
             //
             InitializeComponent();
 
+            oApp = new Microsoft.Office.Interop.Outlook.Application();
+            oNsp = oApp.GetNamespace("MAPI");
+            axOutlookViewControl.Folder = folderViewTypes.Calendar.ToString();
+            axOutlookViewControl.View = "Day/Week/Month";
+            
             this.LoadSettings();
 
             // Make window "Always on Bottom" i.e. pinned to desktop, so that
@@ -151,8 +162,34 @@ namespace OutlookDesktop
             }
             else
             {
-                menuCalendar.Checked = true;
+                // custom folder
+                customFolder = prefs.FolderViewType;
+                String folderName = GetFolderNameFromFullPath(customFolder, oNsp.Folders);
+                MenuItem item = new MenuItem(folderName, new System.EventHandler(this.menuCustomFolder_Click));
+                trayMenu.MenuItems.Add(0, item);
+                trayMenu.MenuItems[0].Checked = true;
             }
+        }
+
+        private String GetFolderNameFromFullPath(String fullPath, Microsoft.Office.Interop.Outlook.Folders oFolders)
+        {
+            String tempName = "";
+            Microsoft.Office.Interop.Outlook.MAPIFolder oFolder;
+
+            for (int i = 0; i < oFolders.Count - 1; i++)
+            {
+                oFolder = oFolders.GetNext();
+                if (String.Compare(GetFolderPath(oFolder.FullFolderPath), fullPath) == 0)
+                {
+                    return oFolder.Name;
+                }
+
+                tempName = GetFolderNameFromFullPath(fullPath, oFolder.Folders);
+                if (tempName != "") return tempName;
+
+            }
+
+            return "";
         }
 
         /// <summary>
@@ -162,7 +199,7 @@ namespace OutlookDesktop
         {
             if (disposing)
             {
-                if (components != null)
+                if ( components != null)
                 {
                     components.Dispose();
                 }
@@ -181,6 +218,7 @@ namespace OutlookDesktop
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.trayMenu = new System.Windows.Forms.ContextMenu();
+            this.menuSelectFolder = new System.Windows.Forms.MenuItem();
             this.menuCalendar = new System.Windows.Forms.MenuItem();
             this.menuContacts = new System.Windows.Forms.MenuItem();
             this.menuInbox = new System.Windows.Forms.MenuItem();
@@ -192,8 +230,9 @@ namespace OutlookDesktop
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.menuHide = new System.Windows.Forms.MenuItem();
             this.menuExit = new System.Windows.Forms.MenuItem();
-            this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.axOutlookViewControl = new AxMicrosoft.Office.Interop.OutlookViewCtl.AxViewCtl();
+            ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).BeginInit();
             this.SuspendLayout();
             // 
             // trayIcon
@@ -207,6 +246,7 @@ namespace OutlookDesktop
             // trayMenu
             // 
             this.trayMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuSelectFolder,
             this.menuCalendar,
             this.menuContacts,
             this.menuInbox,
@@ -219,83 +259,75 @@ namespace OutlookDesktop
             this.menuHide,
             this.menuExit});
             // 
+            // menuSelectFolder
+            // 
+            this.menuSelectFolder.Index = 0;
+            this.menuSelectFolder.Text = "Select Folder ...";
+            this.menuSelectFolder.Click += new System.EventHandler(this.menuOtherFolders_Click);
+            // 
             // menuCalendar
             // 
-            this.menuCalendar.Index = 0;
+            this.menuCalendar.Index = 1;
             this.menuCalendar.Text = "Calendar";
             this.menuCalendar.Click += new System.EventHandler(this.menuCalendar_Click);
             // 
             // menuContacts
             // 
-            this.menuContacts.Index = 1;
+            this.menuContacts.Index = 2;
             this.menuContacts.Text = "Contacts";
             this.menuContacts.Click += new System.EventHandler(this.menuContacts_Click);
             // 
             // menuInbox
             // 
-            this.menuInbox.Index = 2;
+            this.menuInbox.Index = 3;
             this.menuInbox.Text = "Inbox";
             this.menuInbox.Click += new System.EventHandler(this.menuInbox_Click);
             // 
             // menuNotes
             // 
-            this.menuNotes.Index = 3;
+            this.menuNotes.Index = 4;
             this.menuNotes.Text = "Notes";
             this.menuNotes.Click += new System.EventHandler(this.menuNotes_Click);
             // 
             // menuTasks
             // 
-            this.menuTasks.Index = 4;
+            this.menuTasks.Index = 5;
             this.menuTasks.Text = "Tasks";
             this.menuTasks.Click += new System.EventHandler(this.menuTasks_Click);
             // 
             // menuItem4
             // 
-            this.menuItem4.Index = 5;
+            this.menuItem4.Index = 6;
             this.menuItem4.Text = "-";
             // 
             // menuAbout
             // 
-            this.menuAbout.Index = 6;
+            this.menuAbout.Index = 7;
             this.menuAbout.Text = "About";
             this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
             // menuPrefs
             // 
-            this.menuPrefs.Index = 7;
+            this.menuPrefs.Index = 8;
             this.menuPrefs.Text = "Preferences";
             this.menuPrefs.Click += new System.EventHandler(this.menuPrefs_Click);
             // 
             // menuItem2
             // 
-            this.menuItem2.Index = 8;
+            this.menuItem2.Index = 9;
             this.menuItem2.Text = global::OutlookDesktop.Properties.Resources.Separator;
             // 
             // menuHide
             // 
-            this.menuHide.Index = 9;
+            this.menuHide.Index = 10;
             this.menuHide.Text = "Hide";
             this.menuHide.Click += new System.EventHandler(this.menuHide_Click);
             // 
             // menuExit
             // 
-            this.menuExit.Index = 10;
+            this.menuExit.Index = 11;
             this.menuExit.Text = "Close";
             this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
-            // 
-            // webBrowser
-            // 
-            this.webBrowser.AllowNavigation = false;
-            this.webBrowser.AllowWebBrowserDrop = false;
-            this.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser.IsWebBrowserContextMenuEnabled = false;
-            this.webBrowser.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser.Name = "webBrowser";
-            this.webBrowser.ScrollBarsEnabled = false;
-            this.webBrowser.Size = new System.Drawing.Size(292, 271);
-            this.webBrowser.TabIndex = 2;
-            this.webBrowser.WebBrowserShortcutsEnabled = false;
             // 
             // updateTimer
             // 
@@ -303,12 +335,23 @@ namespace OutlookDesktop
             this.updateTimer.Interval = 1000;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
+            // axOutlookViewControl
+            // 
+            this.axOutlookViewControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.axOutlookViewControl.Enabled = true;
+            this.axOutlookViewControl.Location = new System.Drawing.Point(0, 0);
+            this.axOutlookViewControl.Name = "axOutlookViewControl";
+            this.axOutlookViewControl.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axOutlookViewControl.OcxState")));
+            this.axOutlookViewControl.Size = new System.Drawing.Size(292, 271);
+            this.axOutlookViewControl.TabIndex = 0;
+            // 
             // FormMain
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(292, 271);
-            this.Controls.Add(this.webBrowser);
+            this.Controls.Add(this.axOutlookViewControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.MinimizeBox = false;
             this.Name = "FormMain";
             this.Opacity = 0.5;
@@ -317,6 +360,7 @@ namespace OutlookDesktop
             this.Text = "Outlook on the Desktop";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormMain_Paint);
             this.Activated += new System.EventHandler(this.FormMain_Activated);
+            ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -333,9 +377,6 @@ namespace OutlookDesktop
             // create main form instance
             FormMain fMainForm = new FormMain();
 
-            // load the html file that loads the Outlook ActiveX control
-            fMainForm.webBrowser.Navigate(String.Concat(Application.StartupPath, "\\outlookAX.html"));
-
             Application.Run(fMainForm);
         }
 
@@ -350,44 +391,11 @@ namespace OutlookDesktop
             Application.Exit();
         }
 
-        public void ChangeFolderType(folderViewTypes folderType)
-        {
-            string fileContents = "";
-            TextReader tr;
-            TextWriter tw;
-
-            try
-            {
-                //this.webBrowser.Navigate(String.Concat(Application.StartupPath, ""));
-                tr = new StreamReader(String.Concat(Application.StartupPath, "\\outlookAX.html"));
-                fileContents = tr.ReadToEnd();
-                tr.Close();
-
-                Regex re = new Regex("VALUE=\"[a-zA-Z]*\"", RegexOptions.IgnoreCase);
-                fileContents = re.Replace(fileContents, "VALUE=\"" + folderType.ToString() + "\"");
-
-                try
-                {
-                    tw = new StreamWriter(String.Concat(Application.StartupPath, "\\outlookAX.html"));
-                    tw.Write(fileContents);
-                    tw.Close();
-                    prefs.FolderViewType = folderType.ToString();
-                    this.webBrowser.Refresh();
-                }
-                catch (IOException ex)
-                {
-                    MessageBox.Show(this, ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                }
-            }
-            catch (IOException ex)
-            {
-                MessageBox.Show(this, ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-            }
-        }
-
         private void menuCalendar_Click(object sender, EventArgs e)
         {
-            ChangeFolderType(folderViewTypes.Calendar);
+            axOutlookViewControl.Folder = folderViewTypes.Calendar.ToString();
+            prefs.FolderViewType = folderViewTypes.Calendar.ToString();
+            trayMenu.MenuItems[0].Checked = false;
             menuCalendar.Checked = true;
             menuContacts.Checked = false;
             menuInbox.Checked = false;
@@ -397,7 +405,9 @@ namespace OutlookDesktop
 
         private void menuContacts_Click(object sender, EventArgs e)
         {
-            ChangeFolderType(folderViewTypes.Contacts);
+            axOutlookViewControl.Folder = folderViewTypes.Contacts.ToString();
+            prefs.FolderViewType = folderViewTypes.Contacts.ToString();
+            trayMenu.MenuItems[0].Checked = false;
             menuCalendar.Checked = false;
             menuContacts.Checked = true;
             menuInbox.Checked = false;
@@ -407,7 +417,9 @@ namespace OutlookDesktop
 
         private void menuInbox_Click(object sender, EventArgs e)
         {
-            ChangeFolderType(folderViewTypes.Inbox);
+            axOutlookViewControl.Folder = folderViewTypes.Inbox.ToString();
+            prefs.FolderViewType = folderViewTypes.Inbox.ToString();
+            trayMenu.MenuItems[0].Checked = false;
             menuCalendar.Checked = false;
             menuContacts.Checked = false;
             menuInbox.Checked = true;
@@ -417,7 +429,9 @@ namespace OutlookDesktop
 
         private void menuTasks_Click(object sender, EventArgs e)
         {
-            ChangeFolderType(folderViewTypes.Tasks);
+            axOutlookViewControl.Folder = folderViewTypes.Tasks.ToString();
+            prefs.FolderViewType = folderViewTypes.Tasks.ToString();
+            trayMenu.MenuItems[0].Checked = false;
             menuCalendar.Checked = false;
             menuContacts.Checked = false;
             menuInbox.Checked = false;
@@ -427,12 +441,54 @@ namespace OutlookDesktop
 
         private void menuNotes_Click(object sender, EventArgs e)
         {
-            ChangeFolderType(folderViewTypes.Notes);
+            axOutlookViewControl.Folder = folderViewTypes.Notes.ToString();
+            prefs.FolderViewType = folderViewTypes.Notes.ToString();
+            trayMenu.MenuItems[0].Checked = false;
             menuCalendar.Checked = false;
             menuContacts.Checked = false;
             menuInbox.Checked = false;
             menuNotes.Checked = true;
             menuTasks.Checked = false;
+        }
+
+        private void menuCustomFolder_Click(object sender, EventArgs e)
+        {
+            axOutlookViewControl.Folder = customFolder;
+            trayMenu.MenuItems[0].Checked = true;
+            menuCalendar.Checked = false;
+            menuContacts.Checked = false;
+            menuInbox.Checked = false;
+            menuNotes.Checked = false;
+            menuTasks.Checked = false;
+        }
+
+        private void menuOtherFolders_Click(object sender, EventArgs e)
+        {
+            Microsoft.Office.Interop.Outlook.MAPIFolder oFolder = oNsp.PickFolder();
+            if (oFolder != null)
+            {
+                if (trayMenu.MenuItems[0].Text != menuSelectFolder.Text)
+                {
+                    trayMenu.MenuItems.RemoveAt(0);
+                }
+
+                prefs.FolderViewType = GetFolderPath(oFolder.FullFolderPath);
+                customFolder = prefs.FolderViewType;
+                axOutlookViewControl.Folder = GetFolderPath(oFolder.FullFolderPath);
+                MenuItem item = new MenuItem(oFolder.Name, new System.EventHandler(this.menuCustomFolder_Click));
+                trayMenu.MenuItems.Add(0, item);
+                trayMenu.MenuItems[0].Checked = true;
+                menuCalendar.Checked = false;
+                menuContacts.Checked = false;
+                menuInbox.Checked = false;
+                menuNotes.Checked = false;
+                menuTasks.Checked = false;
+            }
+        }
+
+        private string GetFolderPath(string folderPath)
+        {
+            return folderPath.Replace("\\\\Personal Folders\\", "");
         }
 
         private void FormMain_Activated(object sender, EventArgs e)
@@ -555,7 +611,15 @@ namespace OutlookDesktop
 
         private void updateTimer_Tick(object sender, EventArgs e)
         {
+            // update day of the month in the tray
             ChangeTrayIconDate();
+
+            // increment day in outlook's calendar if we've crossed over into a new day
+            if (DateTime.Now.Day != prevDateTime.Day)
+            {
+                axOutlookViewControl.GoToToday();
+            }
+            prevDateTime = DateTime.Now;
         }
 
         private void menuAbout_Click(object sender, EventArgs e)
