@@ -17,6 +17,7 @@ namespace OutlookDesktop
         public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
         [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
+        [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetWindowPos(
            IntPtr hWnd,            // window handle
            int hWndInsertAfter,    // placement-order handle

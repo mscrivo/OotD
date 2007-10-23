@@ -5,12 +5,14 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
 using System.IO;
+using System.Reflection;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using OutlookDesktop.Properties;
 
 namespace OutlookDesktop
 {
-    public enum folderViewTypes
+    public enum FolderViewTypes
     {
         Inbox,
         Calendar,
@@ -20,7 +22,7 @@ namespace OutlookDesktop
     }
 
     /// <summary>
-    /// Summary description for Form1.
+    /// The main form for this app.  A borderless window which hosts the Microsoft Outlook View Control ActiveX component.
     /// </summary>
     public class FormMain : System.Windows.Forms.Form
     {
@@ -55,7 +57,7 @@ namespace OutlookDesktop
         private DateTime prevDateTime;
         private AxMicrosoft.Office.Interop.OutlookViewCtl.AxViewCtl axOutlookViewControl;
         private String customFolder;
-                
+
         public FormMain()
         {
             //
@@ -65,9 +67,9 @@ namespace OutlookDesktop
 
             oApp = new Microsoft.Office.Interop.Outlook.Application();
             oNsp = oApp.GetNamespace("MAPI");
-            axOutlookViewControl.Folder = folderViewTypes.Calendar.ToString();
+            axOutlookViewControl.Folder = FolderViewTypes.Calendar.ToString();
             axOutlookViewControl.View = "Day/Week/Month";
-            
+
             this.LoadSettings();
 
             // Make window "Always on Bottom" i.e. pinned to desktop, so that
@@ -86,6 +88,7 @@ namespace OutlookDesktop
                 else
                 {
                     // Vista or Above
+                    // TODO: Find a better way, this sucks!
                     UnsafeNativeMethods.SetWindowPos(this.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
                 }
             }
@@ -116,9 +119,9 @@ namespace OutlookDesktop
                 this.Opacity = prefs.Opacity;
             }
             catch (Exception)
-            {                
+            {
                 // use default if there was a problem
-                this.Opacity = Preferences.DEFAULT_OPACITY;
+                this.Opacity = Preferences.DefaultOpacity;
                 MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
@@ -132,31 +135,31 @@ namespace OutlookDesktop
             catch (Exception)
             {
                 // use defaults if there was a problem
-                this.Left = Preferences.DEFAULT_TOP;
-                this.Top = Preferences.DEFAULT_LEFT;
-                this.Width = Preferences.DEFAULT_WIDTH;
-                this.Height = Preferences.DEFAULT_HEIGHT;
+                this.Left = Preferences.DefaultTopPosition;
+                this.Top = Preferences.DefaultLeftPosition;
+                this.Width = Preferences.DefaultWidth;
+                this.Height = Preferences.DefaultHeight;
                 MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
 
-            if (prefs.FolderViewType == folderViewTypes.Calendar.ToString()) 
+            if (prefs.FolderViewType == FolderViewTypes.Calendar.ToString())
             {
                 menuCalendar.Checked = true;
             }
-            else if (prefs.FolderViewType == folderViewTypes.Contacts.ToString())
+            else if (prefs.FolderViewType == FolderViewTypes.Contacts.ToString())
             {
                 menuContacts.Checked = true;
             }
-            else if (prefs.FolderViewType == folderViewTypes.Inbox.ToString())
+            else if (prefs.FolderViewType == FolderViewTypes.Inbox.ToString())
             {
                 menuInbox.Checked = true;
             }
-            else if (prefs.FolderViewType == folderViewTypes.Notes.ToString()) 
+            else if (prefs.FolderViewType == FolderViewTypes.Notes.ToString())
             {
                 menuNotes.Checked = true;
             }
-            else if (prefs.FolderViewType == folderViewTypes.Tasks.ToString())
+            else if (prefs.FolderViewType == FolderViewTypes.Tasks.ToString())
             {
                 menuTasks.Checked = true;
             }
@@ -169,26 +172,25 @@ namespace OutlookDesktop
                 trayMenu.MenuItems.Add(0, item);
                 trayMenu.MenuItems[0].Checked = true;
             }
+
+            axOutlookViewControl.Folder = prefs.FolderViewType;
         }
 
         private String GetFolderNameFromFullPath(String fullPath, Microsoft.Office.Interop.Outlook.Folders oFolders)
         {
             String tempName = "";
-            Microsoft.Office.Interop.Outlook.MAPIFolder oFolder;
-
-            for (int i = 0; i < oFolders.Count - 1; i++)
+ 
+            foreach (Microsoft.Office.Interop.Outlook.Folder oFolder in oFolders)
             {
-                oFolder = oFolders.GetNext();
                 if (String.Compare(GetFolderPath(oFolder.FullFolderPath), fullPath) == 0)
                 {
                     return oFolder.Name;
                 }
-
+                
                 tempName = GetFolderNameFromFullPath(fullPath, oFolder.Folders);
-                if (tempName != "") return tempName;
-
+                if (!String.IsNullOrEmpty(tempName)) return tempName;
             }
-
+ 
             return "";
         }
 
@@ -199,10 +201,16 @@ namespace OutlookDesktop
         {
             if (disposing)
             {
-                if ( components != null)
+                if (components != null)
                 {
                     components.Dispose();
                 }
+
+                // Ensure we cleanup the Outlook resources, but do not call Quit() on the Outlook
+                // app object or we will inadvertantly close any full blown Outlook instances 
+                // that are open.
+                oApp = null;
+                oNsp = null;
             }
             base.Dispose(disposing);
         }
@@ -239,7 +247,7 @@ namespace OutlookDesktop
             // 
             this.trayIcon.ContextMenu = this.trayMenu;
             this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
-            this.trayIcon.Text = "Outlook on the Desktop";
+            this.trayIcon.Text = Resources.ProductName;
             this.trayIcon.Visible = true;
             this.trayIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseDoubleClick);
             // 
@@ -262,54 +270,54 @@ namespace OutlookDesktop
             // menuSelectFolder
             // 
             this.menuSelectFolder.Index = 0;
-            this.menuSelectFolder.Text = "Select Folder ...";
+            this.menuSelectFolder.Text = Resources.SelectFolder;
             this.menuSelectFolder.Click += new System.EventHandler(this.menuOtherFolders_Click);
             // 
             // menuCalendar
             // 
             this.menuCalendar.Index = 1;
-            this.menuCalendar.Text = "Calendar";
+            this.menuCalendar.Text = Resources.Calendar;
             this.menuCalendar.Click += new System.EventHandler(this.menuCalendar_Click);
             // 
             // menuContacts
             // 
             this.menuContacts.Index = 2;
-            this.menuContacts.Text = "Contacts";
+            this.menuContacts.Text = Resources.Contacts;
             this.menuContacts.Click += new System.EventHandler(this.menuContacts_Click);
             // 
             // menuInbox
             // 
             this.menuInbox.Index = 3;
-            this.menuInbox.Text = "Inbox";
+            this.menuInbox.Text = Resources.Inbox;
             this.menuInbox.Click += new System.EventHandler(this.menuInbox_Click);
             // 
             // menuNotes
             // 
             this.menuNotes.Index = 4;
-            this.menuNotes.Text = "Notes";
+            this.menuNotes.Text = Resources.Notes;
             this.menuNotes.Click += new System.EventHandler(this.menuNotes_Click);
             // 
             // menuTasks
             // 
             this.menuTasks.Index = 5;
-            this.menuTasks.Text = "Tasks";
+            this.menuTasks.Text = Resources.Tasks;
             this.menuTasks.Click += new System.EventHandler(this.menuTasks_Click);
             // 
             // menuItem4
             // 
             this.menuItem4.Index = 6;
-            this.menuItem4.Text = "-";
+            this.menuItem4.Text = global::OutlookDesktop.Properties.Resources.Separator;
             // 
             // menuAbout
             // 
             this.menuAbout.Index = 7;
-            this.menuAbout.Text = "About";
+            this.menuAbout.Text = Resources.About;
             this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
             // menuPrefs
             // 
             this.menuPrefs.Index = 8;
-            this.menuPrefs.Text = "Preferences";
+            this.menuPrefs.Text = Resources.Preferences;
             this.menuPrefs.Click += new System.EventHandler(this.menuPrefs_Click);
             // 
             // menuItem2
@@ -320,13 +328,13 @@ namespace OutlookDesktop
             // menuHide
             // 
             this.menuHide.Index = 10;
-            this.menuHide.Text = "Hide";
+            this.menuHide.Text = Resources.Hide;
             this.menuHide.Click += new System.EventHandler(this.menuHide_Click);
             // 
             // menuExit
             // 
             this.menuExit.Index = 11;
-            this.menuExit.Text = "Close";
+            this.menuExit.Text = Resources.Close;
             this.menuExit.Click += new System.EventHandler(this.menuExit_Click);
             // 
             // updateTimer
@@ -357,7 +365,7 @@ namespace OutlookDesktop
             this.Opacity = 0.5;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Outlook on the Desktop";
+            this.Text = Resources.ProductName;
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormMain_Paint);
             this.Activated += new System.EventHandler(this.FormMain_Activated);
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).EndInit();
@@ -393,8 +401,8 @@ namespace OutlookDesktop
 
         private void menuCalendar_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.Folder = folderViewTypes.Calendar.ToString();
-            prefs.FolderViewType = folderViewTypes.Calendar.ToString();
+            axOutlookViewControl.Folder = FolderViewTypes.Calendar.ToString();
+            prefs.FolderViewType = FolderViewTypes.Calendar.ToString();
             trayMenu.MenuItems[0].Checked = false;
             menuCalendar.Checked = true;
             menuContacts.Checked = false;
@@ -405,8 +413,8 @@ namespace OutlookDesktop
 
         private void menuContacts_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.Folder = folderViewTypes.Contacts.ToString();
-            prefs.FolderViewType = folderViewTypes.Contacts.ToString();
+            axOutlookViewControl.Folder = FolderViewTypes.Contacts.ToString();
+            prefs.FolderViewType = FolderViewTypes.Contacts.ToString();
             trayMenu.MenuItems[0].Checked = false;
             menuCalendar.Checked = false;
             menuContacts.Checked = true;
@@ -417,8 +425,8 @@ namespace OutlookDesktop
 
         private void menuInbox_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.Folder = folderViewTypes.Inbox.ToString();
-            prefs.FolderViewType = folderViewTypes.Inbox.ToString();
+            axOutlookViewControl.Folder = FolderViewTypes.Inbox.ToString();
+            prefs.FolderViewType = FolderViewTypes.Inbox.ToString();
             trayMenu.MenuItems[0].Checked = false;
             menuCalendar.Checked = false;
             menuContacts.Checked = false;
@@ -429,8 +437,8 @@ namespace OutlookDesktop
 
         private void menuTasks_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.Folder = folderViewTypes.Tasks.ToString();
-            prefs.FolderViewType = folderViewTypes.Tasks.ToString();
+            axOutlookViewControl.Folder = FolderViewTypes.Tasks.ToString();
+            prefs.FolderViewType = FolderViewTypes.Tasks.ToString();
             trayMenu.MenuItems[0].Checked = false;
             menuCalendar.Checked = false;
             menuContacts.Checked = false;
@@ -441,8 +449,8 @@ namespace OutlookDesktop
 
         private void menuNotes_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.Folder = folderViewTypes.Notes.ToString();
-            prefs.FolderViewType = folderViewTypes.Notes.ToString();
+            axOutlookViewControl.Folder = FolderViewTypes.Notes.ToString();
+            prefs.FolderViewType = FolderViewTypes.Notes.ToString();
             trayMenu.MenuItems[0].Checked = false;
             menuCalendar.Checked = false;
             menuContacts.Checked = false;
@@ -486,7 +494,7 @@ namespace OutlookDesktop
             }
         }
 
-        private string GetFolderPath(string folderPath)
+        private static string GetFolderPath(string folderPath)
         {
             return folderPath.Replace("\\\\Personal Folders\\", "");
         }
@@ -506,107 +514,16 @@ namespace OutlookDesktop
                 UnsafeNativeMethods.SetWindowPos(this.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
             }
         }
-        
+
         private void ChangeTrayIconDate()
         {
-            
+            // get new instance of the resource manager.  This will allow us to look up a resource by name.
+            System.Resources.ResourceManager resourceManager = new global::System.Resources.ResourceManager("OutlookDesktop.Properties.Resources", typeof(Resources).Assembly);
+
             DateTime today = DateTime.Now;
-            switch (today.Date.Day)
-            {
-                case 1:
-                    trayIcon.Icon = Resources._1;
-                    break;
-                case 2:
-                    trayIcon.Icon = Resources._2;
-                    break;
-                case 3:
-                    trayIcon.Icon = Resources._3;
-                    break;
-                case 4:
-                    trayIcon.Icon = Resources._4;
-                    break;
-                case 5:
-                    trayIcon.Icon = Resources._5;
-                    break;
-                case 6:
-                    trayIcon.Icon = Resources._6;
-                    break;
-                case 7:
-                    trayIcon.Icon = Resources._7;
-                    break;
-                case 8:
-                    trayIcon.Icon = Resources._8;
-                    break;
-                case 9:
-                    trayIcon.Icon = Resources._9;
-                    break;
-                case 10:
-                    trayIcon.Icon = Resources._10;
-                    break;
-                case 11:
-                    trayIcon.Icon = Resources._11;
-                    break;
-                case 12:
-                    trayIcon.Icon = Resources._12;
-                    break;
-                case 13:
-                    trayIcon.Icon = Resources._13;
-                    break;
-                case 14:
-                    trayIcon.Icon = Resources._14;
-                    break;
-                case 15:
-                    trayIcon.Icon = Resources._15;
-                    break;
-                case 16:
-                    trayIcon.Icon = Resources._16;
-                    break;
-                case 17:
-                    trayIcon.Icon = Resources._17;
-                    break;
-                case 18:
-                    trayIcon.Icon = Resources._18;
-                    break;
-                case 19:
-                    trayIcon.Icon = Resources._19;
-                    break;
-                case 20:
-                    trayIcon.Icon = Resources._20;
-                    break;
-                case 21:
-                    trayIcon.Icon = Resources._21;
-                    break;
-                case 22:
-                    trayIcon.Icon = Resources._22;
-                    break;
-                case 23:
-                    trayIcon.Icon = Resources._23;
-                    break;
-                case 24:
-                    trayIcon.Icon = Resources._24;
-                    break;
-                case 25:
-                    trayIcon.Icon = Resources._25;
-                    break;
-                case 26:
-                    trayIcon.Icon = Resources._26;
-                    break;
-                case 27:
-                    trayIcon.Icon = Resources._27;
-                    break;
-                case 28:
-                    trayIcon.Icon = Resources._28;
-                    break;
-                case 29:
-                    trayIcon.Icon = Resources._29;
-                    break;
-                case 30:
-                    trayIcon.Icon = Resources._30;
-                    break;
-                case 31:
-                    trayIcon.Icon = Resources._31;
-                    break;
-            }
+
+            // find the icon for the today's day of the month and replace the tray icon with it.
+            trayIcon.Icon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture);
         }
 
         private void updateTimer_Tick(object sender, EventArgs e)
@@ -637,12 +554,12 @@ namespace OutlookDesktop
         {
             if (this.Visible == true)
             {
-                menuHide.Text = "Show";
+                menuHide.Text = Resources.Show;
                 this.Visible = false;
             }
             else
             {
-                menuHide.Text = "Hide";
+                menuHide.Text = Resources.Hide;
                 this.Visible = true;
             }
         }

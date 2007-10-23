@@ -1,3 +1,5 @@
+using OutlookDesktop.Properties;
+
 namespace OutlookDesktop
 {
     partial class AboutBox
@@ -45,7 +47,7 @@ namespace OutlookDesktop
             this.labelProductName.Name = "labelProductName";
             this.labelProductName.Size = new System.Drawing.Size(75, 13);
             this.labelProductName.TabIndex = 26;
-            this.labelProductName.Text = "Product Name";
+            this.labelProductName.Text = Resources.ProductName;
             this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelVersion
@@ -57,7 +59,7 @@ namespace OutlookDesktop
             this.labelVersion.Name = "labelVersion";
             this.labelVersion.Size = new System.Drawing.Size(42, 13);
             this.labelVersion.TabIndex = 25;
-            this.labelVersion.Text = "Version";
+            this.labelVersion.Text = Resources.Version;
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelCopyright
@@ -69,7 +71,7 @@ namespace OutlookDesktop
             this.labelCopyright.Name = "labelCopyright";
             this.labelCopyright.Size = new System.Drawing.Size(51, 13);
             this.labelCopyright.TabIndex = 27;
-            this.labelCopyright.Text = "Copyright";
+            this.labelCopyright.Text = Resources.Copyright;
             this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // okButton
@@ -80,7 +82,7 @@ namespace OutlookDesktop
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 22);
             this.okButton.TabIndex = 28;
-            this.okButton.Text = "&OK";
+            this.okButton.Text = Resources.OKButton;
             // 
             // linkWebsite
             // 
@@ -90,7 +92,7 @@ namespace OutlookDesktop
             this.linkWebsite.Size = new System.Drawing.Size(51, 13);
             this.linkWebsite.TabIndex = 30;
             this.linkWebsite.TabStop = true;
-            this.linkWebsite.Text = "Web Site";
+            this.linkWebsite.Text = Resources.WebSite;
             this.linkWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkWebsite_LinkClicked);
             // 
             // picDonate
@@ -124,7 +126,7 @@ namespace OutlookDesktop
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "About Outlook on the Desktop";
+            this.Text = Resources.AboutDialogTitle;
             ((System.ComponentModel.ISupportInitialize)(this.picDonate)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

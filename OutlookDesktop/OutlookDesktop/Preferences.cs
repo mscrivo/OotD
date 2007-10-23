@@ -11,11 +11,11 @@ namespace OutlookDesktop
 	/// </summary>
 	public class Preferences
 	{		
-        public const double DEFAULT_OPACITY  = 0.5;
-        public const int DEFAULT_LEFT = 100;
-        public const int DEFAULT_TOP = 100;
-        public const int DEFAULT_HEIGHT = 500;
-        public const int DEFAULT_WIDTH = 700;
+        public const double DefaultOpacity  = 0.5;
+        public const int DefaultLeftPosition = 100;
+        public const int DefaultTopPosition = 100;
+        public const int DefaultHeight = 500;
+        public const int DefaultWidth = 700;
 
 		private RegistryKey appReg;
 
@@ -85,9 +85,9 @@ namespace OutlookDesktop
 		{
 			get
 			{
-                double opacity = DEFAULT_OPACITY;
-                
-                double.TryParse((string)appReg.GetValue("Opacity", opacity.ToString("G")), out opacity);
+                double opacity = DefaultOpacity;
+
+                double.TryParse((string)appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture)), out opacity);
                 return opacity;
 			}
 			set
@@ -103,7 +103,7 @@ namespace OutlookDesktop
 		{
 			get
 			{
-                return (int)appReg.GetValue("Left", DEFAULT_LEFT);
+                return (int)appReg.GetValue("Left", DefaultLeftPosition);
 			}
 			set
 			{
@@ -118,7 +118,7 @@ namespace OutlookDesktop
 		{
 			get
 			{
-                return (int)appReg.GetValue("Top", DEFAULT_TOP);
+                return (int)appReg.GetValue("Top", DefaultTopPosition);
 			}
 			set
 			{
@@ -133,7 +133,7 @@ namespace OutlookDesktop
 		{
 			get
 			{
-                return (int)appReg.GetValue("Width", DEFAULT_WIDTH);
+                return (int)appReg.GetValue("Width", DefaultWidth);
 			}
 			set
 			{
@@ -148,7 +148,7 @@ namespace OutlookDesktop
 		{
 			get
 			{
-                return (int)appReg.GetValue("Height", DEFAULT_HEIGHT);
+                return (int)appReg.GetValue("Height", DefaultHeight);
 			}
 			set
 			{

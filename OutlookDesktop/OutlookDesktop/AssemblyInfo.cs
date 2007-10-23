@@ -9,10 +9,10 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle("Outlook on the Desktop")]
-[assembly: AssemblyDescription("Displays the Outlook Calendar on your Windows Desktop.")]
+[assembly: AssemblyDescription("Places Microsoft Outlook Components on your Windows Desktop.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SMR Computer Services")]
-[assembly: AssemblyProduct("Outlook On The Desktop")]
+[assembly: AssemblyProduct("Outlook on the Desktop")]
 [assembly: AssemblyCopyright("© 2007 Michael Scrivo")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
