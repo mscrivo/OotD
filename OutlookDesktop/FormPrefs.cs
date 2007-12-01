@@ -59,16 +59,16 @@ namespace OutlookDesktop
         private void AdjustMinMaxDimensions() {
             // Setup up mins and maxes for the dimensions of the window
 			// depending on the user's resolution.            
-            verticalPosition.Minimum = SystemInformation.WorkingArea.Top;
-            verticalPosition.Maximum = SystemInformation.WorkingArea.Top + SystemInformation.WorkingArea.Height - fOwnerForm.Height + verticalPosition.SmallChange;
+            verticalPosition.Minimum = SystemInformation.VirtualScreen.Top;
+            verticalPosition.Maximum = SystemInformation.VirtualScreen.Top + SystemInformation.VirtualScreen.Height - fOwnerForm.Height + verticalPosition.SmallChange;
 
-            horizontalPosition.Minimum = SystemInformation.WorkingArea.Left;
-            horizontalPosition.Maximum = SystemInformation.WorkingArea.Left + SystemInformation.WorkingArea.Width - fOwnerForm.Width + horizontalPosition.SmallChange;
+            horizontalPosition.Minimum = SystemInformation.VirtualScreen.Left;
+            horizontalPosition.Maximum = SystemInformation.VirtualScreen.Left + SystemInformation.VirtualScreen.Width - fOwnerForm.Width + horizontalPosition.SmallChange;
 			heightSlider.Minimum = SystemInformation.MinimumWindowSize.Height;
-            heightSlider.Maximum = SystemInformation.WorkingArea.Height;
+            heightSlider.Maximum = SystemInformation.VirtualScreen.Height;
 
 			widthSlider.Minimum = SystemInformation.MinimumWindowSize.Width;
-            widthSlider.Maximum = SystemInformation.WorkingArea.Width;
+            widthSlider.Maximum = SystemInformation.VirtualScreen.Width;
         }
 
 		/// <summary>
