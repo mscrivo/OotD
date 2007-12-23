@@ -14,7 +14,7 @@ namespace OutlookDesktop
 	/// </summary>
 	public class FormPrefs : System.Windows.Forms.Form
 	{
-		private FormMain fOwnerForm;
+		private MainForm fOwnerForm;
 		private bool bDirty;
 		
 		/// <summary>
@@ -42,7 +42,7 @@ namespace OutlookDesktop
 		private System.Windows.Forms.Label heightLabel;
 		private System.Windows.Forms.TrackBar heightSlider;
 
-		public FormPrefs(FormMain fOwner)
+		public FormPrefs(MainForm fOwner)
 		{
 			//
 			// Required for Windows Form Designer support

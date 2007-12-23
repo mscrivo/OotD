@@ -1,8 +1,8 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "1.3.5"
-#define MyAppVerName "Outlook on the Desktop 1.3.5"
+#define MyAppVersion "1.3.6"
+#define MyAppVerName "Outlook on the Desktop 1.3.6"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.michaelscrivo.com/projects/outlookdesktop"
 #define MyAppExeName "OutlookDesktop.exe"
@@ -47,7 +47,6 @@ Name: installdotnet; Description: Download and Install Microsoft .NET Framework 
 [Files]
 Source: OutlookDesktop\bin\x86\Release\OutlookDesktop.exe; DestDir: {app}; Flags: ignoreversion
 Source: OutlookDesktop\RequiredFiles\OutlookDesktop.exe.manifest; DestDir: {app}; Flags: ignoreversion
-Source: OutlookDesktop\Icons\App.ico; DestDir: {app}; Flags: ignoreversion
 Source: OutlookDesktop\bin\x86\Release\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll; DestDir: {app}; Flags: ignoreversion
 Source: OutlookDesktop\bin\x86\Release\Microsoft.Office.Interop.Outlook.dll; DestDir: {app}; Flags: ignoreversion
 Source: OutlookDesktop\bin\x86\Release\Microsoft.Office.Interop.OutlookViewCtl.dll; DestDir: {app}; Flags: ignoreversion

@@ -328,4 +328,7 @@
   <data name="Tasks" xml:space="preserve">
     <value>Tasks</value>
   </data>
+  <data name="ErrorInitializingApp" xml:space="preserve">
+    <value>There was an error initializing the application:</value>
+  </data>
 </root>
