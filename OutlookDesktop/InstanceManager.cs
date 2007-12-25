@@ -68,6 +68,7 @@ namespace OutlookDesktop
                         // hook up our instance removed event handler so that we can remove the 
                         // appropriate menu item from the context menu.
                         mainFormInstances[count].InstanceRemoved += InstanceRemovedEventHandler;
+                        mainFormInstances[count].InstanceRenamed += InstanceRenamedEventHandler;
                         instanceSubmenu[count] = new ToolStripMenuItem(instanceName, null, null, instanceName);
                         trayIcon.ContextMenuStrip.Items.Add(instanceSubmenu[count]);
                         mainFormInstances[count].TrayMenu.Items.Insert(0, new ToolStripMenuItem(instanceName));
@@ -98,6 +99,7 @@ namespace OutlookDesktop
                     mainFormInstances[0] = new MainForm(instanceName);
                     trayIcon.ContextMenuStrip = mainFormInstances[0].TrayMenu;
                     mainFormInstances[0].InstanceRemoved += InstanceRemovedEventHandler;
+                    mainFormInstances[0].InstanceRenamed += InstanceRenamedEventHandler;
                     trayIcon.ContextMenuStrip.Items["RemoveInstanceMenu"].Visible = false;
                     trayIcon.ContextMenuStrip.Items["RenameInstanceMenu"].Visible = false;
                     trayIcon.ContextMenuStrip.Items.Insert(0, new ToolStripMenuItem("Add Instance", null, AddInstanceMenu_Click));
@@ -219,6 +221,23 @@ namespace OutlookDesktop
             // if we only have one instance left, reload everything so that the context
             // menu only shows the one instances' menu items.
             LoadInstances();
+        }
+
+
+        /// <summary>
+        /// Event handler for when an instance is renamed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void InstanceRenamedEventHandler(Object sender, InstanceRenamedEventArgs e)
+        {
+            // remove the menu item for the removed instance.
+            trayIcon.ContextMenuStrip.Items[e.OldInstanceName].Text = e.NewInstanceName;
+            trayIcon.ContextMenuStrip.Items[e.OldInstanceName].Name = e.NewInstanceName;
+
+            // if we only have one instance left, reload everything so that the context
+            // menu only shows the one instances' menu items.
+//            LoadInstances();
         }
 
         private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)

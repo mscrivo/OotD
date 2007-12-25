@@ -35,6 +35,7 @@ namespace OutlookDesktop
         private String _customFolder;
 
         public event InstanceRemovedEventHandler InstanceRemoved;
+        public event InstanceRenamedEventHandler InstanceRenamed;
 
         public Boolean IsInitialized
         {
@@ -378,6 +379,35 @@ namespace OutlookDesktop
         private void ExitMenu_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void RenameInstanceMenu_Click(object sender, EventArgs e)
+        {
+            InputBoxResult result = InputBox.Show(this, "", "Rename Instance", _instanceName, inputBox_Validating);
+            if (result.OK)
+            {
+                using (RegistryKey parentKey = Registry.CurrentUser.OpenSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName, true))
+                {
+                    if (parentKey != null)
+                    {
+                        RegistryHelper.RenameSubKey(parentKey, _instanceName, result.Text);
+                        String oldInstanceName = _instanceName;
+                        _instanceName = result.Text;
+                        _preferences = new InstancePreferences(_instanceName);
+
+                        InstanceRenamed(this, new InstanceRenamedEventArgs(oldInstanceName, _instanceName));
+                    }
+                }
+            }
+        }
+
+        private void inputBox_Validating(object sender, InputBoxValidatingArgs e)
+        {
+            if (String.IsNullOrEmpty(e.Text.Trim()))
+            {
+                e.Cancel = true;
+                e.Message = "Required";
+            }
         }
     }
 }

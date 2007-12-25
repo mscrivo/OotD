@@ -79,7 +79,7 @@
             this.RemoveInstanceMenu,
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(187, 292);
+            this.trayMenu.Size = new System.Drawing.Size(187, 314);
             // 
             // SelectFolderMenu
             // 
@@ -169,6 +169,7 @@
             this.RenameInstanceMenu.Name = "RenameInstanceMenu";
             this.RenameInstanceMenu.Size = new System.Drawing.Size(186, 22);
             this.RenameInstanceMenu.Text = "Rename this Instance";
+            this.RenameInstanceMenu.Click += new System.EventHandler(this.RenameInstanceMenu_Click);
             // 
             // RemoveInstanceMenu
             // 
