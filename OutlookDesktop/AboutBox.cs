@@ -26,7 +26,7 @@ namespace OutlookDesktop
 
         #region Assembly Attribute Accessors
 
-        public string AssemblyTitle
+        public static string AssemblyTitle
         {
             get
             {
@@ -46,7 +46,7 @@ namespace OutlookDesktop
             }
         }
 
-        public string AssemblyVersion
+        public static string AssemblyVersion
         {
             get
             {
@@ -54,7 +54,7 @@ namespace OutlookDesktop
             }
         }
 
-         public string AssemblyProduct
+         public static string AssemblyProduct
         {
             get
             {
@@ -68,7 +68,7 @@ namespace OutlookDesktop
             }
         }
 
-        public string AssemblyCopyright
+        public static string AssemblyCopyright
         {
             get
             {

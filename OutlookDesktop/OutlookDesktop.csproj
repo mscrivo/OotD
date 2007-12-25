@@ -32,8 +32,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>OutlookDesktop</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>OutlookDesktop.InstanceManager</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -82,6 +81,7 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -118,7 +118,7 @@
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
     <ErrorReport>prompt</ErrorReport>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
     <CodeAnalysisRules>-Microsoft.Design#CA1031;-Microsoft.Globalization#CA1300</CodeAnalysisRules>
   </PropertyGroup>
   <ItemGroup>
@@ -178,9 +178,17 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FormPrefs.cs">
+    <Compile Include="GlobalPreferences.cs" />
+    <Compile Include="InputBox.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="InstanceManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstanceManager.Designer.cs">
+      <DependentUpon>InstanceManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InstanceRemovedEventArgs.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +197,12 @@
     </Compile>
     <Compile Include="Preferences.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PreferencesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PreferencesForm.Designer.cs">
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -200,12 +214,20 @@
       <SubType>Designer</SubType>
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormPrefs.resx">
-      <DependentUpon>FormPrefs.cs</DependentUpon>
+    <EmbeddedResource Include="InputBox.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstanceManager.resx">
+      <DependentUpon>InstanceManager.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PreferencesForm.resx">
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Resources;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -59,3 +60,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyKeyFile("")]
 [assembly: ComVisibleAttribute(false)]
 [assembly: CLSCompliant(true)]
+[assembly: NeutralResourcesLanguageAttribute("en-US")]

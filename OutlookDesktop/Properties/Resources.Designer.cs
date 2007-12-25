@@ -510,7 +510,7 @@ namespace OutlookDesktop.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Outlook on the Destkop Preferences.
+        ///   Looks up a localized string similar to Outlook on the Desktop Preferences.
         /// </summary>
         internal static string PreferencesTitle {
             get {
