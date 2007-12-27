@@ -314,15 +314,6 @@ namespace OutlookDesktop.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirmation.
-        /// </summary>
-        internal static string CancelCaption {
-            get {
-                return ResourceManager.GetString("CancelCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to cancel?.
         /// </summary>
         internal static string CancelConfirmation {
@@ -337,6 +328,15 @@ namespace OutlookDesktop.Properties {
         internal static string Close {
             get {
                 return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirmation.
+        /// </summary>
+        internal static string ConfirmationCaption {
+            get {
+                return ResourceManager.GetString("ConfirmationCaption", resourceCulture);
             }
         }
         
@@ -524,6 +524,15 @@ namespace OutlookDesktop.Properties {
         internal static string ProductName {
             get {
                 return ResourceManager.GetString("ProductName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove this instance?.
+        /// </summary>
+        internal static string RemoveInstanceConfirmation {
+            get {
+                return ResourceManager.GetString("RemoveInstanceConfirmation", resourceCulture);
             }
         }
         

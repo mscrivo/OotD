@@ -7,6 +7,11 @@ namespace OutlookDesktop
 {
     class RegistryHelper
     {
+        // never instantiated, only contains static methods
+        private RegistryHelper()
+        {
+        }
+
         /// <summary>
         /// Renames a subkey of the passed in registry key since
         /// the frame work totally forgot to include such a handy feature.

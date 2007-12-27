@@ -4,17 +4,26 @@ using System.Text;
 
 namespace OutlookDesktop
 {
-    public delegate void InstanceRenamedEventHandler(object sender, InstanceRenamedEventArgs e);
-
-    public class InstanceRenamedEventArgs
+    public class InstanceRenamedEventArgs: EventArgs
     {
-        public String OldInstanceName;
-        public String NewInstanceName;
+        public String OldInstanceName
+        {
+            get { return _oldInstanceName; }
+            set { _oldInstanceName = value; }
+        }
+        private String _oldInstanceName;
+
+        public String NewInstanceName
+        {
+            get { return _newInstanceName; }
+            set { _newInstanceName = value; }
+        }
+        private String _newInstanceName;
 
         public InstanceRenamedEventArgs(String oldInstanceName, String newInstanceName)
         {
-            this.OldInstanceName = oldInstanceName;
-            this.NewInstanceName = newInstanceName;
+            _oldInstanceName = oldInstanceName;
+            _newInstanceName = newInstanceName;
         }
     }
 }

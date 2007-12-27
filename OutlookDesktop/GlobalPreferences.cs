@@ -10,6 +10,11 @@ namespace OutlookDesktop
 {
     class GlobalPreferences
     {
+        // never instantiated, only contains static methods
+        private GlobalPreferences()
+        {
+        }
+
         /// <summary>
         /// Returns true if there is a registry entry that makes Outlook on the Desktop start
         /// when Windows starts. On set, we save or delete that registry value

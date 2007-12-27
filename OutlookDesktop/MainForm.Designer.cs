@@ -45,10 +45,9 @@
             this.NotesMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.TasksMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.AboutMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PreferencesMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.HideMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.HideShowMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.RenameInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,16 +69,15 @@
             this.NotesMenu,
             this.TasksMenu,
             this.toolStripMenuItem2,
-            this.AboutMenu,
+            this.RenameInstanceMenu,
             this.PreferencesMenu,
             this.toolStripMenuItem3,
-            this.HideMenu,
+            this.HideShowMenu,
             this.toolStripMenuItem4,
-            this.RenameInstanceMenu,
             this.RemoveInstanceMenu,
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(187, 314);
+            this.trayMenu.Size = new System.Drawing.Size(187, 292);
             // 
             // SelectFolderMenu
             // 
@@ -133,13 +131,6 @@
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(183, 6);
             // 
-            // AboutMenu
-            // 
-            this.AboutMenu.Name = "AboutMenu";
-            this.AboutMenu.Size = new System.Drawing.Size(186, 22);
-            this.AboutMenu.Text = "About";
-            this.AboutMenu.Click += new System.EventHandler(this.AboutMenu_Click);
-            // 
             // PreferencesMenu
             // 
             this.PreferencesMenu.Name = "PreferencesMenu";
@@ -152,12 +143,12 @@
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(183, 6);
             // 
-            // HideMenu
+            // HideShowMenu
             // 
-            this.HideMenu.Name = "HideMenu";
-            this.HideMenu.Size = new System.Drawing.Size(186, 22);
-            this.HideMenu.Text = "Hide";
-            this.HideMenu.Click += new System.EventHandler(this.HideMenu_Click);
+            this.HideShowMenu.Name = "HideShowMenu";
+            this.HideShowMenu.Size = new System.Drawing.Size(186, 22);
+            this.HideShowMenu.Text = "Hide";
+            this.HideShowMenu.Click += new System.EventHandler(this.HideMenu_Click);
             // 
             // toolStripMenuItem4
             // 
@@ -243,10 +234,9 @@
         private System.Windows.Forms.ToolStripMenuItem NotesMenu;
         private System.Windows.Forms.ToolStripMenuItem TasksMenu;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem AboutMenu;
         private System.Windows.Forms.ToolStripMenuItem PreferencesMenu;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem HideMenu;
+        private System.Windows.Forms.ToolStripMenuItem HideShowMenu;
         private System.Windows.Forms.ToolStripMenuItem RemoveInstanceMenu;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem RenameInstanceMenu;

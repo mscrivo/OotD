@@ -7,9 +7,6 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        private MainForm fOwnerForm;
-        private bool bDirty;
-
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>

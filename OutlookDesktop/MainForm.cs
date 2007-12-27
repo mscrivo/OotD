@@ -34,8 +34,8 @@ namespace OutlookDesktop
         private DateTime _previousDate;
         private String _customFolder;
 
-        public event InstanceRemovedEventHandler InstanceRemoved;
-        public event InstanceRenamedEventHandler InstanceRenamed;
+        public event EventHandler<InstanceRemovedEventArgs> InstanceRemoved;
+        public event EventHandler<InstanceRenamedEventArgs> InstanceRenamed;
 
         public Boolean IsInitialized
         {
@@ -190,7 +190,7 @@ namespace OutlookDesktop
 
             foreach (Microsoft.Office.Interop.Outlook.Folder oFolder in oFolders)
             {
-                if (String.Compare(GetFolderPath(oFolder.FullFolderPath), fullPath) == 0)
+                if (String.Compare(GetFolderPath(oFolder.FullFolderPath), fullPath, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     return oFolder.Name;
                 }
@@ -211,12 +211,12 @@ namespace OutlookDesktop
         {
             if (this.Visible == true)
             {
-                HideMenu.Text = Resources.Show;
+                HideShowMenu.Text = Resources.Show;
                 this.Visible = false;
             }
             else
             {
-                HideMenu.Text = Resources.Hide;
+                HideShowMenu.Text = Resources.Hide;
                 this.Visible = true;
             }
         }
@@ -322,12 +322,6 @@ namespace OutlookDesktop
             TasksMenu.Checked = true;
         }
 
-        private void AboutMenu_Click(object sender, EventArgs e)
-        {
-            AboutBox aboutForm = new AboutBox();
-            aboutForm.ShowDialog();
-        }
-
         private void PreferencesMenu_Click(object sender, EventArgs e)
         {
             PreferencesForm preferencesForm = new PreferencesForm(this);
@@ -341,13 +335,17 @@ namespace OutlookDesktop
 
         private void RemoveInstanceMenu_Click(object sender, EventArgs e)
         {
-            using (RegistryKey appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+            DialogResult result = MessageBox.Show(this, Resources.RemoveInstanceConfirmation, Resources.ConfirmationCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            if (result == DialogResult.Yes)
             {
-                appReg.DeleteSubKeyTree(InstanceName);
-            }
+                using (RegistryKey appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+                {
+                    appReg.DeleteSubKeyTree(InstanceName);
+                }
 
-            InstanceRemoved(this, new InstanceRemovedEventArgs(InstanceName));
-            Dispose();
+                InstanceRemoved(this, new InstanceRemovedEventArgs(InstanceName));
+                Dispose();
+            }
         }
 
         private void updateTimer_Tick(object sender, EventArgs e)
@@ -384,7 +382,7 @@ namespace OutlookDesktop
         private void RenameInstanceMenu_Click(object sender, EventArgs e)
         {
             InputBoxResult result = InputBox.Show(this, "", "Rename Instance", _instanceName, inputBox_Validating);
-            if (result.OK)
+            if (result.Ok)
             {
                 using (RegistryKey parentKey = Registry.CurrentUser.OpenSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName, true))
                 {
@@ -401,7 +399,7 @@ namespace OutlookDesktop
             }
         }
 
-        private void inputBox_Validating(object sender, InputBoxValidatingArgs e)
+        private void inputBox_Validating(object sender, InputBoxValidatingEventArgs e)
         {
             if (String.IsNullOrEmpty(e.Text.Trim()))
             {

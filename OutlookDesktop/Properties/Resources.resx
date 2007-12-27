@@ -133,7 +133,7 @@
   <data name="_19" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\19.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CancelCaption" xml:space="preserve">
+  <data name="ConfirmationCaption" xml:space="preserve">
     <value>Confirmation</value>
   </data>
   <data name="Narrow" xml:space="preserve">
@@ -330,5 +330,8 @@
   </data>
   <data name="ErrorInitializingApp" xml:space="preserve">
     <value>There was an error initializing the application:</value>
+  </data>
+  <data name="RemoveInstanceConfirmation" xml:space="preserve">
+    <value>Are you sure you want to remove this instance?</value>
   </data>
 </root>

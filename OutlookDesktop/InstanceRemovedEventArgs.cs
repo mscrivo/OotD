@@ -4,15 +4,18 @@ using System.Text;
 
 namespace OutlookDesktop
 {
-    public delegate void InstanceRemovedEventHandler(object sender, InstanceRemovedEventArgs e);
-
     public class InstanceRemovedEventArgs : EventArgs
     {
-        public String InstanceName;
+        public String InstanceName
+        {
+            get { return _instanceName; }
+            set { _instanceName = value; }
+        }
+        private String _instanceName;
 
         public InstanceRemovedEventArgs(String instanceName)
         {
-            this.InstanceName = instanceName;
+            this._instanceName = instanceName;
         }        
     }
 }

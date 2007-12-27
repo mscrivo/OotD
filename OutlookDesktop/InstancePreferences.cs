@@ -42,8 +42,10 @@ namespace OutlookDesktop
             {
                 double opacity = DefaultOpacity;
 
-                double.TryParse((string)appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture)), out opacity);
-                return opacity;
+                if (double.TryParse((string)appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture)), out opacity))
+                    return opacity;
+                else
+                    return DefaultOpacity;
             }
             set
             {
