@@ -179,14 +179,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GlobalPreferences.cs" />
-    <Compile Include="InputBox.cs">
+    <Compile Include="InputBox\InputBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputBox.Designer.cs">
+    <Compile Include="InputBox\InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputBoxResult.cs" />
-    <Compile Include="InputBoxValidatingEventArgs.cs" />
+    <Compile Include="InputBox\InputBoxResult.cs" />
+    <Compile Include="InputBox\InputBoxValidatingEventArgs.cs" />
     <Compile Include="InstanceManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -221,7 +221,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputBox.resx">
+    <EmbeddedResource Include="InputBox\InputBox.resx">
       <DependentUpon>InputBox.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
