@@ -25,7 +25,7 @@ namespace OutlookDesktop
             InitializeComponent();
         }
 
-        private void CancelButton_Click(object sender, System.EventArgs e)
+        private void ButtonCancel_Click(object sender, System.EventArgs e)
         {
             this.Validator = null;
             this.Close();

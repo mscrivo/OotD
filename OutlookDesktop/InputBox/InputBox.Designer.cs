@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.PromptLabel = new System.Windows.Forms.Label();
             this.InputTextBox = new System.Windows.Forms.TextBox();
-            this.CancelButton = new System.Windows.Forms.Button();
+            this.ButtonCancel = new System.Windows.Forms.Button();
             this.OKButton = new System.Windows.Forms.Button();
             this._errorProviderText = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this._errorProviderText)).BeginInit();
@@ -55,17 +55,17 @@
             this.InputTextBox.TextChanged += new System.EventHandler(this.InputTextBox_TextChanged);
             this.InputTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.InputTextBox_Validating);
             // 
-            // CancelButton
+            // ButtonCancel
             // 
-            this.CancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.CancelButton.CausesValidation = false;
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(214, 69);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelButton.TabIndex = 7;
-            this.CancelButton.Text = "&Cancel";
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.ButtonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButtonCancel.CausesValidation = false;
+            this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.ButtonCancel.Location = new System.Drawing.Point(214, 69);
+            this.ButtonCancel.Name = "ButtonCancel";
+            this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
+            this.ButtonCancel.TabIndex = 7;
+            this.ButtonCancel.Text = "&Cancel";
+            this.ButtonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
             // OKButton
             // 
@@ -87,11 +87,10 @@
             this.AcceptButton = this.OKButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.CancelButton;
             this.ClientSize = new System.Drawing.Size(312, 104);
             this.Controls.Add(this.PromptLabel);
             this.Controls.Add(this.InputTextBox);
-            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.ButtonCancel);
             this.Controls.Add(this.OKButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -111,7 +110,7 @@
 
         private System.Windows.Forms.Label PromptLabel;
         private System.Windows.Forms.TextBox InputTextBox;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button ButtonCancel;
         private System.Windows.Forms.Button OKButton;
         private System.Windows.Forms.ErrorProvider _errorProviderText;
     }
