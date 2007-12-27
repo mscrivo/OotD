@@ -246,9 +246,7 @@ namespace OutlookDesktop
         private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                ShowHideAllInstances();
-                                  
-
+                ShowHideAllInstances();                                 
         }
     }
 }

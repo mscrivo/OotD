@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OutlookDesktop
 {
-    public class InstanceRenamedEventArgs: EventArgs
+    public class InstanceRenamedEventArgs : EventArgs
     {
         public String OldInstanceName
         {

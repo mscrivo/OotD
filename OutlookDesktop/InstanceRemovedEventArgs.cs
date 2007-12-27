@@ -16,6 +16,6 @@ namespace OutlookDesktop
         public InstanceRemovedEventArgs(String instanceName)
         {
             this._instanceName = instanceName;
-        }        
+        }
     }
 }
