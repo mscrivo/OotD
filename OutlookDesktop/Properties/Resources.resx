@@ -117,9 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Inbox" xml:space="preserve">
+    <value>Inbox</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\24.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AboutDialogTitle" xml:space="preserve">
+    <value>About Outlook on the Desktop</value>
   </data>
   <data name="_26" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\26.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -127,20 +133,17 @@
   <data name="_10" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\10.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_17" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\17.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="SelectFolder" xml:space="preserve">
+    <value>Select Folder ...</value>
   </data>
   <data name="_19" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\19.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ConfirmationCaption" xml:space="preserve">
-    <value>Confirmation</value>
+  <data name="StartWithWindows" xml:space="preserve">
+    <value>Start Outlook on the Desktop when Windows starts</value>
   </data>
   <data name="Narrow" xml:space="preserve">
     <value>Narrow</value>
-  </data>
-  <data name="CancelConfirmation" xml:space="preserve">
-    <value>Are you sure you want to cancel?</value>
   </data>
   <data name="_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\25.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -151,8 +154,11 @@
   <data name="ErrorCaption" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="Height" xml:space="preserve">
-    <value>Height</value>
+  <data name="Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="OKButton" xml:space="preserve">
+    <value>&amp;OK</value>
   </data>
   <data name="_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\18.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -160,11 +166,23 @@
   <data name="_21" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\21.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
   <data name="_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\15.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Opaque" xml:space="preserve">
-    <value>Opaque</value>
+  <data name="paypal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\paypal.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Transparent" xml:space="preserve">
+    <value>Transparent</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Outlook on the Desktop</value>
+  </data>
+  <data name="Calendar" xml:space="preserve">
+    <value>Calendar</value>
   </data>
   <data name="_22" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\22.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -172,14 +190,23 @@
   <data name="_20" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\20.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="ErrorInitializingApp" xml:space="preserve">
+    <value>There was an error initializing the application:</value>
+  </data>
   <data name="_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\5.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CancelButton" xml:space="preserve">
-    <value>&amp;Cancel</value>
+  <data name="RemoveInstanceConfirmation" xml:space="preserve">
+    <value>Are you sure you want to remove this instance?</value>
   </data>
-  <data name="OKButton" xml:space="preserve">
-    <value>&amp;OK</value>
+  <data name="Copyright" xml:space="preserve">
+    <value>Copyright</value>
+  </data>
+  <data name="Opaque" xml:space="preserve">
+    <value>Opaque</value>
   </data>
   <data name="Exit" xml:space="preserve">
     <value>Exit</value>
@@ -187,14 +214,23 @@
   <data name="Short" xml:space="preserve">
     <value>Short</value>
   </data>
-  <data name="StartWithWindows" xml:space="preserve">
-    <value>Start Outlook on the Desktop when Windows starts</value>
-  </data>
   <data name="_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\4.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="Hide" xml:space="preserve">
+    <value>Hide</value>
+  </data>
   <data name="Tall" xml:space="preserve">
     <value>Tall</value>
+  </data>
+  <data name="Tasks" xml:space="preserve">
+    <value>Tasks</value>
+  </data>
+  <data name="ProgramIsAlreadyRunningCaption" xml:space="preserve">
+    <value>Already Running</value>
   </data>
   <data name="_9" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\9.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -214,17 +250,29 @@
   <data name="ErrorSettingOpacity" xml:space="preserve">
     <value>There was an error setting the opacity, default of 50% used.  Please try setting it again.</value>
   </data>
+  <data name="Height" xml:space="preserve">
+    <value>Height</value>
+  </data>
   <data name="_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\16.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WebSite" xml:space="preserve">
+    <value>Web Site</value>
   </data>
   <data name="_31" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\31.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Wide" xml:space="preserve">
-    <value>Wide</value>
+  <data name="PreferencesTitle" xml:space="preserve">
+    <value>Outlook on the Desktop Preferences</value>
+  </data>
+  <data name="_29" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\29.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\8.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
   </data>
   <data name="Width" xml:space="preserve">
     <value>Width</value>
@@ -238,6 +286,12 @@
   <data name="_27" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\27.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="CancelConfirmation" xml:space="preserve">
+    <value>Are you sure you want to cancel?</value>
+  </data>
   <data name="_6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\6.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -246,6 +300,9 @@
   </data>
   <data name="Separator" xml:space="preserve">
     <value>-</value>
+  </data>
+  <data name="ConfirmationCaption" xml:space="preserve">
+    <value>Confirmation</value>
   </data>
   <data name="_7" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\7.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -256,17 +313,20 @@
   <data name="ErrorSettingDimensions" xml:space="preserve">
     <value>There was an error setting the dimensions.  This usually happens after you resize your desktop.  Please try setting your preferred dimensions again.</value>
   </data>
-  <data name="_28" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\28.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="CancelButton" xml:space="preserve">
+    <value>&amp;Cancel</value>
+  </data>
+  <data name="ProgramIsAlreadyRunning" xml:space="preserve">
+    <value>Outlook on the Desktop is already running.</value>
   </data>
   <data name="ErrorSavingSettings" xml:space="preserve">
     <value>Error Saving Settings</value>
   </data>
-  <data name="_29" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\29.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_17" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\17.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Transparent" xml:space="preserve">
-    <value>Transparent</value>
+  <data name="Wide" xml:space="preserve">
+    <value>Wide</value>
   </data>
   <data name="Position" xml:space="preserve">
     <value>Position</value>
@@ -274,64 +334,10 @@
   <data name="_11" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\11.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="_28" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\28.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Preferences" xml:space="preserve">
     <value>Preferences</value>
-  </data>
-  <data name="paypal" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Icons\paypal.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="AboutDialogTitle" xml:space="preserve">
-    <value>About Outlook on the Desktop</value>
-  </data>
-  <data name="Copyright" xml:space="preserve">
-    <value>Copyright</value>
-  </data>
-  <data name="ProductName" xml:space="preserve">
-    <value>Outlook on the Desktop</value>
-  </data>
-  <data name="Version" xml:space="preserve">
-    <value>Version</value>
-  </data>
-  <data name="WebSite" xml:space="preserve">
-    <value>Web Site</value>
-  </data>
-  <data name="About" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="Calendar" xml:space="preserve">
-    <value>Calendar</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="Contacts" xml:space="preserve">
-    <value>Contacts</value>
-  </data>
-  <data name="Hide" xml:space="preserve">
-    <value>Hide</value>
-  </data>
-  <data name="Inbox" xml:space="preserve">
-    <value>Inbox</value>
-  </data>
-  <data name="Notes" xml:space="preserve">
-    <value>Notes</value>
-  </data>
-  <data name="PreferencesTitle" xml:space="preserve">
-    <value>Outlook on the Desktop Preferences</value>
-  </data>
-  <data name="SelectFolder" xml:space="preserve">
-    <value>Select Folder ...</value>
-  </data>
-  <data name="Show" xml:space="preserve">
-    <value>Show</value>
-  </data>
-  <data name="Tasks" xml:space="preserve">
-    <value>Tasks</value>
-  </data>
-  <data name="ErrorInitializingApp" xml:space="preserve">
-    <value>There was an error initializing the application:</value>
-  </data>
-  <data name="RemoveInstanceConfirmation" xml:space="preserve">
-    <value>Are you sure you want to remove this instance?</value>
   </data>
 </root>

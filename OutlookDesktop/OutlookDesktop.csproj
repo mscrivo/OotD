@@ -32,7 +32,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>OutlookDesktop</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>OutlookDesktop.InstanceManager</StartupObject>
+    <StartupObject>OutlookDesktop.Startup</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -216,6 +216,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RegistryHelper.cs" />
+    <Compile Include="Startup.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <SubType>Designer</SubType>

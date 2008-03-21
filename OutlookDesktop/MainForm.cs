@@ -353,7 +353,14 @@ namespace OutlookDesktop
             // increment day in outlook's calendar if we've crossed over into a new day
             if (DateTime.Now.Day != _previousDate.Day)
             {
-                axOutlookViewControl.GoToToday();
+                try
+                {
+                    axOutlookViewControl.GoToToday();
+                }
+                catch (Exception)
+                {
+                    // no big deal if we can't set the day, just ignore and go on.
+                }
             }
             _previousDate = DateTime.Now;
         }

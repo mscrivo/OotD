@@ -14,20 +14,6 @@ namespace OutlookDesktop
 {
     public partial class InstanceManager : Form
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-
-            InstanceManager instanceManager = new InstanceManager();
-            instanceManager.LoadInstances();
-
-            Application.Run(instanceManager);
-        }
-
         private MainForm[] _mainFormInstances;
 
         public InstanceManager()
@@ -35,7 +21,7 @@ namespace OutlookDesktop
             InitializeComponent();
         }
 
-        private void LoadInstances()
+        public void LoadInstances()
         {
             // Close any open instances first.
             if (_mainFormInstances != null && _mainFormInstances.Length > 0)

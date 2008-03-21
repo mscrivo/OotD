@@ -1,12 +1,12 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "1.4.0"
-#define MyAppVerName "Outlook on the Desktop 1.4.0"
+#define MyAppVersion "1.4.1"
+#define MyAppVerName "Outlook on the Desktop 1.4.1"
 #define MyAppPublisher "Michael Scrivo"
-#define MyAppURL "http://www.michaelscrivo.com/projects/outlookdesktop"
+#define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
-#define MyAppCopyright "©2007 Michael Scrivo"
+#define MyAppCopyright "©2006-2008 Michael Scrivo"
 
 [Setup]
 AppName={#MyAppName}
@@ -25,8 +25,8 @@ Compression=lzma
 SolidCompression=true
 VersionInfoVersion={#MyAppVersion}
 VersionInfoDescription={#MyAppName}
-WizardImageFile=C:\Program Files\Inno Setup 5\WizModernImage-IS.bmp
-WizardSmallImageFile=C:\Program Files\Inno Setup 5\WizModernSmallImage-IS.bmp
+WizardImageFile=C:\Program Files (x86)\Inno Setup 5\WizModernImage-IS.bmp
+WizardSmallImageFile=C:\Program Files (x86)\Inno Setup 5\WizModernSmallImage-IS.bmp
 AppID={{6D9785D9-FF53-4C06-9C2A-E4173D41A2FD}
 ShowLanguageDialog=yes
 OutputDir=./
@@ -35,6 +35,7 @@ AllowUNCPath=false
 UninstallLogMode=append
 UninstallDisplayIcon={app}\App.ico
 PrivilegesRequired=none
+AppMutex=Local\OutlookDesktop.exe
 
 [Languages]
 Name: eng; MessagesFile: compiler:Default.isl
@@ -65,6 +66,7 @@ Root: HKCU; Subkey: Software\SMR Computer Services\Outlook On The Desktop; Flags
 
 [Code]
 const
+	WM_Close = $0010;
 	dotnetURL = 'http://www.microsoft.com/downloads/info.aspx?na=90&p=&SrcDisplayLang=en&SrcCategoryId=&SrcFamilyId=0856eacb-4362-4b0d-8edd-aab15c5e04f5&u=http%3a%2f%2fdownload.microsoft.com%2fdownload%2f5%2f6%2f7%2f567758a3-759e-473e-bf8f-52154438565a%2fdotnetfx.exe';
 	dotnetURL64 = 'http://www.microsoft.com/downloads/info.aspx?na=90&p=&SrcDisplayLang=en&SrcCategoryId=&SrcFamilyId=b44a0000-acf8-4fa1-affb-40e78d788b00&u=http%3a%2f%2fdownload.microsoft.com%2fdownload%2fa%2f3%2ff%2fa3f1bf98-18f3-4036-9b68-8e6de530ce0a%2fNetFx64.exe';
 
@@ -127,23 +129,25 @@ var
 	hWnd: Integer;
 	j: Integer;
 begin
+		MsgBox('Hello.', mbInformation, MB_OK);
 	for j := 1 to 10 do
 	begin
 		hWnd := FindWindowByWindowName('Outlook on the Desktop');
 		if hWnd > 0 then
 		begin
-			SendMessage(hWnd, 274, 61536, 0);
+		MsgBox('in.', mbInformation, MB_OK);
+			SendMessage(hWnd, WM_CLOSE,0,0);
 		end;
 	end;
 end;
 
 function InitializeUninstall(): Boolean;
 begin
-	CloseAllInstances();
+	//CloseAllInstances();
 	Result:= true;
 end;
 
 procedure InitializeWizard();
 begin
-	CloseAllInstances();
+	//CloseAllInstances();
 end;

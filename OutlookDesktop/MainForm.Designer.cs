@@ -45,11 +45,11 @@
             this.NotesMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.TasksMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.RenameInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PreferencesMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.HideShowMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.RenameInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
@@ -77,7 +77,7 @@
             this.RemoveInstanceMenu,
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(187, 292);
+            this.trayMenu.Size = new System.Drawing.Size(187, 270);
             // 
             // SelectFolderMenu
             // 
@@ -131,6 +131,13 @@
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(183, 6);
             // 
+            // RenameInstanceMenu
+            // 
+            this.RenameInstanceMenu.Name = "RenameInstanceMenu";
+            this.RenameInstanceMenu.Size = new System.Drawing.Size(186, 22);
+            this.RenameInstanceMenu.Text = "Rename this Instance";
+            this.RenameInstanceMenu.Click += new System.EventHandler(this.RenameInstanceMenu_Click);
+            // 
             // PreferencesMenu
             // 
             this.PreferencesMenu.Name = "PreferencesMenu";
@@ -154,13 +161,6 @@
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(183, 6);
-            // 
-            // RenameInstanceMenu
-            // 
-            this.RenameInstanceMenu.Name = "RenameInstanceMenu";
-            this.RenameInstanceMenu.Size = new System.Drawing.Size(186, 22);
-            this.RenameInstanceMenu.Text = "Rename this Instance";
-            this.RenameInstanceMenu.Click += new System.EventHandler(this.RenameInstanceMenu_Click);
             // 
             // RemoveInstanceMenu
             // 
@@ -225,7 +225,6 @@
         }
         private System.Windows.Forms.ContextMenuStrip trayMenu;
         private System.Windows.Forms.Timer updateTimer;
-        private AxMicrosoft.Office.Interop.OutlookViewCtl.AxViewCtl axOutlookViewControl;
         private System.Windows.Forms.ToolStripMenuItem SelectFolderMenu;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem CalendarMenu;
@@ -241,5 +240,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem RenameInstanceMenu;
         private System.Windows.Forms.ToolStripMenuItem ExitMenu;
+        private AxMicrosoft.Office.Interop.OutlookViewCtl.AxViewCtl axOutlookViewControl;
     }
 }

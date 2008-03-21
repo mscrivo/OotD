@@ -88,7 +88,7 @@ namespace OutlookDesktop
         {
             try
             {
-                System.Diagnostics.Process.Start("http://www.michaelscrivo.com/projects/outlookdesktop/");
+                System.Diagnostics.Process.Start("http://www.outlookonthedesktop.com");
             }
             catch
             {
