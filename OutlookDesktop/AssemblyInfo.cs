@@ -14,7 +14,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SMR Computer Services")]
 [assembly: AssemblyProduct("Outlook on the Desktop")]
-[assembly: AssemblyCopyright("© 2007 Michael Scrivo")]
+[assembly: AssemblyCopyright("© 2006-2008 Michael Scrivo")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
@@ -29,7 +29,7 @@ using System.Resources;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.4.1")]
+[assembly: AssemblyVersion("1.4.3")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 

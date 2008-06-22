@@ -226,22 +226,34 @@ namespace OutlookDesktop
             Microsoft.Office.Interop.Outlook.MAPIFolder oFolder = _outlookNamespace.PickFolder();
             if (oFolder != null)
             {
-                if (trayMenu.Items[0].Text != SelectFolderMenu.Text)
+                try
                 {
-                    trayMenu.Items.RemoveAt(0);
-                }
+                    if (trayMenu.Items[0].Text != SelectFolderMenu.Text)
+                    {
+                        trayMenu.Items.RemoveAt(0);
+                    }
 
-                _preferences.FolderViewType = GetFolderPath(oFolder.FullFolderPath);
-                _customFolder = _preferences.FolderViewType;
-                axOutlookViewControl.Folder = GetFolderPath(oFolder.FullFolderPath);
-                trayMenu.Items.Insert(0, new ToolStripMenuItem(oFolder.Name, null, new System.EventHandler(this.CustomFolderMenu_Click)));
-                ToolStripMenuItem customMenu = (ToolStripMenuItem)trayMenu.Items[0];
-                customMenu.Checked = true;
-                CalendarMenu.Checked = false;
-                ContactsMenu.Checked = false;
-                InboxMenu.Checked = false;
-                NotesMenu.Checked = false;
-                TasksMenu.Checked = false;
+
+                    String folderPath = GetFolderPath(oFolder.FullFolderPath);
+                    axOutlookViewControl.Folder = folderPath;
+
+                    _preferences.FolderViewType = folderPath;
+                    _customFolder = _preferences.FolderViewType;
+
+                    trayMenu.Items.Insert(0, new ToolStripMenuItem(oFolder.Name, null, new System.EventHandler(this.CustomFolderMenu_Click)));
+                    ToolStripMenuItem customMenu = (ToolStripMenuItem)trayMenu.Items[0];
+                    customMenu.Checked = true;
+                    CalendarMenu.Checked = false;
+                    ContactsMenu.Checked = false;
+                    InboxMenu.Checked = false;
+                    NotesMenu.Checked = false;
+                    TasksMenu.Checked = false;
+
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);                  
+                }
             }
         }
 

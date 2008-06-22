@@ -340,4 +340,7 @@
   <data name="Preferences" xml:space="preserve">
     <value>Preferences</value>
   </data>
+  <data name="ErrorSettingFolder" xml:space="preserve">
+    <value>There was an error changing to the folder you specified. It may not be compatible with Outlook on the Desktop.</value>
+  </data>
 </root>

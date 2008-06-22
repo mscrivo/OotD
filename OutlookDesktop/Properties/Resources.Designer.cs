@@ -395,6 +395,15 @@ namespace OutlookDesktop.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was an error changing to the folder you specified. It may not be compatible with Outlook on the Desktop..
+        /// </summary>
+        internal static string ErrorSettingFolder {
+            get {
+                return ResourceManager.GetString("ErrorSettingFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There was an error setting the opacity, default of 50% used.  Please try setting it again..
         /// </summary>
         internal static string ErrorSettingOpacity {

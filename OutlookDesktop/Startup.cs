@@ -20,15 +20,6 @@ namespace OutlookDesktop
         [STAThread]
         static void Main()
         {
-
-            bool createdNew = true;
-
-            using (Mutex mutex = new Mutex(true, "MyApplicationName", out createdNew))
-            {
-            }
-
-
-
             if (IsAlreadyRunning())
             {
                 // let the user know the program is already running.
@@ -82,19 +73,6 @@ namespace OutlookDesktop
                 }
             }
             return hWnd;
-        }
-
-        /// <summary>
-        /// for console base application
-        /// </summary>
-        /// <returns></returns>
-        public static bool Run()
-        {
-            if (IsAlreadyRunning())
-            {
-                return false;
-            }
-            return true;
         }
 
         /// <summary>
