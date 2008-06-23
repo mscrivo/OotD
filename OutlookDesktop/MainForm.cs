@@ -64,6 +64,19 @@ namespace OutlookDesktop
         }
         private String _instanceName;
 
+        public ToolStripMenuItem CustomMenu
+        {
+            get
+            {
+                return _customMenu;
+            }
+            set
+            {
+                _customMenu = value;
+            }
+        }
+        private ToolStripMenuItem _customMenu;
+
         public MainForm(String instanceName)
         {
             try
@@ -177,8 +190,8 @@ namespace OutlookDesktop
                 _customFolder = _preferences.FolderViewType;
                 String folderName = GetFolderNameFromFullPath(_customFolder, _outlookNamespace.Folders);
                 trayMenu.Items.Insert(0, new ToolStripMenuItem(folderName, null, new System.EventHandler(this.CustomFolderMenu_Click)));
-                ToolStripMenuItem customMenu = (ToolStripMenuItem)trayMenu.Items[0];
-                customMenu.Checked = true;
+                CustomMenu = (ToolStripMenuItem)trayMenu.Items[0];
+                CustomMenu.Checked = true;
             }
 
             axOutlookViewControl.Folder = _preferences.FolderViewType;
@@ -187,16 +200,30 @@ namespace OutlookDesktop
         private String GetFolderNameFromFullPath(String fullPath, Microsoft.Office.Interop.Outlook.Folders oFolders)
         {
             String tempName = "";
+            Microsoft.Office.Interop.Outlook.MAPIFolder mapiFld;
 
-            foreach (Microsoft.Office.Interop.Outlook.Folder oFolder in oFolders)
+            try
             {
-                if (String.Compare(GetFolderPath(oFolder.FullFolderPath), fullPath, StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    return oFolder.Name;
-                }
+                System.Collections.IEnumerator folders = oFolders.GetEnumerator();
 
-                tempName = GetFolderNameFromFullPath(fullPath, oFolder.Folders);
-                if (!String.IsNullOrEmpty(tempName)) return tempName;
+                for (int i = 0; i < oFolders.Count; i++)
+                {
+                    folders.MoveNext();
+                    mapiFld = (Microsoft.Office.Interop.Outlook.MAPIFolder)folders.Current;
+
+
+                    if (String.Compare(GetFolderPath(mapiFld.FullFolderPath), fullPath, StringComparison.OrdinalIgnoreCase) == 0)
+                    {
+                        return mapiFld.Name;
+                    }
+
+                    tempName = GetFolderNameFromFullPath(fullPath, mapiFld.Folders);
+                    if (!String.IsNullOrEmpty(tempName)) return tempName;
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             return "";
@@ -232,8 +259,7 @@ namespace OutlookDesktop
                     {
                         trayMenu.Items.RemoveAt(0);
                     }
-
-
+                    
                     String folderPath = GetFolderPath(oFolder.FullFolderPath);
                     axOutlookViewControl.Folder = folderPath;
 
@@ -241,8 +267,8 @@ namespace OutlookDesktop
                     _customFolder = _preferences.FolderViewType;
 
                     trayMenu.Items.Insert(0, new ToolStripMenuItem(oFolder.Name, null, new System.EventHandler(this.CustomFolderMenu_Click)));
-                    ToolStripMenuItem customMenu = (ToolStripMenuItem)trayMenu.Items[0];
-                    customMenu.Checked = true;
+                    CustomMenu = (ToolStripMenuItem)trayMenu.Items[0];
+                    CustomMenu.Checked = true;
                     CalendarMenu.Checked = false;
                     ContactsMenu.Checked = false;
                     InboxMenu.Checked = false;
@@ -252,7 +278,7 @@ namespace OutlookDesktop
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);                  
+                    MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -260,8 +286,7 @@ namespace OutlookDesktop
         private void CustomFolderMenu_Click(object sender, EventArgs e)
         {
             axOutlookViewControl.Folder = _customFolder;
-            ToolStripMenuItem customMenu = (ToolStripMenuItem)trayMenu.Items[0];
-            customMenu.Checked = true;
+            CustomMenu.Checked = true;
             CalendarMenu.Checked = false;
             ContactsMenu.Checked = false;
             InboxMenu.Checked = false;
@@ -273,8 +298,7 @@ namespace OutlookDesktop
         {
             axOutlookViewControl.Folder = FolderViewType.Calendar.ToString();
             _preferences.FolderViewType = FolderViewType.Calendar.ToString();
-            ToolStripMenuItem customMenu = (ToolStripMenuItem)trayMenu.Items[0];
-            customMenu.Checked = false;
+            CustomMenu.Checked = false;
             CalendarMenu.Checked = true;
             ContactsMenu.Checked = false;
             InboxMenu.Checked = false;
@@ -286,8 +310,7 @@ namespace OutlookDesktop
         {
             axOutlookViewControl.Folder = FolderViewType.Contacts.ToString();
             _preferences.FolderViewType = FolderViewType.Contacts.ToString();
-            ToolStripMenuItem customMenu = (ToolStripMenuItem)trayMenu.Items[0];
-            customMenu.Checked = false;
+            CustomMenu.Checked = false;
             CalendarMenu.Checked = false;
             ContactsMenu.Checked = true;
             InboxMenu.Checked = false;
@@ -299,8 +322,7 @@ namespace OutlookDesktop
         {
             axOutlookViewControl.Folder = FolderViewType.Inbox.ToString();
             _preferences.FolderViewType = FolderViewType.Inbox.ToString();
-            ToolStripMenuItem customMenu = (ToolStripMenuItem)trayMenu.Items[0];
-            customMenu.Checked = false;
+            CustomMenu.Checked = false;
             CalendarMenu.Checked = false;
             ContactsMenu.Checked = false;
             InboxMenu.Checked = true;
@@ -312,8 +334,7 @@ namespace OutlookDesktop
         {
             axOutlookViewControl.Folder = FolderViewType.Notes.ToString();
             _preferences.FolderViewType = FolderViewType.Notes.ToString();
-            ToolStripMenuItem customMenu = (ToolStripMenuItem)trayMenu.Items[0];
-            customMenu.Checked = false;
+            CustomMenu.Checked = false;
             CalendarMenu.Checked = false;
             ContactsMenu.Checked = false;
             InboxMenu.Checked = false;
@@ -325,8 +346,7 @@ namespace OutlookDesktop
         {
             axOutlookViewControl.Folder = FolderViewType.Tasks.ToString();
             _preferences.FolderViewType = FolderViewType.Tasks.ToString();
-            ToolStripMenuItem customMenu = (ToolStripMenuItem)trayMenu.Items[0];
-            customMenu.Checked = false;
+            CustomMenu.Checked = false;
             CalendarMenu.Checked = false;
             ContactsMenu.Checked = false;
             InboxMenu.Checked = false;

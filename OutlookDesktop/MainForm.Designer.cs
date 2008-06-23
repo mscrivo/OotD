@@ -77,7 +77,7 @@
             this.RemoveInstanceMenu,
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(187, 270);
+            this.trayMenu.Size = new System.Drawing.Size(187, 292);
             // 
             // SelectFolderMenu
             // 
