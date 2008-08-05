@@ -53,7 +53,7 @@
             this.RemoveInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
-            this.axOutlookViewControl = new AxMicrosoft.Office.Interop.OutlookViewCtl.AxViewCtl();
+            this.axOutlookViewControl = new AxOutlookView.AxOVCtl();
             this.trayMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).BeginInit();
             this.SuspendLayout();
@@ -240,6 +240,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem RenameInstanceMenu;
         private System.Windows.Forms.ToolStripMenuItem ExitMenu;
-        private AxMicrosoft.Office.Interop.OutlookViewCtl.AxViewCtl axOutlookViewControl;
+        private AxOutlookView.AxOVCtl axOutlookViewControl;
     }
 }

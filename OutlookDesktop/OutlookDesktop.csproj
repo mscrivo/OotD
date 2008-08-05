@@ -123,13 +123,21 @@
     <CodeAnalysisRules>-Microsoft.Design#CA1031;-Microsoft.Globalization#CA1300</CodeAnalysisRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Office.Interop.Outlook, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+    <Reference Include="AxInterop.Microsoft.Office.Interop.OutlookViewCtl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\o2003\sd\Microsoft.Office.Interop.Outlook.dll</HintPath>
+      <HintPath>..\ReferencedDLLs\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Office.Interop.OutlookViewCtl, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+    <Reference Include="Microsoft.Office.Interop.Outlook, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\o2003\sd\Microsoft.Office.Interop.OutlookViewCtl.dll</HintPath>
+      <HintPath>..\ReferencedDLLs\Microsoft.Office.Interop.Outlook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.OutlookViewCtl, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferencedDLLs\Microsoft.Office.Interop.OutlookViewCtl.dll</HintPath>
+    </Reference>
+    <Reference Include="OutlookView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferencedDLLs\OutlookView.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -265,14 +273,6 @@
     <Content Include="Icons\notifyIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="AxMicrosoft.Office.Interop.OutlookViewCtl">
-      <Guid>{0006F062-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>aximp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
     <COMReference Include="stdole">
       <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
       <VersionMajor>2</VersionMajor>

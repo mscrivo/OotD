@@ -200,24 +200,22 @@ namespace OutlookDesktop
         private String GetFolderNameFromFullPath(String fullPath, Microsoft.Office.Interop.Outlook.Folders oFolders)
         {
             String tempName = "";
-            Microsoft.Office.Interop.Outlook.MAPIFolder mapiFld;
+            Microsoft.Office.Interop.Outlook.MAPIFolder mapiFld = null;
 
             try
             {
-                System.Collections.IEnumerator folders = oFolders.GetEnumerator();
+                if (oFolders != null && oFolders.GetFirst() != null) mapiFld = oFolders.GetFirst();
 
-                for (int i = 0; i < oFolders.Count; i++)
+                while (mapiFld != null)
                 {
-                    folders.MoveNext();
-                    mapiFld = (Microsoft.Office.Interop.Outlook.MAPIFolder)folders.Current;
-
-
-                    if (String.Compare(GetFolderPath(mapiFld.FullFolderPath), fullPath, StringComparison.OrdinalIgnoreCase) == 0)
+                    if (String.Compare(GetFolderPath(GenerateFolderPathFromObject(mapiFld)), fullPath, StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         return mapiFld.Name;
                     }
 
                     tempName = GetFolderNameFromFullPath(fullPath, mapiFld.Folders);
+                    mapiFld = oFolders.GetNext();
+
                     if (!String.IsNullOrEmpty(tempName)) return tempName;
                 }
             }
@@ -228,6 +226,33 @@ namespace OutlookDesktop
 
             return "";
         }
+
+        private string GenerateFolderPathFromObject(Microsoft.Office.Interop.Outlook.MAPIFolder oFolder)
+        {
+            string fullFolderPath = "\\\\";
+            List<string> subfolders = new List<string>();
+
+            subfolders.Add(oFolder.Name);
+
+            while (oFolder != null && oFolder.Parent != null)
+            {
+                oFolder = oFolder.Parent as Microsoft.Office.Interop.Outlook.MAPIFolder;
+                if (oFolder != null) subfolders.Add(oFolder.Name);
+            }
+
+            for (int i = subfolders.Count - 1; i >= 0; i--)
+            {
+                fullFolderPath += subfolders[i] + "\\";
+            }
+
+            if (fullFolderPath.EndsWith("\\"))
+            {
+                fullFolderPath = fullFolderPath.Substring(0, fullFolderPath.Length - 1);
+            }
+
+            return fullFolderPath;
+        }
+
 
         private static string GetFolderPath(string folderPath)
         {
@@ -259,8 +284,8 @@ namespace OutlookDesktop
                     {
                         trayMenu.Items.RemoveAt(0);
                     }
-                    
-                    String folderPath = GetFolderPath(oFolder.FullFolderPath);
+
+                    String folderPath = GetFolderPath(GenerateFolderPathFromObject(oFolder));
                     axOutlookViewControl.Folder = folderPath;
 
                     _preferences.FolderViewType = folderPath;
@@ -298,7 +323,7 @@ namespace OutlookDesktop
         {
             axOutlookViewControl.Folder = FolderViewType.Calendar.ToString();
             _preferences.FolderViewType = FolderViewType.Calendar.ToString();
-            CustomMenu.Checked = false;
+            if (CustomMenu != null) CustomMenu.Checked = false;
             CalendarMenu.Checked = true;
             ContactsMenu.Checked = false;
             InboxMenu.Checked = false;
@@ -310,7 +335,7 @@ namespace OutlookDesktop
         {
             axOutlookViewControl.Folder = FolderViewType.Contacts.ToString();
             _preferences.FolderViewType = FolderViewType.Contacts.ToString();
-            CustomMenu.Checked = false;
+            if (CustomMenu != null) CustomMenu.Checked = false;
             CalendarMenu.Checked = false;
             ContactsMenu.Checked = true;
             InboxMenu.Checked = false;
@@ -322,7 +347,7 @@ namespace OutlookDesktop
         {
             axOutlookViewControl.Folder = FolderViewType.Inbox.ToString();
             _preferences.FolderViewType = FolderViewType.Inbox.ToString();
-            CustomMenu.Checked = false;
+            if (CustomMenu != null) CustomMenu.Checked = false;
             CalendarMenu.Checked = false;
             ContactsMenu.Checked = false;
             InboxMenu.Checked = true;
@@ -334,7 +359,7 @@ namespace OutlookDesktop
         {
             axOutlookViewControl.Folder = FolderViewType.Notes.ToString();
             _preferences.FolderViewType = FolderViewType.Notes.ToString();
-            CustomMenu.Checked = false;
+            if (CustomMenu != null) CustomMenu.Checked = false;
             CalendarMenu.Checked = false;
             ContactsMenu.Checked = false;
             InboxMenu.Checked = false;
@@ -346,7 +371,7 @@ namespace OutlookDesktop
         {
             axOutlookViewControl.Folder = FolderViewType.Tasks.ToString();
             _preferences.FolderViewType = FolderViewType.Tasks.ToString();
-            CustomMenu.Checked = false;
+            if (CustomMenu != null) CustomMenu.Checked = false;
             CalendarMenu.Checked = false;
             ContactsMenu.Checked = false;
             InboxMenu.Checked = false;
