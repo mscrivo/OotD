@@ -57,5 +57,29 @@ namespace OutlookDesktop
                 }
             }
         }
+
+
+        public static bool IsFirstRun
+        {
+            get
+            {
+                using (RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+                {
+                    if (key != null)
+                    {
+                        bool _isFirstRun;
+                        if (bool.TryParse((string)key.GetValue("FirstRun", "true"), out _isFirstRun))
+                        {
+                            if (_isFirstRun)
+                            {
+                                key.SetValue("FirstRun", false);
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+        }
     }
 }

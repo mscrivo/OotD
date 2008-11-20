@@ -19,6 +19,10 @@ namespace OutlookDesktop
         public InstanceManager()
         {
             InitializeComponent();
+
+            if (GlobalPreferences.IsFirstRun) {
+                trayIcon.ShowBalloonTip(2000, "Outlook on the Desktop is running", "Right click on this icon to configure Outlook on the Desktop.", ToolTipIcon.Info);
+            }
         }
 
         public void LoadInstances()
