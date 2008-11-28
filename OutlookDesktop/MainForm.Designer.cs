@@ -206,8 +206,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Outlook on the Desktop";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
-            this.Activated += new System.EventHandler(this.MainForm_Activated);
             this.trayMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).EndInit();
             this.ResumeLayout(false);

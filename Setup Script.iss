@@ -1,8 +1,8 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "1.4.5"
-#define MyAppVerName "Outlook on the Desktop 1.4.5"
+#define MyAppVersion "1.4.6"
+#define MyAppVerName "Outlook on the Desktop 1.4.6"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
@@ -63,6 +63,7 @@ Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; F
 [Registry]
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: OutlookOnDesktop; ValueData: {app}\OutlookDesktop.exe; Flags: uninsdeletevalue
 Root: HKCU; Subkey: Software\SMR Computer Services\Outlook On The Desktop; Flags: createvalueifdoesntexist uninsdeletekey
+Root: HKCU; Subkey: Software\SMR Computer Services\Outlook On The Desktop\; ValueType: string; ValueName: First Run; ValueData: True
 
 [Code]
 const

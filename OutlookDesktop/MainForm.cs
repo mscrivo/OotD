@@ -102,22 +102,11 @@ namespace OutlookDesktop
             // other windows don't get trapped behind it.  We do this, by attaching
             // the form to the "Progman" window, which is the main window in Windows.
             try
-            {
-                if (System.Environment.OSVersion.Version.Major < 6)
-                {
-                    // Older version of windows or DWM is not enabled
-
-                    this.SendToBack();
-                    IntPtr pWnd = UnsafeNativeMethods.FindWindow("Progman", null);
-                    UnsafeNativeMethods.SetParent(this.Handle, pWnd);
-                }
-                else
-                {
-                    // Vista or Above
-                    // TODO: Find a better way, this sucks!
-                    UnsafeNativeMethods.SetWindowPos(this.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
-                }
-            }
+            {                
+                this.SendToBack();
+                IntPtr pWnd = UnsafeNativeMethods.FindWindow("Progman", null);
+                UnsafeNativeMethods.SetParent(this.Handle, pWnd);
+             }
             catch (Exception ex)
             {
                 MessageBox.Show(this, Resources.ErrorInitializingApp + " " + ex.ToString(), Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -420,22 +409,6 @@ namespace OutlookDesktop
                 }
             }
             _previousDate = DateTime.Now;
-        }
-
-        private void MainForm_Activated(object sender, EventArgs e)
-        {
-            if (System.Environment.OSVersion.Version.Major >= 6)
-            {
-                UnsafeNativeMethods.SetWindowPos(this.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
-            }
-        }
-
-        private void MainForm_Paint(object sender, PaintEventArgs e)
-        {
-            if (System.Environment.OSVersion.Version.Major >= 6)
-            {
-                UnsafeNativeMethods.SetWindowPos(this.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
-            }
         }
 
         private void ExitMenu_Click(object sender, EventArgs e)
