@@ -95,6 +95,10 @@ namespace OutlookDesktop
                     this.widthSlider.Value = InstancePreferences.DefaultWidth;
                     MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 }
+
+
+                // Load up the Outlook views.
+                //_parentMainForm.OutlookNameSpace.get
                 _dirty = false;
 			} 
 			catch (Exception ex)
@@ -184,6 +188,7 @@ namespace OutlookDesktop
         {
             // update main form in real time so the user can gauage how they want it.
             double opacityVal = (double)this.transparencySlider.Value / 100;
+            uxOpacityValue.Text = opacityVal.ToString();
             if (opacityVal == 1) { opacityVal = 0.99; }
             _parentMainForm.Opacity = opacityVal;
             _dirty = true;
@@ -193,6 +198,7 @@ namespace OutlookDesktop
         {
             // update main form in real time so the user can gauage how they want it.
             _parentMainForm.Width = widthSlider.Value;
+            uxWidthValue.Text = widthSlider.Value.ToString();
             _dirty = true;
             AdjustMinMaxDimensions();
             Debug.Print(_parentMainForm.Top + " " + _parentMainForm.Left);
@@ -202,6 +208,7 @@ namespace OutlookDesktop
         {
             // update main form in real time so the user can gauage how they want it.
             _parentMainForm.Height = heightSlider.Value;
+            uxHeightValue.Text = heightSlider.Value.ToString();
             _dirty = true;
             AdjustMinMaxDimensions();
             Debug.Print(_parentMainForm.Top + " " + _parentMainForm.Left);

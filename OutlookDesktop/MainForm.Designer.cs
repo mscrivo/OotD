@@ -37,14 +37,17 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.trayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.SelectFolderMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.CalendarMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ContactsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.InboxMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.NotesMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.TasksMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.SelectFolderMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.uxOutlookViews = new System.Windows.Forms.ToolStripMenuItem();
+            this.uxDefaultOutlookView = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.RenameInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PreferencesMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
@@ -61,14 +64,16 @@
             // trayMenu
             // 
             this.trayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.SelectFolderMenu,
-            this.toolStripMenuItem1,
             this.CalendarMenu,
             this.ContactsMenu,
             this.InboxMenu,
             this.NotesMenu,
             this.TasksMenu,
             this.toolStripMenuItem2,
+            this.SelectFolderMenu,
+            this.toolStripSeparator2,
+            this.uxOutlookViews,
+            this.toolStripSeparator1,
             this.RenameInstanceMenu,
             this.PreferencesMenu,
             this.toolStripMenuItem3,
@@ -77,19 +82,8 @@
             this.RemoveInstanceMenu,
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(187, 292);
-            // 
-            // SelectFolderMenu
-            // 
-            this.SelectFolderMenu.Name = "SelectFolderMenu";
-            this.SelectFolderMenu.Size = new System.Drawing.Size(186, 22);
-            this.SelectFolderMenu.Text = "Select Folder ...";
-            this.SelectFolderMenu.Click += new System.EventHandler(this.SelectFolderMenu_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(183, 6);
+            this.trayMenu.Size = new System.Drawing.Size(187, 320);
+            this.trayMenu.Click += new System.EventHandler(this.trayMenu_Click);
             // 
             // CalendarMenu
             // 
@@ -130,6 +124,37 @@
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(183, 6);
+            // 
+            // SelectFolderMenu
+            // 
+            this.SelectFolderMenu.Name = "SelectFolderMenu";
+            this.SelectFolderMenu.Size = new System.Drawing.Size(186, 22);
+            this.SelectFolderMenu.Text = "Select Folder ...";
+            this.SelectFolderMenu.Click += new System.EventHandler(this.SelectFolderMenu_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(183, 6);
+            // 
+            // uxOutlookViews
+            // 
+            this.uxOutlookViews.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.uxDefaultOutlookView});
+            this.uxOutlookViews.Name = "uxOutlookViews";
+            this.uxOutlookViews.Size = new System.Drawing.Size(186, 22);
+            this.uxOutlookViews.Text = "Outlook Views";
+            // 
+            // uxDefaultOutlookView
+            // 
+            this.uxDefaultOutlookView.Name = "uxDefaultOutlookView";
+            this.uxDefaultOutlookView.Size = new System.Drawing.Size(140, 22);
+            this.uxDefaultOutlookView.Text = "Default View";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(183, 6);
             // 
             // RenameInstanceMenu
             // 
@@ -224,7 +249,6 @@
         private System.Windows.Forms.ContextMenuStrip trayMenu;
         private System.Windows.Forms.Timer updateTimer;
         private System.Windows.Forms.ToolStripMenuItem SelectFolderMenu;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem CalendarMenu;
         private System.Windows.Forms.ToolStripMenuItem ContactsMenu;
         private System.Windows.Forms.ToolStripMenuItem InboxMenu;
@@ -239,5 +263,9 @@
         private System.Windows.Forms.ToolStripMenuItem RenameInstanceMenu;
         private System.Windows.Forms.ToolStripMenuItem ExitMenu;
         private AxOutlookView.AxOVCtl axOutlookViewControl;
+        private System.Windows.Forms.ToolStripMenuItem uxOutlookViews;
+        private System.Windows.Forms.ToolStripMenuItem uxDefaultOutlookView;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

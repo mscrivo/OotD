@@ -16,6 +16,17 @@ namespace OutlookDesktop
     {
         private MainForm[] _mainFormInstances;
 
+        /// <summary>
+        /// Returns the current instances of Outlook on the Desktop.
+        /// </summary>
+        public MainForm[] Instances
+        {
+            get { return _mainFormInstances; }
+            //set { _mainFormInstances = value; }
+        }
+
+        
+
         public InstanceManager()
         {
             InitializeComponent();
@@ -82,8 +93,12 @@ namespace OutlookDesktop
 
                     // add the rest of the necessary menu items to the main context menu.
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+                    
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Start With Windows", null, StartWithWindowsMenu_Click, "StartWithWindows"));
+                    
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+
+                    trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Settings", null,ShowSettingsForm_Click, "SettingsFormMenu"));
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Hide", null, HideShowAllMenu_Click, "HideShowMenu"));
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("About", null, AboutMenu_Click, "AboutMenu"));
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, ExitMenu_Click, "ExitMenu"));
@@ -146,6 +161,12 @@ namespace OutlookDesktop
         private void ExitMenu_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void ShowSettingsForm_Click(object sender, EventArgs e)
+        {
+            DesktopSettings d = new DesktopSettings(this);
+            d.Show();
         }
 
         private void AddInstanceMenu_Click(object sender, EventArgs e)

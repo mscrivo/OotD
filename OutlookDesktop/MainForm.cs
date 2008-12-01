@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -11,6 +12,10 @@ using OutlookDesktop.Properties;
 
 namespace OutlookDesktop
 {
+
+    /// <summary>
+    /// Standard Outlook folder types. 
+    /// </summary>
     public enum FolderViewType
     {
         Inbox,
@@ -20,8 +25,16 @@ namespace OutlookDesktop
         Tasks,
     }
 
+
+    /// <summary>
+    /// This is the form that hosts the outlook view control. One of these will
+    /// exist for each instance.
+    /// </summary>
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Consts to deal with window location.
+        /// </summary>
         private const int SWP_DRAWFRAME = 0x20;
         private const int SWP_NOMOVE = 0x2;
         private const int SWP_NOSIZE = 0x1;
@@ -29,13 +42,70 @@ namespace OutlookDesktop
         private const int SWP_NOACTIVATE = 0x10;
         private const int HWND_BOTTOM = 0x1;
 
+        /// <summary>
+        /// Outlook Application
+        /// </summary>
         private Microsoft.Office.Interop.Outlook.Application _outlookApplication;
+
+        /// <summary>
+        /// The active namespace for the current outlook session. 
+        /// </summary>
         private Microsoft.Office.Interop.Outlook.NameSpace _outlookNamespace;
+
+        /// <summary>
+        /// The MAPIFolder for the currently selected folder to show. 
+        /// </summary>
+        private Microsoft.Office.Interop.Outlook.MAPIFolder _outlookFolder;
+
+        /// <summary>
+        /// Contains the current views avaliable for the folder. 
+        /// </summary>
+        private List<Microsoft.Office.Interop.Outlook.View> _oulookFolderViews;
+
+
         private DateTime _previousDate;
         private String _customFolder;
+        private Boolean _isInitialized;
+        private ToolStripMenuItem _customMenu;
+        private String _instanceName;
+        private InstancePreferences _preferences;
 
         public event EventHandler<InstanceRemovedEventArgs> InstanceRemoved;
         public event EventHandler<InstanceRenamedEventArgs> InstanceRenamed;
+
+
+        #region Public access to private variables.
+        public Microsoft.Office.Interop.Outlook.Application OutlookApplication
+        {
+            get
+            {
+                if (_outlookApplication != null)
+                    return _outlookApplication;
+                else
+                    return null;
+            }
+        }
+
+        public Microsoft.Office.Interop.Outlook.NameSpace OutlookNameSpace
+        {
+            get
+            {
+                if (_outlookNamespace != null)
+                    return _outlookNamespace;
+                else
+                    return null;
+            }
+        }
+
+        public List<Microsoft.Office.Interop.Outlook.View> OulookFolderViews
+        {
+            get {
+                if (_oulookFolderViews != null)
+                    return _oulookFolderViews;
+                else
+                    return null;
+            }
+        }
 
         public Boolean IsInitialized
         {
@@ -44,7 +114,7 @@ namespace OutlookDesktop
                 return _isInitialized;
             }
         }
-        private Boolean _isInitialized;
+
 
         public InstancePreferences Preferences
         {
@@ -53,7 +123,7 @@ namespace OutlookDesktop
                 return _preferences;
             }
         }
-        private InstancePreferences _preferences;
+
 
         public String InstanceName
         {
@@ -62,7 +132,7 @@ namespace OutlookDesktop
                 return _instanceName;
             }
         }
-        private String _instanceName;
+
 
         public ToolStripMenuItem CustomMenu
         {
@@ -75,16 +145,25 @@ namespace OutlookDesktop
                 _customMenu = value;
             }
         }
-        private ToolStripMenuItem _customMenu;
 
+
+        #endregion
+
+        /// <summary>
+        /// Sets up the form for the current instance.
+        /// </summary>
+        /// <param name="instanceName">The name of the instance to display.</param>
         public MainForm(String instanceName)
         {
             try
             {
                 InitializeComponent();
 
+                // Get or create a instance of the Outlook Applciation.
                 _outlookApplication = new Microsoft.Office.Interop.Outlook.Application();
                 _outlookNamespace = _outlookApplication.GetNamespace("MAPI");
+
+                // Set the default viewcontrol to the calendar and Day/Week/Month view.
                 axOutlookViewControl.Folder = FolderViewType.Calendar.ToString();
                 axOutlookViewControl.View = "Day/Week/Month";
             }
@@ -118,6 +197,16 @@ namespace OutlookDesktop
         }
 
         /// <summary>
+        /// Get the location of the Select folder menu in the tray context menu. 
+        /// </summary>
+        /// <returns></returns>
+        private int GetSelectFolderMenuLocation()
+        {
+            return trayMenu.Items.IndexOf(SelectFolderMenu);
+        }
+
+
+        /// <summary>
         /// Loads user preferences from registry and applies them.
         /// </summary>
         public void LoadSettings()
@@ -125,6 +214,10 @@ namespace OutlookDesktop
             // create a new instance of the preferences class
             _preferences = new InstancePreferences(InstanceName);
 
+
+            SetMapiFolder();
+
+            // Sets the opacity of the instance. 
             try
             {
                 this.Opacity = _preferences.Opacity;
@@ -136,6 +229,7 @@ namespace OutlookDesktop
                 MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
+            // Sets the position of the instance. 
             try
             {
                 this.Left = _preferences.Left;
@@ -153,47 +247,123 @@ namespace OutlookDesktop
                 MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
-            if (_preferences.FolderViewType == FolderViewType.Calendar.ToString())
+
+            // Checks the menuitem ofr the current folder.
+            if (_preferences.OutlookFolderName == FolderViewType.Calendar.ToString())
             {
                 CalendarMenu.Checked = true;
             }
-            else if (_preferences.FolderViewType == FolderViewType.Contacts.ToString())
+            else if (_preferences.OutlookFolderName == FolderViewType.Contacts.ToString())
             {
                 ContactsMenu.Checked = true;
             }
-            else if (_preferences.FolderViewType == FolderViewType.Inbox.ToString())
+            else if (_preferences.OutlookFolderName == FolderViewType.Inbox.ToString())
             {
                 InboxMenu.Checked = true;
             }
-            else if (_preferences.FolderViewType == FolderViewType.Notes.ToString())
+            else if (_preferences.OutlookFolderName == FolderViewType.Notes.ToString())
             {
                 NotesMenu.Checked = true;
             }
-            else if (_preferences.FolderViewType == FolderViewType.Tasks.ToString())
+            else if (_preferences.OutlookFolderName == FolderViewType.Tasks.ToString())
             {
                 TasksMenu.Checked = true;
             }
             else
             {
                 // custom folder
-                _customFolder = _preferences.FolderViewType;
+                _customFolder = _preferences.OutlookFolderName;
                 String folderName = GetFolderNameFromFullPath(_customFolder, _outlookNamespace.Folders);
-                trayMenu.Items.Insert(0, new ToolStripMenuItem(folderName, null, new System.EventHandler(this.CustomFolderMenu_Click)));
-                CustomMenu = (ToolStripMenuItem)trayMenu.Items[0];
+                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(folderName, null, new System.EventHandler(this.CustomFolderMenu_Click)));
+                CustomMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 CustomMenu.Checked = true;
             }
 
-            axOutlookViewControl.Folder = _preferences.FolderViewType;
+
+            // Sets the viewcontrol folder from preferences. 
+            axOutlookViewControl.Folder = _preferences.OutlookFolderName;
+
+            // Sets the selected view from preferences. 
+            axOutlookViewControl.View = _preferences.OutlookFolderView;
+
+            // Get a copy of the possible outlook views for the selected folder and populate the context menu for this instance. 
+            UpdateOutlookViewsList();
+
         }
 
+
+        /// <summary>
+        /// This will populate the _outlookFolder object with the MapiFolder for the EntryID and StoreId stored
+        /// in the registry. 
+        /// </summary>
+        private void SetMapiFolder()
+        {
+            // Load up the MAPI Folder from Entry / Store IDs 
+            if (_preferences.OutlookFolderEntryId != "" && _preferences.OutlookFolderStoreId != "")
+                _outlookFolder = _outlookNamespace.GetFolderFromID(_preferences.OutlookFolderEntryId, _preferences.OutlookFolderStoreId);
+            else
+                _outlookFolder = null;
+        }
+
+
+        /// <summary>
+        /// This will populate a dropdown off the instance context menu with the avaliable
+        /// views in outlook, it will also assoicate the menuitem with the event handler. 
+        /// </summary>
+        private void UpdateOutlookViewsList()
+        {
+            uxOutlookViews.DropDownItems.Clear();
+            _oulookFolderViews = new List<Microsoft.Office.Interop.Outlook.View>();
+
+            uxOutlookViews.DropDownItems.Add(uxDefaultOutlookView);
+
+            if (_outlookFolder != null)
+            {
+                //NOTE: Issue with the update of views in this instance of Outlook.
+                //      Will have to spawn a new instance... Sigh.
+                //SetMapiFolder();
+
+                foreach (Microsoft.Office.Interop.Outlook.View view in _outlookFolder.Views)
+                {
+                    ToolStripMenuItem viewItem = new ToolStripMenuItem(view.Name);
+                    viewItem.Tag = view;
+
+                    viewItem.Click += new EventHandler(viewItem_Click);
+
+                    uxOutlookViews.DropDownItems.Add(viewItem);
+
+                    _oulookFolderViews.Add(view);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Will select the passed menu item in the views dropdown list. 
+        /// </summary>
+        /// <param name="viewItem">ToolStripMenuItem that is to be checked.</param>
+        private void CheckSelectedView(ToolStripMenuItem viewItem)
+        {
+            CheckSelectedMenuItemInCollection(viewItem, uxOutlookViews.DropDownItems);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fullPath"></param>
+        /// <param name="oFolders"></param>
+        /// <returns></returns>
         private String GetFolderNameFromFullPath(String fullPath, Microsoft.Office.Interop.Outlook.Folders oFolders)
         {
+            //TODO: Revert back and deal with online/offline better!
+            return fullPath.Substring(fullPath.LastIndexOf("\\") + 1, fullPath.Length - fullPath.LastIndexOf("\\") - 1);
             String tempName = "";
             Microsoft.Office.Interop.Outlook.MAPIFolder mapiFld = null;
 
             try
             {
                 if (oFolders != null && oFolders.GetFirst() != null) mapiFld = oFolders.GetFirst();
+
+                //if (mapiFld.FolderPath.StartsWith("\\\\Public Folders")) return "";
 
                 while (mapiFld != null)
                 {
@@ -202,13 +372,28 @@ namespace OutlookDesktop
                         return mapiFld.Name;
                     }
 
-                    tempName = GetFolderNameFromFullPath(fullPath, mapiFld.Folders);
+                    try
+                    {
+                        tempName = GetFolderNameFromFullPath(fullPath, mapiFld.Folders);
+                    }
+                    catch (Exception offlineException)
+                    {
+                        //-659291883
+                        //if(offlineException.
+                        if (offlineException.Message == "The connection to Microsoft Exchange is unavailable. Outlook must be online or connected to complete this action.")
+                        {
+                            // This is a allowed message, just hit a error with the public folders. Needs to continue. 
+                        }
+                        else
+                            throw (offlineException);
+                    }
+
                     mapiFld = oFolders.GetNext();
 
                     if (!String.IsNullOrEmpty(tempName)) return tempName;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -216,6 +401,12 @@ namespace OutlookDesktop
             return "";
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="oFolder"></param>
+        /// <returns></returns>
         private string GenerateFolderPathFromObject(Microsoft.Office.Interop.Outlook.MAPIFolder oFolder)
         {
             string fullFolderPath = "\\\\";
@@ -242,12 +433,19 @@ namespace OutlookDesktop
             return fullFolderPath;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="folderPath"></param>
+        /// <returns></returns>
         private static string GetFolderPath(string folderPath)
         {
             return folderPath.Replace("\\\\Personal Folders\\", "");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void ShowHideDesktopComponent()
         {
             if (this.Visible == true)
@@ -262,110 +460,239 @@ namespace OutlookDesktop
             }
         }
 
+        /// <summary>
+        /// Returns a MAPI Folder for the passes FolderViewType.
+        /// </summary>
+        /// <param name="folderViewType"></param>
+        /// <returns></returns>
+        private Microsoft.Office.Interop.Outlook.MAPIFolder GetFolderFromViewType(FolderViewType folderViewType)
+        {
+            switch (folderViewType)
+            {
+                case FolderViewType.Inbox:
+                    return _outlookNamespace.GetDefaultFolder(Microsoft.Office.Interop.Outlook.OlDefaultFolders.olFolderInbox);
+                case FolderViewType.Calendar:
+                    return _outlookNamespace.GetDefaultFolder(Microsoft.Office.Interop.Outlook.OlDefaultFolders.olFolderCalendar);
+                case FolderViewType.Contacts:
+                    return _outlookNamespace.GetDefaultFolder(Microsoft.Office.Interop.Outlook.OlDefaultFolders.olFolderContacts);
+                case FolderViewType.Notes:
+                    return _outlookNamespace.GetDefaultFolder(Microsoft.Office.Interop.Outlook.OlDefaultFolders.olFolderNotes);
+                case FolderViewType.Tasks:
+                    return _outlookNamespace.GetDefaultFolder(Microsoft.Office.Interop.Outlook.OlDefaultFolders.olFolderTasks);
+                default:
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Checks the passed menu item and unchecks the rest.
+        /// 
+        /// This is used only for the folder types menu. 
+        /// </summary>
+        /// <param name="itemToCheck"></param>
+        private void CheckSelectedFolder(ToolStripMenuItem itemToCheck)
+        {
+            List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
+
+            menuItems.Add(CalendarMenu);
+            menuItems.Add(ContactsMenu);
+            menuItems.Add(InboxMenu);
+            menuItems.Add(NotesMenu);
+            menuItems.Add(TasksMenu);
+            if (CustomMenu != null) menuItems.Add(CustomMenu);
+
+            CheckSelectedMenuItemInCollection(itemToCheck, menuItems);
+        }
+
+        /// <summary>
+        /// For a given collection of MenuItems this function will iterate through them and then check the passed item. 
+        /// </summary>
+        /// <param name="itemToCheck">Item to check in the list</param>
+        /// <param name="menuItems">IList of the menuitems to check</param>
+        private void CheckSelectedMenuItemInCollection(ToolStripMenuItem itemToCheck, IList menuItems)
+        {
+            foreach (ToolStripMenuItem menuItem in menuItems)
+            {
+                if (menuItem == itemToCheck)
+                    menuItem.Checked = true;
+                else
+                    menuItem.Checked = false;
+            }
+        }
+
+        /// <summary>
+        /// Generic function to deal with menue check items for selecting the folders to view. 
+        /// </summary>
+        /// <param name="folderViewType"></param>
+        /// <param name="itemToCheck"></param>
+        private void DefaultFolderTypesClicked(FolderViewType folderViewType, ToolStripMenuItem itemToCheck)
+        {
+            axOutlookViewControl.Folder = folderViewType.ToString();
+            _preferences.OutlookFolderName = folderViewType.ToString();
+            _preferences.OutlookFolderStoreId = GetFolderFromViewType(folderViewType).StoreID;
+            _preferences.OutlookFolderEntryId = GetFolderFromViewType(folderViewType).EntryID;
+
+            SetMapiFolder();
+
+            UpdateOutlookViewsList();
+
+            CheckSelectedFolder(itemToCheck);
+        }
+
+        public void ChangeDefaultFolderType(FolderViewType folderViewType)
+        {
+
+            ToolStripMenuItem itemToCheck;
+            switch (folderViewType)
+            {
+                case FolderViewType.Inbox:
+                    itemToCheck = InboxMenu;
+                    break;
+                case FolderViewType.Calendar:
+                    itemToCheck = CalendarMenu;
+                    break;
+                case FolderViewType.Contacts:
+                    itemToCheck = ContactsMenu;
+                    break;
+                case FolderViewType.Notes:
+                    itemToCheck = NotesMenu;
+                    break;
+                case FolderViewType.Tasks:
+                    itemToCheck = TasksMenu;
+                    break;
+                default:
+                    itemToCheck = null;
+                    break;
+            }
+
+            DefaultFolderTypesClicked(folderViewType, itemToCheck);
+        }
+
+        public void UpdateDefaultFolder(string folderName)
+        {
+            switch (folderName.ToLower())
+            {
+                case "inbox":
+                    ChangeDefaultFolderType(FolderViewType.Inbox);
+                    break;
+                case "calendar":
+                    ChangeDefaultFolderType(FolderViewType.Calendar);
+                    break;
+                case "contacts":
+                    ChangeDefaultFolderType(FolderViewType.Contacts);
+                    break;
+                case "notes":
+                    ChangeDefaultFolderType(FolderViewType.Notes);
+                    break;
+                case "tasks":
+                    ChangeDefaultFolderType(FolderViewType.Tasks);
+                    break;
+                default:
+                    return;
+            }
+        }
+
+        public void UpdateCustomFolder(Microsoft.Office.Interop.Outlook.MAPIFolder oFolder)
+        {
+            if (oFolder == null) return;
+
+            try
+            {
+                // Remove old item (selectmenu+1)
+                if (trayMenu.Items.Contains(CustomMenu))
+                {
+                    trayMenu.Items.Remove(CustomMenu);
+                }
+
+                String folderPath = GetFolderPath(GenerateFolderPathFromObject(oFolder));
+                axOutlookViewControl.Folder = folderPath;
+
+                // Save the EntryId and the StoreId for this folder in the prefrences. 
+                _preferences.OutlookFolderEntryId = oFolder.EntryID;
+                _preferences.OutlookFolderStoreId = oFolder.StoreID;
+
+                _preferences.OutlookFolderName = folderPath;
+                _customFolder = _preferences.OutlookFolderName;
+
+                // Update the UI to reflect the new settings. 
+                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(oFolder.Name, null, new System.EventHandler(this.CustomFolderMenu_Click)));
+                CustomMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
+
+                SetMapiFolder();
+                CheckSelectedFolder(CustomMenu);
+                UpdateOutlookViewsList();
+
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        #region Event Handlers
+
+        /// <summary>
+        /// When a view is selected this will change the view control view to it, save it in the 
+        /// preferences and then check the box next to the view in the drop down list. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void viewItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem viewItem = sender as ToolStripMenuItem;
+            Microsoft.Office.Interop.Outlook.View view = viewItem.Tag as Microsoft.Office.Interop.Outlook.View;
+
+            axOutlookViewControl.View = view.Name;
+
+            _preferences.OutlookFolderView = view.Name;
+
+            CheckSelectedView(viewItem);
+        }
+
+        /// <summary>
+        /// This handler will select a custom folder.
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SelectFolderMenu_Click(object sender, EventArgs e)
         {
             Microsoft.Office.Interop.Outlook.MAPIFolder oFolder = _outlookNamespace.PickFolder();
-            if (oFolder != null)
-            {
-                try
-                {
-                    if (trayMenu.Items[0].Text != SelectFolderMenu.Text)
-                    {
-                        trayMenu.Items.RemoveAt(0);
-                    }
-
-                    String folderPath = GetFolderPath(GenerateFolderPathFromObject(oFolder));
-                    axOutlookViewControl.Folder = folderPath;
-
-                    _preferences.FolderViewType = folderPath;
-                    _customFolder = _preferences.FolderViewType;
-
-                    trayMenu.Items.Insert(0, new ToolStripMenuItem(oFolder.Name, null, new System.EventHandler(this.CustomFolderMenu_Click)));
-                    CustomMenu = (ToolStripMenuItem)trayMenu.Items[0];
-                    CustomMenu.Checked = true;
-                    CalendarMenu.Checked = false;
-                    ContactsMenu.Checked = false;
-                    InboxMenu.Checked = false;
-                    NotesMenu.Checked = false;
-                    TasksMenu.Checked = false;
-
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            UpdateCustomFolder(oFolder);
         }
+
+
 
         private void CustomFolderMenu_Click(object sender, EventArgs e)
         {
             axOutlookViewControl.Folder = _customFolder;
-            CustomMenu.Checked = true;
-            CalendarMenu.Checked = false;
-            ContactsMenu.Checked = false;
-            InboxMenu.Checked = false;
-            NotesMenu.Checked = false;
-            TasksMenu.Checked = false;
+
+            CheckSelectedFolder(CustomMenu);
         }
 
         private void CalendarMenu_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.Folder = FolderViewType.Calendar.ToString();
-            _preferences.FolderViewType = FolderViewType.Calendar.ToString();
-            if (CustomMenu != null) CustomMenu.Checked = false;
-            CalendarMenu.Checked = true;
-            ContactsMenu.Checked = false;
-            InboxMenu.Checked = false;
-            NotesMenu.Checked = false;
-            TasksMenu.Checked = false;
+            DefaultFolderTypesClicked(FolderViewType.Calendar, CalendarMenu);
         }
 
         private void ContactsMenu_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.Folder = FolderViewType.Contacts.ToString();
-            _preferences.FolderViewType = FolderViewType.Contacts.ToString();
-            if (CustomMenu != null) CustomMenu.Checked = false;
-            CalendarMenu.Checked = false;
-            ContactsMenu.Checked = true;
-            InboxMenu.Checked = false;
-            NotesMenu.Checked = false;
-            TasksMenu.Checked = false;
+            DefaultFolderTypesClicked(FolderViewType.Contacts, ContactsMenu);
         }
 
         private void InboxMenu_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.Folder = FolderViewType.Inbox.ToString();
-            _preferences.FolderViewType = FolderViewType.Inbox.ToString();
-            if (CustomMenu != null) CustomMenu.Checked = false;
-            CalendarMenu.Checked = false;
-            ContactsMenu.Checked = false;
-            InboxMenu.Checked = true;
-            NotesMenu.Checked = false;
-            TasksMenu.Checked = false;
+            DefaultFolderTypesClicked(FolderViewType.Inbox, InboxMenu);
         }
 
         private void NotesMenu_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.Folder = FolderViewType.Notes.ToString();
-            _preferences.FolderViewType = FolderViewType.Notes.ToString();
-            if (CustomMenu != null) CustomMenu.Checked = false;
-            CalendarMenu.Checked = false;
-            ContactsMenu.Checked = false;
-            InboxMenu.Checked = false;
-            NotesMenu.Checked = true;
-            TasksMenu.Checked = false;
+            DefaultFolderTypesClicked(FolderViewType.Notes, NotesMenu);
         }
 
         private void TasksMenu_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.Folder = FolderViewType.Tasks.ToString();
-            _preferences.FolderViewType = FolderViewType.Tasks.ToString();
-            if (CustomMenu != null) CustomMenu.Checked = false;
-            CalendarMenu.Checked = false;
-            ContactsMenu.Checked = false;
-            InboxMenu.Checked = false;
-            NotesMenu.Checked = false;
-            TasksMenu.Checked = true;
+            DefaultFolderTypesClicked(FolderViewType.Tasks, TasksMenu);
         }
 
         private void PreferencesMenu_Click(object sender, EventArgs e)
@@ -444,5 +771,14 @@ namespace OutlookDesktop
                 e.Message = "Required";
             }
         }
+
+        private void trayMenu_Click(object sender, EventArgs e)
+        {
+            //TODO: Setup event process for dealing with the view changes.
+            //UpdateOutlookViewsList();
+        }
+
+        #endregion
+
     }
 }

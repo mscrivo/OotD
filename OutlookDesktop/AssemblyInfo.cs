@@ -16,7 +16,9 @@ using System.Resources;
 [assembly: AssemblyProduct("Outlook on the Desktop")]
 [assembly: AssemblyCopyright("© 2006-2008 Michael Scrivo")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
+
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 //
 // Version information for an assembly consists of the following four values:

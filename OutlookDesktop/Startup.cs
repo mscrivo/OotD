@@ -9,10 +9,16 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
 
+
+
 namespace OutlookDesktop
 {
     class Startup
     {
+
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
         /// <summary>
         /// The main entry point for the application.
         /// We only only one instance of the application to be running.
@@ -20,9 +26,11 @@ namespace OutlookDesktop
         [STAThread]
         static void Main()
         {
+            log.Debug("Checking to see if there is a instance running.");
             if (IsAlreadyRunning())
             {
                 // let the user know the program is already running.
+                log.Warn("Instance is already running, exiting.");
                 MessageBox.Show(Resources.ProgramIsAlreadyRunning, Resources.ProgramIsAlreadyRunningCaption, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
             else
@@ -30,17 +38,20 @@ namespace OutlookDesktop
                 // test to make sure Outlook is installed, quit otherwise
                 try
                 {
+                    log.Debug("Checking to see if Outlook is available.");
                     Microsoft.Office.Interop.Outlook.Application outlookApplication = new Microsoft.Office.Interop.Outlook.Application();
                     outlookApplication = null;
                 }
-                catch (Exception)
+                catch (Exception outlookApplicationException)
                 {
+                    log.Error("Outlook is not avaliable or installed.", outlookApplicationException);
                     MessageBox.Show("This program requires Microsoft Outlook 2000 or higher." + Environment.NewLine + "Please install Microsoft Office and try again.", "Missing Requirements", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 Application.EnableVisualStyles();
-                                
+
+                log.Debug("Starting the instance manager and loading instances.");
                 InstanceManager instanceManager = new InstanceManager();
                 instanceManager.LoadInstances();
 

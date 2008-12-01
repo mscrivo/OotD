@@ -113,7 +113,7 @@ namespace OutlookDesktop
             }
         }
 
-        public string FolderViewType
+        public string OutlookFolderName
         {
             get
             {
@@ -124,5 +124,44 @@ namespace OutlookDesktop
                 appReg.SetValue("CurrentViewType", value);
             }
         }
+
+        public string OutlookFolderView
+        {
+            get
+            {
+                return (string)appReg.GetValue("OutlookView", "Day/Week/Month");
+            }
+            set
+            {
+                appReg.SetValue("OutlookView", value);
+            }
+        }
+
+
+        public string OutlookFolderEntryId
+        {
+            get
+            {
+                return (string)appReg.GetValue("FolderEntryId", "");
+            }
+            set
+            {
+                appReg.SetValue("FolderEntryId", value);
+            }
+        }
+
+
+        public string OutlookFolderStoreId
+        {
+            get
+            {
+                return (string)appReg.GetValue("FolderStoreId", "");
+            }
+            set
+            {
+                appReg.SetValue("FolderStoreId", value);
+            }
+        }
+    
     }
 }
