@@ -84,15 +84,16 @@
             // 
             // heightSlider
             // 
+            this.heightSlider.LargeChange = 4;
             this.heightSlider.Location = new System.Drawing.Point(194, 178);
             this.heightSlider.Maximum = 600;
             this.heightSlider.Name = "heightSlider";
             this.heightSlider.Size = new System.Drawing.Size(250, 45);
-            this.heightSlider.SmallChange = 5;
+            this.heightSlider.SmallChange = 4;
             this.heightSlider.TabIndex = 40;
             this.heightSlider.TickFrequency = 10;
             this.heightSlider.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.heightSlider.Value = 50;
+            this.heightSlider.Value = 400;
             this.heightSlider.Scroll += new System.EventHandler(this.heightSlider_Scroll);
             // 
             // wideLabel
@@ -122,15 +123,16 @@
             // 
             // widthSlider
             // 
+            this.widthSlider.LargeChange = 4;
             this.widthSlider.Location = new System.Drawing.Point(194, 118);
             this.widthSlider.Maximum = 800;
             this.widthSlider.Name = "widthSlider";
             this.widthSlider.Size = new System.Drawing.Size(250, 45);
-            this.widthSlider.SmallChange = 5;
+            this.widthSlider.SmallChange = 4;
             this.widthSlider.TabIndex = 36;
             this.widthSlider.TickFrequency = 10;
             this.widthSlider.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.widthSlider.Value = 50;
+            this.widthSlider.Value = 400;
             this.widthSlider.Scroll += new System.EventHandler(this.widthSlider_Scroll);
             // 
             // positionLabel
@@ -154,7 +156,7 @@
             this.horizontalPosition.Location = new System.Drawing.Point(37, 149);
             this.horizontalPosition.Name = "horizontalPosition";
             this.horizontalPosition.Size = new System.Drawing.Size(54, 20);
-            this.horizontalPosition.SmallChange = 10;
+            this.horizontalPosition.SmallChange = 4;
             this.horizontalPosition.TabIndex = 33;
             this.horizontalPosition.Value = 100;
             this.horizontalPosition.Scroll += new System.Windows.Forms.ScrollEventHandler(this.horizontalPosition_Scroll);
@@ -164,7 +166,7 @@
             this.verticalPosition.Location = new System.Drawing.Point(53, 133);
             this.verticalPosition.Name = "verticalPosition";
             this.verticalPosition.Size = new System.Drawing.Size(22, 51);
-            this.verticalPosition.SmallChange = 10;
+            this.verticalPosition.SmallChange = 4;
             this.verticalPosition.TabIndex = 32;
             this.verticalPosition.Value = 100;
             this.verticalPosition.Scroll += new System.Windows.Forms.ScrollEventHandler(this.verticalPosition_Scroll);
@@ -248,18 +250,18 @@
             this.uxHeightValue.AutoSize = true;
             this.uxHeightValue.Location = new System.Drawing.Point(308, 204);
             this.uxHeightValue.Name = "uxHeightValue";
-            this.uxHeightValue.Size = new System.Drawing.Size(19, 13);
+            this.uxHeightValue.Size = new System.Drawing.Size(25, 13);
             this.uxHeightValue.TabIndex = 46;
-            this.uxHeightValue.Text = "50";
+            this.uxHeightValue.Text = "400";
             // 
             // uxWidthValue
             // 
             this.uxWidthValue.AutoSize = true;
             this.uxWidthValue.Location = new System.Drawing.Point(308, 144);
             this.uxWidthValue.Name = "uxWidthValue";
-            this.uxWidthValue.Size = new System.Drawing.Size(19, 13);
+            this.uxWidthValue.Size = new System.Drawing.Size(25, 13);
             this.uxWidthValue.TabIndex = 45;
-            this.uxWidthValue.Text = "50";
+            this.uxWidthValue.Text = "400";
             // 
             // uxOpacityValue
             // 

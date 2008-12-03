@@ -33,6 +33,7 @@ namespace OutlookDesktop
 
             horizontalPosition.Minimum = SystemInformation.VirtualScreen.Left;
             horizontalPosition.Maximum = SystemInformation.VirtualScreen.Left + SystemInformation.VirtualScreen.Width - _parentMainForm.Width + horizontalPosition.SmallChange;
+
 			heightSlider.Minimum = SystemInformation.MinimumWindowSize.Height;
             heightSlider.Maximum = SystemInformation.VirtualScreen.Height;
 
@@ -200,6 +201,7 @@ namespace OutlookDesktop
         private void widthSlider_Scroll(object sender, EventArgs e)
         {
             // update main form in real time so the user can gauage how they want it.
+            if (widthSlider.Value % 4 != 0) widthSlider.Value -= widthSlider.Value % 4;
             _parentMainForm.Width = widthSlider.Value;
             uxWidthValue.Text = widthSlider.Value.ToString();
             _dirty = true;
@@ -210,6 +212,7 @@ namespace OutlookDesktop
         private void heightSlider_Scroll(object sender, EventArgs e)
         {
             // update main form in real time so the user can gauage how they want it.
+            if (heightSlider.Value % 4 != 0) heightSlider.Value -= heightSlider.Value % 4;
             _parentMainForm.Height = heightSlider.Value;
             uxHeightValue.Text = heightSlider.Value.ToString();
             _dirty = true;
@@ -220,6 +223,7 @@ namespace OutlookDesktop
         private void horizontalPosition_Scroll(object sender, ScrollEventArgs e)
         {
             // update main form in real time so the user can gauage how they want it.
+            if (horizontalPosition.Value % 4 != 0) horizontalPosition.Value -= horizontalPosition.Value % 4;
             _parentMainForm.Left = horizontalPosition.Value;
             _dirty = true;
             Debug.Print(_parentMainForm.Top + " " + _parentMainForm.Left);
@@ -228,6 +232,7 @@ namespace OutlookDesktop
         private void verticalPosition_Scroll(object sender, ScrollEventArgs e)
         {
             // update main form in real time so the user can gauage how they want it.
+            if (verticalPosition.Value % 4 != 0) verticalPosition.Value -= verticalPosition.Value % 4;
             _parentMainForm.Top = verticalPosition.Value;
             _dirty = true;
             Debug.Print(_parentMainForm.Top + " " + _parentMainForm.Left);

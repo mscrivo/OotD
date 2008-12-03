@@ -214,14 +214,14 @@
             this.axOutlookViewControl.Location = new System.Drawing.Point(0, 0);
             this.axOutlookViewControl.Name = "axOutlookViewControl";
             this.axOutlookViewControl.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axOutlookViewControl.OcxState")));
-            this.axOutlookViewControl.Size = new System.Drawing.Size(284, 264);
+            this.axOutlookViewControl.Size = new System.Drawing.Size(400, 400);
             this.axOutlookViewControl.TabIndex = 1;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 264);
+            this.ClientSize = new System.Drawing.Size(400, 400);
             this.Controls.Add(this.axOutlookViewControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
