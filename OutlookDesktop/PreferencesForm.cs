@@ -96,7 +96,10 @@ namespace OutlookDesktop
                     MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 }
 
-
+                double opacityVal = (double)this.transparencySlider.Value / 100;
+                uxOpacityValue.Text = opacityVal.ToString();
+                uxWidthValue.Text = widthSlider.Value.ToString();
+                uxHeightValue.Text = heightSlider.Value.ToString();
                 // Load up the Outlook views.
                 //_parentMainForm.OutlookNameSpace.get
                 _dirty = false;

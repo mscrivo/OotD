@@ -82,7 +82,7 @@
             this.RemoveInstanceMenu,
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(187, 320);
+            this.trayMenu.Size = new System.Drawing.Size(187, 298);
             this.trayMenu.Click += new System.EventHandler(this.trayMenu_Click);
             // 
             // CalendarMenu
@@ -231,6 +231,10 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Outlook on the Desktop";
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Activated += new System.EventHandler(this.MainForm_Activated);
+            this.Layout += new System.Windows.Forms.LayoutEventHandler(this.MainForm_Layout);
+            this.Validated += new System.EventHandler(this.MainForm_Validated);
             this.trayMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).EndInit();
             this.ResumeLayout(false);

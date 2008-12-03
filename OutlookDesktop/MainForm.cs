@@ -32,15 +32,6 @@ namespace OutlookDesktop
     /// </summary>
     public partial class MainForm : Form
     {
-        /// <summary>
-        /// Consts to deal with window location.
-        /// </summary>
-        private const int SWP_DRAWFRAME = 0x20;
-        private const int SWP_NOMOVE = 0x2;
-        private const int SWP_NOSIZE = 0x1;
-        private const int SWP_NOZORDER = 0x4;
-        private const int SWP_NOACTIVATE = 0x10;
-        private const int HWND_BOTTOM = 0x1;
 
         /// <summary>
         /// Outlook Application
@@ -73,6 +64,12 @@ namespace OutlookDesktop
         public event EventHandler<InstanceRemovedEventArgs> InstanceRemoved;
         public event EventHandler<InstanceRenamedEventArgs> InstanceRenamed;
 
+        /// <summary>
+        /// Standard logging block.
+        /// </summary>
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
 
         #region Public access to private variables.
         public Microsoft.Office.Interop.Outlook.Application OutlookApplication
@@ -99,7 +96,8 @@ namespace OutlookDesktop
 
         public List<Microsoft.Office.Interop.Outlook.View> OulookFolderViews
         {
-            get {
+            get
+            {
                 if (_oulookFolderViews != null)
                     return _oulookFolderViews;
                 else
@@ -177,23 +175,11 @@ namespace OutlookDesktop
             _instanceName = instanceName;
             this.LoadSettings();
 
-            // Make window "Always on Bottom" i.e. pinned to desktop, so that
-            // other windows don't get trapped behind it.  We do this, by attaching
-            // the form to the "Progman" window, which is the main window in Windows.
-            try
-            {                
-                this.SendToBack();
-                IntPtr pWnd = UnsafeNativeMethods.FindWindow("Progman", null);
-                UnsafeNativeMethods.SetParent(this.Handle, pWnd);
-             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, Resources.ErrorInitializingApp + " " + ex.ToString(), Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                _isInitialized = false;
-                return;
-            }
 
-            _isInitialized = true;
+
+            _isInitialized = UnsafeNativeMethods.SendWindowToDesktop(this);
+
+            if (!_isInitialized) return;
         }
 
         /// <summary>
@@ -779,6 +765,24 @@ namespace OutlookDesktop
         }
 
         #endregion
+
+        private void MainForm_Activated(object sender, EventArgs e)
+        {
+            UnsafeNativeMethods.SendWindowToDesktop(this);
+        }
+
+        private void MainForm_Layout(object sender, LayoutEventArgs e)
+        {
+            UnsafeNativeMethods.SendWindowToDesktop(this);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+        }
+
+        private void MainForm_Validated(object sender, EventArgs e)
+        {
+        }
 
     }
 }

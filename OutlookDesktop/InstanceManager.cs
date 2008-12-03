@@ -14,6 +14,13 @@ namespace OutlookDesktop
 {
     public partial class InstanceManager : Form
     {
+
+        /// <summary>
+        /// Standard logging block.
+        /// </summary>
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
         private MainForm[] _mainFormInstances;
 
         /// <summary>
@@ -33,16 +40,19 @@ namespace OutlookDesktop
 
             if (GlobalPreferences.IsFirstRun) {
                 trayIcon.ShowBalloonTip(2000, "Outlook on the Desktop is running", "Right click on this icon to configure Outlook on the Desktop.", ToolTipIcon.Info);
+                log.Debug("First Run");
             }
         }
 
         public void LoadInstances()
         {
             // Close any open instances first.
+            log.Debug("Performing instance cleanup and closing instances");
             if (_mainFormInstances != null && _mainFormInstances.Length > 0)
             {
                 foreach (MainForm form in _mainFormInstances)
                 {
+                    log.DebugFormat("Disposing {0}", form.InstanceName);
                     form.Dispose();
                 }
             }
@@ -53,6 +63,8 @@ namespace OutlookDesktop
             {
                 if (appReg.SubKeyCount > 1)
                 {
+                    log.Debug("Multiple instances to load");
+
                     // There are multiple instances defined, so we build the context menu strip dynamically.
                     trayIcon.ContextMenuStrip = new ContextMenuStrip();
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Add Instance", null, AddInstanceMenu_Click));
@@ -65,6 +77,7 @@ namespace OutlookDesktop
                     // each instance will get it's own submenu in the main context menu.
                     foreach (string instanceName in appReg.GetSubKeyNames())
                     {
+                        log.DebugFormat("instanciating up instance {0}", instanceName);
                         _mainFormInstances[count] = new MainForm(instanceName);
 
                         // hook up the instance removed/renamed event handlers so that we can
@@ -87,7 +100,9 @@ namespace OutlookDesktop
                         _mainFormInstances[count].TrayMenu.Items["ExitMenu"].Visible = false;
 
                         // finally, show the form.
+                        log.DebugFormat("Showing Instance {0}", instanceName);
                         _mainFormInstances[count].Show();
+                        UnsafeNativeMethods.SendWindowToDesktop(_mainFormInstances[count]);
                         count++;
                     }
 
@@ -129,6 +144,9 @@ namespace OutlookDesktop
 
                     // finally, show the form.
                     _mainFormInstances[0].Show();
+                    UnsafeNativeMethods.SendWindowToDesktop(_mainFormInstances[0]);
+                    
+
                 }
             }
 
@@ -138,6 +156,7 @@ namespace OutlookDesktop
                 startWithWindowsMenu.Checked = true;
             else
                 startWithWindowsMenu.Checked = false;
+
 
         }
 
