@@ -32,13 +32,17 @@ namespace OutlookDesktop
             //set { _mainFormInstances = value; }
         }
 
-        
-
         public InstanceManager()
         {
             InitializeComponent();
 
-            if (GlobalPreferences.IsFirstRun) {
+            if (System.Environment.OSVersion.Version.Major < 6)
+                UnsafeNativeMethods.PinWindowToDesktop(this);
+            else
+                UnsafeNativeMethods.SendWindowToBack(this);
+
+            if (GlobalPreferences.IsFirstRun)
+            {
                 trayIcon.ShowBalloonTip(2000, "Outlook on the Desktop is running", "Right click on this icon to configure Outlook on the Desktop.", ToolTipIcon.Info);
                 log.Debug("First Run");
             }
@@ -96,24 +100,24 @@ namespace OutlookDesktop
 
                         // the submenu items are set to the contenxt menu defined in the form's instance.
                         instanceSubmenu[count].DropDown = _mainFormInstances[count].TrayMenu;
-                        
+
                         _mainFormInstances[count].TrayMenu.Items["ExitMenu"].Visible = false;
 
                         // finally, show the form.
                         log.DebugFormat("Showing Instance {0}", instanceName);
                         _mainFormInstances[count].Show();
-                        UnsafeNativeMethods.SendWindowToDesktop(_mainFormInstances[count]);
+                        UnsafeNativeMethods.SendWindowToBack(_mainFormInstances[count]);
                         count++;
                     }
 
                     // add the rest of the necessary menu items to the main context menu.
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
-                    
+
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Start With Windows", null, StartWithWindowsMenu_Click, "StartWithWindows"));
-                    
+
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
-                    trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Settings", null,ShowSettingsForm_Click, "SettingsFormMenu"));
+                    trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Settings", null, ShowSettingsForm_Click, "SettingsFormMenu"));
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Hide", null, HideShowAllMenu_Click, "HideShowMenu"));
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("About", null, AboutMenu_Click, "AboutMenu"));
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, ExitMenu_Click, "ExitMenu"));
@@ -144,8 +148,8 @@ namespace OutlookDesktop
 
                     // finally, show the form.
                     _mainFormInstances[0].Show();
-                    UnsafeNativeMethods.SendWindowToDesktop(_mainFormInstances[0]);
-                    
+                    UnsafeNativeMethods.SendWindowToBack(_mainFormInstances[0]);
+
 
                 }
             }
@@ -276,7 +280,7 @@ namespace OutlookDesktop
         private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                ShowHideAllInstances();                                 
+                ShowHideAllInstances();
         }
     }
 }

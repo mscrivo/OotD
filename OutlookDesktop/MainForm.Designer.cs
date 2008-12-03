@@ -22,6 +22,8 @@
                 // that are open.
                 _outlookApplication = null;
                 _outlookNamespace = null;
+                _oulookFolderViews = null;
+                _outlookFolder = null;
             }
             base.Dispose(disposing);
         }

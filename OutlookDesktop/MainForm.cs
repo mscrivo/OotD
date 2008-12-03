@@ -175,9 +175,10 @@ namespace OutlookDesktop
             _instanceName = instanceName;
             this.LoadSettings();
 
-
-
-            _isInitialized = UnsafeNativeMethods.SendWindowToDesktop(this);
+            if (System.Environment.OSVersion.Version.Major < 6)
+                _isInitialized = UnsafeNativeMethods.PinWindowToDesktop(this);
+            else
+                _isInitialized = UnsafeNativeMethods.SendWindowToBack(this);
 
             if (!_isInitialized) return;
         }
@@ -768,12 +769,12 @@ namespace OutlookDesktop
 
         private void MainForm_Activated(object sender, EventArgs e)
         {
-            UnsafeNativeMethods.SendWindowToDesktop(this);
+            UnsafeNativeMethods.SendWindowToBack(this);
         }
 
         private void MainForm_Layout(object sender, LayoutEventArgs e)
         {
-            UnsafeNativeMethods.SendWindowToDesktop(this);
+            UnsafeNativeMethods.SendWindowToBack(this);
         }
 
         private void MainForm_Load(object sender, EventArgs e)

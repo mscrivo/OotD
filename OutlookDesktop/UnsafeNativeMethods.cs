@@ -12,7 +12,6 @@ namespace OutlookDesktop
         {
         }
 
-
         /// <summary>
         /// Consts to deal with window location.
         /// </summary>
@@ -24,6 +23,9 @@ namespace OutlookDesktop
         private const int HWND_BOTTOM = 0x1;
         private const int HWND_TOP = 0x0;
         private const int HWND_TOPMOST = -0x1;
+        private const int GWL_EXSTYLE = (-20);
+        private const int WS_EX_TOOLWINDOW = 0x80;
+        private const int WS_EX_APPWINDOW = 0x40000;
 
         /// <summary>
         /// Standard logging block.
@@ -51,14 +53,39 @@ namespace OutlookDesktop
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
 
-        public static bool SendWindowToDesktop(Form windowToSendBack)
+        [DllImport("user32", CharSet = CharSet.Auto)]
+        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32", CharSet = CharSet.Auto)]
+        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        public static bool PinWindowToDesktop(Form form)
         {
-            // Make window "Always on Bottom" i.e. pinned to desktop, so that
-            // other windows don't get trapped behind it.  We do this, by attaching
-            // the form to the "Progman" window, which is the main window in Windows.
+            // for XP and 2000, the following hack pins the window to the desktop quite nicely
+            // (ie. pressing show desktop still shows, the calendar), but it can only be called 
+            // once during init for it to work.
             try
             {
-                windowToSendBack.SendToBack();
+                form.SendToBack();
+                IntPtr pWnd = UnsafeNativeMethods.FindWindow("Progman", null);
+                UnsafeNativeMethods.SetParent(form.Handle, pWnd);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                log.ErrorFormat(String.Format("Error pinning window to desktop, OS: {0}.", System.Environment.OSVersion.Version), Resources.ErrorInitializingApp);
+                MessageBox.Show(form, Resources.ErrorInitializingApp + " " + ex.ToString(), Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;                
+            }
+        }
+
+        public static bool SendWindowToBack(Form windowToSendBack)
+        {
+            // Make window "Always on Bottom" i.e. pinned to desktop, so that
+            // other windows don't get trapped behind it.
+            try
+            {
+                //windowToSendBack.SendToBack();
                 //IntPtr pWnd = UnsafeNativeMethods.FindWindow("Progman", null);
                 //UnsafeNativeMethods.SetParent(this.Handle, pWnd);
 
@@ -73,15 +100,7 @@ namespace OutlookDesktop
                 //IntPtr tWnd = this.Handle;
                 //UnsafeNativeMethods.SetParent(tWnd, pWnd);
 
-                if (System.Environment.OSVersion.Version.Major < 6)
-                {
-                    // Older version of windows or DWM is not enabled
-
-                    windowToSendBack.SendToBack();
-                    IntPtr pWnd = UnsafeNativeMethods.FindWindow("Progman", null);
-                    UnsafeNativeMethods.SetParent(windowToSendBack.Handle, pWnd);
-                }
-                else
+                if (System.Environment.OSVersion.Version.Major >= 6)
                 {
                     // Vista or Above
                     // TODO: Find a better way, this sucks!
@@ -89,11 +108,10 @@ namespace OutlookDesktop
                 }
 
                 return true;
-
             }
             catch (Exception ex)
             {
-                log.ErrorFormat("Error placing window to back", Resources.ErrorInitializingApp);
+                log.ErrorFormat(String.Format("Error pinning window to desktop, OS: {0}.", System.Environment.OSVersion.Version), Resources.ErrorInitializingApp);
                 MessageBox.Show(windowToSendBack, Resources.ErrorInitializingApp + " " + ex.ToString(), Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
