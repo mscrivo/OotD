@@ -19,8 +19,7 @@ namespace OutlookDesktop
         /// Standard logging block.
         /// </summary>
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-
+        
         private MainForm[] _mainFormInstances;
 
         /// <summary>
@@ -29,7 +28,6 @@ namespace OutlookDesktop
         public MainForm[] Instances
         {
             get { return _mainFormInstances; }
-            //set { _mainFormInstances = value; }
         }
 
         public InstanceManager()
@@ -45,6 +43,17 @@ namespace OutlookDesktop
             {
                 trayIcon.ShowBalloonTip(2000, "Outlook on the Desktop is running", "Right click on this icon to configure Outlook on the Desktop.", ToolTipIcon.Info);
                 log.Debug("First Run");
+            }
+        }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x80;
+                return cp;
             }
         }
 

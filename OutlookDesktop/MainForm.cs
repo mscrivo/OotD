@@ -183,6 +183,17 @@ namespace OutlookDesktop
             if (!_isInitialized) return;
         }
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x80;
+                return cp;
+            }
+        }
+
         /// <summary>
         /// Get the location of the Select folder menu in the tray context menu. 
         /// </summary>
