@@ -360,7 +360,6 @@
             this.uxFolderViews.Name = "uxFolderViews";
             this.uxFolderViews.Size = new System.Drawing.Size(463, 21);
             this.uxFolderViews.TabIndex = 75;
-            this.uxFolderViews.SelectedIndexChanged += new System.EventHandler(this.uxFolderViews_SelectedIndexChanged);
             // 
             // InstanceSettings
             // 

@@ -26,7 +26,6 @@ namespace OutlookDesktop
 
         private bool _dirty;
 
-
         public InstanceSettings(MainForm passedInstance)
         {
             log.DebugFormat("Setting up control for {0}", passedInstance.InstanceName);
@@ -341,18 +340,8 @@ namespace OutlookDesktop
             _instance.UpdateDefaultFolder(selectedFolder);
 
             uxFolderViews.Items.AddRange(_instance.OulookFolderViews.ToArray());
-
-
         }
     
         #endregion
-
-        private void uxFolderViews_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-
     }
 }

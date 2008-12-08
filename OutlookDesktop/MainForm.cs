@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.Globalization;
 using Microsoft.Win32;
 using OutlookDesktop.Properties;
 
@@ -31,35 +26,9 @@ namespace OutlookDesktop
     /// exist for each instance.
     /// </summary>
     public partial class MainForm : Form
-    {
-
-        /// <summary>
-        /// Outlook Application
-        /// </summary>
-        private Microsoft.Office.Interop.Outlook.Application _outlookApplication;
-
-        /// <summary>
-        /// The active namespace for the current outlook session. 
-        /// </summary>
-        private Microsoft.Office.Interop.Outlook.NameSpace _outlookNamespace;
-
-        /// <summary>
-        /// The MAPIFolder for the currently selected folder to show. 
-        /// </summary>
-        private Microsoft.Office.Interop.Outlook.MAPIFolder _outlookFolder;
-
-        /// <summary>
-        /// Contains the current views avaliable for the folder. 
-        /// </summary>
-        private List<Microsoft.Office.Interop.Outlook.View> _oulookFolderViews;
-
-
+    {        
         private DateTime _previousDate;
-        private String _customFolder;
-        private Boolean _isInitialized;
-        private ToolStripMenuItem _customMenu;
-        private String _instanceName;
-        private InstancePreferences _preferences;
+        private String _customFolder;   
 
         public event EventHandler<InstanceRemovedEventArgs> InstanceRemoved;
         public event EventHandler<InstanceRenamedEventArgs> InstanceRenamed;
@@ -68,10 +37,13 @@ namespace OutlookDesktop
         /// Standard logging block.
         /// </summary>
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        
+        #region Public Properties
 
-
-
-        #region Public access to private variables.
+        [CLSCompliant(false)]
+        /// <summary>
+        /// Outlook Application
+        /// </summary>
         public Microsoft.Office.Interop.Outlook.Application OutlookApplication
         {
             get
@@ -82,7 +54,12 @@ namespace OutlookDesktop
                     return null;
             }
         }
+        private Microsoft.Office.Interop.Outlook.Application _outlookApplication;
 
+        [CLSCompliant(false)]
+        /// <summary>
+        /// The active namespace for the current outlook session. 
+        /// </summary>
         public Microsoft.Office.Interop.Outlook.NameSpace OutlookNameSpace
         {
             get
@@ -93,7 +70,12 @@ namespace OutlookDesktop
                     return null;
             }
         }
+        private Microsoft.Office.Interop.Outlook.NameSpace _outlookNamespace;
 
+        [CLSCompliant(false)]
+        /// <summary>
+        /// Contains the current views avaliable for the folder. 
+        /// </summary>
         public List<Microsoft.Office.Interop.Outlook.View> OulookFolderViews
         {
             get
@@ -104,6 +86,23 @@ namespace OutlookDesktop
                     return null;
             }
         }
+        private List<Microsoft.Office.Interop.Outlook.View> _oulookFolderViews;
+
+        [CLSCompliant(false)]
+        /// <summary>
+        /// The outlook MAPI folder currently in use.
+        /// </summary>
+        public Microsoft.Office.Interop.Outlook.MAPIFolder OutlookFolder
+        {
+            get
+            {
+                if (_outlookFolder != null)
+                    return _outlookFolder;
+                else
+                    return null;
+            }
+        }
+        private Microsoft.Office.Interop.Outlook.MAPIFolder _outlookFolder;
 
         public Boolean IsInitialized
         {
@@ -112,7 +111,7 @@ namespace OutlookDesktop
                 return _isInitialized;
             }
         }
-
+        private Boolean _isInitialized;
 
         public InstancePreferences Preferences
         {
@@ -121,7 +120,7 @@ namespace OutlookDesktop
                 return _preferences;
             }
         }
-
+        private InstancePreferences _preferences;
 
         public String InstanceName
         {
@@ -130,6 +129,7 @@ namespace OutlookDesktop
                 return _instanceName;
             }
         }
+        private String _instanceName;
 
 
         public ToolStripMenuItem CustomMenu
@@ -143,7 +143,7 @@ namespace OutlookDesktop
                 _customMenu = value;
             }
         }
-
+        private ToolStripMenuItem _customMenu;      
 
         #endregion
 
@@ -202,8 +202,7 @@ namespace OutlookDesktop
         {
             return trayMenu.Items.IndexOf(SelectFolderMenu);
         }
-
-
+        
         /// <summary>
         /// Loads user preferences from registry and applies them.
         /// </summary>
@@ -222,7 +221,6 @@ namespace OutlookDesktop
                 _preferences.OutlookFolderStoreId = GetFolderFromViewType(FolderViewType.Calendar).StoreID;
                 _preferences.OutlookFolderEntryId = GetFolderFromViewType(FolderViewType.Calendar).EntryID;
             }
-
 
             SetMapiFolder();
 
@@ -256,7 +254,6 @@ namespace OutlookDesktop
                 MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
-
             // Checks the menuitem ofr the current folder.
             if (_preferences.OutlookFolderName == FolderViewType.Calendar.ToString())
             {
@@ -288,7 +285,6 @@ namespace OutlookDesktop
                 CustomMenu.Checked = true;
             }
 
-
             // Sets the viewcontrol folder from preferences. 
             axOutlookViewControl.Folder = _preferences.OutlookFolderName;
 
@@ -297,9 +293,7 @@ namespace OutlookDesktop
 
             // Get a copy of the possible outlook views for the selected folder and populate the context menu for this instance. 
             UpdateOutlookViewsList();
-
         }
-
 
         /// <summary>
         /// This will populate the _outlookFolder object with the MapiFolder for the EntryID and StoreId stored
@@ -313,7 +307,6 @@ namespace OutlookDesktop
             else
                 _outlookFolder = null;
         }
-
 
         /// <summary>
         /// This will populate a dropdown off the instance context menu with the avaliable
@@ -368,7 +361,7 @@ namespace OutlookDesktop
         {
             //TODO: Revert back and deal with online/offline better!
             return fullPath.Substring(fullPath.LastIndexOf("\\") + 1, fullPath.Length - fullPath.LastIndexOf("\\") - 1);
-            String tempName = "";
+            String tempName = String.Empty;
             Microsoft.Office.Interop.Outlook.MAPIFolder mapiFld = null;
 
             try
@@ -405,12 +398,12 @@ namespace OutlookDesktop
                     if (!String.IsNullOrEmpty(tempName)) return tempName;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            return "";
+            return String.Empty;
         }
 
 
@@ -604,6 +597,7 @@ namespace OutlookDesktop
             }
         }
 
+        [CLSCompliant(false)]
         public void UpdateCustomFolder(Microsoft.Office.Interop.Outlook.MAPIFolder oFolder)
         {
             if (oFolder == null) return;
@@ -801,14 +795,5 @@ namespace OutlookDesktop
         {
             UnsafeNativeMethods.SendWindowToBack(this);
         }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-        }
-
-        private void MainForm_Validated(object sender, EventArgs e)
-        {
-        }
-
     }
 }

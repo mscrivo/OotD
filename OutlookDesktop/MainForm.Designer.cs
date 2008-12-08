@@ -235,10 +235,8 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Outlook on the Desktop";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.Activated += new System.EventHandler(this.MainForm_Activated);
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.MainForm_Layout);
-            this.Validated += new System.EventHandler(this.MainForm_Validated);
             this.trayMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).EndInit();
             this.ResumeLayout(false);
