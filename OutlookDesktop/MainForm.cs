@@ -213,6 +213,17 @@ namespace OutlookDesktop
             _preferences = new InstancePreferences(InstanceName);
 
 
+            // There should ne no reason other than first run as to why the Store and Entry IDs are 
+            //empty. 
+            if (String.IsNullOrEmpty(_preferences.OutlookFolderStoreId))
+            {
+                // Set the Mapi Folder Details and the IDs.
+                _preferences.OutlookFolderName = FolderViewType.Calendar.ToString();
+                _preferences.OutlookFolderStoreId = GetFolderFromViewType(FolderViewType.Calendar).StoreID;
+                _preferences.OutlookFolderEntryId = GetFolderFromViewType(FolderViewType.Calendar).EntryID;
+            }
+
+
             SetMapiFolder();
 
             // Sets the opacity of the instance. 
@@ -313,7 +324,7 @@ namespace OutlookDesktop
             uxOutlookViews.DropDownItems.Clear();
             _oulookFolderViews = new List<Microsoft.Office.Interop.Outlook.View>();
 
-            uxOutlookViews.DropDownItems.Add(uxDefaultOutlookView);
+            //uxOutlookViews.DropDownItems.Add(uxDefaultOutlookView);
 
             if (_outlookFolder != null)
             {
@@ -327,6 +338,9 @@ namespace OutlookDesktop
                     viewItem.Tag = view;
 
                     viewItem.Click += new EventHandler(viewItem_Click);
+
+                    if (view.Name == _preferences.OutlookFolderView)
+                        viewItem.Checked = true;
 
                     uxOutlookViews.DropDownItems.Add(viewItem);
 

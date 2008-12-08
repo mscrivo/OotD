@@ -126,7 +126,8 @@ namespace OutlookDesktop
 
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
-                    trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Settings", null, ShowSettingsForm_Click, "SettingsFormMenu"));
+                    //TODO: Reinstate Settings form when complete. 
+                    //trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Settings", null, ShowSettingsForm_Click, "SettingsFormMenu"));
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Hide", null, HideShowAllMenu_Click, "HideShowMenu"));
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("About", null, AboutMenu_Click, "AboutMenu"));
                     trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, ExitMenu_Click, "ExitMenu"));
