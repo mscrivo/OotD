@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
+using Microsoft.Win32;
 
 namespace OutlookDesktop
 {
@@ -31,16 +32,10 @@ namespace OutlookDesktop
             }
             else
             {
-                // test to make sure Outlook is installed, quit otherwise
-                try
+
+                if (!IsOutlook2000OrHigherInstalled())
                 {
-                    log.Debug("Checking to see if Outlook is available.");
-                    Microsoft.Office.Interop.Outlook.Application outlookApplication = new Microsoft.Office.Interop.Outlook.Application();
-                    outlookApplication = null;
-                }
-                catch (Exception outlookApplicationException)
-                {
-                    log.Error("Outlook is not avaliable or installed.", outlookApplicationException);
+                    log.Error("Outlook is not avaliable or installed.");
                     MessageBox.Show("This program requires Microsoft Outlook 2000 or higher." + Environment.NewLine + "Please install Microsoft Office and try again.", "Missing Requirements", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -100,5 +95,54 @@ namespace OutlookDesktop
 
         static Mutex mutex;
         const int SW_RESTORE = 9;
+
+        /// <summary>
+        /// Returns the 32-bit Program Files directory depending on which Windows arch we're running on.
+        /// </summary>
+        /// <returns></returns>
+        private static string ProgramFilesx86()
+        {
+            String programFilesX86Dir = string.Empty;
+
+            if (8 == IntPtr.Size || (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"))))
+            {
+                programFilesX86Dir = Environment.GetEnvironmentVariable("ProgramFiles(x86)");
+            }
+
+            programFilesX86Dir = Environment.GetEnvironmentVariable("ProgramFiles");
+            log.Debug("Program Files Directory: " + programFilesX86Dir);
+            return programFilesX86Dir;
+        }
+        
+        /// <summary>
+        /// Returns true if Outlook 2000 (or higher) is installed.
+        /// </summary>
+        /// <returns>New version of Office need to be explicily supported in this function.</returns>
+        private static bool IsOutlook2000OrHigherInstalled()
+        {
+            if (Directory.Exists(ProgramFilesx86() + "\\Microsoft Office"))
+            {
+                if (File.Exists(ProgramFilesx86() + "\\Microsoft Office\\Office9\\Outlook.exe"))
+                    return true;
+                else if (File.Exists(ProgramFilesx86() + "\\Microsoft Office\\Office10\\Outlook.exe"))
+                    return true;
+                else if (File.Exists(ProgramFilesx86() + "\\Microsoft Office\\Office11\\Outlook.exe"))
+                    return true;
+                else if (File.Exists(ProgramFilesx86() + "\\Microsoft Office\\Office12\\Outlook.exe"))
+                    return true;
+                else if (File.Exists(ProgramFilesx86() + "\\Microsoft Office\\Office13\\Outlook.exe"))
+                    return true;
+                else
+                {
+                    log.Error("Microsoft Office is installed, but could not find a supported version.");
+                    return false;
+                }
+            }
+            else
+            {
+                log.Error("Microsoft Office is not installed.");
+                return false;
+            }
+        }
     }
 }

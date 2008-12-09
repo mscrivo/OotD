@@ -51,6 +51,8 @@ Source: OutlookDesktop\bin\x86\Release\AxInterop.Microsoft.Office.Interop.Outloo
 Source: OutlookDesktop\bin\x86\Release\Microsoft.Office.Interop.Outlook.dll; DestDir: {app}; Flags: ignoreversion
 Source: OutlookDesktop\bin\x86\Release\Microsoft.Office.Interop.OutlookViewCtl.dll; DestDir: {app}; Flags: ignoreversion
 Source: OutlookDesktop\bin\x86\Release\OutlookView.dll; DestDir: {app}; Flags: ignoreversion
+Source: OutlookDesktop\bin\x86\Release\log4net.dll; DestDir: {app}; Flags: ignoreversion
+Source: OutlookDesktop\bin\x86\Release\OutlookDesktop.exe.config; DestDir: {app}; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
