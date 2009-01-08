@@ -193,6 +193,10 @@ namespace OutlookDesktop
 
         private void ExitMenu_Click(object sender, EventArgs e)
         {
+            foreach (MainForm form in _mainFormInstances)
+            {
+                form.Dispose();
+            }
             Application.Exit();
         }
 

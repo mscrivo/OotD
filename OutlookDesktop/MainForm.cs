@@ -746,6 +746,8 @@ namespace OutlookDesktop
 
         private void ExitMenu_Click(object sender, EventArgs e)
         {
+            this.Dispose();
+
             Application.Exit();
         }
 

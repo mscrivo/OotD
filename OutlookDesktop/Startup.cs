@@ -113,36 +113,56 @@ namespace OutlookDesktop
             log.Debug("Program Files Directory: " + programFilesX86Dir);
             return programFilesX86Dir;
         }
-        
+
         /// <summary>
         /// Returns true if Outlook 2000 (or higher) is installed.
         /// </summary>
         /// <returns>New version of Office need to be explicily supported in this function.</returns>
         private static bool IsOutlook2000OrHigherInstalled()
         {
-            if (Directory.Exists(ProgramFilesx86() + "\\Microsoft Office"))
+            bool hasOffice2000OrHigher = false;
+            string outlookPath = string.Empty;
+
+            // first make sure they have Office/Outlook 2000 (9.0) or higher installed by looking for 
+            // the version subkeys in HKLM.
+            using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Office"))
             {
-                if (File.Exists(ProgramFilesx86() + "\\Microsoft Office\\Office9\\Outlook.exe"))
-                    return true;
-                else if (File.Exists(ProgramFilesx86() + "\\Microsoft Office\\Office10\\Outlook.exe"))
-                    return true;
-                else if (File.Exists(ProgramFilesx86() + "\\Microsoft Office\\Office11\\Outlook.exe"))
-                    return true;
-                else if (File.Exists(ProgramFilesx86() + "\\Microsoft Office\\Office12\\Outlook.exe"))
-                    return true;
-                else if (File.Exists(ProgramFilesx86() + "\\Microsoft Office\\Office13\\Outlook.exe"))
-                    return true;
-                else
+                string[] subkeys = key.GetSubKeyNames();
+
+                foreach (string subkey in subkeys)
                 {
-                    log.Error("Microsoft Office is installed, but could not find a supported version.");
-                    return false;
+                    double versionSubKey;
+                    if (double.TryParse(subkey, out versionSubKey))
+                    {
+                        if (versionSubKey > 9)
+                        {
+                            hasOffice2000OrHigher = true;
+                            break;
+                        }
+                    }
                 }
             }
-            else
+
+            // now check for the existende of the actual Outlook exe.
+            if (hasOffice2000OrHigher)
             {
-                log.Error("Microsoft Office is not installed.");
-                return false;
+                log.Info("Office 2000 or higher is installed, now checking for Outlook exe");
+
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
+                {
+                    outlookPath = (string)key.GetValue("Path");
+                    if (outlookPath != null)
+                    {
+                        if (File.Exists(Path.Combine(outlookPath, "Outlook.exe")))
+                        {
+                            return true;
+                        }
+                    }
+                }
             }
+
+            log.Error("Outlook path was reported as: " + Path.Combine(outlookPath, "Outlook.exe") + " but this file could not be found.");
+            return false;
         }
     }
 }
