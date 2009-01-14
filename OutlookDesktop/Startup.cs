@@ -127,13 +127,16 @@ namespace OutlookDesktop
             // the version subkeys in HKLM.
             using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Office"))
             {
+                log.Info("Successfully read HKLM\\Software\\Microsoft\\Office");
                 string[] subkeys = key.GetSubKeyNames();
 
                 foreach (string subkey in subkeys)
                 {
+                    log.Info("Analyzing " + subkey.ToString());
                     double versionSubKey;
                     if (double.TryParse(subkey, out versionSubKey))
                     {
+                        log.Info("Version # " + versionSubKey.ToString());
                         if (versionSubKey > 9)
                         {
                             hasOffice2000OrHigher = true;
