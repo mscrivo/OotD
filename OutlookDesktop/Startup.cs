@@ -127,16 +127,16 @@ namespace OutlookDesktop
             // the version subkeys in HKLM.
             using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Office"))
             {
-                log.Info("Successfully read HKLM\\Software\\Microsoft\\Office");
+                log.Info("Successfully read reg key: HKLM\\Software\\Microsoft\\Office");
                 string[] subkeys = key.GetSubKeyNames();
 
                 foreach (string subkey in subkeys)
                 {
-                    log.Info("Analyzing " + subkey.ToString());
+                    log.Info("Analyzing subkey " + subkey.ToString());
                     double versionSubKey;
                     if (double.TryParse(subkey, out versionSubKey))
                     {
-                        log.Info("Version # " + versionSubKey.ToString());
+                        log.Info("Office Version: " + versionSubKey.ToString());
                         if (versionSubKey > 9)
                         {
                             hasOffice2000OrHigher = true;
@@ -154,10 +154,13 @@ namespace OutlookDesktop
                 using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
                 {
                     outlookPath = (string)key.GetValue("Path");
+                    log.Info("Office path reported as: " + outlookPath);
                     if (outlookPath != null)
                     {
+                        log.Info("Checking for Outlook exe in: " + outlookPath);
                         if (File.Exists(Path.Combine(outlookPath, "Outlook.exe")))
                         {
+                            log.Info("Outlook exe found.");
                             return true;
                         }
                     }
