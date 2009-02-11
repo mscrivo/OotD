@@ -134,7 +134,7 @@ namespace OutlookDesktop
                 {
                     log.Info("Analyzing subkey " + subkey.ToString());
                     double versionSubKey;
-                    if (double.TryParse(subkey, out versionSubKey))
+                    if (double.TryParse(subkey, System.Globalization.NumberStyles.Float, null, out versionSubKey))
                     {
                         log.Info("Office Version: " + versionSubKey.ToString());
                         if (versionSubKey > 9)
@@ -146,7 +146,7 @@ namespace OutlookDesktop
                 }
             }
 
-            // now check for the existende of the actual Outlook exe.
+            // now check for the existence of the actual Outlook.exe.
             if (hasOffice2000OrHigher)
             {
                 log.Info("Office 2000 or higher is installed, now checking for Outlook exe");
