@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
 using Microsoft.Win32;
+using System.Globalization;
 
 namespace OutlookDesktop
 {
@@ -134,19 +135,15 @@ namespace OutlookDesktop
                 {
                     log.Info("Analyzing subkey '" + subkey + "'");
                     double versionSubKey;
-                    try
+                    CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+                    if (double.TryParse(subkey, System.Globalization.NumberStyles.Float, culture, out versionSubKey))
                     {
-                        versionSubKey = double.Parse(subkey);
                         log.Info("Office Version: " + versionSubKey.ToString());
                         if (versionSubKey > 9)
                         {
                             hasOffice2000OrHigher = true;
                             break;
                         }
-                    }
-                    catch (Exception ex)
-                    {                        
-                       log.Error("Error parsing registry: " + ex.ToString());
                     }
                 }
             }
