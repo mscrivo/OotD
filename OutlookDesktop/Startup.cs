@@ -132,16 +132,21 @@ namespace OutlookDesktop
 
                 foreach (string subkey in subkeys)
                 {
-                    log.Info("Analyzing subkey " + subkey.ToString());
+                    log.Info("Analyzing subkey '" + subkey + "'");
                     double versionSubKey;
-                    if (double.TryParse(subkey, System.Globalization.NumberStyles.Float, null, out versionSubKey))
+                    try
                     {
+                        versionSubKey = double.Parse(subkey);
                         log.Info("Office Version: " + versionSubKey.ToString());
                         if (versionSubKey > 9)
                         {
                             hasOffice2000OrHigher = true;
                             break;
                         }
+                    }
+                    catch (Exception ex)
+                    {                        
+                       log.Error("Error parsing registry: " + ex.ToString());
                     }
                 }
             }
