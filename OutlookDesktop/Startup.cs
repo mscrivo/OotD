@@ -14,7 +14,6 @@ namespace OutlookDesktop
     internal static class Startup
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private static Mutex _mutex;
 
         /// <summary>
         /// The main entry point for the application.
@@ -60,13 +59,18 @@ namespace OutlookDesktop
         private static bool IsAlreadyRunning()
         {
             string strLoc = Assembly.GetExecutingAssembly().Location;
-            FileSystemInfo fileInfo = new FileInfo(strLoc);
-            string sExeName = fileInfo.Name;
-            bool createdNew;
+            if (strLoc != null)
+            {
+                FileSystemInfo fileInfo = new FileInfo(strLoc);
+                string sExeName = fileInfo.Name;
+                bool createdNew;
 
-            _mutex = new Mutex(true, "Local\\" + sExeName, out createdNew);
+                new Mutex(true, "Local\\" + sExeName, out createdNew);
 
-            return !createdNew;
+                return !createdNew;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -115,7 +119,7 @@ namespace OutlookDesktop
                         Registry.LocalMachine.OpenSubKey(
                             "Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
                 {
-                    if (key != null) outlookPath = (string) key.GetValue("Path");
+                    if (key != null) outlookPath = (string)key.GetValue("Path");
                     Log.Info("Office path reported as: " + outlookPath);
                     if (outlookPath != null)
                     {
