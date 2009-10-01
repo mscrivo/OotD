@@ -63,9 +63,9 @@ namespace OutlookDesktop
             {
                 FileSystemInfo fileInfo = new FileInfo(strLoc);
                 string sExeName = fileInfo.Name;
-                bool createdNew;
+                bool createdNew = false;
 
-                new Mutex(true, "Local\\" + sExeName, out createdNew);
+                if (sExeName != null) new Mutex(true, string.Format("Local\\{0}", sExeName), out createdNew);
 
                 return !createdNew;
             }

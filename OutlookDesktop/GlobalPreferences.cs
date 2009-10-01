@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using Microsoft.Win32;
 
 namespace OutlookDesktop
@@ -52,7 +51,7 @@ namespace OutlookDesktop
                                     key.DeleteValue("OutlookOnDesktop");
                             }
                         }
-                        catch (Exception)
+                        catch
                         {
                         }
                     }

@@ -11,12 +11,12 @@ namespace OutlookDesktop
         /// <summary>
         /// Default path to save the settings. 
         /// </summary>
-        private readonly string documentPath = Application.StartupPath + "//Data//settings.xml";
+        private readonly string _documentPath = Application.StartupPath + "//Data//settings.xml";
 
         /// <summary>
         /// XmlDocument used to store the XmlData. 
         /// </summary>
-        private XmlDocument xmlDocument = new XmlDocument();
+        private XmlDocument _xmlDocument = new XmlDocument();
 
         #endregion
 
@@ -43,11 +43,11 @@ namespace OutlookDesktop
         {
             try
             {
-                xmlDocument.Load(documentPath);
+                _xmlDocument.Load(_documentPath);
             }
             catch
             {
-                xmlDocument.LoadXml("<settings></settings>");
+                _xmlDocument.LoadXml("<settings></settings>");
             }
         }
 
@@ -55,11 +55,11 @@ namespace OutlookDesktop
         {
             try
             {
-                xmlDocument.Load(documentPath);
+                _xmlDocument.Load(_documentPath);
             }
             catch
             {
-                xmlDocument.LoadXml("<settings></settings>");
+                _xmlDocument.LoadXml("<settings></settings>");
             }
 
             PutSetting(xPath, value);
@@ -69,10 +69,10 @@ namespace OutlookDesktop
 
         ~XmlSettings()
         {
-            xmlDocument = null;
+            _xmlDocument = null;
         }
 
-        private string StripOutBadCharacters(string xPath)
+        private static string StripOutBadCharacters(string xPath)
         {
             //xPath = xPath.Replace("-", "_");
             ////xPath = xPath.Replace("7", "seven");
@@ -84,7 +84,7 @@ namespace OutlookDesktop
 
         public T GetSetting<T>(string xPath, T defaultValue)
         {
-            XmlNode xmlNode = xmlDocument.SelectSingleNode("settings/" + StripOutBadCharacters(xPath));
+            XmlNode xmlNode = _xmlDocument.SelectSingleNode("settings/" + StripOutBadCharacters(xPath));
             if (xmlNode != null)
             {
                 return (T) TypeDescriptor.GetConverter(typeof (T)).ConvertFromString(xmlNode.InnerText);
@@ -98,46 +98,47 @@ namespace OutlookDesktop
 
         public object GetSetting(string xPath, object defaultValue)
         {
-            XmlNode xmlNode = xmlDocument.SelectSingleNode("settings/" + StripOutBadCharacters(xPath));
+            XmlNode xmlNode = _xmlDocument.SelectSingleNode("settings/" + StripOutBadCharacters(xPath));
+            
             if (xmlNode != null)
             {
                 return TypeDescriptor.GetConverter(typeof (string)).ConvertFromString(xmlNode.InnerText);
             }
-            else
-            {
-                PutSetting(xPath, defaultValue);
-                return defaultValue;
-            }
+            
+            PutSetting(xPath, defaultValue);
+            return defaultValue;
         }
 
         public void PutSetting(string xPath, object value)
         {
-            XmlNode xmlNode = xmlDocument.SelectSingleNode("settings/" + StripOutBadCharacters(xPath));
+            XmlNode xmlNode = _xmlDocument.SelectSingleNode("settings/" + StripOutBadCharacters(xPath));
+            
             if (xmlNode == null)
             {
-                xmlNode = createMissingNode("settings/" + StripOutBadCharacters(xPath));
+                xmlNode = CreateMissingNode("settings/" + StripOutBadCharacters(xPath));
             }
+
             xmlNode.InnerText = TypeDescriptor.GetConverter(value.GetType()).ConvertToString(value);
-            xmlDocument.Save(documentPath);
+            _xmlDocument.Save(_documentPath);
         }
 
-        private XmlNode createMissingNode(string xPath)
+        private XmlNode CreateMissingNode(string xPath)
         {
             string[] xPathSections = xPath.Split('/');
             string currentXPath = "";
             XmlNode testNode = null;
-            XmlNode currentNode = xmlDocument.SelectSingleNode("settings");
+            XmlNode currentNode = _xmlDocument.SelectSingleNode("settings");
             foreach (string xPathSection in xPathSections)
             {
                 currentXPath += xPathSection;
-                testNode = xmlDocument.SelectSingleNode(currentXPath);
+                testNode = _xmlDocument.SelectSingleNode(currentXPath);
                 if (testNode == null)
                 {
                     currentNode.InnerXml += "<" +
                                             xPathSection + "></" +
                                             xPathSection + ">";
                 }
-                currentNode = xmlDocument.SelectSingleNode(currentXPath);
+                currentNode = _xmlDocument.SelectSingleNode(currentXPath);
                 currentXPath += "/";
             }
             return currentNode;
