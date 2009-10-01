@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
-using OutlookDesktop.Properties;
-using System.Globalization;
 
 namespace OutlookDesktop
 {
@@ -29,7 +25,7 @@ namespace OutlookDesktop
                     if (key != null)
                     {
                         string val = (string)key.GetValue("OutlookOnDesktop");
-                        return (val != null && val.Length > 0);
+                        return (!string.IsNullOrEmpty(val));
                     }
                 }
                 return false;
@@ -52,7 +48,8 @@ namespace OutlookDesktop
                                     key.DeleteValue("OutlookOnDesktop");
                             }
                         }
-                        catch (Exception) { }
+                        catch (Exception)
+                        { }
                     }
                 }
             }
@@ -67,10 +64,10 @@ namespace OutlookDesktop
                 {
                     if (key != null)
                     {
-                        bool _isFirstRun;
-                        if (bool.TryParse((string)key.GetValue("FirstRun", "true"), out _isFirstRun))
+                        bool isFirstRun;
+                        if (bool.TryParse((string)key.GetValue("FirstRun", "true"), out isFirstRun))
                         {
-                            if (_isFirstRun)
+                            if (isFirstRun)
                             {
                                 key.SetValue("FirstRun", false);
                                 return true;

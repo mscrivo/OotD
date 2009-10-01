@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 
 namespace OutlookDesktop
 {
@@ -16,16 +13,16 @@ namespace OutlookDesktop
         /// Renames a subkey of the passed in registry key since
         /// the frame work totally forgot to include such a handy feature.
         /// </summary>
-        /// <param name="regKey">The RegistryKey that contains the subkey
+        /// <param name="parentKey">The RegistryKey that contains the subkey
         /// you want to rename (must be writeable)</param>
         /// <param name="subKeyName">The name of the subkey that you want to rename</param>
         /// <param name="newSubKeyName">The new name of the RegistryKey</param>
         /// <returns>True if succeeds</returns>
-        public static bool RenameSubKey(RegistryKey parentKey, string subKeyName, string newSubKeyName)
+        public static void RenameSubKey(RegistryKey parentKey, string subKeyName, string newSubKeyName)
         {
             CopyKey(parentKey, subKeyName, newSubKeyName);
             parentKey.DeleteSubKeyTree(subKeyName);
-            return true;
+            return;
         }
 
         /// <summary>
@@ -35,7 +32,7 @@ namespace OutlookDesktop
         /// <param name="keyNameToCopy"></param>
         /// <param name="newKeyName"></param>
         /// <returns></returns>
-        public static bool CopyKey(RegistryKey parentKey, string keyNameToCopy, string newKeyName)
+        public static void CopyKey(RegistryKey parentKey, string keyNameToCopy, string newKeyName)
         {
             //Create new key
             RegistryKey destinationKey = parentKey.CreateSubKey(newKeyName);
@@ -45,7 +42,7 @@ namespace OutlookDesktop
 
             RecurseCopyKey(sourceKey, destinationKey);
 
-            return true;
+            return;
         }
 
         private static void RecurseCopyKey(RegistryKey sourceKey, RegistryKey destinationKey)

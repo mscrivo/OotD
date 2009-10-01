@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows.Forms;
 using System.Xml;
-using System.Text;
-using System.Configuration;
-using System.Reflection;
-using System.IO;
 
 namespace OutlookDesktop
 {
@@ -47,7 +40,6 @@ namespace OutlookDesktop
         }
 
         #endregion
-
 
         #region Constructor
         public XmlSettings()

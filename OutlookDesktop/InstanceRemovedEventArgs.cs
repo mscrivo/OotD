@@ -6,16 +6,11 @@ namespace OutlookDesktop
 {
     public class InstanceRemovedEventArgs : EventArgs
     {
-        public String InstanceName
-        {
-            get { return _instanceName; }
-            set { _instanceName = value; }
-        }
-        private String _instanceName;
+        public String InstanceName { get; set; }
 
         public InstanceRemovedEventArgs(String instanceName)
         {
-            this._instanceName = instanceName;
+            InstanceName = instanceName;
         }
     }
 }

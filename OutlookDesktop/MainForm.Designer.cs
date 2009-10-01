@@ -20,10 +20,10 @@
                 // Ensure we cleanup the Outlook resources, but do not call Quit() on the Outlook
                 // app object or we will inadvertantly close any full blown Outlook instances 
                 // that are open.
-                _oulookFolderViews = null;
+                OulookFolderViews = null;
                 _outlookFolder = null;
-                _outlookNamespace = null;
-                _outlookApplication = null;
+                OutlookNameSpace = null;
+                OutlookApplication = null;
             }
             base.Dispose(disposing);
         }

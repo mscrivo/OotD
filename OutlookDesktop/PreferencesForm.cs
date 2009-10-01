@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.Diagnostics;
+using System.Windows.Forms;
 using OutlookDesktop.Properties;
 
 namespace OutlookDesktop
 {
     public partial class PreferencesForm : Form
     {
-        private MainForm _parentMainForm;
+        private readonly MainForm _parentMainForm;
         private bool _dirty;
 
         public PreferencesForm(MainForm parentMainForm)
@@ -50,54 +45,54 @@ namespace OutlookDesktop
 			{
                 if (_parentMainForm.Preferences.Opacity >= 0 && _parentMainForm.Preferences.Opacity <= 1)
                 {
-                    this.transparencySlider.Value = (int)(_parentMainForm.Preferences.Opacity * 100);
+                    transparencySlider.Value = (int)(_parentMainForm.Preferences.Opacity * 100);
                 }
                 else
                 {
-                    this.transparencySlider.Value = (int) (InstancePreferences.DefaultOpacity * 100);
+                    transparencySlider.Value = (int) (InstancePreferences.DefaultOpacity * 100);
                     MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 }
 
-                if (_parentMainForm.Preferences.Left >= this.horizontalPosition.Minimum && _parentMainForm.Preferences.Left <= this.horizontalPosition.Maximum) {
-                    this.horizontalPosition.Value = _parentMainForm.Preferences.Left;
+                if (_parentMainForm.Preferences.Left >= horizontalPosition.Minimum && _parentMainForm.Preferences.Left <= horizontalPosition.Maximum) {
+                    horizontalPosition.Value = _parentMainForm.Preferences.Left;
                 } 
                 else
                 {
-                    this.horizontalPosition.Value = InstancePreferences.DefaultLeftPosition;
+                    horizontalPosition.Value = InstancePreferences.DefaultLeftPosition;
                     MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 }
 
-                if (_parentMainForm.Preferences.Top >= this.verticalPosition.Minimum && _parentMainForm.Preferences.Top <= this.verticalPosition.Maximum)
+                if (_parentMainForm.Preferences.Top >= verticalPosition.Minimum && _parentMainForm.Preferences.Top <= verticalPosition.Maximum)
                 {
-                    this.verticalPosition.Value = _parentMainForm.Preferences.Top;
+                    verticalPosition.Value = _parentMainForm.Preferences.Top;
                 }
                 else
                 {
-                    this.verticalPosition.Value = InstancePreferences.DefaultTopPosition;
+                    verticalPosition.Value = InstancePreferences.DefaultTopPosition;
                     MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 }
 
-                if (_parentMainForm.Preferences.Height >= this.heightSlider.Minimum && _parentMainForm.Preferences.Height <= this.heightSlider.Maximum)
+                if (_parentMainForm.Preferences.Height >= heightSlider.Minimum && _parentMainForm.Preferences.Height <= heightSlider.Maximum)
                 {
-                    this.heightSlider.Value = _parentMainForm.Preferences.Height;
+                    heightSlider.Value = _parentMainForm.Preferences.Height;
                 }
                 else
                 {
-                    this.heightSlider.Value = InstancePreferences.DefaultHeight;
+                    heightSlider.Value = InstancePreferences.DefaultHeight;
                     MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 }
 
-                if (_parentMainForm.Preferences.Width >= this.widthSlider.Minimum && _parentMainForm.Preferences.Width <= this.widthSlider.Maximum)
+                if (_parentMainForm.Preferences.Width >= widthSlider.Minimum && _parentMainForm.Preferences.Width <= widthSlider.Maximum)
                 {
-                    this.widthSlider.Value = _parentMainForm.Preferences.Width;
+                    widthSlider.Value = _parentMainForm.Preferences.Width;
                 }
                 else
                 {
-                    this.widthSlider.Value = InstancePreferences.DefaultWidth;
+                    widthSlider.Value = InstancePreferences.DefaultWidth;
                     MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
                 }
 
-                double opacityVal = (double)this.transparencySlider.Value / 100;
+                double opacityVal = (double)transparencySlider.Value / 100;
                 uxOpacityValue.Text = opacityVal.ToString();
                 uxWidthValue.Text = widthSlider.Value.ToString();
                 uxHeightValue.Text = heightSlider.Value.ToString();
@@ -120,14 +115,13 @@ namespace OutlookDesktop
 			try 
 			{
                 //InstancePreferences.StartWithWindows = this.launchOnStartupCheckbox.Checked;
-                double opacityVal;
-                opacityVal = (double)this.transparencySlider.Value / 100;
+			    double opacityVal = (double)transparencySlider.Value / 100;
                 if (opacityVal == 1) { opacityVal = 0.99; }
                 _parentMainForm.Preferences.Opacity = opacityVal;
-                _parentMainForm.Preferences.Left = this.horizontalPosition.Value;
-                _parentMainForm.Preferences.Top = this.verticalPosition.Value;
-                _parentMainForm.Preferences.Width = this.widthSlider.Value;
-                _parentMainForm.Preferences.Height = this.heightSlider.Value;
+                _parentMainForm.Preferences.Left = horizontalPosition.Value;
+                _parentMainForm.Preferences.Top = verticalPosition.Value;
+                _parentMainForm.Preferences.Width = widthSlider.Value;
+                _parentMainForm.Preferences.Height = heightSlider.Value;
                 _dirty = false;
 			} 
 			catch (Exception)
@@ -144,11 +138,9 @@ namespace OutlookDesktop
 		/// <returns>true if the user wants to cancel, false otherwise.</returns>
 		private bool Confirm_Cancel()
 		{
-			DialogResult msgResult = new DialogResult();
+		    DialogResult msgResult = MessageBox.Show(this, Resources.CancelConfirmation, Resources.ConfirmationCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
 
-			msgResult = MessageBox.Show(this, Resources.CancelConfirmation, Resources.ConfirmationCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
-
-			if (msgResult == DialogResult.Yes) 
+		    if (msgResult == DialogResult.Yes) 
 			{
 				// restore settings
                 _parentMainForm.Opacity = _parentMainForm.Preferences.Opacity;
@@ -159,10 +151,7 @@ namespace OutlookDesktop
 				
 				return true;
 			}
-			else 
-			{
-				return false;
-			}
+		    return false;
 		}
 
         private void OKButton_Click(object sender, EventArgs e)
@@ -172,12 +161,12 @@ namespace OutlookDesktop
                 MessageBox.Show(this, Resources.ErrorSavingSettings, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
-            this.Close();
+            Close();
         }
 
         private void Cancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void PreferencesForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -191,7 +180,7 @@ namespace OutlookDesktop
         private void transparencySlider_Scroll(object sender, EventArgs e)
         {
             // update main form in real time so the user can gauage how they want it.
-            double opacityVal = (double)this.transparencySlider.Value / 100;
+            double opacityVal = (double)transparencySlider.Value / 100;
             uxOpacityValue.Text = opacityVal.ToString();
             if (opacityVal == 1) { opacityVal = 0.99; }
             _parentMainForm.Opacity = opacityVal;

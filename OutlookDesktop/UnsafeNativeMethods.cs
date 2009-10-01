@@ -67,14 +67,14 @@ namespace OutlookDesktop
             try
             {
                 form.SendToBack();
-                IntPtr pWnd = UnsafeNativeMethods.FindWindow("Progman", null);
-                UnsafeNativeMethods.SetParent(form.Handle, pWnd);
+                IntPtr pWnd = FindWindow("Progman", null);
+                SetParent(form.Handle, pWnd);
                 return true;
             }
             catch (Exception ex)
             {
-                log.ErrorFormat(String.Format("Error pinning window to desktop, OS: {0}.", System.Environment.OSVersion.Version), Resources.ErrorInitializingApp);
-                MessageBox.Show(form, Resources.ErrorInitializingApp + " " + ex.ToString(), Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                log.ErrorFormat(String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version), Resources.ErrorInitializingApp);
+                MessageBox.Show(form, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;                
             }
         }
@@ -100,19 +100,19 @@ namespace OutlookDesktop
                 //IntPtr tWnd = this.Handle;
                 //UnsafeNativeMethods.SetParent(tWnd, pWnd);
 
-                if (System.Environment.OSVersion.Version.Major >= 6)
+                if (Environment.OSVersion.Version.Major >= 6)
                 {
                     // Vista or Above
                     // TODO: Find a better way, this sucks!
-                    UnsafeNativeMethods.SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
+                    SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
                 }
 
                 return true;
             }
             catch (Exception ex)
             {
-                log.ErrorFormat(String.Format("Error pinning window to desktop, OS: {0}.", System.Environment.OSVersion.Version), Resources.ErrorInitializingApp);
-                MessageBox.Show(windowToSendBack, Resources.ErrorInitializingApp + " " + ex.ToString(), Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                log.ErrorFormat(String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version), Resources.ErrorInitializingApp);
+                MessageBox.Show(windowToSendBack, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 

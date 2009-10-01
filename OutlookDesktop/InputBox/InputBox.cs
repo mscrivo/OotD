@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
-namespace OutlookDesktop
+namespace OutlookDesktop.InputBox
 {
     /// <summary>
     /// Delegate used to Validate an InputBox
@@ -15,11 +9,6 @@ namespace OutlookDesktop
 
     public partial class InputBox : Form
     {
-        /// <summary>
-        /// Delegate used to validate the object
-        /// </summary>
-        private InputBoxValidatingEventHandler _validator;
-
         private InputBox()
         {
             InitializeComponent();
@@ -27,13 +16,13 @@ namespace OutlookDesktop
 
         private void ButtonCancel_Click(object sender, System.EventArgs e)
         {
-            this.Validator = null;
-            this.Close();
+            Validator = null;
+            Close();
         }
 
         private void OKButton_Click(object sender, System.EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         /// <summary>
@@ -87,10 +76,6 @@ namespace OutlookDesktop
             }
         }
 
-        protected InputBoxValidatingEventHandler Validator
-        {
-            get { return (_validator); }
-            set { _validator = value; }
-        }
+        protected InputBoxValidatingEventHandler Validator { get; set; }
     }
 }

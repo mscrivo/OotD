@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Reflection;
-using OutlookDesktop.Properties;
-using System.Windows.Forms;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.IO;
-using Microsoft.Win32;
 using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using System.Windows.Forms;
+using Microsoft.Win32;
+using OutlookDesktop.Properties;
 
 namespace OutlookDesktop
 {
-    class Startup
+    static class Startup
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// The main entry point for the application.
@@ -24,11 +21,11 @@ namespace OutlookDesktop
         [STAThread]
         static void Main()
         {
-            log.Debug("Checking to see if there is a instance running.");
+            Log.Debug("Checking to see if there is a instance running.");
             if (IsAlreadyRunning())
             {
                 // let the user know the program is already running.
-                log.Warn("Instance is already running, exiting.");
+                Log.Warn("Instance is already running, exiting.");
                 MessageBox.Show(Resources.ProgramIsAlreadyRunning, Resources.ProgramIsAlreadyRunningCaption, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
             else
@@ -36,46 +33,19 @@ namespace OutlookDesktop
 
                 if (!IsOutlook2000OrHigherInstalled())
                 {
-                    log.Error("Outlook is not avaliable or installed.");
+                    Log.Error("Outlook is not avaliable or installed.");
                     MessageBox.Show("This program requires Microsoft Outlook 2000 or higher." + Environment.NewLine + "Please install Microsoft Office and try again.", "Missing Requirements", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 Application.EnableVisualStyles();
 
-                log.Debug("Starting the instance manager and loading instances.");
+                Log.Debug("Starting the instance manager and loading instances.");
                 InstanceManager instanceManager = new InstanceManager();
                 instanceManager.LoadInstances();
 
                 Application.Run(instanceManager);
             }
-        }
-
-        /// <summary>
-        /// GetCurrentInstanceWindowHandle
-        /// </summary>
-        /// <returns></returns>
-        private static IntPtr GetCurrentInstanceWindowHandle()
-        {
-            IntPtr hWnd = IntPtr.Zero;
-            Process process = Process.GetCurrentProcess();
-            Process[] processes = Process.GetProcessesByName(process.ProcessName);
-            foreach (Process _process in processes)
-            {
-                // Get the first instance that is not this instance, has the
-                // same process name and was started from the same file name
-                // and location. Also check that the process has a valid
-                // window handle in this session to filter out other user's
-                // processes.
-                if (_process.Id != process.Id &&
-                    _process.MainModule.FileName == process.MainModule.FileName &&
-                    _process.MainWindowHandle != IntPtr.Zero)
-                {
-                    hWnd = _process.MainWindowHandle;
-                    break;
-                }
-            }
-            return hWnd;
         }
 
         /// <summary>
@@ -89,31 +59,12 @@ namespace OutlookDesktop
             string sExeName = fileInfo.Name;
             bool createdNew;
 
-            mutex = new Mutex(true, "Local\\" + sExeName, out createdNew);
+            _mutex = new Mutex(true, "Local\\" + sExeName, out createdNew);
 
             return !createdNew;
         }
 
-        static Mutex mutex;
-        const int SW_RESTORE = 9;
-
-        /// <summary>
-        /// Returns the 32-bit Program Files directory depending on which Windows arch we're running on.
-        /// </summary>
-        /// <returns></returns>
-        private static string ProgramFilesx86()
-        {
-            String programFilesX86Dir = string.Empty;
-
-            if (8 == IntPtr.Size || (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"))))
-            {
-                programFilesX86Dir = Environment.GetEnvironmentVariable("ProgramFiles(x86)");
-            }
-
-            programFilesX86Dir = Environment.GetEnvironmentVariable("ProgramFiles");
-            log.Debug("Program Files Directory: " + programFilesX86Dir);
-            return programFilesX86Dir;
-        }
+        private static Mutex _mutex;
 
         /// <summary>
         /// Returns true if Outlook 2000 (or higher) is installed.
@@ -128,21 +79,24 @@ namespace OutlookDesktop
             // the version subkeys in HKLM.
             using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Office"))
             {
-                log.Info("Successfully read reg key: HKLM\\Software\\Microsoft\\Office");
-                string[] subkeys = key.GetSubKeyNames();
-
-                foreach (string subkey in subkeys)
+                Log.Info("Successfully read reg key: HKLM\\Software\\Microsoft\\Office");
+                if (key != null)
                 {
-                    log.Info("Analyzing subkey '" + subkey + "'");
-                    double versionSubKey;
-                    CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
-                    if (double.TryParse(subkey, System.Globalization.NumberStyles.Float, culture, out versionSubKey))
+                    string[] subkeys = key.GetSubKeyNames();
+
+                    foreach (string subkey in subkeys)
                     {
-                        log.Info("Office Version: " + versionSubKey.ToString());
-                        if (versionSubKey > 9)
+                        Log.Info("Analyzing subkey '" + subkey + "'");
+                        double versionSubKey;
+                        CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+                        if (double.TryParse(subkey, NumberStyles.Float, culture, out versionSubKey))
                         {
-                            hasOffice2000OrHigher = true;
-                            break;
+                            Log.Info("Office Version: " + versionSubKey);
+                            if (versionSubKey > 9)
+                            {
+                                hasOffice2000OrHigher = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -151,25 +105,27 @@ namespace OutlookDesktop
             // now check for the existence of the actual Outlook.exe.
             if (hasOffice2000OrHigher)
             {
-                log.Info("Office 2000 or higher is installed, now checking for Outlook exe");
+                Log.Info("Office 2000 or higher is installed, now checking for Outlook exe");
 
                 using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
                 {
-                    outlookPath = (string)key.GetValue("Path");
-                    log.Info("Office path reported as: " + outlookPath);
+                    if (key != null) outlookPath = (string)key.GetValue("Path");
+                    Log.Info("Office path reported as: " + outlookPath);
                     if (outlookPath != null)
                     {
-                        log.Info("Checking for Outlook exe in: " + outlookPath);
+                        Log.Info("Checking for Outlook exe in: " + outlookPath);
                         if (File.Exists(Path.Combine(outlookPath, "Outlook.exe")))
                         {
-                            log.Info("Outlook exe found.");
+                            Log.Info("Outlook exe found.");
                             return true;
                         }
                     }
                 }
             }
 
-            log.Error("Outlook path was reported as: " + Path.Combine(outlookPath, "Outlook.exe") + " but this file could not be found.");
+            if (outlookPath != null)
+                Log.Error("Outlook path was reported as: " + Path.Combine(outlookPath, "Outlook.exe") + " but this file could not be found.");
+            
             return false;
         }
     }

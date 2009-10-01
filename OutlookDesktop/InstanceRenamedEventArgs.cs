@@ -6,24 +6,14 @@ namespace OutlookDesktop
 {
     public class InstanceRenamedEventArgs : EventArgs
     {
-        public String OldInstanceName
-        {
-            get { return _oldInstanceName; }
-            set { _oldInstanceName = value; }
-        }
-        private String _oldInstanceName;
+        public String OldInstanceName { get; set; }
 
-        public String NewInstanceName
-        {
-            get { return _newInstanceName; }
-            set { _newInstanceName = value; }
-        }
-        private String _newInstanceName;
+        public String NewInstanceName { get; set; }
 
         public InstanceRenamedEventArgs(String oldInstanceName, String newInstanceName)
         {
-            _oldInstanceName = oldInstanceName;
-            _newInstanceName = newInstanceName;
+            OldInstanceName = oldInstanceName;
+            NewInstanceName = newInstanceName;
         }
     }
 }
