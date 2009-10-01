@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using OutlookDesktop.Properties;
-using Application = System.Windows.Forms.Application;
+using Application = Microsoft.Office.Interop.Outlook.Application;
 using Exception = System.Exception;
+using View = Microsoft.Office.Interop.Outlook.View;
 
 namespace OutlookDesktop
 {
-
     /// <summary>
     /// Standard Outlook folder types. 
     /// </summary>
@@ -23,47 +23,17 @@ namespace OutlookDesktop
         Tasks,
     }
 
-
     /// <summary>
     /// This is the form that hosts the outlook view control. One of these will
     /// exist for each instance.
     /// </summary>
     public partial class MainForm : Form
     {
-        private DateTime _previousDate;
         private String _customFolder;
-
-        public event EventHandler<InstanceRemovedEventArgs> InstanceRemoved;
-        public event EventHandler<InstanceRenamedEventArgs> InstanceRenamed;
-
-        #region Public Properties
-
-        [CLSCompliant(false)]
-        /// <summary>
-        /// Outlook Application
-        /// </summary>
-        private Microsoft.Office.Interop.Outlook.Application OutlookApplication { get; set; }
-
-        [CLSCompliant(false)]
-        public NameSpace OutlookNameSpace { get; private set; }
-
-        [CLSCompliant(false)]
-        /// <summary>
-        /// Contains the current views avaliable for the folder. 
-        /// </summary>
-        public List<Microsoft.Office.Interop.Outlook.View> OulookFolderViews { get; private set; }
-
-        private MAPIFolder _outlookFolder;
-
+        private DateTime _previousDate;
         private readonly Boolean _isInitialized;
-
-        public InstancePreferences Preferences { get; private set; }
-
-        public string InstanceName { get; private set; }
-
         private ToolStripMenuItem _customMenu;
-
-        #endregion
+        private MAPIFolder _outlookFolder;
 
         /// <summary>
         /// Sets up the form for the current instance.
@@ -76,7 +46,7 @@ namespace OutlookDesktop
                 InitializeComponent();
 
                 // Get or create a instance of the Outlook Applciation.
-                OutlookApplication = new Microsoft.Office.Interop.Outlook.Application();
+                OutlookApplication = new Application();
                 OutlookNameSpace = OutlookApplication.GetNamespace("MAPI");
 
                 // Set the default viewcontrol to the calendar and Day/Week/Month view.
@@ -85,7 +55,8 @@ namespace OutlookDesktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption,
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _isInitialized = false;
                 return;
             }
@@ -111,6 +82,9 @@ namespace OutlookDesktop
                 return cp;
             }
         }
+
+        public event EventHandler<InstanceRemovedEventArgs> InstanceRemoved;
+        public event EventHandler<InstanceRenamedEventArgs> InstanceRenamed;
 
         /// <summary>
         /// Get the location of the Select folder menu in the tray context menu. 
@@ -151,7 +125,8 @@ namespace OutlookDesktop
             {
                 // use default if there was a problem
                 Opacity = InstancePreferences.DefaultOpacity;
-                MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK,
+                                MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
             // Sets the position of the instance. 
@@ -169,7 +144,8 @@ namespace OutlookDesktop
                 Top = InstancePreferences.DefaultLeftPosition;
                 Width = InstancePreferences.DefaultWidth;
                 Height = InstancePreferences.DefaultHeight;
-                MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK,
+                                MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
             // Checks the menuitem ofr the current folder.
@@ -198,7 +174,8 @@ namespace OutlookDesktop
                 // custom folder
                 _customFolder = Preferences.OutlookFolderName;
                 String folderName = GetFolderNameFromFullPath(_customFolder, OutlookNameSpace.Folders);
-                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(folderName, null, new EventHandler(CustomFolderMenu_Click)));
+                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
+                                      new ToolStripMenuItem(folderName, null, new EventHandler(CustomFolderMenu_Click)));
                 _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
             }
@@ -221,7 +198,8 @@ namespace OutlookDesktop
         {
             // Load up the MAPI Folder from Entry / Store IDs 
             if (Preferences.OutlookFolderEntryId != "" && Preferences.OutlookFolderStoreId != "")
-                _outlookFolder = OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId, Preferences.OutlookFolderStoreId);
+                _outlookFolder = OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId,
+                                                                  Preferences.OutlookFolderStoreId);
             else
                 _outlookFolder = null;
         }
@@ -233,7 +211,7 @@ namespace OutlookDesktop
         private void UpdateOutlookViewsList()
         {
             uxOutlookViews.DropDownItems.Clear();
-            OulookFolderViews = new List<Microsoft.Office.Interop.Outlook.View>();
+            OulookFolderViews = new List<View>();
 
             //uxOutlookViews.DropDownItems.Add(uxDefaultOutlookView);
 
@@ -243,11 +221,11 @@ namespace OutlookDesktop
                 //      Will have to spawn a new instance... Sigh.
                 //SetMapiFolder();
 
-                foreach (Microsoft.Office.Interop.Outlook.View view in _outlookFolder.Views)
+                foreach (View view in _outlookFolder.Views)
                 {
-                    ToolStripMenuItem viewItem = new ToolStripMenuItem(view.Name) {Tag = view};
+                    var viewItem = new ToolStripMenuItem(view.Name) { Tag = view };
 
-                    viewItem.Click += new EventHandler(viewItem_Click);
+                    viewItem.Click += viewItem_Click;
 
                     if (view.Name == Preferences.OutlookFolderView)
                         viewItem.Checked = true;
@@ -274,7 +252,7 @@ namespace OutlookDesktop
         /// <param name="fullPath"></param>
         /// <param name="oFolders"></param>
         /// <returns></returns>
-        private String GetFolderNameFromFullPath(String fullPath, Microsoft.Office.Interop.Outlook.Folders oFolders)
+        private String GetFolderNameFromFullPath(String fullPath, Folders oFolders)
         {
             //TODO: Revert back and deal with online/offline better!
             return fullPath.Substring(fullPath.LastIndexOf("\\") + 1, fullPath.Length - fullPath.LastIndexOf("\\") - 1);
@@ -288,7 +266,7 @@ namespace OutlookDesktop
         private static string GenerateFolderPathFromObject(MAPIFolder oFolder)
         {
             string fullFolderPath = "\\\\";
-            List<string> subfolders = new List<string>();
+            var subfolders = new List<string>();
 
             subfolders.Add(oFolder.Name);
 
@@ -311,22 +289,14 @@ namespace OutlookDesktop
             return fullFolderPath;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="folderPath"></param>
-        /// <returns></returns>
         private static string GetFolderPath(string folderPath)
         {
             return folderPath.Replace("\\\\Personal Folders\\", "");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private void ShowHideDesktopComponent()
         {
-            if (Visible == true)
+            if (Visible)
             {
                 HideShowMenu.Text = Resources.Show;
                 Visible = false;
@@ -370,7 +340,7 @@ namespace OutlookDesktop
         /// <param name="itemToCheck"></param>
         private void CheckSelectedFolder(ToolStripMenuItem itemToCheck)
         {
-            List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
+            var menuItems = new List<ToolStripMenuItem>();
 
             menuItems.Add(CalendarMenu);
             menuItems.Add(ContactsMenu);
@@ -420,7 +390,6 @@ namespace OutlookDesktop
 
         private void ChangeDefaultFolderType(FolderViewType folderViewType)
         {
-
             ToolStripMenuItem itemToCheck;
             switch (folderViewType)
             {
@@ -495,21 +464,32 @@ namespace OutlookDesktop
                 _customFolder = Preferences.OutlookFolderName;
 
                 // Update the UI to reflect the new settings. 
-                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(oFolder.Name, null, new EventHandler(CustomFolderMenu_Click)));
+                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
+                                      new ToolStripMenuItem(oFolder.Name, null, new EventHandler(CustomFolderMenu_Click)));
                 _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
 
                 SetMapiFolder();
                 CheckSelectedFolder(_customMenu);
                 UpdateOutlookViewsList();
-
             }
             catch (Exception)
             {
-                MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
             }
         }
 
         #region Event Handlers
+
+        private void MainForm_Activated(object sender, EventArgs e)
+        {
+            UnsafeNativeMethods.SendWindowToBack(this);
+        }
+
+        private void MainForm_Layout(object sender, LayoutEventArgs e)
+        {
+            UnsafeNativeMethods.SendWindowToBack(this);
+        }
 
         /// <summary>
         /// When a view is selected this will change the view control view to it, save it in the 
@@ -517,12 +497,12 @@ namespace OutlookDesktop
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void viewItem_Click(object sender, EventArgs e)
+        private void viewItem_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem viewItem = sender as ToolStripMenuItem;
+            var viewItem = sender as ToolStripMenuItem;
             if (viewItem != null)
             {
-                Microsoft.Office.Interop.Outlook.View view = viewItem.Tag as Microsoft.Office.Interop.Outlook.View;
+                var view = viewItem.Tag as View;
 
                 if (view != null)
                 {
@@ -581,7 +561,7 @@ namespace OutlookDesktop
 
         private void PreferencesMenu_Click(object sender, EventArgs e)
         {
-            PreferencesForm preferencesForm = new PreferencesForm(this);
+            var preferencesForm = new PreferencesForm(this);
             preferencesForm.Show();
         }
 
@@ -592,10 +572,15 @@ namespace OutlookDesktop
 
         private void RemoveInstanceMenu_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(this, Resources.RemoveInstanceConfirmation, Resources.ConfirmationCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            DialogResult result = MessageBox.Show(this, Resources.RemoveInstanceConfirmation,
+                                                  Resources.ConfirmationCaption, MessageBoxButtons.YesNo,
+                                                  MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
             if (result == DialogResult.Yes)
             {
-                using (RegistryKey appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+                using (
+                    RegistryKey appReg =
+                        Registry.CurrentUser.CreateSubKey("Software\\" + System.Windows.Forms.Application.CompanyName +
+                                                          "\\" + System.Windows.Forms.Application.ProductName))
                 {
                     if (appReg != null) appReg.DeleteSubKeyTree(InstanceName);
                 }
@@ -626,15 +611,20 @@ namespace OutlookDesktop
         {
             Dispose();
 
-            Application.Exit();
+            System.Windows.Forms.Application.Exit();
         }
 
         private void RenameInstanceMenu_Click(object sender, EventArgs e)
         {
-            InputBoxResult result = InputBox.InputBox.Show(this, "", "Rename Instance", InstanceName, inputBox_Validating);
+            InputBoxResult result = InputBox.InputBox.Show(this, "", "Rename Instance", InstanceName,
+                                                           inputBox_Validating);
             if (result.Ok)
             {
-                using (RegistryKey parentKey = Registry.CurrentUser.OpenSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName, true))
+                using (
+                    RegistryKey parentKey =
+                        Registry.CurrentUser.OpenSubKey(
+                            "Software\\" + System.Windows.Forms.Application.CompanyName + "\\" +
+                            System.Windows.Forms.Application.ProductName, true))
                 {
                     if (parentKey != null)
                     {
@@ -666,14 +656,27 @@ namespace OutlookDesktop
 
         #endregion
 
-        private void MainForm_Activated(object sender, EventArgs e)
-        {
-            UnsafeNativeMethods.SendWindowToBack(this);
-        }
+        #region Properties
 
-        private void MainForm_Layout(object sender, LayoutEventArgs e)
-        {
-            UnsafeNativeMethods.SendWindowToBack(this);
-        }
+        [CLSCompliant(false)]
+        /// <summary>
+        /// Outlook Application
+        /// </summary>
+        private Application OutlookApplication { get; set; }
+
+        [CLSCompliant(false)]
+        public NameSpace OutlookNameSpace { get; private set; }
+
+        [CLSCompliant(false)]
+        /// <summary>
+        /// Contains the current views avaliable for the folder. 
+        /// </summary>
+        public List<View> OulookFolderViews { get; private set; }
+
+        public InstancePreferences Preferences { get; private set; }
+
+        public string InstanceName { get; private set; }
+
+        #endregion
     }
 }

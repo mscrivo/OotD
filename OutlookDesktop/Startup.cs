@@ -1,47 +1,51 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using log4net;
 using Microsoft.Win32;
 using OutlookDesktop.Properties;
 
 namespace OutlookDesktop
 {
-    static class Startup
+    internal static class Startup
     {
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static Mutex _mutex;
 
         /// <summary>
         /// The main entry point for the application.
         /// We only only one instance of the application to be running.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Log.Debug("Checking to see if there is a instance running.");
             if (IsAlreadyRunning())
             {
                 // let the user know the program is already running.
                 Log.Warn("Instance is already running, exiting.");
-                MessageBox.Show(Resources.ProgramIsAlreadyRunning, Resources.ProgramIsAlreadyRunningCaption, MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                MessageBox.Show(Resources.ProgramIsAlreadyRunning, Resources.ProgramIsAlreadyRunningCaption,
+                                MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
             else
             {
-
                 if (!IsOutlook2000OrHigherInstalled())
                 {
                     Log.Error("Outlook is not avaliable or installed.");
-                    MessageBox.Show("This program requires Microsoft Outlook 2000 or higher." + Environment.NewLine + "Please install Microsoft Office and try again.", "Missing Requirements", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(
+                        "This program requires Microsoft Outlook 2000 or higher." + Environment.NewLine +
+                        "Please install Microsoft Office and try again.", "Missing Requirements", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                     return;
                 }
 
                 Application.EnableVisualStyles();
 
                 Log.Debug("Starting the instance manager and loading instances.");
-                InstanceManager instanceManager = new InstanceManager();
+                var instanceManager = new InstanceManager();
                 instanceManager.LoadInstances();
 
                 Application.Run(instanceManager);
@@ -63,8 +67,6 @@ namespace OutlookDesktop
 
             return !createdNew;
         }
-
-        private static Mutex _mutex;
 
         /// <summary>
         /// Returns true if Outlook 2000 (or higher) is installed.
@@ -107,9 +109,12 @@ namespace OutlookDesktop
             {
                 Log.Info("Office 2000 or higher is installed, now checking for Outlook exe");
 
-                using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
+                using (
+                    RegistryKey key =
+                        Registry.LocalMachine.OpenSubKey(
+                            "Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
                 {
-                    if (key != null) outlookPath = (string)key.GetValue("Path");
+                    if (key != null) outlookPath = (string) key.GetValue("Path");
                     Log.Info("Office path reported as: " + outlookPath);
                     if (outlookPath != null)
                     {
@@ -124,8 +129,9 @@ namespace OutlookDesktop
             }
 
             if (outlookPath != null)
-                Log.Error("Outlook path was reported as: " + Path.Combine(outlookPath, "Outlook.exe") + " but this file could not be found.");
-            
+                Log.Error("Outlook path was reported as: " + Path.Combine(outlookPath, "Outlook.exe") +
+                          " but this file could not be found.");
+
             return false;
         }
     }

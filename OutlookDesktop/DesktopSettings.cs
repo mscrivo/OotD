@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Windows.Forms;
-
+using log4net;
 
 namespace OutlookDesktop
 {
     public partial class DesktopSettings : Form
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private InstanceManager _instanceManager;
+        private readonly InstanceManager _instanceManager;
 
         public DesktopSettings(InstanceManager instanceManager)
         {
@@ -22,8 +17,6 @@ namespace OutlookDesktop
 
             _instanceManager = instanceManager;
         }
-
-
 
         #region Event Handlers
 
@@ -49,47 +42,37 @@ namespace OutlookDesktop
             log.Debug("Iterating through the instances.");
             foreach (MainForm instance in _instanceManager.Instances)
             {
-                log.Debug(String.Format("Processing: {0}",instance.InstanceName)); 
-                TreeNode instanceNode = new TreeNode();
+                log.Debug(String.Format("Processing: {0}", instance.InstanceName));
+                var instanceNode = new TreeNode();
                 instanceNode.Text = instance.InstanceName;
                 instanceNode.Tag = instance;
 
-                
 
                 log.Debug("Adding instance to tree");
                 baseNode.Nodes.Add(instanceNode);
             }
-
         }
-
 
         #endregion
 
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
         private void uxSettingsTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             log.Debug("Contract: Check that the tag contains a object");
-            if(e.Node.Tag == null) return;
+            if (e.Node.Tag == null) return;
 
 
             if (e.Node.Tag is MainForm)
             {
-                MainForm instanceToEdit = e.Node.Tag as MainForm;
+                var instanceToEdit = e.Node.Tag as MainForm;
 
-                InstanceSettings i = new InstanceSettings(instanceToEdit);
+                var i = new InstanceSettings(instanceToEdit);
 
                 splitContainer1.Panel2.Controls.Add(i);
             }
-            
-
         }
-
-
-
-
     }
 }

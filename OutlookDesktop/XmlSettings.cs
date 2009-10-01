@@ -4,37 +4,33 @@ using System.Xml;
 
 namespace OutlookDesktop
 {
-    class XmlSettings
+    internal class XmlSettings
     {
         #region Private Fields
 
         /// <summary>
-        /// XmlDocument used to store the XmlData. 
-        /// </summary>
-        XmlDocument xmlDocument = new XmlDocument();
-
-        /// <summary>
         /// Default path to save the settings. 
         /// </summary>
-        string documentPath = Application.StartupPath + "//Data//settings.xml";
+        private readonly string documentPath = Application.StartupPath + "//Data//settings.xml";
+
+        /// <summary>
+        /// XmlDocument used to store the XmlData. 
+        /// </summary>
+        private XmlDocument xmlDocument = new XmlDocument();
+
         #endregion
 
         #region Singleton Access Block
+
         public static XmlSettings Instance
         {
-            get
-            {
-                return Nested.instance;
-            }
+            get { return Nested.instance; }
         }
 
-        class Nested
+        private class Nested
         {
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit
-            static Nested()
-            {
-            }
 
             internal static readonly XmlSettings instance = new XmlSettings();
         }
@@ -42,16 +38,29 @@ namespace OutlookDesktop
         #endregion
 
         #region Constructor
+
         public XmlSettings()
         {
-            try { xmlDocument.Load(documentPath); }
-            catch { xmlDocument.LoadXml("<settings></settings>"); }
+            try
+            {
+                xmlDocument.Load(documentPath);
+            }
+            catch
+            {
+                xmlDocument.LoadXml("<settings></settings>");
+            }
         }
 
         public XmlSettings(string xPath, object value)
         {
-            try { xmlDocument.Load(documentPath); }
-            catch { xmlDocument.LoadXml("<settings></settings>"); }
+            try
+            {
+                xmlDocument.Load(documentPath);
+            }
+            catch
+            {
+                xmlDocument.LoadXml("<settings></settings>");
+            }
 
             PutSetting(xPath, value);
         }
@@ -78,9 +87,13 @@ namespace OutlookDesktop
             XmlNode xmlNode = xmlDocument.SelectSingleNode("settings/" + StripOutBadCharacters(xPath));
             if (xmlNode != null)
             {
-                return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(xmlNode.InnerText);
+                return (T) TypeDescriptor.GetConverter(typeof (T)).ConvertFromString(xmlNode.InnerText);
             }
-            else { PutSetting(xPath, defaultValue); return defaultValue; }
+            else
+            {
+                PutSetting(xPath, defaultValue);
+                return defaultValue;
+            }
         }
 
         public object GetSetting(string xPath, object defaultValue)
@@ -88,15 +101,22 @@ namespace OutlookDesktop
             XmlNode xmlNode = xmlDocument.SelectSingleNode("settings/" + StripOutBadCharacters(xPath));
             if (xmlNode != null)
             {
-                return (object)TypeDescriptor.GetConverter(typeof(string)).ConvertFromString(xmlNode.InnerText);
+                return TypeDescriptor.GetConverter(typeof (string)).ConvertFromString(xmlNode.InnerText);
             }
-            else { PutSetting(xPath, defaultValue); return defaultValue; }
+            else
+            {
+                PutSetting(xPath, defaultValue);
+                return defaultValue;
+            }
         }
 
         public void PutSetting(string xPath, object value)
         {
             XmlNode xmlNode = xmlDocument.SelectSingleNode("settings/" + StripOutBadCharacters(xPath));
-            if (xmlNode == null) { xmlNode = createMissingNode("settings/" + StripOutBadCharacters(xPath)); }
+            if (xmlNode == null)
+            {
+                xmlNode = createMissingNode("settings/" + StripOutBadCharacters(xPath));
+            }
             xmlNode.InnerText = TypeDescriptor.GetConverter(value.GetType()).ConvertToString(value);
             xmlDocument.Save(documentPath);
         }
@@ -114,8 +134,8 @@ namespace OutlookDesktop
                 if (testNode == null)
                 {
                     currentNode.InnerXml += "<" +
-                                xPathSection + "></" +
-                                xPathSection + ">";
+                                            xPathSection + "></" +
+                                            xPathSection + ">";
                 }
                 currentNode = xmlDocument.SelectSingleNode(currentXPath);
                 currentXPath += "/";

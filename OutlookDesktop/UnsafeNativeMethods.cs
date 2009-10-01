@@ -1,36 +1,40 @@
 using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using log4net;
 using OutlookDesktop.Properties;
 
 namespace OutlookDesktop
 {
-    class UnsafeNativeMethods
+    internal class UnsafeNativeMethods
     {
-
-        private UnsafeNativeMethods()
-        {
-        }
+        private const int GWL_EXSTYLE = (-20);
+        private const int HWND_BOTTOM = 0x1;
+        private const int HWND_TOP = 0x0;
+        private const int HWND_TOPMOST = -0x1;
 
         /// <summary>
         /// Consts to deal with window location.
         /// </summary>
         private const int SWP_DRAWFRAME = 0x20;
+
+        private const int SWP_NOACTIVATE = 0x10;
+
         private const int SWP_NOMOVE = 0x2;
         private const int SWP_NOSIZE = 0x1;
         private const int SWP_NOZORDER = 0x4;
-        private const int SWP_NOACTIVATE = 0x10;
-        private const int HWND_BOTTOM = 0x1;
-        private const int HWND_TOP = 0x0;
-        private const int HWND_TOPMOST = -0x1;
-        private const int GWL_EXSTYLE = (-20);
-        private const int WS_EX_TOOLWINDOW = 0x80;
         private const int WS_EX_APPWINDOW = 0x40000;
+        private const int WS_EX_TOOLWINDOW = 0x80;
 
         /// <summary>
         /// Standard logging block.
         /// </summary>
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        private UnsafeNativeMethods()
+        {
+        }
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
@@ -41,17 +45,18 @@ namespace OutlookDesktop
         [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetWindowPos(
-           IntPtr hWnd,            // window handle
-           int hWndInsertAfter,    // placement-order handle
-           int X,                  // horizontal position
-           int Y,                  // vertical position
-           int cx,                 // width
-           int cy,                 // height
-           uint uFlags);           // window positioning flags
+            IntPtr hWnd, // window handle
+            int hWndInsertAfter, // placement-order handle
+            int X, // horizontal position
+            int Y, // vertical position
+            int cx, // width
+            int cy, // height
+            uint uFlags); // window positioning flags
 
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
+        public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass,
+                                                 string lpszWindow);
 
         [DllImport("user32", CharSet = CharSet.Auto)]
         public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
@@ -73,9 +78,12 @@ namespace OutlookDesktop
             }
             catch (Exception ex)
             {
-                log.ErrorFormat(String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version), Resources.ErrorInitializingApp);
-                MessageBox.Show(form, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;                
+                log.ErrorFormat(
+                    String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version),
+                    Resources.ErrorInitializingApp);
+                MessageBox.Show(form, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption,
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
 
@@ -104,19 +112,21 @@ namespace OutlookDesktop
                 {
                     // Vista or Above
                     // TODO: Find a better way, this sucks!
-                    SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
+                    SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0,
+                                 SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
                 }
 
                 return true;
             }
             catch (Exception ex)
             {
-                log.ErrorFormat(String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version), Resources.ErrorInitializingApp);
-                MessageBox.Show(windowToSendBack, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                log.ErrorFormat(
+                    String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version),
+                    Resources.ErrorInitializingApp);
+                MessageBox.Show(windowToSendBack, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption,
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
         }
-
     }
 }

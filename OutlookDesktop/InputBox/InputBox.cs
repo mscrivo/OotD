@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace OutlookDesktop.InputBox
 {
@@ -14,13 +16,15 @@ namespace OutlookDesktop.InputBox
             InitializeComponent();
         }
 
-        private void ButtonCancel_Click(object sender, System.EventArgs e)
+        protected InputBoxValidatingEventHandler Validator { get; set; }
+
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             Validator = null;
             Close();
         }
 
-        private void OKButton_Click(object sender, System.EventArgs e)
+        private void OKButton_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -34,9 +38,10 @@ namespace OutlookDesktop.InputBox
         /// <param name="defaultValue">The default value to place in the Inbox Box.</param>
         /// <param name="validator">A validator method that peforms validation on the user's input.</param>
         /// <returns></returns>
-        public static InputBoxResult Show(Form owner, string instructions, string caption, string defaultValue, InputBoxValidatingEventHandler validator)
+        public static InputBoxResult Show(Form owner, string instructions, string caption, string defaultValue,
+                                          InputBoxValidatingEventHandler validator)
         {
-            using (InputBox form = new InputBox())
+            using (var form = new InputBox())
             {
                 form.Owner = owner;
                 form.PromptLabel.Text = instructions;
@@ -46,7 +51,7 @@ namespace OutlookDesktop.InputBox
 
                 DialogResult result = form.ShowDialog();
 
-                InputBoxResult retval = new InputBoxResult();
+                var retval = new InputBoxResult();
                 if (result == DialogResult.OK)
                 {
                     retval.Text = form.InputTextBox.Text;
@@ -56,16 +61,16 @@ namespace OutlookDesktop.InputBox
             }
         }
 
-        private void InputTextBox_TextChanged(object sender, System.EventArgs e)
+        private void InputTextBox_TextChanged(object sender, EventArgs e)
         {
             _errorProviderText.SetError(InputTextBox, "");
         }
 
-        private void InputTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void InputTextBox_Validating(object sender, CancelEventArgs e)
         {
             if (Validator != null)
             {
-                InputBoxValidatingEventArgs args = new InputBoxValidatingEventArgs();
+                var args = new InputBoxValidatingEventArgs();
                 args.Text = InputTextBox.Text;
                 Validator(this, args);
                 if (args.Cancel)
@@ -75,7 +80,5 @@ namespace OutlookDesktop.InputBox
                 }
             }
         }
-
-        protected InputBoxValidatingEventHandler Validator { get; set; }
     }
 }

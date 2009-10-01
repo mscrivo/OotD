@@ -1,30 +1,23 @@
 ﻿using System;
 using System.Drawing;
 using System.Globalization;
+using System.Reflection;
+using System.Resources;
 using System.Windows.Forms;
+using log4net;
 using Microsoft.Win32;
-using OutlookDesktop.InputBox;
 using OutlookDesktop.Properties;
 
 namespace OutlookDesktop
 {
     public partial class InstanceManager : Form
     {
-
         /// <summary>
         /// Standard logging block.
         /// </summary>
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private MainForm[] _mainFormInstances;
-
-        /// <summary>
-        /// Returns the current instances of Outlook on the Desktop.
-        /// </summary>
-        public MainForm[] Instances
-        {
-            get { return _mainFormInstances; }
-        }
 
         public InstanceManager()
         {
@@ -37,9 +30,19 @@ namespace OutlookDesktop
 
             if (GlobalPreferences.IsFirstRun)
             {
-                trayIcon.ShowBalloonTip(2000, "Outlook on the Desktop is running", "Right click on this icon to configure Outlook on the Desktop.", ToolTipIcon.Info);
+                trayIcon.ShowBalloonTip(2000, "Outlook on the Desktop is running",
+                                        "Right click on this icon to configure Outlook on the Desktop.",
+                                        ToolTipIcon.Info);
                 Log.Debug("First Run");
             }
+        }
+
+        /// <summary>
+        /// Returns the current instances of Outlook on the Desktop.
+        /// </summary>
+        public MainForm[] Instances
+        {
+            get { return _mainFormInstances; }
         }
 
         protected override CreateParams CreateParams
@@ -68,7 +71,10 @@ namespace OutlookDesktop
 
             // Each subkey in our main registry key represents an instance. 
             // Read each subkey and load the instance.
-            using (RegistryKey appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+            using (
+                RegistryKey appReg =
+                    Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
+                                                      Application.ProductName))
             {
                 if (appReg != null)
                     if (appReg.SubKeyCount > 1)
@@ -77,11 +83,12 @@ namespace OutlookDesktop
 
                         // There are multiple instances defined, so we build the context menu strip dynamically.
                         trayIcon.ContextMenuStrip = new ContextMenuStrip();
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Add Instance", null, AddInstanceMenu_Click));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Add Instance", null,
+                                                                                  AddInstanceMenu_Click));
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
                         _mainFormInstances = new MainForm[appReg.SubKeyCount];
-                        ToolStripMenuItem[] instanceSubmenu = new ToolStripMenuItem[appReg.SubKeyCount];
+                        var instanceSubmenu = new ToolStripMenuItem[appReg.SubKeyCount];
                         int count = 0;
 
                         // each instance will get it's own submenu in the main context menu.
@@ -119,15 +126,20 @@ namespace OutlookDesktop
                         // add the rest of the necessary menu items to the main context menu.
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Start With Windows", null, StartWithWindowsMenu_Click, "StartWithWindows"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Start With Windows", null,
+                                                                                  StartWithWindowsMenu_Click,
+                                                                                  "StartWithWindows"));
 
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
                         //TODO: Reinstate Settings form when complete. 
                         //trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Settings", null, ShowSettingsForm_Click, "SettingsFormMenu"));
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Hide", null, HideShowAllMenu_Click, "HideShowMenu"));
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("About", null, AboutMenu_Click, "AboutMenu"));
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, ExitMenu_Click, "ExitMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Hide", null, HideShowAllMenu_Click,
+                                                                                  "HideShowMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("About", null, AboutMenu_Click,
+                                                                                  "AboutMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, ExitMenu_Click,
+                                                                                  "ExitMenu"));
                     }
                     else
                     {
@@ -144,10 +156,17 @@ namespace OutlookDesktop
                         trayIcon.ContextMenuStrip.Items["RenameInstanceMenu"].Visible = false;
 
                         // add global menu items that don't apply to the instance.
-                        trayIcon.ContextMenuStrip.Items.Insert(0, new ToolStripMenuItem("Add Instance", null, AddInstanceMenu_Click));
+                        trayIcon.ContextMenuStrip.Items.Insert(0,
+                                                               new ToolStripMenuItem("Add Instance", null,
+                                                                                     AddInstanceMenu_Click));
                         trayIcon.ContextMenuStrip.Items.Insert(1, new ToolStripSeparator());
-                        trayIcon.ContextMenuStrip.Items.Insert(12, new ToolStripMenuItem("Start With Windows", null, StartWithWindowsMenu_Click, "StartWithWindows"));
-                        trayIcon.ContextMenuStrip.Items.Insert(17, new ToolStripMenuItem("About", null, AboutMenu_Click, "AboutMenu"));
+                        trayIcon.ContextMenuStrip.Items.Insert(12,
+                                                               new ToolStripMenuItem("Start With Windows", null,
+                                                                                     StartWithWindowsMenu_Click,
+                                                                                     "StartWithWindows"));
+                        trayIcon.ContextMenuStrip.Items.Insert(17,
+                                                               new ToolStripMenuItem("About", null, AboutMenu_Click,
+                                                                                     "AboutMenu"));
 
                         // finally, show the form.
                         _mainFormInstances[0].Show();
@@ -155,25 +174,23 @@ namespace OutlookDesktop
                     }
             }
 
-            ToolStripMenuItem startWithWindowsMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["StartWithWindows"];
+            var startWithWindowsMenu = (ToolStripMenuItem) trayIcon.ContextMenuStrip.Items["StartWithWindows"];
 
             if (GlobalPreferences.StartWithWindows)
                 startWithWindowsMenu.Checked = true;
             else
                 startWithWindowsMenu.Checked = false;
-
-
         }
 
         private void ChangeTrayIconDate()
         {
             // get new instance of the resource manager.  This will allow us to look up a resource by name.
-            System.Resources.ResourceManager resourceManager = new System.Resources.ResourceManager("OutlookDesktop.Properties.Resources", typeof(Resources).Assembly);
+            var resourceManager = new ResourceManager("OutlookDesktop.Properties.Resources", typeof (Resources).Assembly);
 
             DateTime today = DateTime.Now;
 
             // find the icon for the today's day of the month and replace the tray icon with it.
-            trayIcon.Icon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture);
+            trayIcon.Icon = (Icon) resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture);
         }
 
         private void updateTimer_Tick(object sender, EventArgs e)
@@ -193,16 +210,17 @@ namespace OutlookDesktop
 
         private void ShowSettingsForm_Click(object sender, EventArgs e)
         {
-            DesktopSettings d = new DesktopSettings(this);
+            var d = new DesktopSettings(this);
             d.Show();
         }
 
         private void AddInstanceMenu_Click(object sender, EventArgs e)
         {
-            InputBoxResult result = InputBox.InputBox.Show(this, "", "New Instance Name", String.Empty, new InputBoxValidatingEventHandler(inputBox_Validating));
+            InputBoxResult result = InputBox.InputBox.Show(this, "", "New Instance Name", String.Empty,
+                                                           inputBox_Validating);
             if (result.Ok)
             {
-                MainForm mainForm = new MainForm(result.Text);
+                var mainForm = new MainForm(result.Text);
                 mainForm.Dispose();
                 LoadInstances();
             }
@@ -219,13 +237,13 @@ namespace OutlookDesktop
 
         private void AboutMenu_Click(object sender, EventArgs e)
         {
-            AboutBox aboutForm = new AboutBox();
+            var aboutForm = new AboutBox();
             aboutForm.ShowDialog();
         }
 
         private void StartWithWindowsMenu_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem startWithWindowsMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["StartWithWindows"];
+            var startWithWindowsMenu = (ToolStripMenuItem) trayIcon.ContextMenuStrip.Items["StartWithWindows"];
             if (startWithWindowsMenu.Checked)
             {
                 GlobalPreferences.StartWithWindows = false;

@@ -1,14 +1,15 @@
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Resources;
+using System.Runtime.InteropServices;
+using log4net.Config;
 
 //
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
+
 [assembly: AssemblyTitle("Outlook on the Desktop")]
 [assembly: AssemblyDescription("Places Microsoft Outlook Components on your Windows Desktop.")]
 [assembly: AssemblyConfiguration("")]
@@ -17,8 +18,7 @@ using System.Resources;
 [assembly: AssemblyCopyright("© 2006-2009 Michael Scrivo")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
-[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+[assembly: XmlConfigurator(Watch = true)]
 
 //
 // Version information for an assembly consists of the following four values:
@@ -58,8 +58,9 @@ using System.Resources;
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
 //
+
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
-[assembly: ComVisibleAttribute(false)]
+[assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
-[assembly: NeutralResourcesLanguageAttribute("en-US")]
+[assembly: NeutralResourcesLanguage("en-US")]

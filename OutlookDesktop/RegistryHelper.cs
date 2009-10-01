@@ -2,7 +2,7 @@
 
 namespace OutlookDesktop
 {
-    class RegistryHelper
+    internal class RegistryHelper
     {
         // never instantiated, only contains static methods
         private RegistryHelper()
