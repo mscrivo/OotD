@@ -1,4 +1,4 @@
-﻿namespace OutlookDesktop.InputBox
+﻿namespace OutlookDesktop.Forms
 {
     partial class InputBox
     {

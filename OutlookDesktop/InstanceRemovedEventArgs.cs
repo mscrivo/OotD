@@ -9,6 +9,6 @@ namespace OutlookDesktop
             InstanceName = instanceName;
         }
 
-        public String InstanceName { get; set; }
+        public String InstanceName { get; private set; }
     }
 }

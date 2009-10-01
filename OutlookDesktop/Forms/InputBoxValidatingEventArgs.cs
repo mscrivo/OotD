@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OutlookDesktop
+namespace OutlookDesktop.Forms
 {
     /// <summary>
     /// EventArgs used to Validate an InputBox

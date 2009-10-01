@@ -5,11 +5,11 @@ using System.Windows.Forms;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using OutlookDesktop.Properties;
-using Application = Microsoft.Office.Interop.Outlook.Application;
-using Exception = System.Exception;
-using View = Microsoft.Office.Interop.Outlook.View;
+using Application=Microsoft.Office.Interop.Outlook.Application;
+using Exception=System.Exception;
+using View=Microsoft.Office.Interop.Outlook.View;
 
-namespace OutlookDesktop
+namespace OutlookDesktop.Forms
 {
     /// <summary>
     /// Standard Outlook folder types. 
@@ -29,11 +29,11 @@ namespace OutlookDesktop
     /// </summary>
     public partial class MainForm : Form
     {
-        private String _customFolder;
-        private DateTime _previousDate;
         private readonly Boolean _isInitialized;
+        private String _customFolder;
         private ToolStripMenuItem _customMenu;
         private MAPIFolder _outlookFolder;
+        private DateTime _previousDate;
 
         /// <summary>
         /// Sets up the form for the current instance.
@@ -176,7 +176,7 @@ namespace OutlookDesktop
                 String folderName = GetFolderNameFromFullPath(_customFolder, OutlookNameSpace.Folders);
                 trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
                                       new ToolStripMenuItem(folderName, null, new EventHandler(CustomFolderMenu_Click)));
-                _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
+                _customMenu = (ToolStripMenuItem) trayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
             }
 
@@ -223,7 +223,7 @@ namespace OutlookDesktop
 
                 foreach (View view in _outlookFolder.Views)
                 {
-                    var viewItem = new ToolStripMenuItem(view.Name) { Tag = view };
+                    var viewItem = new ToolStripMenuItem(view.Name) {Tag = view};
 
                     viewItem.Click += viewItem_Click;
 
@@ -466,7 +466,7 @@ namespace OutlookDesktop
                 // Update the UI to reflect the new settings. 
                 trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
                                       new ToolStripMenuItem(oFolder.Name, null, new EventHandler(CustomFolderMenu_Click)));
-                _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
+                _customMenu = (ToolStripMenuItem) trayMenu.Items[GetSelectFolderMenuLocation() + 1];
 
                 SetMapiFolder();
                 CheckSelectedFolder(_customMenu);
@@ -616,8 +616,8 @@ namespace OutlookDesktop
 
         private void RenameInstanceMenu_Click(object sender, EventArgs e)
         {
-            InputBoxResult result = InputBox.InputBox.Show(this, "", "Rename Instance", InstanceName,
-                                                           inputBox_Validating);
+            InputBoxResult result = InputBox.Show(this, "", "Rename Instance", InstanceName,
+                                                  inputBox_Validating);
             if (result.Ok)
             {
                 using (
@@ -660,18 +660,18 @@ namespace OutlookDesktop
 
         [CLSCompliant(false)]
         /// <summary>
-        /// Outlook Application
-        /// </summary>
-        private Application OutlookApplication { get; set; }
+            /// Outlook Application
+            /// </summary>
+            private Application OutlookApplication { get; set; }
 
         [CLSCompliant(false)]
         public NameSpace OutlookNameSpace { get; private set; }
 
         [CLSCompliant(false)]
         /// <summary>
-        /// Contains the current views avaliable for the folder. 
-        /// </summary>
-        public List<View> OulookFolderViews { get; private set; }
+            /// Contains the current views avaliable for the folder. 
+            /// </summary>
+            public List<View> OulookFolderViews { get; private set; }
 
         public InstancePreferences Preferences { get; private set; }
 

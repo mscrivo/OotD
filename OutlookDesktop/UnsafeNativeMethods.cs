@@ -20,7 +20,6 @@ namespace OutlookDesktop
         private const int SWP_DRAWFRAME = 0x20;
 
         private const int SWP_NOACTIVATE = 0x10;
-
         private const int SWP_NOMOVE = 0x2;
         private const int SWP_NOSIZE = 0x1;
         private const int SWP_NOZORDER = 0x4;
@@ -30,7 +29,7 @@ namespace OutlookDesktop
         /// <summary>
         /// Standard logging block.
         /// </summary>
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private UnsafeNativeMethods()
         {
@@ -78,7 +77,7 @@ namespace OutlookDesktop
             }
             catch (Exception ex)
             {
-                log.ErrorFormat(
+                Log.ErrorFormat(
                     String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version),
                     Resources.ErrorInitializingApp);
                 MessageBox.Show(form, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption,
@@ -98,13 +97,13 @@ namespace OutlookDesktop
                 //UnsafeNativeMethods.SetParent(this.Handle, pWnd);
 
                 //IntPtr pWnd = UnsafeNativeMethods.FindWindow("Progman", null);
-                //if (pWnd == null) log.Error("Unable to find Progman");
+                //if (pWnd == null) Log.Error("Unable to find Progman");
 
                 //pWnd = UnsafeNativeMethods.FindWindowEx(pWnd, IntPtr.Zero, "SHELLDLL_DefView", null);
-                //if (pWnd == null) log.Error("Unable to find SHELLDLL_DefView");
+                //if (pWnd == null) Log.Error("Unable to find SHELLDLL_DefView");
 
                 //pWnd = UnsafeNativeMethods.FindWindowEx(pWnd, IntPtr.Zero, "SysListView32", null);
-                //if (pWnd == null) log.Error("Unable to find SysListView32");
+                //if (pWnd == null) Log.Error("Unable to find SysListView32");
                 //IntPtr tWnd = this.Handle;
                 //UnsafeNativeMethods.SetParent(tWnd, pWnd);
 
@@ -120,7 +119,7 @@ namespace OutlookDesktop
             }
             catch (Exception ex)
             {
-                log.ErrorFormat(
+                Log.ErrorFormat(
                     String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version),
                     Resources.ErrorInitializingApp);
                 MessageBox.Show(windowToSendBack, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption,

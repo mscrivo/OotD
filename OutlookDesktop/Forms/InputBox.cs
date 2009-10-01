@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace OutlookDesktop.InputBox
+namespace OutlookDesktop.Forms
 {
     /// <summary>
     /// Delegate used to Validate an InputBox

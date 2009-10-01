@@ -8,7 +8,7 @@ using log4net;
 using Microsoft.Win32;
 using OutlookDesktop.Properties;
 
-namespace OutlookDesktop
+namespace OutlookDesktop.Forms
 {
     public partial class InstanceManager : Form
     {
@@ -208,16 +208,10 @@ namespace OutlookDesktop
             Application.Exit();
         }
 
-        private void ShowSettingsForm_Click(object sender, EventArgs e)
-        {
-            var d = new DesktopSettings(this);
-            d.Show();
-        }
-
         private void AddInstanceMenu_Click(object sender, EventArgs e)
         {
-            InputBoxResult result = InputBox.InputBox.Show(this, "", "New Instance Name", String.Empty,
-                                                           inputBox_Validating);
+            InputBoxResult result = InputBox.Show(this, "", "New Instance Name", String.Empty,
+                                                  inputBox_Validating);
             if (result.Ok)
             {
                 var mainForm = new MainForm(result.Text);

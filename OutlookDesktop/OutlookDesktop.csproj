@@ -24,7 +24,8 @@
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>OutlookDesktop</AssemblyName>
-    <AssemblyOriginatorKeyFile>smrkey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -56,6 +57,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkSubset>Client</TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -193,57 +195,45 @@
     <None Include="Icons\30.ico" />
     <None Include="Icons\31.ico" />
     <None Include="Icons\paypal.gif" />
-    <Compile Include="AboutBox.cs">
+    <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutBox.Designer.cs">
+    <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DesktopSettings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DesktopSettings.Designer.cs">
-      <DependentUpon>DesktopSettings.cs</DependentUpon>
-    </Compile>
     <Compile Include="GlobalPreferences.cs" />
-    <Compile Include="InputBox\InputBox.cs">
+    <Compile Include="Forms\InputBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputBox\InputBox.Designer.cs">
+    <Compile Include="Forms\InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputBox\InputBoxResult.cs" />
-    <Compile Include="InputBox\InputBoxValidatingEventArgs.cs" />
-    <Compile Include="InstanceManager.cs">
+    <Compile Include="Forms\InputBoxResult.cs" />
+    <Compile Include="Forms\InputBoxValidatingEventArgs.cs" />
+    <Compile Include="Forms\InstanceManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InstanceManager.Designer.cs">
+    <Compile Include="Forms\InstanceManager.Designer.cs">
       <DependentUpon>InstanceManager.cs</DependentUpon>
     </Compile>
     <Compile Include="InstanceRemovedEventArgs.cs" />
     <Compile Include="InstanceRenamedEventArgs.cs" />
-    <Compile Include="InstanceSettings.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="InstanceSettings.Designer.cs">
-      <DependentUpon>InstanceSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="InstancePreferences.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PreferencesForm.cs">
+    <Compile Include="Forms\PreferencesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PreferencesForm.Designer.cs">
+    <Compile Include="Forms\PreferencesForm.Designer.cs">
       <DependentUpon>PreferencesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -255,29 +245,23 @@
     <Compile Include="Startup.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
     <Compile Include="XmlSettings.cs" />
-    <EmbeddedResource Include="AboutBox.resx">
+    <EmbeddedResource Include="Forms\AboutBox.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DesktopSettings.resx">
-      <DependentUpon>DesktopSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InputBox\InputBox.resx">
+    <EmbeddedResource Include="Forms\InputBox.resx">
       <DependentUpon>InputBox.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="InstanceManager.resx">
+    <EmbeddedResource Include="Forms\InstanceManager.resx">
       <DependentUpon>InstanceManager.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="InstanceSettings.resx">
-      <DependentUpon>InstanceSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="PreferencesForm.resx">
+    <EmbeddedResource Include="Forms\PreferencesForm.resx">
       <DependentUpon>PreferencesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -289,8 +273,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ootdkey.snk" />
-    <None Include="smrkey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icons\App.ico" />

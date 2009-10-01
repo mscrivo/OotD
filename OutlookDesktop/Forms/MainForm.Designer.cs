@@ -1,4 +1,4 @@
-﻿namespace OutlookDesktop
+﻿namespace OutlookDesktop.Forms
 {
     partial class MainForm
     {
@@ -66,23 +66,23 @@
             // trayMenu
             // 
             this.trayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CalendarMenu,
-            this.ContactsMenu,
-            this.InboxMenu,
-            this.NotesMenu,
-            this.TasksMenu,
-            this.toolStripMenuItem2,
-            this.SelectFolderMenu,
-            this.toolStripSeparator2,
-            this.uxOutlookViews,
-            this.toolStripSeparator1,
-            this.RenameInstanceMenu,
-            this.PreferencesMenu,
-            this.toolStripMenuItem3,
-            this.HideShowMenu,
-            this.toolStripMenuItem4,
-            this.RemoveInstanceMenu,
-            this.ExitMenu});
+                                                                                      this.CalendarMenu,
+                                                                                      this.ContactsMenu,
+                                                                                      this.InboxMenu,
+                                                                                      this.NotesMenu,
+                                                                                      this.TasksMenu,
+                                                                                      this.toolStripMenuItem2,
+                                                                                      this.SelectFolderMenu,
+                                                                                      this.toolStripSeparator2,
+                                                                                      this.uxOutlookViews,
+                                                                                      this.toolStripSeparator1,
+                                                                                      this.RenameInstanceMenu,
+                                                                                      this.PreferencesMenu,
+                                                                                      this.toolStripMenuItem3,
+                                                                                      this.HideShowMenu,
+                                                                                      this.toolStripMenuItem4,
+                                                                                      this.RemoveInstanceMenu,
+                                                                                      this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
             this.trayMenu.Size = new System.Drawing.Size(187, 298);
             this.trayMenu.Click += new System.EventHandler(this.trayMenu_Click);
@@ -142,7 +142,7 @@
             // uxOutlookViews
             // 
             this.uxOutlookViews.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.uxDefaultOutlookView});
+                                                                                                    this.uxDefaultOutlookView});
             this.uxOutlookViews.Name = "uxOutlookViews";
             this.uxOutlookViews.Size = new System.Drawing.Size(186, 22);
             this.uxOutlookViews.Text = "Outlook Views";

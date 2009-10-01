@@ -6,7 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace OutlookDesktop
+namespace OutlookDesktop.Forms
 {
     internal partial class AboutBox : Form
     {

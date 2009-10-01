@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using OutlookDesktop.Properties;
 
-namespace OutlookDesktop
+namespace OutlookDesktop.Forms
 {
     public partial class PreferencesForm : Form
     {

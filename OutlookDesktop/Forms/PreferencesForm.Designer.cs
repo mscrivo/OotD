@@ -1,4 +1,4 @@
-﻿namespace OutlookDesktop
+﻿namespace OutlookDesktop.Forms
 {
     partial class PreferencesForm
     {

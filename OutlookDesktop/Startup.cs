@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows.Forms;
 using log4net;
 using Microsoft.Win32;
+using OutlookDesktop.Forms;
 using OutlookDesktop.Properties;
 
 namespace OutlookDesktop

@@ -1,6 +1,6 @@
 using OutlookDesktop.Properties;
 
-namespace OutlookDesktop
+namespace OutlookDesktop.Forms
 {
     partial class AboutBox
     {
