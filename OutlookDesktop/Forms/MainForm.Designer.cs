@@ -58,31 +58,33 @@
             this.RemoveInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
             this.axOutlookViewControl = new AxOutlookView.AxOVCtl();
             this.trayMenu.SuspendLayout();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).BeginInit();
             this.SuspendLayout();
             // 
             // trayMenu
             // 
             this.trayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                                                                      this.CalendarMenu,
-                                                                                      this.ContactsMenu,
-                                                                                      this.InboxMenu,
-                                                                                      this.NotesMenu,
-                                                                                      this.TasksMenu,
-                                                                                      this.toolStripMenuItem2,
-                                                                                      this.SelectFolderMenu,
-                                                                                      this.toolStripSeparator2,
-                                                                                      this.uxOutlookViews,
-                                                                                      this.toolStripSeparator1,
-                                                                                      this.RenameInstanceMenu,
-                                                                                      this.PreferencesMenu,
-                                                                                      this.toolStripMenuItem3,
-                                                                                      this.HideShowMenu,
-                                                                                      this.toolStripMenuItem4,
-                                                                                      this.RemoveInstanceMenu,
-                                                                                      this.ExitMenu});
+            this.CalendarMenu,
+            this.ContactsMenu,
+            this.InboxMenu,
+            this.NotesMenu,
+            this.TasksMenu,
+            this.toolStripMenuItem2,
+            this.SelectFolderMenu,
+            this.toolStripSeparator2,
+            this.uxOutlookViews,
+            this.toolStripSeparator1,
+            this.RenameInstanceMenu,
+            this.PreferencesMenu,
+            this.toolStripMenuItem3,
+            this.HideShowMenu,
+            this.toolStripMenuItem4,
+            this.RemoveInstanceMenu,
+            this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
             this.trayMenu.Size = new System.Drawing.Size(187, 298);
             this.trayMenu.Click += new System.EventHandler(this.trayMenu_Click);
@@ -142,7 +144,7 @@
             // uxOutlookViews
             // 
             this.uxOutlookViews.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                                                                                    this.uxDefaultOutlookView});
+            this.uxDefaultOutlookView});
             this.uxOutlookViews.Name = "uxOutlookViews";
             this.uxOutlookViews.Size = new System.Drawing.Size(186, 22);
             this.uxOutlookViews.Text = "Outlook Views";
@@ -209,6 +211,15 @@
             this.updateTimer.Interval = 1000;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.axOutlookViewControl);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(400, 400);
+            this.panel1.TabIndex = 1;
+            // 
             // axOutlookViewControl
             // 
             this.axOutlookViewControl.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -217,14 +228,14 @@
             this.axOutlookViewControl.Name = "axOutlookViewControl";
             this.axOutlookViewControl.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axOutlookViewControl.OcxState")));
             this.axOutlookViewControl.Size = new System.Drawing.Size(400, 400);
-            this.axOutlookViewControl.TabIndex = 1;
+            this.axOutlookViewControl.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 400);
-            this.Controls.Add(this.axOutlookViewControl);
+            this.Controls.Add(this.panel1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
@@ -238,6 +249,7 @@
             this.Activated += new System.EventHandler(this.MainForm_Activated);
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.MainForm_Layout);
             this.trayMenu.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).EndInit();
             this.ResumeLayout(false);
 
@@ -268,10 +280,11 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem RenameInstanceMenu;
         private System.Windows.Forms.ToolStripMenuItem ExitMenu;
-        private AxOutlookView.AxOVCtl axOutlookViewControl;
         private System.Windows.Forms.ToolStripMenuItem uxOutlookViews;
         private System.Windows.Forms.ToolStripMenuItem uxDefaultOutlookView;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.Panel panel1;
+        private AxOutlookView.AxOVCtl axOutlookViewControl;
     }
 }

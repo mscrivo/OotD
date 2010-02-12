@@ -5,9 +5,10 @@ using System.Windows.Forms;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using OutlookDesktop.Properties;
-using Application=Microsoft.Office.Interop.Outlook.Application;
-using Exception=System.Exception;
-using View=Microsoft.Office.Interop.Outlook.View;
+using Application = Microsoft.Office.Interop.Outlook.Application;
+using Exception = System.Exception;
+using View = Microsoft.Office.Interop.Outlook.View;
+using BitFactory.Logging;
 
 namespace OutlookDesktop.Forms
 {
@@ -176,7 +177,7 @@ namespace OutlookDesktop.Forms
                 String folderName = GetFolderNameFromFullPath(_customFolder, OutlookNameSpace.Folders);
                 trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
                                       new ToolStripMenuItem(folderName, null, new EventHandler(CustomFolderMenu_Click)));
-                _customMenu = (ToolStripMenuItem) trayMenu.Items[GetSelectFolderMenuLocation() + 1];
+                _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
             }
 
@@ -198,8 +199,15 @@ namespace OutlookDesktop.Forms
         {
             // Load up the MAPI Folder from Entry / Store IDs 
             if (Preferences.OutlookFolderEntryId != "" && Preferences.OutlookFolderStoreId != "")
-                _outlookFolder = OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId,
-                                                                  Preferences.OutlookFolderStoreId);
+                try
+                {
+                    _outlookFolder = OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId,
+                                                                      Preferences.OutlookFolderStoreId);
+                }
+                catch (Exception ex)
+                {
+                    ConfigLogger.Instance.LogError(ex);
+                }
             else
                 _outlookFolder = null;
         }
@@ -223,7 +231,7 @@ namespace OutlookDesktop.Forms
 
                 foreach (View view in _outlookFolder.Views)
                 {
-                    var viewItem = new ToolStripMenuItem(view.Name) {Tag = view};
+                    var viewItem = new ToolStripMenuItem(view.Name) { Tag = view };
 
                     viewItem.Click += viewItem_Click;
 
@@ -466,7 +474,7 @@ namespace OutlookDesktop.Forms
                 // Update the UI to reflect the new settings. 
                 trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
                                       new ToolStripMenuItem(oFolder.Name, null, new EventHandler(CustomFolderMenu_Click)));
-                _customMenu = (ToolStripMenuItem) trayMenu.Items[GetSelectFolderMenuLocation() + 1];
+                _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
 
                 SetMapiFolder();
                 CheckSelectedFolder(_customMenu);
@@ -660,18 +668,18 @@ namespace OutlookDesktop.Forms
 
         [CLSCompliant(false)]
         /// <summary>
-            /// Outlook Application
-            /// </summary>
-            private Application OutlookApplication { get; set; }
+        /// Outlook Application
+        /// </summary>
+        private Application OutlookApplication { get; set; }
 
         [CLSCompliant(false)]
         public NameSpace OutlookNameSpace { get; private set; }
 
         [CLSCompliant(false)]
         /// <summary>
-            /// Contains the current views avaliable for the folder. 
-            /// </summary>
-            public List<View> OulookFolderViews { get; private set; }
+        /// Contains the current views avaliable for the folder. 
+        /// </summary>
+        public List<View> OulookFolderViews { get; private set; }
 
         public InstancePreferences Preferences { get; private set; }
 

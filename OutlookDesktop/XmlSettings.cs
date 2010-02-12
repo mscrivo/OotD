@@ -11,7 +11,7 @@ namespace OutlookDesktop
         /// <summary>
         /// Default path to save the settings. 
         /// </summary>
-        private readonly string _documentPath = Application.StartupPath + "//Data//settings.xml";
+        private readonly string _documentPath = Application.LocalUserAppDataPath + "//Outlook on the Desktop//settings.xml";
 
         /// <summary>
         /// XmlDocument used to store the XmlData. 

@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Drawing;
 using System.Globalization;
-using System.Reflection;
 using System.Resources;
 using System.Windows.Forms;
-using log4net;
 using Microsoft.Win32;
 using OutlookDesktop.Properties;
+using BitFactory.Logging;
 
 namespace OutlookDesktop.Forms
 {
     public partial class InstanceManager : Form
     {
-        /// <summary>
-        /// Standard logging block.
-        /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private MainForm[] _mainFormInstances;
 
         public InstanceManager()
@@ -33,7 +27,8 @@ namespace OutlookDesktop.Forms
                 trayIcon.ShowBalloonTip(2000, "Outlook on the Desktop is running",
                                         "Right click on this icon to configure Outlook on the Desktop.",
                                         ToolTipIcon.Info);
-                Log.Debug("First Run");
+                
+                ConfigLogger.Instance.LogDebug("First Run");
             }
         }
 
@@ -59,12 +54,12 @@ namespace OutlookDesktop.Forms
         public void LoadInstances()
         {
             // Close any open instances first.
-            Log.Debug("Performing instance cleanup and closing instances");
+            ConfigLogger.Instance.LogDebug("Performing instance cleanup and closing instances");
             if (_mainFormInstances != null && _mainFormInstances.Length > 0)
             {
                 foreach (MainForm form in _mainFormInstances)
                 {
-                    Log.DebugFormat("Disposing {0}", form.InstanceName);
+                    ConfigLogger.Instance.LogDebug(String.Format("Disposing {0}", form.InstanceName));
                     form.Dispose();
                 }
             }
@@ -79,7 +74,7 @@ namespace OutlookDesktop.Forms
                 if (appReg != null)
                     if (appReg.SubKeyCount > 1)
                     {
-                        Log.Debug("Multiple instances to load");
+                        ConfigLogger.Instance.LogDebug("Multiple instances to load");
 
                         // There are multiple instances defined, so we build the context menu strip dynamically.
                         trayIcon.ContextMenuStrip = new ContextMenuStrip();
@@ -94,7 +89,7 @@ namespace OutlookDesktop.Forms
                         // each instance will get it's own submenu in the main context menu.
                         foreach (string instanceName in appReg.GetSubKeyNames())
                         {
-                            Log.DebugFormat("instanciating up instance {0}", instanceName);
+                            ConfigLogger.Instance.LogDebug(String.Format("instanciating up instance {0}", instanceName));
                             _mainFormInstances[count] = new MainForm(instanceName);
 
                             // hook up the instance removed/renamed event handlers so that we can
@@ -117,7 +112,7 @@ namespace OutlookDesktop.Forms
                             _mainFormInstances[count].TrayMenu.Items["ExitMenu"].Visible = false;
 
                             // finally, show the form.
-                            Log.DebugFormat("Showing Instance {0}", instanceName);
+                            ConfigLogger.Instance.LogDebug(string.Format("Showing Instance {0}", instanceName));
                             _mainFormInstances[count].Show();
                             UnsafeNativeMethods.SendWindowToBack(_mainFormInstances[count]);
                             count++;

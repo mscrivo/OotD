@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
-using log4net.Config;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -18,7 +17,6 @@ using log4net.Config;
 [assembly: AssemblyCopyright("© 2006-2009 Michael Scrivo")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: XmlConfigurator(Watch = true)]
 
 //
 // Version information for an assembly consists of the following four values:
@@ -31,7 +29,7 @@ using log4net.Config;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.5.3")]
+[assembly: AssemblyVersion("1.5.4")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 

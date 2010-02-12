@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using OutlookDesktop.Properties;
+using BitFactory.Logging;
 
 namespace OutlookDesktop
 {
@@ -95,7 +96,7 @@ namespace OutlookDesktop
 
         public string OutlookFolderView
         {
-            get { return (string) _appReg.GetValue("OutlookView", "Day/Week/Month"); }
+            get { return (string) _appReg.GetValue("OutlookView", "Calendar"); }
             set { _appReg.SetValue("OutlookView", value); }
         }
 

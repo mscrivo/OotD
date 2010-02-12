@@ -1,9 +1,8 @@
 using System;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using log4net;
 using OutlookDesktop.Properties;
+using BitFactory.Logging;
 
 namespace OutlookDesktop
 {
@@ -29,7 +28,6 @@ namespace OutlookDesktop
         /// <summary>
         /// Standard logging block.
         /// </summary>
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private UnsafeNativeMethods()
         {
@@ -77,9 +75,8 @@ namespace OutlookDesktop
             }
             catch (Exception ex)
             {
-                Log.ErrorFormat(
-                    String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version),
-                    Resources.ErrorInitializingApp);
+                ConfigLogger.Instance.LogError(String.Format("Error pinning window to desktop, OS: {0}.",
+                                                             Environment.OSVersion.Version));
                 MessageBox.Show(form, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption,
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -119,9 +116,9 @@ namespace OutlookDesktop
             }
             catch (Exception ex)
             {
-                Log.ErrorFormat(
-                    String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version),
-                    Resources.ErrorInitializingApp);
+                ConfigLogger.Instance.LogError(String.Format("Error pinning window to desktop, OS: {0}.",
+                                                             Environment.OSVersion.Version));
+
                 MessageBox.Show(windowToSendBack, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption,
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
