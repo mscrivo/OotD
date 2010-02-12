@@ -96,7 +96,7 @@ namespace OutlookDesktop
 
         public string OutlookFolderView
         {
-            get { return (string) _appReg.GetValue("OutlookView", "Calendar"); }
+            get { return (string)_appReg.GetValue("OutlookView", "Day/Week/Month"); }
             set { _appReg.SetValue("OutlookView", value); }
         }
 

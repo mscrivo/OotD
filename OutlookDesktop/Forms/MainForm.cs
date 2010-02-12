@@ -49,10 +49,6 @@ namespace OutlookDesktop.Forms
                 // Get or create a instance of the Outlook Applciation.
                 OutlookApplication = new Application();
                 OutlookNameSpace = OutlookApplication.GetNamespace("MAPI");
-
-                // Set the default viewcontrol to the calendar and Day/Week/Month view.
-                axOutlookViewControl.Folder = FolderViewType.Calendar.ToString();
-                axOutlookViewControl.View = "Day/Week/Month";
             }
             catch (Exception ex)
             {
@@ -103,7 +99,6 @@ namespace OutlookDesktop.Forms
         {
             // create a new instance of the preferences class
             Preferences = new InstancePreferences(InstanceName);
-
 
             // There should ne no reason other than first run as to why the Store and Entry IDs are 
             //empty. 
@@ -233,7 +228,7 @@ namespace OutlookDesktop.Forms
                 {
                     var viewItem = new ToolStripMenuItem(view.Name) { Tag = view };
 
-                    viewItem.Click += viewItem_Click;
+                    viewItem.Click += ViewItem_Click;
 
                     if (view.Name == Preferences.OutlookFolderView)
                         viewItem.Checked = true;
@@ -385,6 +380,7 @@ namespace OutlookDesktop.Forms
         private void DefaultFolderTypesClicked(FolderViewType folderViewType, ToolStripMenuItem itemToCheck)
         {
             axOutlookViewControl.Folder = folderViewType.ToString();
+
             Preferences.OutlookFolderName = folderViewType.ToString();
             Preferences.OutlookFolderStoreId = GetFolderFromViewType(folderViewType).StoreID;
             Preferences.OutlookFolderEntryId = GetFolderFromViewType(folderViewType).EntryID;
@@ -505,7 +501,7 @@ namespace OutlookDesktop.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void viewItem_Click(object sender, EventArgs e)
+        private void ViewItem_Click(object sender, EventArgs e)
         {
             var viewItem = sender as ToolStripMenuItem;
             if (viewItem != null)
