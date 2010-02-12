@@ -1,0 +1,5 @@
+C:\Users\Michael\Documents\Visual Studio 2008\Projects\BitFactory.Logging\bin\Debug\BitFactory.Logging.dll
+C:\Users\Michael\Documents\Visual Studio 2008\Projects\BitFactory.Logging\bin\Debug\BitFactory.Logging.pdb
+C:\Users\Michael\Documents\Visual Studio 2008\Projects\BitFactory.Logging\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Michael\Documents\Visual Studio 2008\Projects\BitFactory.Logging\obj\Debug\BitFactory.Logging.dll
+C:\Users\Michael\Documents\Visual Studio 2008\Projects\BitFactory.Logging\obj\Debug\BitFactory.Logging.pdb
