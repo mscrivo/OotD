@@ -603,9 +603,10 @@ namespace OutlookDesktop.Forms
                 {
                     axOutlookViewControl.GoToToday();
                 }
-                catch
+                catch (Exception ex)
                 {
                     // no big deal if we can't set the day, just ignore and go on.
+                    ConfigLogger.Instance.LogError(ex);
                 }
             }
             _previousDate = DateTime.Now;

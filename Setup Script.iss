@@ -1,12 +1,12 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "1.5.2"
-#define MyAppVerName "Outlook on the Desktop 1.5.2"
+#define MyAppVersion "1.5.3"
+#define MyAppVerName "Outlook on the Desktop 1.5.3"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
-#define MyAppCopyright "©2006-2009 Michael Scrivo"
+#define MyAppCopyright "©2006-2010 Michael Scrivo"
 
 [Setup]
 AppName={#MyAppName}
@@ -51,8 +51,8 @@ Source: OutlookDesktop\bin\x86\Release\AxInterop.Microsoft.Office.Interop.Outloo
 Source: OutlookDesktop\bin\x86\Release\Microsoft.Office.Interop.Outlook.dll; DestDir: {app}; Flags: ignoreversion
 Source: OutlookDesktop\bin\x86\Release\Microsoft.Office.Interop.OutlookViewCtl.dll; DestDir: {app}; Flags: ignoreversion
 Source: OutlookDesktop\bin\x86\Release\OutlookView.dll; DestDir: {app}; Flags: ignoreversion
-Source: OutlookDesktop\bin\x86\Release\log4net.dll; DestDir: {app}; Flags: ignoreversion
 Source: OutlookDesktop\bin\x86\Release\OutlookDesktop.exe.config; DestDir: {app}; Flags: ignoreversion
+Source: OutlookDesktop\bin\x86\Release\BitFactory.Logging.dll; DestDir: {app}; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
