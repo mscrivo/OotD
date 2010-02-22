@@ -169,7 +169,7 @@ namespace OutlookDesktop.Forms
             {
                 // custom folder
                 _customFolder = Preferences.OutlookFolderName;
-                String folderName = GetFolderNameFromFullPath(_customFolder, OutlookNameSpace.Folders);
+                String folderName = GetFolderNameFromFullPath(_customFolder);
                 trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
                                       new ToolStripMenuItem(folderName, null, new EventHandler(CustomFolderMenu_Click)));
                 _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
@@ -253,9 +253,8 @@ namespace OutlookDesktop.Forms
         /// 
         /// </summary>
         /// <param name="fullPath"></param>
-        /// <param name="oFolders"></param>
         /// <returns></returns>
-        private String GetFolderNameFromFullPath(String fullPath, Folders oFolders)
+        private static string GetFolderNameFromFullPath(string fullPath)
         {
             //TODO: Revert back and deal with online/offline better!
             return fullPath.Substring(fullPath.LastIndexOf("\\") + 1, fullPath.Length - fullPath.LastIndexOf("\\") - 1);
@@ -622,7 +621,7 @@ namespace OutlookDesktop.Forms
         private void RenameInstanceMenu_Click(object sender, EventArgs e)
         {
             InputBoxResult result = InputBox.Show(this, "", "Rename Instance", InstanceName,
-                                                  inputBox_Validating);
+                                                  InputBox_Validating);
             if (result.Ok)
             {
                 using (
@@ -644,7 +643,7 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private static void inputBox_Validating(object sender, InputBoxValidatingEventArgs e)
+        private static void InputBox_Validating(object sender, InputBoxValidatingEventArgs e)
         {
             if (String.IsNullOrEmpty(e.Text.Trim()))
             {

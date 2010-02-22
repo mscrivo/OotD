@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -90,7 +89,6 @@ namespace OutlookDesktop.Forms
 
         #endregion
 
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private void linkWebsite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
@@ -99,7 +97,8 @@ namespace OutlookDesktop.Forms
             }
             catch
             {
-                // ignore exception
+                MessageBox.Show(this, Properties.Resources.ErrorLaunchingWebsite, Properties.Resources.ErrorCaption,
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -110,9 +109,10 @@ namespace OutlookDesktop.Forms
                 Process.Start(
                     "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=mscrivo%40tfnet%2eca&item_name=Outlook%20on%20the%20Desktop%20Donation&amount=5%2e00&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=CA&bn=PP%2dDonationsBF&charset=UTF%2d8");
             }
-            catch
+            catch 
             {
-                // ignore exception
+                MessageBox.Show(this, Properties.Resources.ErrorLaunchingWebsite, Properties.Resources.ErrorCaption,
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

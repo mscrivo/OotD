@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using OutlookDesktop.Properties;
-using BitFactory.Logging;
 
 namespace OutlookDesktop
 {

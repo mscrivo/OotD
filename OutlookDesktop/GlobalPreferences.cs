@@ -1,5 +1,7 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using Microsoft.Win32;
+using BitFactory.Logging;
 
 namespace OutlookDesktop
 {
@@ -51,8 +53,9 @@ namespace OutlookDesktop
                                     key.DeleteValue("OutlookOnDesktop");
                             }
                         }
-                        catch
+                        catch (Exception ex)
                         {
+                            ConfigLogger.Instance.LogError(String.Format("Exception caught setting Start with Windows Key: {0}", ex));
                         }
                     }
                 }

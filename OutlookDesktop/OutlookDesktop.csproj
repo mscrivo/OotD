@@ -240,7 +240,6 @@
     <Compile Include="RegistryHelper.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="UnsafeNativeMethods.cs" />
-    <Compile Include="XmlSettings.cs" />
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AboutBox.cs</DependentUpon>

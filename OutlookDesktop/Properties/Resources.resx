@@ -343,4 +343,7 @@
   <data name="ErrorSettingFolder" xml:space="preserve">
     <value>There was an error changing to the folder you specified. It may not be compatible with Outlook on the Desktop.</value>
   </data>
+  <data name="ErrorLaunchingWebsite" xml:space="preserve">
+    <value>Could not launch web site.</value>
+  </data>
 </root>
