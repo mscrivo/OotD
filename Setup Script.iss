@@ -41,8 +41,6 @@ AppMutex=Local\OutlookDesktop.exe
 Name: eng; MessagesFile: compiler:Default.isl
 
 [Tasks]
-Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
-Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 Name: installdotnet; Description: Download and Install Microsoft .NET Framework 3.5; Check: NeedsDotNetFramework
 
 [Files]
@@ -56,8 +54,6 @@ Source: OutlookDesktop\bin\x86\Release\BitFactory.Logging.dll; DestDir: {app}; F
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
-Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon; WorkingDir: {app}
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: quicklaunchicon; WorkingDir: {app}
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: postinstall skipifsilent nowait; WorkingDir: {app}; OnlyBelowVersion: 0,6.0
