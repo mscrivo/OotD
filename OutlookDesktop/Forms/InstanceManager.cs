@@ -32,14 +32,6 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        /// <summary>
-        /// Returns the current instances of Outlook on the Desktop.
-        /// </summary>
-        public MainForm[] Instances
-        {
-            get { return _mainFormInstances; }
-        }
-
         protected override CreateParams CreateParams
         {
             get
@@ -129,7 +121,7 @@ namespace OutlookDesktop.Forms
 
                         //TODO: Reinstate Settings form when complete. 
                         //trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Settings", null, ShowSettingsForm_Click, "SettingsFormMenu"));
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Hide", null, HideShowAllMenu_Click,
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.Hide, null, HideShowAllMenu_Click,
                                                                                   "HideShowMenu"));
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("About", null, AboutMenu_Click,
                                                                                   "AboutMenu"));
@@ -188,7 +180,7 @@ namespace OutlookDesktop.Forms
             trayIcon.Icon = (Icon) resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture);
         }
 
-        private void updateTimer_Tick(object sender, EventArgs e)
+        private void UpdateTimer_Tick(object sender, EventArgs e)
         {
             // update day of the month in the tray
             ChangeTrayIconDate();
@@ -206,7 +198,7 @@ namespace OutlookDesktop.Forms
         private void AddInstanceMenu_Click(object sender, EventArgs e)
         {
             InputBoxResult result = InputBox.Show(this, "", "New Instance Name", String.Empty,
-                                                  inputBox_Validating);
+                                                  InputBox_Validating);
             if (result.Ok)
             {
                 var mainForm = new MainForm(result.Text);
@@ -215,7 +207,7 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private void inputBox_Validating(object sender, InputBoxValidatingEventArgs e)
+        private static void InputBox_Validating(object sender, InputBoxValidatingEventArgs e)
         {
             if (String.IsNullOrEmpty(e.Text.Trim()))
             {
@@ -224,7 +216,7 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private void AboutMenu_Click(object sender, EventArgs e)
+        private static void AboutMenu_Click(object sender, EventArgs e)
         {
             var aboutForm = new AboutBox();
             aboutForm.ShowDialog();
@@ -252,23 +244,23 @@ namespace OutlookDesktop.Forms
 
         private void ShowHideAllInstances()
         {
-            if (trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text == "Hide")
+            if (trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text == Resources.Hide)
             {
                 foreach (MainForm form in _mainFormInstances)
                 {
                     form.Visible = false;
-                    form.TrayMenu.Items["HideShowMenu"].Text = "Show";
+                    form.TrayMenu.Items["HideShowMenu"].Text = Resources.Show;
                 }
-                trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = "Show";
+                trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.Show;
             }
-            else if (trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text == "Show")
+            else if (trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text == Resources.Show)
             {
                 foreach (MainForm form in _mainFormInstances)
                 {
                     form.Visible = true;
-                    form.TrayMenu.Items["HideShowMenu"].Text = "Hide";
+                    form.TrayMenu.Items["HideShowMenu"].Text = Resources.Hide;
                 }
-                trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = "Hide";
+                trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.Hide;
             }
         }
 
@@ -289,7 +281,7 @@ namespace OutlookDesktop.Forms
             trayIcon.ContextMenuStrip.Items[e.OldInstanceName].Name = e.NewInstanceName;
         }
 
-        private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void TrayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
                 ShowHideAllInstances();

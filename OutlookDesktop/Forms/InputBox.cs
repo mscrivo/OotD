@@ -16,7 +16,7 @@ namespace OutlookDesktop.Forms
             InitializeComponent();
         }
 
-        protected InputBoxValidatingEventHandler Validator { get; set; }
+        private InputBoxValidatingEventHandler Validator { get; set; }
 
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
@@ -24,7 +24,7 @@ namespace OutlookDesktop.Forms
             Close();
         }
 
-        private void OKButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -70,8 +70,7 @@ namespace OutlookDesktop.Forms
         {
             if (Validator != null)
             {
-                var args = new InputBoxValidatingEventArgs();
-                args.Text = InputTextBox.Text;
+                var args = new InputBoxValidatingEventArgs {Text = InputTextBox.Text};
                 Validator(this, args);
                 if (args.Cancel)
                 {

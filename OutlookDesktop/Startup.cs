@@ -34,8 +34,8 @@ namespace OutlookDesktop
                 {
                     ConfigLogger.Instance.LogDebug("Outlook is not avaliable or installed.");
                     MessageBox.Show(
-                        "This program requires Microsoft Outlook 2000 or higher." + Environment.NewLine +
-                        "Please install Microsoft Office and try again.", "Missing Requirements", MessageBoxButtons.OK,
+                        Resources.Office2000Requirement + Environment.NewLine +
+                        Resources.InstallOutlookMsg, Resources.MissingRequirementsCapation, MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                     return;
                 }

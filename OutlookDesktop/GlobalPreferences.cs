@@ -5,12 +5,9 @@ using BitFactory.Logging;
 
 namespace OutlookDesktop
 {
-    internal class GlobalPreferences
+    internal static class GlobalPreferences
     {
         // never instantiated, only contains static methods
-        private GlobalPreferences()
-        {
-        }
 
         /// <summary>
         /// Returns true if there is a registry entry that makes Outlook on the Desktop start

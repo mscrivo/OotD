@@ -87,7 +87,7 @@
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
             this.trayMenu.Size = new System.Drawing.Size(187, 298);
-            this.trayMenu.Click += new System.EventHandler(this.trayMenu_Click);
+            this.trayMenu.Click += new System.EventHandler(this.TrayMenu_Click);
             // 
             // CalendarMenu
             // 
@@ -209,7 +209,7 @@
             // 
             this.updateTimer.Enabled = true;
             this.updateTimer.Interval = 1000;
-            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+            this.updateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
             // 
             // panel1
             // 

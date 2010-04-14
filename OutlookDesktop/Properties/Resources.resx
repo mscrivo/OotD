@@ -120,7 +120,7 @@
   <data name="Inbox" xml:space="preserve">
     <value>Inbox</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Icons\24.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -345,5 +345,14 @@
   </data>
   <data name="ErrorLaunchingWebsite" xml:space="preserve">
     <value>Could not launch web site.</value>
+  </data>
+  <data name="Office2000Requirement" xml:space="preserve">
+    <value>This program requires Microsoft Outlook 2000 or higher.</value>
+  </data>
+  <data name="InstallOutlookMsg" xml:space="preserve">
+    <value>Please install Microsoft Office and try again.</value>
+  </data>
+  <data name="MissingRequirementsCapation" xml:space="preserve">
+    <value>Missing Requirements</value>
   </data>
 </root>

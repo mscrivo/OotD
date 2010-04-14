@@ -31,7 +31,7 @@ namespace OutlookDesktop.Forms
 
         #region Assembly Attribute Accessors
 
-        public static string AssemblyTitle
+        private static string AssemblyTitle
         {
             get
             {
@@ -52,12 +52,12 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        public static string AssemblyVersion
+        private static string AssemblyVersion
         {
             get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); }
         }
 
-        public static string AssemblyProduct
+        private static string AssemblyProduct
         {
             get
             {
@@ -72,7 +72,7 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        public static string AssemblyCopyright
+        private static string AssemblyCopyright
         {
             get
             {
@@ -89,7 +89,7 @@ namespace OutlookDesktop.Forms
 
         #endregion
 
-        private void linkWebsite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LinkWebsite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private void picDonate_Click(object sender, EventArgs e)
+        private void PicDonate_Click(object sender, EventArgs e)
         {
             try
             {

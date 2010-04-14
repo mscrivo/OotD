@@ -45,9 +45,9 @@ namespace OutlookDesktop.Forms
             this.labelProductName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
             this.labelProductName.MaximumSize = new System.Drawing.Size(0, 17);
             this.labelProductName.Name = "labelProductName";
-            this.labelProductName.Size = new System.Drawing.Size(75, 13);
+            this.labelProductName.Size = new System.Drawing.Size(120, 13);
             this.labelProductName.TabIndex = 26;
-            this.labelProductName.Text = Resources.ProductName;
+            this.labelProductName.Text = "Outlook on the Desktop";
             this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelVersion
@@ -59,7 +59,7 @@ namespace OutlookDesktop.Forms
             this.labelVersion.Name = "labelVersion";
             this.labelVersion.Size = new System.Drawing.Size(42, 13);
             this.labelVersion.TabIndex = 25;
-            this.labelVersion.Text = Resources.Version;
+            this.labelVersion.Text = "Version";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelCopyright
@@ -71,7 +71,7 @@ namespace OutlookDesktop.Forms
             this.labelCopyright.Name = "labelCopyright";
             this.labelCopyright.Size = new System.Drawing.Size(51, 13);
             this.labelCopyright.TabIndex = 27;
-            this.labelCopyright.Text = Resources.Copyright;
+            this.labelCopyright.Text = "Copyright";
             this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // okButton
@@ -82,7 +82,7 @@ namespace OutlookDesktop.Forms
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 22);
             this.okButton.TabIndex = 28;
-            this.okButton.Text = Resources.OKButton;
+            this.okButton.Text = global::OutlookDesktop.Properties.Resources.OKButton;
             // 
             // linkWebsite
             // 
@@ -92,8 +92,8 @@ namespace OutlookDesktop.Forms
             this.linkWebsite.Size = new System.Drawing.Size(51, 13);
             this.linkWebsite.TabIndex = 30;
             this.linkWebsite.TabStop = true;
-            this.linkWebsite.Text = Resources.WebSite;
-            this.linkWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkWebsite_LinkClicked);
+            this.linkWebsite.Text = "Web Site";
+            this.linkWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkWebsite_LinkClicked);
             // 
             // picDonate
             // 
@@ -105,7 +105,7 @@ namespace OutlookDesktop.Forms
             this.picDonate.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.picDonate.TabIndex = 31;
             this.picDonate.TabStop = false;
-            this.picDonate.Click += new System.EventHandler(this.picDonate_Click);
+            this.picDonate.Click += new System.EventHandler(this.PicDonate_Click);
             // 
             // AboutBox
             // 
@@ -126,7 +126,7 @@ namespace OutlookDesktop.Forms
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = Resources.AboutDialogTitle;
+            this.Text = "About Outlook on the Desktop";
             ((System.ComponentModel.ISupportInitialize)(this.picDonate)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

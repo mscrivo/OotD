@@ -94,7 +94,7 @@
             this.heightSlider.TickFrequency = 10;
             this.heightSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.heightSlider.Value = 400;
-            this.heightSlider.Scroll += new System.EventHandler(this.heightSlider_Scroll);
+            this.heightSlider.Scroll += new System.EventHandler(this.HeightSlider_Scroll);
             // 
             // wideLabel
             // 
@@ -133,7 +133,7 @@
             this.widthSlider.TickFrequency = 10;
             this.widthSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.widthSlider.Value = 400;
-            this.widthSlider.Scroll += new System.EventHandler(this.widthSlider_Scroll);
+            this.widthSlider.Scroll += new System.EventHandler(this.WidthSlider_Scroll);
             // 
             // positionLabel
             // 
@@ -159,7 +159,7 @@
             this.horizontalPosition.SmallChange = 4;
             this.horizontalPosition.TabIndex = 33;
             this.horizontalPosition.Value = 100;
-            this.horizontalPosition.Scroll += new System.Windows.Forms.ScrollEventHandler(this.horizontalPosition_Scroll);
+            this.horizontalPosition.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HorizontalPosition_Scroll);
             // 
             // verticalPosition
             // 
@@ -169,7 +169,7 @@
             this.verticalPosition.SmallChange = 4;
             this.verticalPosition.TabIndex = 32;
             this.verticalPosition.Value = 100;
-            this.verticalPosition.Scroll += new System.Windows.Forms.ScrollEventHandler(this.verticalPosition_Scroll);
+            this.verticalPosition.Scroll += new System.Windows.Forms.ScrollEventHandler(this.VerticalPosition_Scroll);
             // 
             // preferencesLabel
             // 
@@ -205,7 +205,7 @@
             this.OKButton.Size = new System.Drawing.Size(88, 24);
             this.OKButton.TabIndex = 29;
             this.OKButton.Text = global::OutlookDesktop.Properties.Resources.OKButton;
-            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
+            this.OKButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // transparentLabel
             // 
@@ -243,7 +243,7 @@
             this.transparencySlider.TickFrequency = 10;
             this.transparencySlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.transparencySlider.Value = 50;
-            this.transparencySlider.Scroll += new System.EventHandler(this.transparencySlider_Scroll);
+            this.transparencySlider.Scroll += new System.EventHandler(this.TransparencySlider_Scroll);
             // 
             // uxHeightValue
             // 

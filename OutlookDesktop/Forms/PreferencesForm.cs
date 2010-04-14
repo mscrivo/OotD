@@ -173,7 +173,7 @@ namespace OutlookDesktop.Forms
             return false;
         }
 
-        private void OKButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             if (!Save_Settings())
             {
@@ -197,7 +197,7 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private void transparencySlider_Scroll(object sender, EventArgs e)
+        private void TransparencySlider_Scroll(object sender, EventArgs e)
         {
             // update main form in real time so the user can gauage how they want it.
             double opacityVal = (double) transparencySlider.Value/100;
@@ -210,7 +210,7 @@ namespace OutlookDesktop.Forms
             _dirty = true;
         }
 
-        private void widthSlider_Scroll(object sender, EventArgs e)
+        private void WidthSlider_Scroll(object sender, EventArgs e)
         {
             // update main form in real time so the user can gauage how they want it.
             if (widthSlider.Value%4 != 0) widthSlider.Value -= widthSlider.Value%4;
@@ -221,7 +221,7 @@ namespace OutlookDesktop.Forms
             Debug.Print(_parentMainForm.Top + " " + _parentMainForm.Left);
         }
 
-        private void heightSlider_Scroll(object sender, EventArgs e)
+        private void HeightSlider_Scroll(object sender, EventArgs e)
         {
             // update main form in real time so the user can gauage how they want it.
             if (heightSlider.Value%4 != 0) heightSlider.Value -= heightSlider.Value%4;
@@ -232,7 +232,7 @@ namespace OutlookDesktop.Forms
             Debug.Print(_parentMainForm.Top + " " + _parentMainForm.Left);
         }
 
-        private void horizontalPosition_Scroll(object sender, ScrollEventArgs e)
+        private void HorizontalPosition_Scroll(object sender, ScrollEventArgs e)
         {
             // update main form in real time so the user can gauage how they want it.
             if (horizontalPosition.Value%4 != 0) horizontalPosition.Value -= horizontalPosition.Value%4;
@@ -241,7 +241,7 @@ namespace OutlookDesktop.Forms
             Debug.Print(_parentMainForm.Top + " " + _parentMainForm.Left);
         }
 
-        private void verticalPosition_Scroll(object sender, ScrollEventArgs e)
+        private void VerticalPosition_Scroll(object sender, ScrollEventArgs e)
         {
             // update main form in real time so the user can gauage how they want it.
             if (verticalPosition.Value%4 != 0) verticalPosition.Value -= verticalPosition.Value%4;

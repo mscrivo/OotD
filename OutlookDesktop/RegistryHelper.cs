@@ -2,12 +2,9 @@
 
 namespace OutlookDesktop
 {
-    internal class RegistryHelper
+    internal static class RegistryHelper
     {
         // never instantiated, only contains static methods
-        private RegistryHelper()
-        {
-        }
 
         /// <summary>
         /// Renames a subkey of the passed in registry key since
@@ -32,7 +29,7 @@ namespace OutlookDesktop
         /// <param name="keyNameToCopy"></param>
         /// <param name="newKeyName"></param>
         /// <returns></returns>
-        public static void CopyKey(RegistryKey parentKey, string keyNameToCopy, string newKeyName)
+        private static void CopyKey(RegistryKey parentKey, string keyNameToCopy, string newKeyName)
         {
             //Create new key
             RegistryKey destinationKey = parentKey.CreateSubKey(newKeyName);

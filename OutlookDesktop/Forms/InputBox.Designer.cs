@@ -76,7 +76,7 @@
             this.OKButton.Size = new System.Drawing.Size(75, 23);
             this.OKButton.TabIndex = 6;
             this.OKButton.Text = "&OK";
-            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
+            this.OKButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // _errorProviderText
             // 

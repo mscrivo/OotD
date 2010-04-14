@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookDesktop", "OutlookDesktop\OutlookDesktop.csproj", "{C38D62CC-0544-4D90-83B9-B222CB5A8EF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitFactory.Logging", "BitFactory.Logging\BitFactory.Logging.csproj", "{5782D9E0-74FC-4820-A59D-F3B1B204178C}"

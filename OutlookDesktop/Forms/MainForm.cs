@@ -52,7 +52,7 @@ namespace OutlookDesktop.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption,
+                MessageBox.Show(this, Resources.ErrorInitializingApp + @" " + ex, Resources.ErrorCaption,
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _isInitialized = false;
                 return;
@@ -268,9 +268,7 @@ namespace OutlookDesktop.Forms
         private static string GenerateFolderPathFromObject(MAPIFolder oFolder)
         {
             string fullFolderPath = "\\\\";
-            var subfolders = new List<string>();
-
-            subfolders.Add(oFolder.Name);
+            var subfolders = new List<string> {oFolder.Name};
 
             while (oFolder != null && oFolder.Parent != null)
             {
@@ -342,13 +340,7 @@ namespace OutlookDesktop.Forms
         /// <param name="itemToCheck"></param>
         private void CheckSelectedFolder(ToolStripMenuItem itemToCheck)
         {
-            var menuItems = new List<ToolStripMenuItem>();
-
-            menuItems.Add(CalendarMenu);
-            menuItems.Add(ContactsMenu);
-            menuItems.Add(InboxMenu);
-            menuItems.Add(NotesMenu);
-            menuItems.Add(TasksMenu);
+            var menuItems = new List<ToolStripMenuItem> {CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu};
 
             if (_customMenu != null) menuItems.Add(_customMenu);
 
@@ -391,60 +383,7 @@ namespace OutlookDesktop.Forms
             CheckSelectedFolder(itemToCheck);
         }
 
-        private void ChangeDefaultFolderType(FolderViewType folderViewType)
-        {
-            ToolStripMenuItem itemToCheck;
-            switch (folderViewType)
-            {
-                case FolderViewType.Inbox:
-                    itemToCheck = InboxMenu;
-                    break;
-                case FolderViewType.Calendar:
-                    itemToCheck = CalendarMenu;
-                    break;
-                case FolderViewType.Contacts:
-                    itemToCheck = ContactsMenu;
-                    break;
-                case FolderViewType.Notes:
-                    itemToCheck = NotesMenu;
-                    break;
-                case FolderViewType.Tasks:
-                    itemToCheck = TasksMenu;
-                    break;
-                default:
-                    itemToCheck = null;
-                    break;
-            }
-
-            DefaultFolderTypesClicked(folderViewType, itemToCheck);
-        }
-
-        public void UpdateDefaultFolder(string folderName)
-        {
-            switch (folderName.ToLower())
-            {
-                case "inbox":
-                    ChangeDefaultFolderType(FolderViewType.Inbox);
-                    break;
-                case "calendar":
-                    ChangeDefaultFolderType(FolderViewType.Calendar);
-                    break;
-                case "contacts":
-                    ChangeDefaultFolderType(FolderViewType.Contacts);
-                    break;
-                case "notes":
-                    ChangeDefaultFolderType(FolderViewType.Notes);
-                    break;
-                case "tasks":
-                    ChangeDefaultFolderType(FolderViewType.Tasks);
-                    break;
-                default:
-                    return;
-            }
-        }
-
-        [CLSCompliant(false)]
-        public void UpdateCustomFolder(MAPIFolder oFolder)
+        private void UpdateCustomFolder(MAPIFolder oFolder)
         {
             if (oFolder == null) return;
 
@@ -593,7 +532,7 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private void updateTimer_Tick(object sender, EventArgs e)
+        private void UpdateTimer_Tick(object sender, EventArgs e)
         {
             // increment day in outlook's calendar if we've crossed over into a new day
             if (DateTime.Now.Day != _previousDate.Day)
@@ -652,7 +591,7 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private void trayMenu_Click(object sender, EventArgs e)
+        private void TrayMenu_Click(object sender, EventArgs e)
         {
             //TODO: Setup event process for dealing with the view changes.
             //UpdateOutlookViewsList();
@@ -662,21 +601,9 @@ namespace OutlookDesktop.Forms
 
         #region Properties
 
-        [CLSCompliant(false)]
-        /// <summary>
-        /// Outlook Application
-        /// </summary>
         private Application OutlookApplication { get; set; }
-
-        [CLSCompliant(false)]
-        public NameSpace OutlookNameSpace { get; private set; }
-
-        [CLSCompliant(false)]
-        /// <summary>
-        /// Contains the current views avaliable for the folder. 
-        /// </summary>
-        public List<View> OulookFolderViews { get; private set; }
-
+        private NameSpace OutlookNameSpace { get; set; }
+        private List<View> OulookFolderViews { get; set; }
         public InstancePreferences Preferences { get; private set; }
 
         public string InstanceName { get; private set; }
