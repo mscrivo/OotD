@@ -1,8 +1,8 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "1.5.3"
-#define MyAppVerName "Outlook on the Desktop 1.5.3"
+#define MyAppVersion "1.5.4"
+#define MyAppVerName "Outlook on the Desktop 1.5.4"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
@@ -15,7 +15,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName=C:\{#MyAppName}
+DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoCopyright={#MyAppCopyright}
@@ -36,6 +36,7 @@ UninstallLogMode=append
 UninstallDisplayIcon={app}\App.ico
 PrivilegesRequired=none
 AppMutex=Local\OutlookDesktop.exe
+UsePreviousAppDir=false
 
 [Languages]
 Name: eng; MessagesFile: compiler:Default.isl
@@ -54,9 +55,11 @@ Source: OutlookDesktop\bin\x86\Release\BitFactory.Logging.dll; DestDir: {app}; F
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
+Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {#MyAppURL}
+Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
 
 [Run]
-Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: postinstall skipifsilent nowait; WorkingDir: {app}; OnlyBelowVersion: 0,6.0
+Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: postinstall skipifsilent nowait runasoriginaluser; WorkingDir: {app}
 
 [Registry]
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: OutlookOnDesktop; ValueData: {app}\OutlookDesktop.exe; Flags: uninsdeletevalue
@@ -118,3 +121,9 @@ begin
 
 	end;
 end;
+[UninstallDelete]
+Name: {app}\*; Type: filesandordirs
+Name: {app}; Type: dirifempty
+[InstallDelete]
+Name: C:\{app}\*; Type: filesandordirs
+Name: C:\{app}; Type: dirifempty

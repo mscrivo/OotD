@@ -61,10 +61,18 @@ namespace OutlookDesktop.Forms
             InstanceName = instanceName;
             LoadSettings();
 
-            if (Environment.OSVersion.Version.Major < 6)
-                _isInitialized = UnsafeNativeMethods.PinWindowToDesktop(this);
+            if (Environment.OSVersion.Version.Major < 6 || !UnsafeNativeMethods.DwmIsCompositionEnabled())
+                // Windows XP or higher with DWM window composition disabled
+                UnsafeNativeMethods.PinWindowToDesktop(this);
+            else if (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 0)
+                // Vista
+                UnsafeNativeMethods.SendWindowToBack(this);
             else
-                _isInitialized = UnsafeNativeMethods.SendWindowToBack(this);
+            {
+                // Windows 7 or above
+                UnsafeNativeMethods.SendWindowToBack(this);
+                UnsafeNativeMethods.RemoveWindowFromAeroPeek(this);
+            }
 
             if (!_isInitialized) return;
         }
