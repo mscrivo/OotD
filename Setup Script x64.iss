@@ -9,6 +9,7 @@
 #define MyAppCopyright "©2006-2010 Michael Scrivo"
 
 [Setup]
+ArchitecturesInstallIn64BitMode=x64
 AppName={#MyAppName}
 AppVerName={#MyAppVerName}
 AppPublisher={#MyAppPublisher}
@@ -20,7 +21,7 @@ DefaultGroupName={#MyAppName}
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoCopyright={#MyAppCopyright}
 AppCopyright={#MyAppCopyright}
-OutputBaseFilename=ootd-{MyAppVersion}
+OutputBaseFilename=ootd-{MyAppVersion}-x64
 Compression=lzma
 SolidCompression=true
 VersionInfoVersion={#MyAppVersion}
