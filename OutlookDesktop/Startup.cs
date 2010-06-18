@@ -20,7 +20,7 @@ namespace OutlookDesktop
         [STAThread]
         private static void Main()
         {
-            ConfigLogger.Instance.LogDebug("Checking to see if there is a instance running.");
+            ConfigLogger.Instance.LogDebug("Checking to see if there is an instance running.");
             if (IsAlreadyRunning())
             {
                 // let the user know the program is already running.
@@ -41,7 +41,7 @@ namespace OutlookDesktop
                 }
 
                 Application.EnableVisualStyles();
-
+                
                 ConfigLogger.Instance.LogInfo("Starting the instance manager and loading instances.");
                 var instanceManager = new InstanceManager();
                 instanceManager.LoadInstances();
