@@ -22,7 +22,7 @@ namespace OutlookDesktop.Forms
                 trayIcon.ShowBalloonTip(2000, "Outlook on the Desktop is running",
                                         "Right click on this icon to configure Outlook on the Desktop.",
                                         ToolTipIcon.Info);
-                
+
                 ConfigLogger.Instance.LogDebug("First Run");
             }
         }
@@ -44,12 +44,15 @@ namespace OutlookDesktop.Forms
             ConfigLogger.Instance.LogDebug("Performing instance cleanup and closing instances");
             if (_mainFormInstances != null && _mainFormInstances.Length > 0)
             {
-                foreach (MainForm form in _mainFormInstances)
-                {
-                    ConfigLogger.Instance.LogDebug(String.Format("Disposing {0}", form.InstanceName));
-                    form.Dispose();
-                }
+                //foreach (MainForm form in _mainFormInstances)
+                //{
+                //    ConfigLogger.Instance.LogDebug("Closing form");
+                //    ConfigLogger.Instance.LogDebug(String.Format("Disposing {0}", form.InstanceName));
+                //    form.Dispose();
+                //}
             }
+
+            ConfigLogger.Instance.LogDebug("Loading app settings from registry");
 
             // Each subkey in our main registry key represents an instance. 
             // Read each subkey and load the instance.
@@ -58,6 +61,7 @@ namespace OutlookDesktop.Forms
                     Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
                                                       Application.ProductName))
             {
+                ConfigLogger.Instance.LogDebug("Settings Found.");
                 if (appReg != null)
                     if (appReg.SubKeyCount > 1)
                     {
@@ -156,7 +160,7 @@ namespace OutlookDesktop.Forms
                     }
             }
 
-            var startWithWindowsMenu = (ToolStripMenuItem) trayIcon.ContextMenuStrip.Items["StartWithWindows"];
+            var startWithWindowsMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["StartWithWindows"];
 
             if (GlobalPreferences.StartWithWindows)
                 startWithWindowsMenu.Checked = true;
@@ -167,12 +171,12 @@ namespace OutlookDesktop.Forms
         private void ChangeTrayIconDate()
         {
             // get new instance of the resource manager.  This will allow us to look up a resource by name.
-            var resourceManager = new ResourceManager("OutlookDesktop.Properties.Resources", typeof (Resources).Assembly);
+            var resourceManager = new ResourceManager("OutlookDesktop.Properties.Resources", typeof(Resources).Assembly);
 
             DateTime today = DateTime.Now;
 
             // find the icon for the today's day of the month and replace the tray icon with it.
-            trayIcon.Icon = (Icon) resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture);
+            trayIcon.Icon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture);
         }
 
         private void UpdateTimer_Tick(object sender, EventArgs e)
@@ -219,7 +223,7 @@ namespace OutlookDesktop.Forms
 
         private void StartWithWindowsMenu_Click(object sender, EventArgs e)
         {
-            var startWithWindowsMenu = (ToolStripMenuItem) trayIcon.ContextMenuStrip.Items["StartWithWindows"];
+            var startWithWindowsMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["StartWithWindows"];
             if (startWithWindowsMenu.Checked)
             {
                 GlobalPreferences.StartWithWindows = false;

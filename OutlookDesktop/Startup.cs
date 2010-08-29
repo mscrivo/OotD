@@ -4,15 +4,22 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using OutlookDesktop.Forms;
 using OutlookDesktop.Properties;
 using BitFactory.Logging;
+using Application = System.Windows.Forms.Application;
 
 namespace OutlookDesktop
 {
     internal static class Startup
     {
+        public static Microsoft.Office.Interop.Outlook.Application OutlookApp;
+        public static Microsoft.Office.Interop.Outlook.NameSpace OutlookNameSpace;
+        public static Microsoft.Office.Interop.Outlook.MAPIFolder OutlookFolder;
+        public static Microsoft.Office.Interop.Outlook.Explorer OutlookExplorer;
+
         /// <summary>
         /// The main entry point for the application.
         /// We only only one instance of the application to be running.
@@ -40,8 +47,27 @@ namespace OutlookDesktop
                     return;
                 }
 
+                try
+                {
+                    OutlookApp = new Microsoft.Office.Interop.Outlook.Application();
+                    OutlookNameSpace = OutlookApp.GetNamespace("MAPI");
+                    OutlookFolder = OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
+
+                    // WORKAROUND: Beginning wih Outlook 2007 SP2, Microsoft decided to kill all outlook instances 
+                    // when opening and closing an item from the view control, even though the view control was still running.
+                    // The only way I've found to work around it and keep the view control from crashing after opening an item,
+                    // is to get this global instance of the active explorer and keep it going until the user closes the app.
+                    OutlookExplorer = OutlookFolder.GetExplorer();
+                }
+                catch (System.Exception ex)
+                {
+                    MessageBox.Show(Resources.ErrorInitializingApp + @" " + ex, Resources.ErrorCaption,
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 Application.EnableVisualStyles();
-                
+
                 ConfigLogger.Instance.LogInfo("Starting the instance manager and loading instances.");
                 var instanceManager = new InstanceManager();
                 instanceManager.LoadInstances();

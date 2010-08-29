@@ -22,8 +22,6 @@
                 // that are open.
                 OulookFolderViews = null;
                 _outlookFolder = null;
-                OutlookNameSpace = null;
-                OutlookApplication = null;
             }
             base.Dispose(disposing);
         }
@@ -87,7 +85,6 @@
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
             this.trayMenu.Size = new System.Drawing.Size(187, 298);
-            this.trayMenu.Click += new System.EventHandler(this.TrayMenu_Click);
             // 
             // CalendarMenu
             // 
@@ -222,6 +219,7 @@
             // 
             // axOutlookViewControl
             // 
+            this.axOutlookViewControl.CausesValidation = false;
             this.axOutlookViewControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.axOutlookViewControl.Enabled = true;
             this.axOutlookViewControl.Location = new System.Drawing.Point(0, 0);
@@ -241,7 +239,7 @@
             this.KeyPreview = true;
             this.MinimizeBox = false;
             this.Name = "MainForm";
-            this.Opacity = 0.5;
+            this.Opacity = 0.5D;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;

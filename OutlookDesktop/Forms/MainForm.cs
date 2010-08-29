@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
+using OutlookDesktop;
 using OutlookDesktop.Properties;
 using Application = Microsoft.Office.Interop.Outlook.Application;
 using Exception = System.Exception;
@@ -30,7 +31,6 @@ namespace OutlookDesktop.Forms
     /// </summary>
     public partial class MainForm : Form
     {
-        private readonly Boolean _isInitialized;
         private String _customFolder;
         private ToolStripMenuItem _customMenu;
         private MAPIFolder _outlookFolder;
@@ -42,21 +42,7 @@ namespace OutlookDesktop.Forms
         /// <param name="instanceName">The name of the instance to display.</param>
         public MainForm(String instanceName)
         {
-            try
-            {
-                InitializeComponent();
-
-                // Get or create a instance of the Outlook Applciation.
-                OutlookApplication = new Application();
-                OutlookNameSpace = OutlookApplication.GetNamespace("MAPI");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, Resources.ErrorInitializingApp + @" " + ex, Resources.ErrorCaption,
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-                _isInitialized = false;
-                return;
-            }
+            InitializeComponent();
 
             InstanceName = instanceName;
             LoadSettings();
@@ -73,8 +59,6 @@ namespace OutlookDesktop.Forms
                 UnsafeNativeMethods.SendWindowToBack(this);
                 UnsafeNativeMethods.RemoveWindowFromAeroPeek(this);
             }
-
-            if (!_isInitialized) return;
         }
 
         protected override CreateParams CreateParams
@@ -188,7 +172,16 @@ namespace OutlookDesktop.Forms
             axOutlookViewControl.Folder = Preferences.OutlookFolderName;
 
             // Sets the selected view from preferences. 
-            axOutlookViewControl.View = Preferences.OutlookFolderView;
+            try
+            {
+                axOutlookViewControl.View = Preferences.OutlookFolderView;
+            }
+            catch
+            {
+                // if we get an exception here, it means the view stored doesn't apply to the current folder view,
+                // so just reset it.
+                Preferences.OutlookFolderView = string.Empty;
+            }
 
             // Get a copy of the possible outlook views for the selected folder and populate the context menu for this instance. 
             UpdateOutlookViewsList();
@@ -204,7 +197,7 @@ namespace OutlookDesktop.Forms
             if (Preferences.OutlookFolderEntryId != "" && Preferences.OutlookFolderStoreId != "")
                 try
                 {
-                    _outlookFolder = OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId,
+                    _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId,
                                                                       Preferences.OutlookFolderStoreId);
                 }
                 catch (Exception ex)
@@ -228,10 +221,6 @@ namespace OutlookDesktop.Forms
 
             if (_outlookFolder != null)
             {
-                //NOTE: Issue with the update of views in this instance of Outlook.
-                //      Will have to spawn a new instance... Sigh.
-                //SetMapiFolder();
-
                 foreach (View view in _outlookFolder.Views)
                 {
                     var viewItem = new ToolStripMenuItem(view.Name) { Tag = view };
@@ -276,7 +265,7 @@ namespace OutlookDesktop.Forms
         private static string GenerateFolderPathFromObject(MAPIFolder oFolder)
         {
             string fullFolderPath = "\\\\";
-            var subfolders = new List<string> {oFolder.Name};
+            var subfolders = new List<string> { oFolder.Name };
 
             while (oFolder != null && oFolder.Parent != null)
             {
@@ -326,15 +315,15 @@ namespace OutlookDesktop.Forms
             switch (folderViewType)
             {
                 case FolderViewType.Inbox:
-                    return OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderInbox);
+                    return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderInbox);
                 case FolderViewType.Calendar:
-                    return OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
+                    return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
                 case FolderViewType.Contacts:
-                    return OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderContacts);
+                    return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderContacts);
                 case FolderViewType.Notes:
-                    return OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderNotes);
+                    return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderNotes);
                 case FolderViewType.Tasks:
-                    return OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderTasks);
+                    return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderTasks);
                 default:
                     return null;
             }
@@ -348,7 +337,7 @@ namespace OutlookDesktop.Forms
         /// <param name="itemToCheck"></param>
         private void CheckSelectedFolder(ToolStripMenuItem itemToCheck)
         {
-            var menuItems = new List<ToolStripMenuItem> {CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu};
+            var menuItems = new List<ToolStripMenuItem> { CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu };
 
             if (_customMenu != null) menuItems.Add(_customMenu);
 
@@ -372,7 +361,7 @@ namespace OutlookDesktop.Forms
         }
 
         /// <summary>
-        /// Generic function to deal with menue check items for selecting the folders to view. 
+        /// Generic function to deal with menu check items for selecting the folders to view. 
         /// </summary>
         /// <param name="folderViewType"></param>
         /// <param name="itemToCheck"></param>
@@ -473,7 +462,7 @@ namespace OutlookDesktop.Forms
         /// <param name="e"></param>
         private void SelectFolderMenu_Click(object sender, EventArgs e)
         {
-            MAPIFolder oFolder = OutlookNameSpace.PickFolder();
+            MAPIFolder oFolder = Startup.OutlookNameSpace.PickFolder();
             UpdateCustomFolder(oFolder);
         }
 
@@ -562,6 +551,12 @@ namespace OutlookDesktop.Forms
         {
             Dispose();
 
+            OutlookDesktop.Startup.OutlookExplorer.Close();
+            OutlookDesktop.Startup.OutlookExplorer = null;
+            OutlookDesktop.Startup.OutlookFolder = null;
+            OutlookDesktop.Startup.OutlookNameSpace = null;
+            OutlookDesktop.Startup.OutlookApp = null;
+
             System.Windows.Forms.Application.Exit();
         }
 
@@ -599,18 +594,11 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private void TrayMenu_Click(object sender, EventArgs e)
-        {
-            //TODO: Setup event process for dealing with the view changes.
-            //UpdateOutlookViewsList();
-        }
 
         #endregion
 
         #region Properties
 
-        private Application OutlookApplication { get; set; }
-        private NameSpace OutlookNameSpace { get; set; }
         private List<View> OulookFolderViews { get; set; }
         public InstancePreferences Preferences { get; private set; }
 

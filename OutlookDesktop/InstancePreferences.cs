@@ -1,8 +1,11 @@
 using System;
 using System.Globalization;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using OutlookDesktop.Properties;
+using Application = System.Windows.Forms.Application;
+using Exception = System.Exception;
 
 namespace OutlookDesktop
 {
@@ -42,7 +45,7 @@ namespace OutlookDesktop
 
                 if (
                     double.TryParse(
-                        (string) _appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture)),
+                        (string)_appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture)),
                         out opacity))
                     return opacity;
 
@@ -56,7 +59,7 @@ namespace OutlookDesktop
         /// </summary>
         public int Left
         {
-            get { return (int) _appReg.GetValue("Left", DefaultLeftPosition); }
+            get { return (int)_appReg.GetValue("Left", DefaultLeftPosition); }
             set { _appReg.SetValue("Left", value); }
         }
 
@@ -65,7 +68,7 @@ namespace OutlookDesktop
         /// </summary>
         public int Top
         {
-            get { return (int) _appReg.GetValue("Top", DefaultTopPosition); }
+            get { return (int)_appReg.GetValue("Top", DefaultTopPosition); }
             set { _appReg.SetValue("Top", value); }
         }
 
@@ -74,7 +77,7 @@ namespace OutlookDesktop
         /// </summary>
         public int Width
         {
-            get { return (int) _appReg.GetValue("Width", DefaultWidth); }
+            get { return (int)_appReg.GetValue("Width", DefaultWidth); }
             set { _appReg.SetValue("Width", value); }
         }
 
@@ -83,14 +86,18 @@ namespace OutlookDesktop
         /// </summary>
         public int Height
         {
-            get { return (int) _appReg.GetValue("Height", DefaultHeight); }
+            get { return (int)_appReg.GetValue("Height", DefaultHeight); }
             set { _appReg.SetValue("Height", value); }
         }
 
         public string OutlookFolderName
         {
-            get { return (string) _appReg.GetValue("CurrentViewType", "Calendar"); }
-            set { _appReg.SetValue("CurrentViewType", value); }
+            get { return (string)_appReg.GetValue("CurrentViewType", "Calendar"); }
+            set
+            {
+                _appReg.SetValue("CurrentViewType", value);
+                OutlookFolderView = string.Empty;
+            }
         }
 
         public string OutlookFolderView
@@ -102,14 +109,14 @@ namespace OutlookDesktop
 
         public string OutlookFolderEntryId
         {
-            get { return (string) _appReg.GetValue("FolderEntryId", ""); }
+            get { return (string)_appReg.GetValue("FolderEntryId", ""); }
             set { _appReg.SetValue("FolderEntryId", value); }
         }
 
 
         public string OutlookFolderStoreId
         {
-            get { return (string) _appReg.GetValue("FolderStoreId", ""); }
+            get { return (string)_appReg.GetValue("FolderStoreId", ""); }
             set { _appReg.SetValue("FolderStoreId", value); }
         }
 
