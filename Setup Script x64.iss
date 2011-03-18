@@ -1,12 +1,12 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "1.6.0"
-#define MyAppVerName "Outlook on the Desktop 1.6.0"
+#define MyAppVersion "1.6.1"
+#define MyAppVerName "Outlook on the Desktop 1.6.1"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
-#define MyAppCopyright "©2006-2010 Michael Scrivo"
+#define MyAppCopyright "©2006-2011 Michael Scrivo"
 
 [Setup]
 ArchitecturesInstallIn64BitMode=x64

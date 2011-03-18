@@ -56,6 +56,7 @@ namespace OutlookDesktop.Forms
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
                         _mainFormInstances = new MainForm[appReg.SubKeyCount];
+
                         var instanceSubmenu = new ToolStripMenuItem[appReg.SubKeyCount];
                         var count = 0;
 
@@ -103,7 +104,7 @@ namespace OutlookDesktop.Forms
                     else
                     {
                         // this is a first run, or there is only 1 instance defined.
-                        string instanceName = appReg.SubKeyCount == 1 ? appReg.GetSubKeyNames()[0] : "Default Instance";
+                        var instanceName = appReg.SubKeyCount == 1 ? appReg.GetSubKeyNames()[0] : "Default Instance";
 
                         // create our instance and set the context menu to one defined in the form instance.
                         _mainFormInstances = new MainForm[1];
