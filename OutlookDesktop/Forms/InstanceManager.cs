@@ -19,9 +19,7 @@ namespace OutlookDesktop.Forms
 
             if (GlobalPreferences.IsFirstRun)
             {
-                trayIcon.ShowBalloonTip(2000, "Outlook on the Desktop is running",
-                                        "Right click on this icon to configure Outlook on the Desktop.",
-                                        ToolTipIcon.Info);
+                trayIcon.ShowBalloonTip(2000, Resources.OotdRunning, Resources.RightClickToConfigure, ToolTipIcon.Info);
 
                 ConfigLogger.Instance.LogDebug("First Run");
             }
@@ -40,26 +38,11 @@ namespace OutlookDesktop.Forms
 
         public void LoadInstances()
         {
-            // Close any open instances first.
-            ConfigLogger.Instance.LogDebug("Performing instance cleanup and closing instances");
-            if (_mainFormInstances != null && _mainFormInstances.Length > 0)
-            {
-                //foreach (MainForm form in _mainFormInstances)
-                //{
-                //    ConfigLogger.Instance.LogDebug("Closing form");
-                //    ConfigLogger.Instance.LogDebug(String.Format("Disposing {0}", form.InstanceName));
-                //    form.Dispose();
-                //}
-            }
-
             ConfigLogger.Instance.LogDebug("Loading app settings from registry");
 
             // Each subkey in our main registry key represents an instance. 
             // Read each subkey and load the instance.
-            using (
-                RegistryKey appReg =
-                    Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
-                                                      Application.ProductName))
+            using (RegistryKey appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
             {
                 ConfigLogger.Instance.LogDebug("Settings Found.");
                 if (appReg != null)
@@ -69,18 +52,17 @@ namespace OutlookDesktop.Forms
 
                         // There are multiple instances defined, so we build the context menu strip dynamically.
                         trayIcon.ContextMenuStrip = new ContextMenuStrip();
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Add Instance", null,
-                                                                                  AddInstanceMenu_Click));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Add Instance", null, AddInstanceMenu_Click));
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
                         _mainFormInstances = new MainForm[appReg.SubKeyCount];
                         var instanceSubmenu = new ToolStripMenuItem[appReg.SubKeyCount];
-                        int count = 0;
+                        var count = 0;
 
                         // each instance will get it's own submenu in the main context menu.
                         foreach (string instanceName in appReg.GetSubKeyNames())
                         {
-                            ConfigLogger.Instance.LogDebug(String.Format("instanciating up instance {0}", instanceName));
+                            ConfigLogger.Instance.LogDebug(String.Format("Instanciating up instance {0}", instanceName));
                             _mainFormInstances[count] = new MainForm(instanceName);
 
                             // hook up the instance removed/renamed event handlers so that we can
@@ -111,21 +93,12 @@ namespace OutlookDesktop.Forms
 
                         // add the rest of the necessary menu items to the main context menu.
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
-
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Start With Windows", null,
-                                                                                  StartWithWindowsMenu_Click,
-                                                                                  "StartWithWindows"));
-
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.StartWithWindows, null, StartWithWindowsMenu_Click, "StartWithWindows"));
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
-
-                        //TODO: Reinstate Settings form when complete. 
-                        //trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Settings", null, ShowSettingsForm_Click, "SettingsFormMenu"));
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.Hide, null, HideShowAllMenu_Click,
-                                                                                  "HideShowMenu"));
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("About", null, AboutMenu_Click,
-                                                                                  "AboutMenu"));
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, ExitMenu_Click,
-                                                                                  "ExitMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.HideAll, null, HideShowAllMenu_Click,"HideShowMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.DisableEditing, null, DisableEnableEditingMenu_Click,"DisableEnableEditingMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.About, null, AboutMenu_Click,"AboutMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.Exit, null, ExitMenu_Click, "ExitMenu"));
                     }
                     else
                     {
@@ -142,17 +115,10 @@ namespace OutlookDesktop.Forms
                         trayIcon.ContextMenuStrip.Items["RenameInstanceMenu"].Visible = false;
 
                         // add global menu items that don't apply to the instance.
-                        trayIcon.ContextMenuStrip.Items.Insert(0,
-                                                               new ToolStripMenuItem("Add Instance", null,
-                                                                                     AddInstanceMenu_Click));
+                        trayIcon.ContextMenuStrip.Items.Insert(0, new ToolStripMenuItem(Resources.AddInstance, null, AddInstanceMenu_Click));
                         trayIcon.ContextMenuStrip.Items.Insert(1, new ToolStripSeparator());
-                        trayIcon.ContextMenuStrip.Items.Insert(12,
-                                                               new ToolStripMenuItem("Start With Windows", null,
-                                                                                     StartWithWindowsMenu_Click,
-                                                                                     "StartWithWindows"));
-                        trayIcon.ContextMenuStrip.Items.Insert(17,
-                                                               new ToolStripMenuItem("About", null, AboutMenu_Click,
-                                                                                     "AboutMenu"));
+                        trayIcon.ContextMenuStrip.Items.Insert(12, new ToolStripMenuItem(Resources.StartWithWindows, null, StartWithWindowsMenu_Click, "StartWithWindows"));
+                        trayIcon.ContextMenuStrip.Items.Insert(18, new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
 
                         // finally, show the form.
                         _mainFormInstances[0].Show();
@@ -162,10 +128,7 @@ namespace OutlookDesktop.Forms
 
             var startWithWindowsMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["StartWithWindows"];
 
-            if (GlobalPreferences.StartWithWindows)
-                startWithWindowsMenu.Checked = true;
-            else
-                startWithWindowsMenu.Checked = false;
+            startWithWindowsMenu.Checked = GlobalPreferences.StartWithWindows;
         }
 
         private void ChangeTrayIconDate()
@@ -196,8 +159,7 @@ namespace OutlookDesktop.Forms
 
         private void AddInstanceMenu_Click(object sender, EventArgs e)
         {
-            InputBoxResult result = InputBox.Show(this, "", "New Instance Name", String.Empty,
-                                                  InputBox_Validating);
+            var result = InputBox.Show(this, "", Resources.NewInstanceName, String.Empty, InputBox_Validating);
             if (result.Ok)
             {
                 var mainForm = new MainForm(result.Text);
@@ -243,23 +205,50 @@ namespace OutlookDesktop.Forms
 
         private void ShowHideAllInstances()
         {
-            if (trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text == Resources.Hide)
+            if (trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text == Resources.HideAll)
             {
                 foreach (MainForm form in _mainFormInstances)
                 {
                     form.Visible = false;
                     form.TrayMenu.Items["HideShowMenu"].Text = Resources.Show;
                 }
-                trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.Show;
+                trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.ShowAll;
             }
-            else if (trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text == Resources.Show)
+            else if (trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text == Resources.ShowAll)
             {
                 foreach (MainForm form in _mainFormInstances)
                 {
                     form.Visible = true;
                     form.TrayMenu.Items["HideShowMenu"].Text = Resources.Hide;
                 }
-                trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.Hide;
+                trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.HideAll;
+            }
+        }
+
+        private void DisableEnableEditingMenu_Click(object sender, EventArgs e)
+        {
+            DisableEnableAllInstances();
+        }
+
+        private void DisableEnableAllInstances()
+        {
+            if (trayIcon.ContextMenuStrip.Items["DisableEnableEditingMenu"].Text == Resources.DisableEditing)
+            {
+                foreach (MainForm form in _mainFormInstances)
+                {
+                    form.Enabled = false;
+                    form.TrayMenu.Items["DisableEnableEditingMenu"].Text = Resources.EnableEditing;
+                }
+                trayIcon.ContextMenuStrip.Items["DisableEnableEditingMenu"].Text = Resources.EnableEditing;
+            }
+            else if (trayIcon.ContextMenuStrip.Items["DisableEnableEditingMenu"].Text == Resources.EnableEditing)
+            {
+                foreach (MainForm form in _mainFormInstances)
+                {
+                    form.Enabled = true;
+                    form.TrayMenu.Items["DisableEnableEditingMenu"].Text = Resources.DisableEditing;
+                }
+                trayIcon.ContextMenuStrip.Items["DisableEnableEditingMenu"].Text = Resources.DisableEditing;
             }
         }
 

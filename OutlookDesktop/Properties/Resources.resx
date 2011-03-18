@@ -140,7 +140,7 @@
     <value>..\Icons\19.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="StartWithWindows" xml:space="preserve">
-    <value>Start Outlook on the Desktop when Windows starts</value>
+    <value>Start With Windows</value>
   </data>
   <data name="Narrow" xml:space="preserve">
     <value>Narrow</value>
@@ -354,5 +354,29 @@
   </data>
   <data name="MissingRequirementsCapation" xml:space="preserve">
     <value>Missing Requirements</value>
+  </data>
+  <data name="AddInstance" xml:space="preserve">
+    <value>Add Instance</value>
+  </data>
+  <data name="DisableEditing" xml:space="preserve">
+    <value>Disable Editing</value>
+  </data>
+  <data name="EnableEditing" xml:space="preserve">
+    <value>Enable Editing</value>
+  </data>
+  <data name="NewInstanceName" xml:space="preserve">
+    <value>New Instance Name</value>
+  </data>
+  <data name="OotdRunning" xml:space="preserve">
+    <value>Outlook on the Desktop is running</value>
+  </data>
+  <data name="RightClickToConfigure" xml:space="preserve">
+    <value>Right click on this icon to configure Outlook on the Desktop.</value>
+  </data>
+  <data name="HideAll" xml:space="preserve">
+    <value>Hide All</value>
+  </data>
+  <data name="ShowAll" xml:space="preserve">
+    <value>Show All</value>
   </data>
 </root>

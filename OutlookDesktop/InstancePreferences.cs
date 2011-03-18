@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using System.Windows.Forms;
-using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using OutlookDesktop.Properties;
 using Application = System.Windows.Forms.Application;
@@ -23,14 +22,11 @@ namespace OutlookDesktop
         {
             try
             {
-                _appReg =
-                    Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
-                                                      Application.ProductName + "\\" + instanceName);
+                _appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName + "\\" + instanceName);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error,
-                                MessageBoxDefaultButton.Button1);
+                MessageBox.Show(ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
         }
 
@@ -118,6 +114,17 @@ namespace OutlookDesktop
         {
             get { return (string)_appReg.GetValue("FolderStoreId", ""); }
             set { _appReg.SetValue("FolderStoreId", value); }
+        }
+
+        public bool DisableEditing
+        {
+            get
+            {
+                bool retVal;
+                bool.TryParse(_appReg.GetValue("DisableEditing", "False").ToString(), out retVal);
+                return retVal;
+            }
+            set { _appReg.SetValue("DisableEditing", value); }
         }
 
         ~InstancePreferences()

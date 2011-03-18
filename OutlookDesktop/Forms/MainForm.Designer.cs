@@ -52,6 +52,7 @@
             this.PreferencesMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.HideShowMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.DisableEnableEditingMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.RemoveInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,11 +81,12 @@
             this.PreferencesMenu,
             this.toolStripMenuItem3,
             this.HideShowMenu,
+            this.DisableEnableEditingMenu,
             this.toolStripMenuItem4,
             this.RemoveInstanceMenu,
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(187, 298);
+            this.trayMenu.Size = new System.Drawing.Size(187, 342);
             // 
             // CalendarMenu
             // 
@@ -182,6 +184,13 @@
             this.HideShowMenu.Size = new System.Drawing.Size(186, 22);
             this.HideShowMenu.Text = "Hide";
             this.HideShowMenu.Click += new System.EventHandler(this.HideMenu_Click);
+            // 
+            // DisableEnableEditingMenu
+            // 
+            this.DisableEnableEditingMenu.Name = "DisableEnableEditingMenu";
+            this.DisableEnableEditingMenu.Size = new System.Drawing.Size(186, 22);
+            this.DisableEnableEditingMenu.Text = "Disable Editing";
+            this.DisableEnableEditingMenu.Click += new System.EventHandler(this.DisableEnableEditingMenu_Click);
             // 
             // toolStripMenuItem4
             // 
@@ -284,5 +293,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.Panel panel1;
         private AxOutlookView.AxOVCtl axOutlookViewControl;
+        private System.Windows.Forms.ToolStripMenuItem DisableEnableEditingMenu;
     }
 }

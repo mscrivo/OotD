@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
-using OutlookDesktop;
 using OutlookDesktop.Properties;
-using Application = Microsoft.Office.Interop.Outlook.Application;
 using Exception = System.Exception;
 using View = Microsoft.Office.Interop.Outlook.View;
 using BitFactory.Logging;
@@ -185,6 +183,12 @@ namespace OutlookDesktop.Forms
 
             // Get a copy of the possible outlook views for the selected folder and populate the context menu for this instance. 
             UpdateOutlookViewsList();
+
+            // Sets whether the instance is allowed to be edited or not
+            if (Preferences.DisableEditing)
+            {
+                DisableEnableEditing();
+            }
         }
 
         /// <summary>
@@ -197,8 +201,7 @@ namespace OutlookDesktop.Forms
             if (Preferences.OutlookFolderEntryId != "" && Preferences.OutlookFolderStoreId != "")
                 try
                 {
-                    _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId,
-                                                                      Preferences.OutlookFolderStoreId);
+                    _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId, Preferences.OutlookFolderStoreId);
                 }
                 catch (Exception ex)
                 {
@@ -216,8 +219,6 @@ namespace OutlookDesktop.Forms
         {
             uxOutlookViews.DropDownItems.Clear();
             OulookFolderViews = new List<View>();
-
-            //uxOutlookViews.DropDownItems.Add(uxDefaultOutlookView);
 
             if (_outlookFolder != null)
             {
@@ -305,12 +306,28 @@ namespace OutlookDesktop.Forms
             }
         }
 
+        private void DisableEnableEditing()
+        {
+            if (Enabled)
+            {
+                DisableEnableEditingMenu.Text = Resources.EnableEditing;
+                Preferences.DisableEditing = true;
+                Enabled = false;
+            }
+            else
+            {
+                DisableEnableEditingMenu.Text = Resources.DisableEditing;
+                Preferences.DisableEditing = false;
+                Enabled = true;
+            }
+        }
+
         /// <summary>
         /// Returns a MAPI Folder for the passes FolderViewType.
         /// </summary>
         /// <param name="folderViewType"></param>
         /// <returns></returns>
-        private MAPIFolder GetFolderFromViewType(FolderViewType folderViewType)
+        private static MAPIFolder GetFolderFromViewType(FolderViewType folderViewType)
         {
             switch (folderViewType)
             {
@@ -509,6 +526,11 @@ namespace OutlookDesktop.Forms
             ShowHideDesktopComponent();
         }
 
+        private void DisableEnableEditingMenu_Click(object sender, EventArgs e)
+        {
+            DisableEnableEditing();
+        }
+
         private void RemoveInstanceMenu_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show(this, Resources.RemoveInstanceConfirmation,
@@ -551,11 +573,11 @@ namespace OutlookDesktop.Forms
         {
             Dispose();
 
-            OutlookDesktop.Startup.OutlookExplorer.Close();
-            OutlookDesktop.Startup.OutlookExplorer = null;
-            OutlookDesktop.Startup.OutlookFolder = null;
-            OutlookDesktop.Startup.OutlookNameSpace = null;
-            OutlookDesktop.Startup.OutlookApp = null;
+            Startup.OutlookExplorer.Close();
+            Startup.OutlookExplorer = null;
+            Startup.OutlookFolder = null;
+            Startup.OutlookNameSpace = null;
+            Startup.OutlookApp = null;
 
             System.Windows.Forms.Application.Exit();
         }
@@ -601,8 +623,7 @@ namespace OutlookDesktop.Forms
 
         private List<View> OulookFolderViews { get; set; }
         public InstancePreferences Preferences { get; private set; }
-
-        public string InstanceName { get; private set; }
+        private string InstanceName { get; set; }
 
         #endregion
     }
