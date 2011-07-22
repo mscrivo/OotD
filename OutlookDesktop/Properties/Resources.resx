@@ -379,4 +379,17 @@
   <data name="ShowAll" xml:space="preserve">
     <value>Show All</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="day" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\day.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="month" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\month.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="week" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\week.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="WorkWeek" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WorkWeek.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>

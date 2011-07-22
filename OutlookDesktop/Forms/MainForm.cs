@@ -773,9 +773,24 @@ namespace OutlookDesktop.Forms
             resizeDir = ResizeDirection.None;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void dayButton_Click(object sender, EventArgs e)
         {
-            
+            axOutlookViewControl.ViewXML = Resources.day;
+        }
+
+        private void workWeekButton_Click(object sender, EventArgs e)
+        {
+            axOutlookViewControl.ViewXML = Resources.WorkWeek;
+        }
+
+        private void monthButton_Click(object sender, EventArgs e)
+        {
+            axOutlookViewControl.ViewXML = Resources.month;
+        }
+
+        private void weekButton_Click(object sender, EventArgs e)
+        {
+            axOutlookViewControl.ViewXML = Resources.week;
         }
     }
 

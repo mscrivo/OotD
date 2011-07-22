@@ -271,4 +271,7 @@
         PAAvAHAAcgBlAHYAaQBlAHcAcABhAG4AZQA+AA0ACgA8AC8AdgBpAGUAdwA+AA0ACgAAAAs=
 </value>
   </data>
+  <metadata name="notifyIcon1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>242, 17</value>
+  </metadata>
 </root>
