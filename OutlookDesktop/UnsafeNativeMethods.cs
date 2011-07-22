@@ -14,6 +14,18 @@ namespace OutlookDesktop
         private const int SWP_NOSIZE = 0x1;
         private const int DWMWA_EXCLUDED_FROM_PEEK = 12;
 
+        public const int WM_NCLBUTTONDOWN = 0x00A1;
+        public const int HTBORDER = 18;
+        public const int HTBOTTOM = 15;
+        public const int HTBOTTOMLEFT = 16;
+        public const int HTBOTTOMRIGHT = 17;
+        public const int HTCAPTION = 2;
+        public const int HTLEFT = 10;
+        public const int HTRIGHT = 11;
+        public const int HTTOP = 12;
+        public const int HTTOPLEFT = 13;
+        public const int HTTOPRIGHT = 14;
+
         public enum DwmNCRenderingPolicy
         {
             UseWindowStyle,
@@ -37,6 +49,12 @@ namespace OutlookDesktop
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, Int32 wParam, Int32 lParam);
 
         [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -93,9 +111,9 @@ namespace OutlookDesktop
         {
             if (Environment.OSVersion.Version.Major >= 6 && Environment.OSVersion.Version.Minor >= 1 && DwmIsCompositionEnabled())
             {
-                int renderPolicy = (int) DwmNCRenderingPolicy.Enabled;
+                int renderPolicy = (int)DwmNCRenderingPolicy.Enabled;
 
-                DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof (int));
+                DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof(int));
             }
         }
     }

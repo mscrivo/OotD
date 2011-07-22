@@ -626,5 +626,158 @@ namespace OutlookDesktop.Forms
         private string InstanceName { get; set; }
 
         #endregion
+
+        private const int BorderWidth = 4;
+
+        public enum ResizeDirection
+        {
+            None = 0,
+            Left = 1,
+            TopLeft = 2,
+            Top = 3,
+            TopRight = 4,
+            Right = 5,
+            BottomRight = 6,
+            Bottom = 7,
+            BottomLeft = 8
+        }
+
+        public ResizeDirection resizeDir
+        {
+            get
+            {
+                return _resizeDir;
+            }
+            set
+            {
+                _resizeDir = value;
+
+                switch (value)
+                {
+                    case ResizeDirection.Left:
+                    case ResizeDirection.Right:
+                        this.Cursor = Cursors.SizeWE;
+                        break;
+                    case ResizeDirection.Top:
+                    case ResizeDirection.Bottom:
+                        this.Cursor = Cursors.SizeNS;
+                        break;
+                    case  ResizeDirection.BottomLeft:
+                    case ResizeDirection.TopRight:
+                        this.Cursor = Cursors.SizeNESW;
+                        break;
+                    case ResizeDirection.BottomRight:
+                    case ResizeDirection.TopLeft:
+                        this.Cursor = Cursors.SizeNWSE;
+                        break;
+                    default:
+                        this.Cursor = Cursors.Default;
+                        break;
+                }
+            }
+        }
+        private ResizeDirection _resizeDir = ResizeDirection.None;
+
+        private void MoveForm()
+        {
+            UnsafeNativeMethods.ReleaseCapture();
+            UnsafeNativeMethods.SendMessage(this.Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, UnsafeNativeMethods.HTCAPTION, 0);
+        }
+
+        private void ResizeForm(ResizeDirection direction)
+        {
+            var dir = -1;
+            switch(direction)
+            {
+                case ResizeDirection.Left:
+                    dir = UnsafeNativeMethods.HTLEFT;
+                    break;
+                case ResizeDirection.TopLeft:
+                    dir = UnsafeNativeMethods.HTTOPLEFT;
+                    break;
+                case ResizeDirection.Top:
+                    dir = UnsafeNativeMethods.HTTOP;
+                    break;
+                case ResizeDirection.TopRight:
+                    dir = UnsafeNativeMethods.HTTOPRIGHT;
+                    break;
+                case ResizeDirection.Right:
+                    dir = UnsafeNativeMethods.HTRIGHT;
+                    break;
+                case ResizeDirection.BottomRight:
+                    dir = UnsafeNativeMethods.HTBOTTOMRIGHT;
+                    break;
+                case ResizeDirection.Bottom:
+                    dir = UnsafeNativeMethods.HTBOTTOM;
+                    break;
+                case ResizeDirection.BottomLeft:
+                    dir = UnsafeNativeMethods.HTBOTTOMLEFT;
+                    break;
+            }
+
+            if (dir != -1)
+            {
+                UnsafeNativeMethods.ReleaseCapture();
+                UnsafeNativeMethods.SendMessage(this.Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, dir, 0);
+            }
+        }
+
+        private void MainForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left && this.WindowState != FormWindowState.Maximized)
+            {
+                ResizeForm(resizeDir);
+            }
+        }
+
+        private void MainForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Location.X < BorderWidth && e.Location.Y < BorderWidth)
+                resizeDir = ResizeDirection.TopLeft;
+
+            else if (e.Location.X < BorderWidth && e.Location.Y > this.Height - BorderWidth)
+                resizeDir = ResizeDirection.BottomLeft;
+
+            else if (e.Location.X > this.Width - BorderWidth && e.Location.Y > this.Height - BorderWidth)
+                resizeDir = ResizeDirection.BottomRight;
+
+            else if (e.Location.X > this.Width - BorderWidth && e.Location.Y < BorderWidth)
+                resizeDir = ResizeDirection.TopRight;
+
+            else if (e.Location.X < BorderWidth)
+                resizeDir = ResizeDirection.Left;
+
+            else if (e.Location.X > this.Width - BorderWidth)
+                resizeDir = ResizeDirection.Right;
+
+            else if (e.Location.Y < BorderWidth)
+                resizeDir = ResizeDirection.Top;
+
+            else if (e.Location.Y > this.Height - BorderWidth)
+                resizeDir = ResizeDirection.Bottom;
+
+            else
+                resizeDir = ResizeDirection.None;        
+        }
+
+        private void pnlCaption_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left && this.WindowState != FormWindowState.Maximized)
+            {
+                MoveForm();
+            }
+        }
+
+        private void pnlCaption_MouseMove(object sender, MouseEventArgs e)
+        {
+            resizeDir = ResizeDirection.None;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
+
+
 }

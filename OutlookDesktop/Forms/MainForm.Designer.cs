@@ -57,9 +57,12 @@
             this.RemoveInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.pnlCaption = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.axOutlookViewControl = new AxOutlookView.AxOVCtl();
+            this.button1 = new System.Windows.Forms.Button();
             this.trayMenu.SuspendLayout();
+            this.pnlCaption.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).BeginInit();
             this.SuspendLayout();
@@ -86,7 +89,7 @@
             this.RemoveInstanceMenu,
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(187, 342);
+            this.trayMenu.Size = new System.Drawing.Size(187, 320);
             // 
             // CalendarMenu
             // 
@@ -217,14 +220,31 @@
             this.updateTimer.Interval = 1000;
             this.updateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
             // 
+            // pnlCaption
+            // 
+            this.pnlCaption.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.pnlCaption.Controls.Add(this.button1);
+            this.pnlCaption.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlCaption.Location = new System.Drawing.Point(4, 4);
+            this.pnlCaption.Margin = new System.Windows.Forms.Padding(4);
+            this.pnlCaption.Name = "pnlCaption";
+            this.pnlCaption.Padding = new System.Windows.Forms.Padding(3);
+            this.pnlCaption.Size = new System.Drawing.Size(392, 20);
+            this.pnlCaption.TabIndex = 3;
+            this.pnlCaption.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlCaption_MouseDown);
+            this.pnlCaption.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlCaption_MouseMove);
+            // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.axOutlookViewControl);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Location = new System.Drawing.Point(4, 28);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(400, 400);
-            this.panel1.TabIndex = 1;
+            this.panel1.Size = new System.Drawing.Size(392, 368);
+            this.panel1.TabIndex = 4;
             // 
             // axOutlookViewControl
             // 
@@ -232,10 +252,23 @@
             this.axOutlookViewControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.axOutlookViewControl.Enabled = true;
             this.axOutlookViewControl.Location = new System.Drawing.Point(0, 0);
+            this.axOutlookViewControl.Margin = new System.Windows.Forms.Padding(0);
             this.axOutlookViewControl.Name = "axOutlookViewControl";
             this.axOutlookViewControl.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axOutlookViewControl.OcxState")));
-            this.axOutlookViewControl.Size = new System.Drawing.Size(400, 400);
-            this.axOutlookViewControl.TabIndex = 0;
+            this.axOutlookViewControl.Size = new System.Drawing.Size(392, 368);
+            this.axOutlookViewControl.TabIndex = 3;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(334, 0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(52, 20);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Day";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 
@@ -243,19 +276,24 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 400);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnlCaption);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.MinimizeBox = false;
             this.Name = "MainForm";
             this.Opacity = 0.5D;
+            this.Padding = new System.Windows.Forms.Padding(4);
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Outlook on the Desktop";
             this.Activated += new System.EventHandler(this.MainForm_Activated);
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.MainForm_Layout);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
             this.trayMenu.ResumeLayout(false);
+            this.pnlCaption.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).EndInit();
             this.ResumeLayout(false);
@@ -291,8 +329,10 @@
         private System.Windows.Forms.ToolStripMenuItem uxDefaultOutlookView;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem DisableEnableEditingMenu;
+        internal System.Windows.Forms.Panel pnlCaption;
         private System.Windows.Forms.Panel panel1;
         private AxOutlookView.AxOVCtl axOutlookViewControl;
-        private System.Windows.Forms.ToolStripMenuItem DisableEnableEditingMenu;
+        private System.Windows.Forms.Button button1;
     }
 }
