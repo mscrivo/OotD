@@ -8,6 +8,7 @@ using OutlookDesktop.Properties;
 using Exception = System.Exception;
 using View = Microsoft.Office.Interop.Outlook.View;
 using BitFactory.Logging;
+using System.Linq;
 
 namespace OutlookDesktop.Forms
 {
@@ -44,9 +45,9 @@ namespace OutlookDesktop.Forms
 
             InstanceName = instanceName;
 
-            this.SuspendLayout();
+            SuspendLayout();
             LoadSettings();
-            this.ResumeLayout();
+            ResumeLayout();
 
             if (Environment.OSVersion.Version.Major < 6 || !UnsafeNativeMethods.DwmIsCompositionEnabled())
                 // Windows XP or higher with DWM window composition disabled
@@ -62,6 +63,58 @@ namespace OutlookDesktop.Forms
             }
         }
 
+        #region Events
+        private EventHandler<InstanceRemovedEventArgs> _instanceRemoved;
+        public event EventHandler<InstanceRemovedEventArgs> InstanceRemoved
+        {
+            // The following ensures that the event can only be subscribed too at most once
+            add
+            {
+                if (_instanceRemoved == null || !_instanceRemoved.GetInvocationList().Contains(value))
+                {
+                    _instanceRemoved += value;
+                }
+            }
+            remove
+            {
+                _instanceRemoved -= value;
+            }
+        }
+
+        private void OnInstanceRemoved(object sender, InstanceRemovedEventArgs e)
+        {
+            if (_instanceRemoved != null)
+            {
+                _instanceRemoved(sender, e);
+            }
+        }
+
+        private EventHandler<InstanceRenamedEventArgs> _instanceRenamed;
+        public event EventHandler<InstanceRenamedEventArgs> InstanceRenamed
+        {
+            // The following ensures that the event can only be subscribed too at most once
+            add
+            {
+                if (_instanceRenamed == null || !_instanceRenamed.GetInvocationList().Contains(value))
+                {
+                    _instanceRenamed += value;
+                }
+            }
+            remove
+            {
+                _instanceRenamed -= value;
+            }
+        }
+
+        private void OnInstanceRenamed(object sender, InstanceRenamedEventArgs e)
+        {
+            if (_instanceRenamed != null)
+            {
+                _instanceRenamed(sender, e);
+            }
+        }
+        #endregion
+
         protected override CreateParams CreateParams
         {
             get
@@ -72,9 +125,6 @@ namespace OutlookDesktop.Forms
                 return cp;
             }
         }
-
-        public event EventHandler<InstanceRemovedEventArgs> InstanceRemoved;
-        public event EventHandler<InstanceRenamedEventArgs> InstanceRenamed;
 
         /// <summary>
         /// Get the location of the Select folder menu in the tray context menu. 
@@ -548,7 +598,7 @@ namespace OutlookDesktop.Forms
                     if (appReg != null) appReg.DeleteSubKeyTree(InstanceName);
                 }
 
-                InstanceRemoved(this, new InstanceRemovedEventArgs(InstanceName));
+                OnInstanceRemoved(this, new InstanceRemovedEventArgs(InstanceName));
                 Dispose();
             }
         }
@@ -603,7 +653,7 @@ namespace OutlookDesktop.Forms
                         InstanceName = result.Text;
                         Preferences = new InstancePreferences(InstanceName);
 
-                        InstanceRenamed(this, new InstanceRenamedEventArgs(oldInstanceName, InstanceName));
+                        OnInstanceRenamed(this, new InstanceRenamedEventArgs(oldInstanceName, InstanceName));
                     }
                 }
             }
@@ -664,7 +714,7 @@ namespace OutlookDesktop.Forms
                     case ResizeDirection.Bottom:
                         this.Cursor = Cursors.SizeNS;
                         break;
-                    case  ResizeDirection.BottomLeft:
+                    case ResizeDirection.BottomLeft:
                     case ResizeDirection.TopRight:
                         this.Cursor = Cursors.SizeNESW;
                         break;
@@ -684,7 +734,7 @@ namespace OutlookDesktop.Forms
         {
             UnsafeNativeMethods.ReleaseCapture();
             UnsafeNativeMethods.SendMessage(this.Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, UnsafeNativeMethods.HTCAPTION, 0);
-            
+
             // update the values stored in the registry
             Preferences.Left = this.Left;
             Preferences.Top = this.Top;
@@ -693,7 +743,7 @@ namespace OutlookDesktop.Forms
         private void ResizeForm(ResizeDirection direction)
         {
             var dir = -1;
-            switch(direction)
+            switch (direction)
             {
                 case ResizeDirection.Left:
                     dir = UnsafeNativeMethods.HTLEFT;
@@ -763,7 +813,7 @@ namespace OutlookDesktop.Forms
                 resizeDir = ResizeDirection.Bottom;
 
             else
-                resizeDir = ResizeDirection.None;        
+                resizeDir = ResizeDirection.None;
         }
 
         private void HeaderPanel_MouseDown(object sender, MouseEventArgs e)

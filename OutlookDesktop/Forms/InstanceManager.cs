@@ -43,17 +43,18 @@ namespace OutlookDesktop.Forms
 
             // Each subkey in our main registry key represents an instance. 
             // Read each subkey and load the instance.
-            using (RegistryKey appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+            using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
             {
                 ConfigLogger.Instance.LogDebug("Settings Found.");
                 if (appReg != null)
+                {
                     if (appReg.SubKeyCount > 1)
                     {
                         ConfigLogger.Instance.LogDebug("Multiple instances to load");
 
                         // There are multiple instances defined, so we build the context menu strip dynamically.
                         trayIcon.ContextMenuStrip = new ContextMenuStrip();
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Add Instance", null, AddInstanceMenu_Click));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.AddInstance, null, AddInstanceMenu_Click, "AddInstanceMenu"));
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
                         var instanceSubmenu = new ToolStripMenuItem[appReg.SubKeyCount];
@@ -62,46 +63,74 @@ namespace OutlookDesktop.Forms
                         // each instance will get it's own submenu in the main context menu.
                         foreach (var instanceName in appReg.GetSubKeyNames())
                         {
+                            var newlyAdded = false;
                             if (!_mainFormInstances.ContainsKey(instanceName))
                             {
-                                ConfigLogger.Instance.LogDebug(String.Format("Instanciating up instance {0}", instanceName));
+                                ConfigLogger.Instance.LogDebug(String.Format("Instanciating up instance {0}",
+                                                                             instanceName));
                                 _mainFormInstances.Add(instanceName, new MainForm(instanceName));
+                                newlyAdded = true;
+                            }
 
-                                // hook up the instance removed/renamed event handlers so that we can
-                                // remove/rename the appropriate menu item from the context menu.
-                                _mainFormInstances[instanceName].InstanceRemoved += InstanceRemovedEventHandler;
-                                _mainFormInstances[instanceName].InstanceRenamed += InstanceRenamedEventHandler;
+                            // hook up the instance removed/renamed event handlers so that we can
+                            // remove/rename the appropriate menu item from the context menu.
+                            _mainFormInstances[instanceName].InstanceRemoved += InstanceRemovedEventHandler;
+                            _mainFormInstances[instanceName].InstanceRenamed += InstanceRenamedEventHandler;
 
-                                // create the submenu for the instance
-                                instanceSubmenu[count] = new ToolStripMenuItem(instanceName, null, null, instanceName);
-                                trayIcon.ContextMenuStrip.Items.Add(instanceSubmenu[count]);
+                            // create the submenu for the instance
+                            instanceSubmenu[count] = new ToolStripMenuItem(instanceName, null, null, instanceName);
+                            trayIcon.ContextMenuStrip.Items.Add(instanceSubmenu[count]);
 
-                                // add the name of the instance to the top of the submenu so it's clear which
-                                // instance the submenu belongs to.
-                                _mainFormInstances[instanceName].TrayMenu.Items.Insert(0, new ToolStripMenuItem(instanceName));
-                                _mainFormInstances[instanceName].TrayMenu.Items[0].BackColor = Color.Gainsboro;
+                            // add the name of the instance to the top of the submenu so it's clear which
+                            // instance the submenu belongs to.
+                            _mainFormInstances[instanceName].TrayMenu.Items.Insert(0, new ToolStripMenuItem(instanceName));
+                            _mainFormInstances[instanceName].TrayMenu.Items[0].BackColor = Color.Gainsboro;
 
-                                // the submenu items are set to the contenxt menu defined in the form's instance.
-                                instanceSubmenu[count].DropDown = _mainFormInstances[instanceName].TrayMenu;
+                            // the submenu items are set to the context menu defined in the form's instance.
+                            instanceSubmenu[count].DropDown = _mainFormInstances[instanceName].TrayMenu;
 
-                                _mainFormInstances[instanceName].TrayMenu.Items["ExitMenu"].Visible = false;
+                            _mainFormInstances[instanceName].TrayMenu.Items["RemoveInstanceMenu"].Visible = true;
+                            _mainFormInstances[instanceName].TrayMenu.Items["RenameInstanceMenu"].Visible = true;
+                            if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AddInstanceMenu"))
+                            {
+                                _mainFormInstances[instanceName].TrayMenu.Items["AddInstanceMenu"].Visible = false;
+                            }
+                            if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AboutMenu"))
+                            {
+                                _mainFormInstances[instanceName].TrayMenu.Items["AboutMenu"].Visible = false;
+                            }
+                            if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("StartWithWindows"))
+                            {
+                                _mainFormInstances[instanceName].TrayMenu.Items["StartWithWindows"].Visible = false;
+                            }
+                            _mainFormInstances[instanceName].TrayMenu.Items["ExitMenu"].Visible = false;
 
-                                // finally, show the form.
+                            // finally, show the form
+                            if (newlyAdded)
+                            {
                                 ConfigLogger.Instance.LogDebug(string.Format("Showing Instance {0}", instanceName));
                                 _mainFormInstances[instanceName].Show();
                                 UnsafeNativeMethods.SendWindowToBack(_mainFormInstances[instanceName]);
-                                count++;
                             }
+                            count++;
+
                         }
 
                         // add the rest of the necessary menu items to the main context menu.
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.StartWithWindows, null, StartWithWindowsMenu_Click, "StartWithWindows"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.StartWithWindows, null,
+                                                                                  StartWithWindowsMenu_Click,
+                                                                                  "StartWithWindows"));
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.HideAll, null, HideShowAllMenu_Click, "HideShowMenu"));
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.DisableEditing, null, DisableEnableEditingMenu_Click, "DisableEnableEditingMenu"));
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.Exit, null, ExitMenu_Click, "ExitMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.HideAll, null,
+                                                                                  HideShowAllMenu_Click, "HideShowMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.DisableEditing, null,
+                                                                                  DisableEnableEditingMenu_Click,
+                                                                                  "DisableEnableEditingMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.About, null, AboutMenu_Click,
+                                                                                  "AboutMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.Exit, null, ExitMenu_Click,
+                                                                                  "ExitMenu"));
                     }
                     else
                     {
@@ -109,26 +138,64 @@ namespace OutlookDesktop.Forms
                         var instanceName = appReg.SubKeyCount == 1 ? appReg.GetSubKeyNames()[0] : "Default Instance";
 
                         // create our instance and set the context menu to one defined in the form instance.
+                        var newlyAdded = false;
                         if (!_mainFormInstances.ContainsKey(instanceName))
                         {
                             _mainFormInstances.Add(instanceName, new MainForm(instanceName));
-                            trayIcon.ContextMenuStrip = _mainFormInstances[instanceName].TrayMenu;
+                            newlyAdded = true;
+                        }
 
-                            // remove unnecessary menu items
-                            trayIcon.ContextMenuStrip.Items["RemoveInstanceMenu"].Visible = false;
-                            trayIcon.ContextMenuStrip.Items["RenameInstanceMenu"].Visible = false;
+                        trayIcon.ContextMenuStrip = _mainFormInstances[instanceName].TrayMenu;
 
-                            // add global menu items that don't apply to the instance.
-                            trayIcon.ContextMenuStrip.Items.Insert(0, new ToolStripMenuItem(Resources.AddInstance, null, AddInstanceMenu_Click));
+                        // remove unnecessary menu items
+                        trayIcon.ContextMenuStrip.Items.RemoveAt(0);
+                        trayIcon.ContextMenuStrip.Items["RemoveInstanceMenu"].Visible = false;
+                        trayIcon.ContextMenuStrip.Items["RenameInstanceMenu"].Visible = false;
+                        if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AddInstanceMenu"))
+                        {
+                            _mainFormInstances[instanceName].TrayMenu.Items["AddInstanceMenu"].Visible = true;
+                        }
+                        if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AboutMenu"))
+                        {
+                            _mainFormInstances[instanceName].TrayMenu.Items["AboutMenu"].Visible = true;
+                        }
+                        if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("StartWithWindows"))
+                        {
+                            _mainFormInstances[instanceName].TrayMenu.Items["StartWithWindows"].Visible = true;
+                        }
+
+
+                        // add global menu items that don't apply to the instance.
+                        if (!trayIcon.ContextMenuStrip.Items.ContainsKey("AddInstanceMenu"))
+                        {
+                            trayIcon.ContextMenuStrip.Items.Insert(0, new ToolStripMenuItem(Resources.AddInstance,
+                                                                                            null,
+                                                                                            AddInstanceMenu_Click,
+                                                                                            "AddInstanceMenu"));
                             trayIcon.ContextMenuStrip.Items.Insert(1, new ToolStripSeparator());
-                            trayIcon.ContextMenuStrip.Items.Insert(12, new ToolStripMenuItem(Resources.StartWithWindows, null, StartWithWindowsMenu_Click, "StartWithWindows"));
-                            trayIcon.ContextMenuStrip.Items.Insert(18, new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
+                        }
+                        if (!trayIcon.ContextMenuStrip.Items.ContainsKey("StartWithWindows"))
+                        {
+                            trayIcon.ContextMenuStrip.Items.Insert(12, new ToolStripMenuItem(Resources.StartWithWindows,
+                                                                                             null,
+                                                                                             StartWithWindowsMenu_Click,
+                                                                                             "StartWithWindows"));
+                        }
+                        if (!trayIcon.ContextMenuStrip.Items.ContainsKey("AboutMenu"))
+                        {
+                            trayIcon.ContextMenuStrip.Items.Insert(18, new ToolStripMenuItem(Resources.About, null,
+                                                                                             AboutMenu_Click,
+                                                                                             "AboutMenu"));
+                        }
+                        _mainFormInstances[instanceName].TrayMenu.Items["ExitMenu"].Visible = true;
 
-                            // finally, show the form.
+                        if (newlyAdded)
+                        {
                             _mainFormInstances[instanceName].Show();
                             UnsafeNativeMethods.SendWindowToBack(_mainFormInstances[instanceName]);
                         }
                     }
+                }
             }
 
             var startWithWindowsMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["StartWithWindows"];
@@ -172,6 +239,10 @@ namespace OutlookDesktop.Forms
                 mainForm.Dispose();
 
                 LoadInstances();
+
+                // reposition the newly added instance so that it's not directly on top of the previous one
+                _mainFormInstances[result.Text].Left = _mainFormInstances[result.Text].Left + 200;
+                _mainFormInstances[result.Text].Top = _mainFormInstances[result.Text].Top + 200;
             }
         }
 
@@ -263,10 +334,12 @@ namespace OutlookDesktop.Forms
         {
             // remove the menu item for the removed instance.
             trayIcon.ContextMenuStrip.Items.RemoveByKey(e.InstanceName);
+            _mainFormInstances.Remove(e.InstanceName);
 
             // if we only have one instance left, reload everything so that the context
             // menu only shows the one instances' menu items.
-            LoadInstances();
+            if (_mainFormInstances.Count == 1)
+                LoadInstances();
         }
 
         private void InstanceRenamedEventHandler(Object sender, InstanceRenamedEventArgs e)
