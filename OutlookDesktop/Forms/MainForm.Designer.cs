@@ -257,9 +257,9 @@ namespace OutlookDesktop.Forms
             // 
             this.workWeekButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.workWeekButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.workWeekButton.Location = new System.Drawing.Point(196, 0);
+            this.workWeekButton.Location = new System.Drawing.Point(216, 0);
             this.workWeekButton.Name = "workWeekButton";
-            this.workWeekButton.Size = new System.Drawing.Size(74, 20);
+            this.workWeekButton.Size = new System.Drawing.Size(68, 20);
             this.workWeekButton.TabIndex = 4;
             this.workWeekButton.Text = "Work Week";
             this.workWeekButton.UseVisualStyleBackColor = true;
@@ -269,7 +269,7 @@ namespace OutlookDesktop.Forms
             // 
             this.monthButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.monthButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.monthButton.Location = new System.Drawing.Point(334, 0);
+            this.monthButton.Location = new System.Drawing.Point(339, 0);
             this.monthButton.Name = "monthButton";
             this.monthButton.Size = new System.Drawing.Size(52, 20);
             this.monthButton.TabIndex = 2;
@@ -281,7 +281,7 @@ namespace OutlookDesktop.Forms
             // 
             this.weekButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.weekButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.weekButton.Location = new System.Drawing.Point(276, 0);
+            this.weekButton.Location = new System.Drawing.Point(286, 0);
             this.weekButton.Name = "weekButton";
             this.weekButton.Size = new System.Drawing.Size(52, 20);
             this.weekButton.TabIndex = 1;
@@ -293,7 +293,7 @@ namespace OutlookDesktop.Forms
             // 
             this.dayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.dayButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dayButton.Location = new System.Drawing.Point(138, 0);
+            this.dayButton.Location = new System.Drawing.Point(162, 0);
             this.dayButton.Name = "dayButton";
             this.dayButton.Size = new System.Drawing.Size(52, 20);
             this.dayButton.TabIndex = 0;
@@ -341,6 +341,7 @@ namespace OutlookDesktop.Forms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(325, 125);
             this.Name = "MainForm";
             this.Opacity = 0.5D;
             this.Padding = new System.Windows.Forms.Padding(4);

@@ -585,7 +585,7 @@ namespace OutlookDesktop.Forms
 
         private void RemoveInstanceMenu_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(this, Resources.RemoveInstanceConfirmation,
+            var result = MessageBox.Show(this, Resources.RemoveInstanceConfirmation,
                                                   Resources.ConfirmationCaption, MessageBoxButtons.YesNo,
                                                   MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
             if (result == DialogResult.Yes)
@@ -636,12 +636,11 @@ namespace OutlookDesktop.Forms
 
         private void RenameInstanceMenu_Click(object sender, EventArgs e)
         {
-            InputBoxResult result = InputBox.Show(this, "", "Rename Instance", InstanceName,
-                                                  InputBox_Validating);
+            var result = InputBox.Show(this, "", "Rename Instance", InstanceName, InputBox_Validating);
             if (result.Ok)
             {
                 using (
-                    RegistryKey parentKey =
+                    var parentKey =
                         Registry.CurrentUser.OpenSubKey(
                             "Software\\" + System.Windows.Forms.Application.CompanyName + "\\" +
                             System.Windows.Forms.Application.ProductName, true))
@@ -674,7 +673,7 @@ namespace OutlookDesktop.Forms
         #region Properties
 
         private List<View> OulookFolderViews { get; set; }
-        public InstancePreferences Preferences { get; private set; }
+        private InstancePreferences Preferences { get; set; }
         private string InstanceName { get; set; }
 
         #endregion
@@ -694,7 +693,7 @@ namespace OutlookDesktop.Forms
             BottomLeft = 8
         }
 
-        public ResizeDirection resizeDir
+        private ResizeDirection resizeDir
         {
             get
             {
@@ -775,6 +774,7 @@ namespace OutlookDesktop.Forms
             {
                 UnsafeNativeMethods.ReleaseCapture();
                 UnsafeNativeMethods.SendMessage(this.Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, dir, 0);
+                System.Diagnostics.Debug.Print(String.Format("Height: {0}, Width: {1}", Height, Width));
             }
         }
 
@@ -851,13 +851,13 @@ namespace OutlookDesktop.Forms
 
         private void transparencySlider_Scroll(object sender, EventArgs e)
         {
-            double opacityVal = (double)transparencySlider.Value / 100;
+            var opacityVal = (double)transparencySlider.Value / 100;
             if (opacityVal == 1)
             {
                 opacityVal = 0.99;
             }
-            this.Opacity = opacityVal;
-            Preferences.Opacity = this.Opacity;
+            Opacity = opacityVal;
+            Preferences.Opacity = opacityVal;
         }
 
         private void transparencySlider_MouseHover(object sender, EventArgs e)
