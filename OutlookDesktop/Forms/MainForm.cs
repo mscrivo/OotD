@@ -42,8 +42,9 @@ namespace OutlookDesktop.Forms
         {
             InitializeComponent();
 
-            this.SuspendLayout();
             InstanceName = instanceName;
+
+            this.SuspendLayout();
             LoadSettings();
             this.ResumeLayout();
 
