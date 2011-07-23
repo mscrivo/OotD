@@ -42,8 +42,10 @@ namespace OutlookDesktop.Forms
         {
             InitializeComponent();
 
+            this.SuspendLayout();
             InstanceName = instanceName;
             LoadSettings();
+            this.ResumeLayout();
 
             if (Environment.OSVersion.Version.Major < 6 || !UnsafeNativeMethods.DwmIsCompositionEnabled())
                 // Windows XP or higher with DWM window composition disabled
@@ -114,6 +116,7 @@ namespace OutlookDesktop.Forms
                 MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
+            transparencySlider.Value = (int)(Preferences.Opacity * 100);
 
             // Sets the position of the instance. 
             try
@@ -159,9 +162,8 @@ namespace OutlookDesktop.Forms
             {
                 // custom folder
                 _customFolder = Preferences.OutlookFolderName;
-                String folderName = GetFolderNameFromFullPath(_customFolder);
-                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
-                                      new ToolStripMenuItem(folderName, null, new EventHandler(CustomFolderMenu_Click)));
+                var folderName = GetFolderNameFromFullPath(_customFolder);
+                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(folderName, null, new EventHandler(CustomFolderMenu_Click)));
                 _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
             }
@@ -274,7 +276,7 @@ namespace OutlookDesktop.Forms
                 if (oFolder != null) subfolders.Add(oFolder.Name);
             }
 
-            for (int i = subfolders.Count - 1; i >= 0; i--)
+            for (var i = subfolders.Count - 1; i >= 0; i--)
             {
                 fullFolderPath += subfolders[i] + "\\";
             }
@@ -409,7 +411,7 @@ namespace OutlookDesktop.Forms
                     trayMenu.Items.Remove(_customMenu);
                 }
 
-                String folderPath = GetFolderPath(GenerateFolderPathFromObject(oFolder));
+                var folderPath = GetFolderPath(GenerateFolderPathFromObject(oFolder));
                 axOutlookViewControl.Folder = folderPath;
 
                 // Save the EntryId and the StoreId for this folder in the prefrences. 
@@ -420,8 +422,7 @@ namespace OutlookDesktop.Forms
                 _customFolder = Preferences.OutlookFolderName;
 
                 // Update the UI to reflect the new settings. 
-                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
-                                      new ToolStripMenuItem(oFolder.Name, null, new EventHandler(CustomFolderMenu_Click)));
+                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(oFolder.Name, null, new EventHandler(CustomFolderMenu_Click)));
                 _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
 
                 SetMapiFolder();
@@ -445,6 +446,12 @@ namespace OutlookDesktop.Forms
         private void MainForm_Layout(object sender, LayoutEventArgs e)
         {
             UnsafeNativeMethods.SendWindowToBack(this);
+
+            System.Diagnostics.Debug.Print("Changed");
+
+            // Update the settings stored in the registry
+            Preferences.Width = this.Width;
+            Preferences.Height = this.Height;
         }
 
         /// <summary>
@@ -513,12 +520,6 @@ namespace OutlookDesktop.Forms
         private void TasksMenu_Click(object sender, EventArgs e)
         {
             DefaultFolderTypesClicked(FolderViewType.Tasks, TasksMenu);
-        }
-
-        private void PreferencesMenu_Click(object sender, EventArgs e)
-        {
-            var preferencesForm = new PreferencesForm(this);
-            preferencesForm.Show();
         }
 
         private void HideMenu_Click(object sender, EventArgs e)
@@ -682,6 +683,10 @@ namespace OutlookDesktop.Forms
         {
             UnsafeNativeMethods.ReleaseCapture();
             UnsafeNativeMethods.SendMessage(this.Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, UnsafeNativeMethods.HTCAPTION, 0);
+            
+            // update the values stored in the registry
+            Preferences.Left = this.Left;
+            Preferences.Top = this.Top;
         }
 
         private void ResizeForm(ResizeDirection direction)
@@ -724,7 +729,7 @@ namespace OutlookDesktop.Forms
 
         private void MainForm_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left && this.WindowState != FormWindowState.Maximized)
+            if (e.Button == MouseButtons.Left && this.WindowState != FormWindowState.Maximized)
             {
                 ResizeForm(resizeDir);
             }
@@ -760,15 +765,15 @@ namespace OutlookDesktop.Forms
                 resizeDir = ResizeDirection.None;        
         }
 
-        private void pnlCaption_MouseDown(object sender, MouseEventArgs e)
+        private void HeaderPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left && this.WindowState != FormWindowState.Maximized)
+            if (e.Button == MouseButtons.Left && this.WindowState != FormWindowState.Maximized)
             {
                 MoveForm();
             }
         }
 
-        private void pnlCaption_MouseMove(object sender, MouseEventArgs e)
+        private void HeaderPanel_MouseMove(object sender, MouseEventArgs e)
         {
             resizeDir = ResizeDirection.None;
         }
@@ -792,7 +797,21 @@ namespace OutlookDesktop.Forms
         {
             axOutlookViewControl.ViewXML = Resources.week;
         }
+
+        private void transparencySlider_Scroll(object sender, EventArgs e)
+        {
+            double opacityVal = (double)transparencySlider.Value / 100;
+            if (opacityVal == 1)
+            {
+                opacityVal = 0.99;
+            }
+            this.Opacity = opacityVal;
+            Preferences.Opacity = this.Opacity;
+        }
+
+        private void transparencySlider_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(transparencySlider, "Slide to change this windows transparency level");
+        }
     }
-
-
 }

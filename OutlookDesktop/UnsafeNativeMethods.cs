@@ -6,7 +6,7 @@ using BitFactory.Logging;
 
 namespace OutlookDesktop
 {
-    internal class UnsafeNativeMethods
+    internal static class UnsafeNativeMethods
     {
         private const int HWND_BOTTOM = 0x1;
         private const int SWP_NOACTIVATE = 0x10;
@@ -32,10 +32,6 @@ namespace OutlookDesktop
             Disabled,
             Enabled,
             Last
-        }
-
-        private UnsafeNativeMethods()
-        {
         }
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
@@ -80,10 +76,8 @@ namespace OutlookDesktop
             }
             catch (Exception ex)
             {
-                ConfigLogger.Instance.LogError(String.Format("Error pinning window to desktop, OS: {0}.",
-                                                             Environment.OSVersion.Version));
-                MessageBox.Show(form, Resources.ErrorInitializingApp + " " + ex, Resources.ErrorCaption,
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ConfigLogger.Instance.LogError(String.Format("Error pinning window to desktop, OS: {0}.",Environment.OSVersion.Version));
+                MessageBox.Show(form, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

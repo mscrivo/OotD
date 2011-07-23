@@ -56,7 +56,7 @@ namespace OutlookDesktop
         public int Left
         {
             get { return (int)_appReg.GetValue("Left", DefaultLeftPosition); }
-            set { _appReg.SetValue("Left", value); }
+            set { _appReg.SetValue("Left", value); System.Diagnostics.Debug.Print(String.Format("Left:{0}", value)); }
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace OutlookDesktop
         public int Top
         {
             get { return (int)_appReg.GetValue("Top", DefaultTopPosition); }
-            set { _appReg.SetValue("Top", value); }
+            set { _appReg.SetValue("Top", value); System.Diagnostics.Debug.Print(String.Format("Top:{0}", value)); }
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace OutlookDesktop
         public int Width
         {
             get { return (int)_appReg.GetValue("Width", DefaultWidth); }
-            set { _appReg.SetValue("Width", value); }
+            set { _appReg.SetValue("Width", value); System.Diagnostics.Debug.Print(String.Format("Width:{0}", value)); }
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace OutlookDesktop
         public int Height
         {
             get { return (int)_appReg.GetValue("Height", DefaultHeight); }
-            set { _appReg.SetValue("Height", value); }
+            set { _appReg.SetValue("Height", value); System.Diagnostics.Debug.Print(String.Format("Height:{0}", value)); }
         }
 
         public string OutlookFolderName
