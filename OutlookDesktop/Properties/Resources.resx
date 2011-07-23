@@ -347,7 +347,7 @@
     <value>Could not launch web site.</value>
   </data>
   <data name="Office2000Requirement" xml:space="preserve">
-    <value>This program requires Microsoft Outlook 2000 or higher.</value>
+    <value>This program requires Microsoft Outlook 2003 or higher.</value>
   </data>
   <data name="InstallOutlookMsg" xml:space="preserve">
     <value>Please install Microsoft Office and try again.</value>
@@ -379,7 +379,6 @@
   <data name="ShowAll" xml:space="preserve">
     <value>Show All</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="day" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\day.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>

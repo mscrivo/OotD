@@ -583,7 +583,7 @@ namespace OutlookDesktop.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This program requires Microsoft Outlook 2000 or higher..
+        ///   Looks up a localized string similar to This program requires Microsoft Outlook 2003 or higher..
         /// </summary>
         internal static string Office2000Requirement {
             get {

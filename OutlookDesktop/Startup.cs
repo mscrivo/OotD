@@ -37,7 +37,7 @@ namespace OutlookDesktop
             }
             else
             {
-                if (!IsOutlook2000OrHigherInstalled())
+                if (!IsOutlook2003OrHigherInstalled())
                 {
                     ConfigLogger.Instance.LogDebug("Outlook is not avaliable or installed.");
                     MessageBox.Show(
@@ -101,9 +101,9 @@ namespace OutlookDesktop
         /// Returns true if Outlook 2000 (or higher) is installed.
         /// </summary>
         /// <returns>New version of Office need to be explicily supported in this function.</returns>
-        private static bool IsOutlook2000OrHigherInstalled()
+        private static bool IsOutlook2003OrHigherInstalled()
         {
-            bool hasOffice2000OrHigher = false;
+            bool hasOffice2003OrHigher = false;
             string outlookPath = string.Empty;
 
             // first make sure they have Office/Outlook 2000 (9.0) or higher installed by looking for 
@@ -123,9 +123,9 @@ namespace OutlookDesktop
                         if (double.TryParse(subkey, NumberStyles.Float, culture, out versionSubKey))
                         {
                             ConfigLogger.Instance.LogDebug(string.Format("Office Version: {0}",versionSubKey));
-                            if (versionSubKey > 9)
+                            if (versionSubKey >= 11)
                             {
-                                hasOffice2000OrHigher = true;
+                                hasOffice2003OrHigher = true;
                                 break;
                             }
                         }
@@ -134,9 +134,9 @@ namespace OutlookDesktop
             }
 
             // now check for the existence of the actual Outlook.exe.
-            if (hasOffice2000OrHigher)
+            if (hasOffice2003OrHigher)
             {
-                ConfigLogger.Instance.LogDebug("Office 2000 or higher is installed, now checking for Outlook exe");
+                ConfigLogger.Instance.LogDebug("Office 2003 or higher is installed, now checking for Outlook exe");
 
                 using (
                     RegistryKey key =

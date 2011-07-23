@@ -26,7 +26,7 @@ namespace OutlookDesktop
         public const int HTTOPLEFT = 13;
         public const int HTTOPRIGHT = 14;
 
-        public enum DwmNCRenderingPolicy
+        private enum DwmNCRenderingPolicy
         {
             UseWindowStyle,
             Disabled,
@@ -105,7 +105,7 @@ namespace OutlookDesktop
         {
             if (Environment.OSVersion.Version.Major >= 6 && Environment.OSVersion.Version.Minor >= 1 && DwmIsCompositionEnabled())
             {
-                int renderPolicy = (int)DwmNCRenderingPolicy.Enabled;
+                var renderPolicy = (int)DwmNCRenderingPolicy.Enabled;
 
                 DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof(int));
             }
