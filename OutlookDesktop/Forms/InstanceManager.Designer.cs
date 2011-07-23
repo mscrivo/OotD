@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InstanceManager));
             this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // trayIcon
@@ -47,6 +48,10 @@
             this.updateTimer.Interval = 1000;
             this.updateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
             // 
+            // backgroundWorker
+            // 
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
+            // 
             // InstanceManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -55,7 +60,7 @@
             this.ControlBox = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "InstanceManager";
-            this.Opacity = 0;
+            this.Opacity = 0D;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
@@ -70,5 +75,6 @@
 
         private System.Windows.Forms.NotifyIcon trayIcon;
         private System.Windows.Forms.Timer updateTimer;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
     }
 }

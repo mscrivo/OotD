@@ -30,11 +30,25 @@ namespace OutlookDesktop.Forms
     /// </summary>
     public partial class MainForm : Form
     {
+        private enum ResizeDirection
+        {
+            None = 0,
+            Left = 1,
+            TopLeft = 2,
+            Top = 3,
+            TopRight = 4,
+            Right = 5,
+            BottomRight = 6,
+            Bottom = 7,
+            BottomLeft = 8
+        }
+
         private String _customFolder;
         private ToolStripMenuItem _customMenu;
         private MAPIFolder _outlookFolder;
         private DateTime _previousDate;
-
+        private const int _resizeBorderWidth = 4;
+        
         /// <summary>
         /// Sets up the form for the current instance.
         /// </summary>
@@ -214,7 +228,7 @@ namespace OutlookDesktop.Forms
                 // custom folder
                 _customFolder = Preferences.OutlookFolderName;
                 var folderName = GetFolderNameFromFullPath(_customFolder);
-                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(folderName, null, new EventHandler(CustomFolderMenu_Click)));
+                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
                 _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
             }
@@ -473,7 +487,7 @@ namespace OutlookDesktop.Forms
                 _customFolder = Preferences.OutlookFolderName;
 
                 // Update the UI to reflect the new settings. 
-                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(oFolder.Name, null, new EventHandler(CustomFolderMenu_Click)));
+                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(oFolder.Name, null, CustomFolderMenu_Click));
                 _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
 
                 SetMapiFolder();
@@ -487,6 +501,55 @@ namespace OutlookDesktop.Forms
             }
         }
 
+        private void MoveForm()
+        {
+            UnsafeNativeMethods.ReleaseCapture();
+            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, UnsafeNativeMethods.HTCAPTION, 0);
+
+            // update the values stored in the registry
+            Preferences.Left = Left;
+            Preferences.Top = Top;
+        }
+
+        private void ResizeForm(ResizeDirection direction)
+        {
+            var dir = -1;
+            switch (direction)
+            {
+                case ResizeDirection.Left:
+                    dir = UnsafeNativeMethods.HTLEFT;
+                    break;
+                case ResizeDirection.TopLeft:
+                    dir = UnsafeNativeMethods.HTTOPLEFT;
+                    break;
+                case ResizeDirection.Top:
+                    dir = UnsafeNativeMethods.HTTOP;
+                    break;
+                case ResizeDirection.TopRight:
+                    dir = UnsafeNativeMethods.HTTOPRIGHT;
+                    break;
+                case ResizeDirection.Right:
+                    dir = UnsafeNativeMethods.HTRIGHT;
+                    break;
+                case ResizeDirection.BottomRight:
+                    dir = UnsafeNativeMethods.HTBOTTOMRIGHT;
+                    break;
+                case ResizeDirection.Bottom:
+                    dir = UnsafeNativeMethods.HTBOTTOM;
+                    break;
+                case ResizeDirection.BottomLeft:
+                    dir = UnsafeNativeMethods.HTBOTTOMLEFT;
+                    break;
+            }
+
+            if (dir != -1)
+            {
+                UnsafeNativeMethods.ReleaseCapture();
+                UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, dir, 0);
+            }
+        }
+
+
         #region Event Handlers
 
         private void MainForm_Activated(object sender, EventArgs e)
@@ -498,11 +561,9 @@ namespace OutlookDesktop.Forms
         {
             UnsafeNativeMethods.SendWindowToBack(this);
 
-            System.Diagnostics.Debug.Print("Changed");
-
             // Update the settings stored in the registry
-            Preferences.Width = this.Width;
-            Preferences.Height = this.Height;
+            Preferences.Width = Width;
+            Preferences.Height = Height;
         }
 
         /// <summary>
@@ -667,158 +728,47 @@ namespace OutlookDesktop.Forms
             }
         }
 
-
-        #endregion
-
-        #region Properties
-
-        private List<View> OulookFolderViews { get; set; }
-        private InstancePreferences Preferences { get; set; }
-        private string InstanceName { get; set; }
-
-        #endregion
-
-        private const int BorderWidth = 4;
-
-        public enum ResizeDirection
-        {
-            None = 0,
-            Left = 1,
-            TopLeft = 2,
-            Top = 3,
-            TopRight = 4,
-            Right = 5,
-            BottomRight = 6,
-            Bottom = 7,
-            BottomLeft = 8
-        }
-
-        private ResizeDirection resizeDir
-        {
-            get
-            {
-                return _resizeDir;
-            }
-            set
-            {
-                _resizeDir = value;
-
-                switch (value)
-                {
-                    case ResizeDirection.Left:
-                    case ResizeDirection.Right:
-                        this.Cursor = Cursors.SizeWE;
-                        break;
-                    case ResizeDirection.Top:
-                    case ResizeDirection.Bottom:
-                        this.Cursor = Cursors.SizeNS;
-                        break;
-                    case ResizeDirection.BottomLeft:
-                    case ResizeDirection.TopRight:
-                        this.Cursor = Cursors.SizeNESW;
-                        break;
-                    case ResizeDirection.BottomRight:
-                    case ResizeDirection.TopLeft:
-                        this.Cursor = Cursors.SizeNWSE;
-                        break;
-                    default:
-                        this.Cursor = Cursors.Default;
-                        break;
-                }
-            }
-        }
-        private ResizeDirection _resizeDir = ResizeDirection.None;
-
-        private void MoveForm()
-        {
-            UnsafeNativeMethods.ReleaseCapture();
-            UnsafeNativeMethods.SendMessage(this.Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, UnsafeNativeMethods.HTCAPTION, 0);
-
-            // update the values stored in the registry
-            Preferences.Left = this.Left;
-            Preferences.Top = this.Top;
-        }
-
-        private void ResizeForm(ResizeDirection direction)
-        {
-            var dir = -1;
-            switch (direction)
-            {
-                case ResizeDirection.Left:
-                    dir = UnsafeNativeMethods.HTLEFT;
-                    break;
-                case ResizeDirection.TopLeft:
-                    dir = UnsafeNativeMethods.HTTOPLEFT;
-                    break;
-                case ResizeDirection.Top:
-                    dir = UnsafeNativeMethods.HTTOP;
-                    break;
-                case ResizeDirection.TopRight:
-                    dir = UnsafeNativeMethods.HTTOPRIGHT;
-                    break;
-                case ResizeDirection.Right:
-                    dir = UnsafeNativeMethods.HTRIGHT;
-                    break;
-                case ResizeDirection.BottomRight:
-                    dir = UnsafeNativeMethods.HTBOTTOMRIGHT;
-                    break;
-                case ResizeDirection.Bottom:
-                    dir = UnsafeNativeMethods.HTBOTTOM;
-                    break;
-                case ResizeDirection.BottomLeft:
-                    dir = UnsafeNativeMethods.HTBOTTOMLEFT;
-                    break;
-            }
-
-            if (dir != -1)
-            {
-                UnsafeNativeMethods.ReleaseCapture();
-                UnsafeNativeMethods.SendMessage(this.Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, dir, 0);
-                System.Diagnostics.Debug.Print(String.Format("Height: {0}, Width: {1}", Height, Width));
-            }
-        }
-
         private void MainForm_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && this.WindowState != FormWindowState.Maximized)
+            if (e.Button == MouseButtons.Left && WindowState != FormWindowState.Maximized)
             {
-                ResizeForm(resizeDir);
+                ResizeForm(ResizeDir);
             }
         }
 
         private void MainForm_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Location.X < BorderWidth && e.Location.Y < BorderWidth)
-                resizeDir = ResizeDirection.TopLeft;
+            if (e.Location.X < _resizeBorderWidth && e.Location.Y < _resizeBorderWidth)
+                ResizeDir = ResizeDirection.TopLeft;
 
-            else if (e.Location.X < BorderWidth && e.Location.Y > this.Height - BorderWidth)
-                resizeDir = ResizeDirection.BottomLeft;
+            else if (e.Location.X < _resizeBorderWidth && e.Location.Y > Height - _resizeBorderWidth)
+                ResizeDir = ResizeDirection.BottomLeft;
 
-            else if (e.Location.X > this.Width - BorderWidth && e.Location.Y > this.Height - BorderWidth)
-                resizeDir = ResizeDirection.BottomRight;
+            else if (e.Location.X > Width - _resizeBorderWidth && e.Location.Y > Height - _resizeBorderWidth)
+                ResizeDir = ResizeDirection.BottomRight;
 
-            else if (e.Location.X > this.Width - BorderWidth && e.Location.Y < BorderWidth)
-                resizeDir = ResizeDirection.TopRight;
+            else if (e.Location.X > Width - _resizeBorderWidth && e.Location.Y < _resizeBorderWidth)
+                ResizeDir = ResizeDirection.TopRight;
 
-            else if (e.Location.X < BorderWidth)
-                resizeDir = ResizeDirection.Left;
+            else if (e.Location.X < _resizeBorderWidth)
+                ResizeDir = ResizeDirection.Left;
 
-            else if (e.Location.X > this.Width - BorderWidth)
-                resizeDir = ResizeDirection.Right;
+            else if (e.Location.X > Width - _resizeBorderWidth)
+                ResizeDir = ResizeDirection.Right;
 
-            else if (e.Location.Y < BorderWidth)
-                resizeDir = ResizeDirection.Top;
+            else if (e.Location.Y < _resizeBorderWidth)
+                ResizeDir = ResizeDirection.Top;
 
-            else if (e.Location.Y > this.Height - BorderWidth)
-                resizeDir = ResizeDirection.Bottom;
+            else if (e.Location.Y > Height - _resizeBorderWidth)
+                ResizeDir = ResizeDirection.Bottom;
 
             else
-                resizeDir = ResizeDirection.None;
+                ResizeDir = ResizeDirection.None;
         }
 
         private void HeaderPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && this.WindowState != FormWindowState.Maximized)
+            if (e.Button == MouseButtons.Left && WindowState != FormWindowState.Maximized)
             {
                 MoveForm();
             }
@@ -826,7 +776,7 @@ namespace OutlookDesktop.Forms
 
         private void HeaderPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            resizeDir = ResizeDirection.None;
+            ResizeDir = ResizeDirection.None;
         }
 
         private void dayButton_Click(object sender, EventArgs e)
@@ -864,5 +814,50 @@ namespace OutlookDesktop.Forms
         {
             toolTip1.SetToolTip(transparencySlider, "Slide to change this windows transparency level");
         }
+
+        #endregion
+
+        #region Properties
+
+        private List<View> OulookFolderViews { get; set; }
+        private InstancePreferences Preferences { get; set; }
+        private string InstanceName { get; set; }
+
+        private ResizeDirection ResizeDir
+        {
+            get
+            {
+                return _resizeDir;
+            }
+            set
+            {
+                _resizeDir = value;
+
+                switch (value)
+                {
+                    case ResizeDirection.Left:
+                    case ResizeDirection.Right:
+                        Cursor = Cursors.SizeWE;
+                        break;
+                    case ResizeDirection.Top:
+                    case ResizeDirection.Bottom:
+                        Cursor = Cursors.SizeNS;
+                        break;
+                    case ResizeDirection.BottomLeft:
+                    case ResizeDirection.TopRight:
+                        Cursor = Cursors.SizeNESW;
+                        break;
+                    case ResizeDirection.BottomRight:
+                    case ResizeDirection.TopLeft:
+                        Cursor = Cursors.SizeNWSE;
+                        break;
+                    default:
+                        Cursor = Cursors.Default;
+                        break;
+                }
+            }
+        }
+        private ResizeDirection _resizeDir = ResizeDirection.None;
+        #endregion        
     }
 }

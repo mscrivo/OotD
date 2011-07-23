@@ -88,6 +88,7 @@ namespace OutlookDesktop.Forms
 
                             // the submenu items are set to the context menu defined in the form's instance.
                             instanceSubmenu[count].DropDown = _mainFormInstances[instanceName].TrayMenu;
+                            instanceSubmenu[count].DropDownOpened += InstanceContextMenu_DropDownOpened;
 
                             _mainFormInstances[instanceName].TrayMenu.Items["RemoveInstanceMenu"].Visible = true;
                             _mainFormInstances[instanceName].TrayMenu.Items["RenameInstanceMenu"].Visible = true;
@@ -349,10 +350,42 @@ namespace OutlookDesktop.Forms
             trayIcon.ContextMenuStrip.Items[e.OldInstanceName].Name = e.NewInstanceName;
         }
 
+        void InstanceContextMenu_DropDownOpened(object sender, EventArgs e)
+        {
+            var item = sender as ToolStripDropDownItem;
+
+            // flash the form so the user knows which one they're working with
+            if (!backgroundWorker.IsBusy)
+            {
+                backgroundWorker.RunWorkerAsync(item);
+            }
+        }
+
+        private void FlashForm(ToolStripDropDownItem dropDownitem)
+        {
+            if (dropDownitem != null)
+            {
+                for (var i = 0; i < 2; i++)
+                {
+                    var currentOpacity = _mainFormInstances[dropDownitem.DropDownItems[0].Text].Opacity;
+                    _mainFormInstances[dropDownitem.DropDownItems[0].Text].Opacity = .3;
+                    System.Threading.Thread.Sleep(250);
+                    _mainFormInstances[dropDownitem.DropDownItems[0].Text].Opacity = currentOpacity;
+                    System.Threading.Thread.Sleep(250);
+                }
+            }
+        }
+
         private void TrayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
                 ShowHideAllInstances();
+        }
+
+        private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            var item = (ToolStripDropDownItem)e.Argument;
+            FlashForm(item);
         }
     }
 }
