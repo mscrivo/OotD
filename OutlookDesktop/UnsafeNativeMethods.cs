@@ -15,7 +15,6 @@ namespace OutlookDesktop
         private const int DWMWA_EXCLUDED_FROM_PEEK = 12;
 
         public const int WM_NCLBUTTONDOWN = 0x00A1;
-        public const int HTBORDER = 18;
         public const int HTBOTTOM = 15;
         public const int HTBOTTOMLEFT = 16;
         public const int HTBOTTOMRIGHT = 17;

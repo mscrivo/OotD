@@ -850,6 +850,10 @@ namespace OutlookDesktop.Forms
             ToolTip.SetToolTip(TransparencySlider, "Slide to change this windows transparency level");
         }
 
+        private void HeaderPanel_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip.SetToolTip(HeaderPanel, "Click and hold this header to move the window");
+        }
         #endregion
 
         #region Properties
@@ -893,11 +897,6 @@ namespace OutlookDesktop.Forms
             }
         }
         private ResizeDirection _resizeDir = ResizeDirection.None;
-        #endregion
-        
-        private void HeaderPanel_MouseHover(object sender, EventArgs e)
-        {
-            ToolTip.SetToolTip(HeaderPanel, "Click and hold this header to move the window");
-        }
+        #endregion       
     }
 }
