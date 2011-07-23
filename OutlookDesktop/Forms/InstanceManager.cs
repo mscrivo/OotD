@@ -114,7 +114,6 @@ namespace OutlookDesktop.Forms
                                 UnsafeNativeMethods.SendWindowToBack(_mainFormInstances[instanceName]);
                             }
                             count++;
-
                         }
 
                         // add the rest of the necessary menu items to the main context menu.
@@ -149,7 +148,12 @@ namespace OutlookDesktop.Forms
                         trayIcon.ContextMenuStrip = _mainFormInstances[instanceName].TrayMenu;
 
                         // remove unnecessary menu items
-                        trayIcon.ContextMenuStrip.Items.RemoveAt(0);
+                        if (trayIcon.ContextMenuStrip.Items[0].Text == instanceName)
+                        {
+                            trayIcon.ContextMenuStrip.Items.RemoveAt(0);
+                            trayIcon.ContextMenuStrip.Items.RemoveAt(0);
+                        }
+
                         trayIcon.ContextMenuStrip.Items["RemoveInstanceMenu"].Visible = false;
                         trayIcon.ContextMenuStrip.Items["RenameInstanceMenu"].Visible = false;
                         if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AddInstanceMenu"))
@@ -367,10 +371,12 @@ namespace OutlookDesktop.Forms
             {
                 for (var i = 0; i < 2; i++)
                 {
-                    var currentOpacity = _mainFormInstances[dropDownitem.DropDownItems[0].Text].Opacity;
-                    _mainFormInstances[dropDownitem.DropDownItems[0].Text].Opacity = .3;
+                    var formInstance = _mainFormInstances[dropDownitem.DropDownItems[0].Text];
+
+                    var currentOpacity = formInstance.Opacity;
+                    formInstance.InvokeEx(f => formInstance.Opacity = .3);
                     System.Threading.Thread.Sleep(250);
-                    _mainFormInstances[dropDownitem.DropDownItems[0].Text].Opacity = currentOpacity;
+                    formInstance.InvokeEx(f => formInstance.Opacity = currentOpacity);
                     System.Threading.Thread.Sleep(250);
                 }
             }

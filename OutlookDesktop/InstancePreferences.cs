@@ -127,6 +127,12 @@ namespace OutlookDesktop
             set { _appReg.SetValue("DisableEditing", value); }
         }
 
+        public string ViewXML
+        {
+            get { return (string)_appReg.GetValue("ViewXML", ""); }
+            set { _appReg.SetValue("ViewXML", value); }
+        }
+
         ~InstancePreferences()
         {
             _appReg.Close();

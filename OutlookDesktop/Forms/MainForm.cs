@@ -43,12 +43,13 @@ namespace OutlookDesktop.Forms
             BottomLeft = 8
         }
 
+        private const int _resizeBorderWidth = 4;
+
         private String _customFolder;
         private ToolStripMenuItem _customMenu;
         private MAPIFolder _outlookFolder;
         private DateTime _previousDate;
-        private const int _resizeBorderWidth = 4;
-        
+
         /// <summary>
         /// Sets up the form for the current instance.
         /// </summary>
@@ -181,7 +182,7 @@ namespace OutlookDesktop.Forms
                 MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
-            transparencySlider.Value = (int)(Preferences.Opacity * 100);
+            TransparencySlider.Value = (int)(Preferences.Opacity * 100);
 
             // Sets the position of the instance. 
             try
@@ -202,10 +203,13 @@ namespace OutlookDesktop.Forms
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
-            // Checks the menuitem ofr the current folder.
+            ShowCalendarButtons(false);
+
+            // Checks the menuitem of the current folder.
             if (Preferences.OutlookFolderName == FolderViewType.Calendar.ToString())
             {
                 CalendarMenu.Checked = true;
+                ShowCalendarButtons(true);
             }
             else if (Preferences.OutlookFolderName == FolderViewType.Contacts.ToString())
             {
@@ -246,6 +250,12 @@ namespace OutlookDesktop.Forms
                 // if we get an exception here, it means the view stored doesn't apply to the current folder view,
                 // so just reset it.
                 Preferences.OutlookFolderView = string.Empty;
+            }
+
+            // If the view is a calendar view, use the stored ViewXML to restore their day/week/month view setting.
+            if (Preferences.OutlookFolderName == FolderViewType.Calendar.ToString())
+            {
+                axOutlookViewControl.ViewXML = Preferences.ViewXML;
             }
 
             // Get a copy of the possible outlook views for the selected folder and populate the context menu for this instance. 
@@ -451,6 +461,16 @@ namespace OutlookDesktop.Forms
         /// <param name="itemToCheck"></param>
         private void DefaultFolderTypesClicked(FolderViewType folderViewType, ToolStripMenuItem itemToCheck)
         {
+            if (folderViewType != FolderViewType.Calendar)
+            {
+                SetViewXML(string.Empty);
+                ShowCalendarButtons(false);
+            }
+            else
+            {
+                ShowCalendarButtons(true);
+            }
+
             axOutlookViewControl.Folder = folderViewType.ToString();
 
             Preferences.OutlookFolderName = folderViewType.ToString();
@@ -462,6 +482,14 @@ namespace OutlookDesktop.Forms
             UpdateOutlookViewsList();
 
             CheckSelectedFolder(itemToCheck);
+        }
+
+        private void ShowCalendarButtons(bool show)
+        {
+            DayButton.Visible = show;
+            WeekButton.Visible = show;
+            WorkWeekButton.Visible = show;
+            MonthButton.Visible = show;
         }
 
         private void UpdateCustomFolder(MAPIFolder oFolder)
@@ -600,13 +628,14 @@ namespace OutlookDesktop.Forms
         {
             MAPIFolder oFolder = Startup.OutlookNameSpace.PickFolder();
             UpdateCustomFolder(oFolder);
+            ShowCalendarButtons(false);
         }
 
         private void CustomFolderMenu_Click(object sender, EventArgs e)
         {
             axOutlookViewControl.Folder = _customFolder;
-
             CheckSelectedFolder(_customMenu);
+            ShowCalendarButtons(false);
         }
 
         private void CalendarMenu_Click(object sender, EventArgs e)
@@ -779,29 +808,35 @@ namespace OutlookDesktop.Forms
             ResizeDir = ResizeDirection.None;
         }
 
-        private void dayButton_Click(object sender, EventArgs e)
+        private void SetViewXML(string value)
         {
-            axOutlookViewControl.ViewXML = Resources.day;
+            axOutlookViewControl.ViewXML = value;
+            Preferences.ViewXML = value;
         }
 
-        private void workWeekButton_Click(object sender, EventArgs e)
+        private void DayButton_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.ViewXML = Resources.WorkWeek;
+            SetViewXML(Resources.day);
         }
 
-        private void monthButton_Click(object sender, EventArgs e)
+        private void WorkWeekButton_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.ViewXML = Resources.month;
+            SetViewXML(Resources.WorkWeek);
         }
 
-        private void weekButton_Click(object sender, EventArgs e)
+        private void MonthButton_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.ViewXML = Resources.week;
+            SetViewXML(Resources.month);
         }
 
-        private void transparencySlider_Scroll(object sender, EventArgs e)
+        private void WeekButton_Click(object sender, EventArgs e)
         {
-            var opacityVal = (double)transparencySlider.Value / 100;
+            SetViewXML(Resources.week);
+        }
+
+        private void TransparencySlider_Scroll(object sender, EventArgs e)
+        {
+            var opacityVal = (double)TransparencySlider.Value / 100;
             if (opacityVal == 1)
             {
                 opacityVal = 0.99;
@@ -810,9 +845,9 @@ namespace OutlookDesktop.Forms
             Preferences.Opacity = opacityVal;
         }
 
-        private void transparencySlider_MouseHover(object sender, EventArgs e)
+        private void TransparencySlider_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.SetToolTip(transparencySlider, "Slide to change this windows transparency level");
+            ToolTip.SetToolTip(TransparencySlider, "Slide to change this windows transparency level");
         }
 
         #endregion
@@ -858,6 +893,11 @@ namespace OutlookDesktop.Forms
             }
         }
         private ResizeDirection _resizeDir = ResizeDirection.None;
-        #endregion        
+        #endregion
+        
+        private void HeaderPanel_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip.SetToolTip(HeaderPanel, "Click and hold this header to move the window");
+        }
     }
 }

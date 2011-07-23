@@ -151,6 +151,7 @@
     <None Include="Resources\Icons\30.ico" />
     <None Include="Resources\Icons\31.ico" />
     <None Include="Resources\Icons\paypal.gif" />
+    <Compile Include="ISynchronizeInvokeExtensions.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>

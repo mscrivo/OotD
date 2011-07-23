@@ -24,7 +24,7 @@ namespace OutlookDesktop
                 {
                     if (key != null)
                     {
-                        var val = (string) key.GetValue("OutlookOnDesktop");
+                        var val = (string)key.GetValue("OutlookOnDesktop");
                         return (!string.IsNullOrEmpty(val));
                     }
                 }
@@ -32,9 +32,7 @@ namespace OutlookDesktop
             }
             set
             {
-                using (
-                    RegistryKey key =
-                        Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true))
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true))
                 {
                     if (key != null)
                     {
@@ -64,15 +62,12 @@ namespace OutlookDesktop
         {
             get
             {
-                using (
-                    RegistryKey key =
-                        Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
-                                                          Application.ProductName))
+                using (RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
                 {
                     if (key != null)
                     {
                         bool isFirstRun;
-                        if (bool.TryParse((string) key.GetValue("FirstRun", "true"), out isFirstRun))
+                        if (bool.TryParse((string)key.GetValue("FirstRun", "true"), out isFirstRun))
                         {
                             if (isFirstRun)
                             {

@@ -59,18 +59,18 @@ namespace OutlookDesktop.Forms
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.HeaderPanel = new System.Windows.Forms.Panel();
-            this.transparencySlider = new System.Windows.Forms.TrackBar();
-            this.workWeekButton = new System.Windows.Forms.Button();
-            this.monthButton = new System.Windows.Forms.Button();
-            this.weekButton = new System.Windows.Forms.Button();
-            this.dayButton = new System.Windows.Forms.Button();
+            this.TransparencySlider = new System.Windows.Forms.TrackBar();
+            this.WorkWeekButton = new System.Windows.Forms.Button();
+            this.MonthButton = new System.Windows.Forms.Button();
+            this.WeekButton = new System.Windows.Forms.Button();
+            this.DayButton = new System.Windows.Forms.Button();
             this.ViewControlHostPanel = new System.Windows.Forms.Panel();
             this.axOutlookViewControl = new AxOLXLib.AxViewCtl();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.trayMenu.SuspendLayout();
             this.HeaderPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.transparencySlider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TransparencySlider)).BeginInit();
             this.ViewControlHostPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).BeginInit();
             this.SuspendLayout();
@@ -223,11 +223,11 @@ namespace OutlookDesktop.Forms
             // HeaderPanel
             // 
             this.HeaderPanel.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.HeaderPanel.Controls.Add(this.transparencySlider);
-            this.HeaderPanel.Controls.Add(this.workWeekButton);
-            this.HeaderPanel.Controls.Add(this.monthButton);
-            this.HeaderPanel.Controls.Add(this.weekButton);
-            this.HeaderPanel.Controls.Add(this.dayButton);
+            this.HeaderPanel.Controls.Add(this.TransparencySlider);
+            this.HeaderPanel.Controls.Add(this.WorkWeekButton);
+            this.HeaderPanel.Controls.Add(this.MonthButton);
+            this.HeaderPanel.Controls.Add(this.WeekButton);
+            this.HeaderPanel.Controls.Add(this.DayButton);
             this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HeaderPanel.Location = new System.Drawing.Point(4, 4);
             this.HeaderPanel.Margin = new System.Windows.Forms.Padding(4);
@@ -236,70 +236,71 @@ namespace OutlookDesktop.Forms
             this.HeaderPanel.Size = new System.Drawing.Size(392, 20);
             this.HeaderPanel.TabIndex = 3;
             this.HeaderPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HeaderPanel_MouseDown);
+            this.HeaderPanel.MouseHover += new System.EventHandler(this.HeaderPanel_MouseHover);
             this.HeaderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HeaderPanel_MouseMove);
             // 
-            // transparencySlider
+            // TransparencySlider
             // 
-            this.transparencySlider.AutoSize = false;
-            this.transparencySlider.Location = new System.Drawing.Point(6, 3);
-            this.transparencySlider.Maximum = 100;
-            this.transparencySlider.Minimum = 25;
-            this.transparencySlider.Name = "transparencySlider";
-            this.transparencySlider.Size = new System.Drawing.Size(89, 14);
-            this.transparencySlider.SmallChange = 5;
-            this.transparencySlider.TabIndex = 5;
-            this.transparencySlider.TickFrequency = 10;
-            this.transparencySlider.Value = 25;
-            this.transparencySlider.Scroll += new System.EventHandler(this.transparencySlider_Scroll);
-            this.transparencySlider.MouseHover += new System.EventHandler(this.transparencySlider_MouseHover);
+            this.TransparencySlider.AutoSize = false;
+            this.TransparencySlider.Location = new System.Drawing.Point(6, 3);
+            this.TransparencySlider.Maximum = 100;
+            this.TransparencySlider.Minimum = 25;
+            this.TransparencySlider.Name = "TransparencySlider";
+            this.TransparencySlider.Size = new System.Drawing.Size(89, 14);
+            this.TransparencySlider.SmallChange = 5;
+            this.TransparencySlider.TabIndex = 5;
+            this.TransparencySlider.TickFrequency = 10;
+            this.TransparencySlider.Value = 25;
+            this.TransparencySlider.Scroll += new System.EventHandler(this.TransparencySlider_Scroll);
+            this.TransparencySlider.MouseHover += new System.EventHandler(this.TransparencySlider_MouseHover);
             // 
-            // workWeekButton
+            // WorkWeekButton
             // 
-            this.workWeekButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.workWeekButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.workWeekButton.Location = new System.Drawing.Point(216, 0);
-            this.workWeekButton.Name = "workWeekButton";
-            this.workWeekButton.Size = new System.Drawing.Size(68, 20);
-            this.workWeekButton.TabIndex = 4;
-            this.workWeekButton.Text = "Work Week";
-            this.workWeekButton.UseVisualStyleBackColor = true;
-            this.workWeekButton.Click += new System.EventHandler(this.workWeekButton_Click);
+            this.WorkWeekButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.WorkWeekButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WorkWeekButton.Location = new System.Drawing.Point(216, 0);
+            this.WorkWeekButton.Name = "WorkWeekButton";
+            this.WorkWeekButton.Size = new System.Drawing.Size(68, 20);
+            this.WorkWeekButton.TabIndex = 4;
+            this.WorkWeekButton.Text = "Work Week";
+            this.WorkWeekButton.UseVisualStyleBackColor = true;
+            this.WorkWeekButton.Click += new System.EventHandler(this.WorkWeekButton_Click);
             // 
-            // monthButton
+            // MonthButton
             // 
-            this.monthButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.monthButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.monthButton.Location = new System.Drawing.Point(339, 0);
-            this.monthButton.Name = "monthButton";
-            this.monthButton.Size = new System.Drawing.Size(52, 20);
-            this.monthButton.TabIndex = 2;
-            this.monthButton.Text = "Month";
-            this.monthButton.UseVisualStyleBackColor = true;
-            this.monthButton.Click += new System.EventHandler(this.monthButton_Click);
+            this.MonthButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.MonthButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MonthButton.Location = new System.Drawing.Point(339, 0);
+            this.MonthButton.Name = "MonthButton";
+            this.MonthButton.Size = new System.Drawing.Size(52, 20);
+            this.MonthButton.TabIndex = 2;
+            this.MonthButton.Text = "Month";
+            this.MonthButton.UseVisualStyleBackColor = true;
+            this.MonthButton.Click += new System.EventHandler(this.MonthButton_Click);
             // 
-            // weekButton
+            // WeekButton
             // 
-            this.weekButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.weekButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.weekButton.Location = new System.Drawing.Point(286, 0);
-            this.weekButton.Name = "weekButton";
-            this.weekButton.Size = new System.Drawing.Size(52, 20);
-            this.weekButton.TabIndex = 1;
-            this.weekButton.Text = "Week";
-            this.weekButton.UseVisualStyleBackColor = true;
-            this.weekButton.Click += new System.EventHandler(this.weekButton_Click);
+            this.WeekButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.WeekButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WeekButton.Location = new System.Drawing.Point(286, 0);
+            this.WeekButton.Name = "WeekButton";
+            this.WeekButton.Size = new System.Drawing.Size(52, 20);
+            this.WeekButton.TabIndex = 1;
+            this.WeekButton.Text = "Week";
+            this.WeekButton.UseVisualStyleBackColor = true;
+            this.WeekButton.Click += new System.EventHandler(this.WeekButton_Click);
             // 
-            // dayButton
+            // DayButton
             // 
-            this.dayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dayButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dayButton.Location = new System.Drawing.Point(162, 0);
-            this.dayButton.Name = "dayButton";
-            this.dayButton.Size = new System.Drawing.Size(52, 20);
-            this.dayButton.TabIndex = 0;
-            this.dayButton.Text = "Day";
-            this.dayButton.UseVisualStyleBackColor = true;
-            this.dayButton.Click += new System.EventHandler(this.dayButton_Click);
+            this.DayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.DayButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DayButton.Location = new System.Drawing.Point(162, 0);
+            this.DayButton.Name = "DayButton";
+            this.DayButton.Size = new System.Drawing.Size(52, 20);
+            this.DayButton.TabIndex = 0;
+            this.DayButton.Text = "Day";
+            this.DayButton.UseVisualStyleBackColor = true;
+            this.DayButton.Click += new System.EventHandler(this.DayButton_Click);
             // 
             // ViewControlHostPanel
             // 
@@ -325,10 +326,14 @@ namespace OutlookDesktop.Forms
             this.axOutlookViewControl.Size = new System.Drawing.Size(392, 368);
             this.axOutlookViewControl.TabIndex = 3;
             // 
-            // notifyIcon1
+            // notifyIcon
             // 
-            this.notifyIcon1.Text = "notifyIcon1";
-            this.notifyIcon1.Visible = true;
+            this.notifyIcon.Text = "notifyIcon";
+            this.notifyIcon.Visible = true;
+            // 
+            // ToolTip
+            // 
+            this.ToolTip.IsBalloon = true;
             // 
             // MainForm
             // 
@@ -355,7 +360,7 @@ namespace OutlookDesktop.Forms
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
             this.trayMenu.ResumeLayout(false);
             this.HeaderPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.transparencySlider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TransparencySlider)).EndInit();
             this.ViewControlHostPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).EndInit();
             this.ResumeLayout(false);
@@ -394,12 +399,12 @@ namespace OutlookDesktop.Forms
         internal System.Windows.Forms.Panel HeaderPanel;
         private System.Windows.Forms.Panel ViewControlHostPanel;
         private AxOLXLib.AxViewCtl axOutlookViewControl;
-        private System.Windows.Forms.Button dayButton;
-        private System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.Button monthButton;
-        private System.Windows.Forms.Button weekButton;
-        private System.Windows.Forms.Button workWeekButton;
-        private System.Windows.Forms.TrackBar transparencySlider;
-        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button DayButton;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.Button MonthButton;
+        private System.Windows.Forms.Button WeekButton;
+        private System.Windows.Forms.Button WorkWeekButton;
+        private System.Windows.Forms.TrackBar TransparencySlider;
+        private System.Windows.Forms.ToolTip ToolTip;
     }
 }
