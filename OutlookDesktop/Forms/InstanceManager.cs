@@ -246,7 +246,7 @@ namespace OutlookDesktop.Forms
                 LoadInstances();
 
                 // reposition the newly added instance so that it's not directly on top of the previous one
-                _mainFormInstances[result.Text].Left = _mainFormInstances[result.Text].Left + 200;
+                _mainFormInstances[result.Text].Left = _mainFormInstances[result.Text].Left + 400;
                 _mainFormInstances[result.Text].Top = _mainFormInstances[result.Text].Top + 200;
             }
         }
@@ -288,23 +288,41 @@ namespace OutlookDesktop.Forms
 
         private void ShowHideAllInstances()
         {
-            if (trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text == Resources.HideAll)
+            var hideShowMenuText = trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text;
+
+            if (hideShowMenuText == Resources.HideAll || hideShowMenuText == Resources.Hide)
             {
                 foreach (var formInstance in _mainFormInstances)
                 {
                     formInstance.Value.Visible = false;
                     formInstance.Value.TrayMenu.Items["HideShowMenu"].Text = Resources.Show;
                 }
-                trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.ShowAll;
+                
+                if (_mainFormInstances.Count == 1)
+                {
+                    trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.Show;
+                }
+                else
+                {
+                    trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.ShowAll;
+                }
             }
-            else if (trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text == Resources.ShowAll)
+            else if (hideShowMenuText == Resources.ShowAll || hideShowMenuText == Resources.Show)
             {
                 foreach (var formInstance in _mainFormInstances)
                 {
                     formInstance.Value.Visible = true;
                     formInstance.Value.TrayMenu.Items["HideShowMenu"].Text = Resources.Hide;
                 }
-                trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.HideAll;
+
+                if (_mainFormInstances.Count == 1)
+                {
+                    trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.Hide;
+                }
+                else
+                {
+                    trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.HideAll;
+                }
             }
         }
 
