@@ -19,7 +19,6 @@ namespace OutlookDesktop
         {
             CopyKey(parentKey, subKeyName, newSubKeyName);
             parentKey.DeleteSubKeyTree(subKeyName);
-            return;
         }
 
         /// <summary>
@@ -38,8 +37,6 @@ namespace OutlookDesktop
             RegistryKey sourceKey = parentKey.OpenSubKey(keyNameToCopy);
 
             RecurseCopyKey(sourceKey, destinationKey);
-
-            return;
         }
 
         private static void RecurseCopyKey(RegistryKey sourceKey, RegistryKey destinationKey)

@@ -57,6 +57,34 @@ namespace OutlookDesktop
             }
         }
 
+        public static bool LockPosition
+        {
+            get
+            {
+                using (RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+                {
+                    if (key != null)
+                    {
+                        bool lockPositions;
+                        if (bool.TryParse((string)key.GetValue("LockPosition", "false"), out lockPositions) && lockPositions == true)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            set
+            {
+                using (RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+                {
+                    if (key != null)
+                    {
+                        key.SetValue("LockPosition", value);
+                    }
+                }
+            }
+        }
 
         public static bool IsFirstRun
         {

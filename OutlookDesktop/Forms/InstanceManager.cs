@@ -66,8 +66,7 @@ namespace OutlookDesktop.Forms
                             var newlyAdded = false;
                             if (!_mainFormInstances.ContainsKey(instanceName))
                             {
-                                ConfigLogger.Instance.LogDebug(String.Format("Instanciating up instance {0}",
-                                                                             instanceName));
+                                ConfigLogger.Instance.LogDebug(String.Format("Instanciating up instance {0}", instanceName));
                                 _mainFormInstances.Add(instanceName, new MainForm(instanceName));
                                 newlyAdded = true;
                             }
@@ -83,8 +82,16 @@ namespace OutlookDesktop.Forms
 
                             // add the name of the instance to the top of the submenu so it's clear which
                             // instance the submenu belongs to.
-                            _mainFormInstances[instanceName].TrayMenu.Items.Insert(0, new ToolStripMenuItem(instanceName));
-                            _mainFormInstances[instanceName].TrayMenu.Items[0].BackColor = Color.Gainsboro;
+                            if (!_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey(instanceName))
+                            {
+                                _mainFormInstances[instanceName].TrayMenu.Items.Insert(0, new ToolStripMenuItem(instanceName) { Name = instanceName });
+                                _mainFormInstances[instanceName].TrayMenu.Items[0].BackColor = Color.Gainsboro;
+
+                                if (!_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AddInstanceSeparator"))
+                                {
+                                    _mainFormInstances[instanceName].TrayMenu.Items.Insert(1, new ToolStripSeparator { Name = "AddInstanceSeparator" });
+                                }
+                            }
 
                             // the submenu items are set to the context menu defined in the form's instance.
                             instanceSubmenu[count].DropDown = _mainFormInstances[instanceName].TrayMenu;
@@ -92,6 +99,7 @@ namespace OutlookDesktop.Forms
 
                             _mainFormInstances[instanceName].TrayMenu.Items["RemoveInstanceMenu"].Visible = true;
                             _mainFormInstances[instanceName].TrayMenu.Items["RenameInstanceMenu"].Visible = true;
+
                             if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AddInstanceMenu"))
                             {
                                 _mainFormInstances[instanceName].TrayMenu.Items["AddInstanceMenu"].Visible = false;
@@ -103,6 +111,10 @@ namespace OutlookDesktop.Forms
                             if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("StartWithWindows"))
                             {
                                 _mainFormInstances[instanceName].TrayMenu.Items["StartWithWindows"].Visible = false;
+                            }
+                            if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("LockPositionMenu"))
+                            {
+                                _mainFormInstances[instanceName].TrayMenu.Items["LockPositionMenu"].Visible = false;
                             }
                             _mainFormInstances[instanceName].TrayMenu.Items["ExitMenu"].Visible = false;
 
@@ -118,18 +130,30 @@ namespace OutlookDesktop.Forms
 
                         // add the rest of the necessary menu items to the main context menu.
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.StartWithWindows, null,
                                                                                   StartWithWindowsMenu_Click,
                                                                                   "StartWithWindows"));
+
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.HideAll, null,
-                                                                                  HideShowAllMenu_Click, "HideShowMenu"));
+                                                                                  HideShowAllMenu_Click, 
+                                                                                  "HideShowMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.LockPosition, null,
+                                                                                  LockPositionMenu_Click,
+                                                                                  "LockPositionMenu"));
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.DisableEditing, null,
                                                                                   DisableEnableEditingMenu_Click,
                                                                                   "DisableEnableEditingMenu"));
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.About, null, AboutMenu_Click,
+
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.About, null, 
+                                                                                  AboutMenu_Click,
                                                                                   "AboutMenu"));
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.Exit, null, ExitMenu_Click,
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.Exit, null, 
+                                                                                  ExitMenu_Click,
                                                                                   "ExitMenu"));
                     }
                     else
@@ -148,14 +172,14 @@ namespace OutlookDesktop.Forms
                         trayIcon.ContextMenuStrip = _mainFormInstances[instanceName].TrayMenu;
 
                         // remove unnecessary menu items
-                        if (trayIcon.ContextMenuStrip.Items[0].Text == instanceName)
+                        while (trayIcon.ContextMenuStrip.Items.Count > 0 && trayIcon.ContextMenuStrip.Items[0].Text != Resources.Calendar)
                         {
-                            trayIcon.ContextMenuStrip.Items.RemoveAt(0);
                             trayIcon.ContextMenuStrip.Items.RemoveAt(0);
                         }
 
                         trayIcon.ContextMenuStrip.Items["RemoveInstanceMenu"].Visible = false;
                         trayIcon.ContextMenuStrip.Items["RenameInstanceMenu"].Visible = false;
+
                         if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AddInstanceMenu"))
                         {
                             _mainFormInstances[instanceName].TrayMenu.Items["AddInstanceMenu"].Visible = true;
@@ -168,7 +192,10 @@ namespace OutlookDesktop.Forms
                         {
                             _mainFormInstances[instanceName].TrayMenu.Items["StartWithWindows"].Visible = true;
                         }
-
+                        if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("LockPositionMenu"))
+                        {
+                            _mainFormInstances[instanceName].TrayMenu.Items["LockPositionMenu"].Visible = true;
+                        }
 
                         // add global menu items that don't apply to the instance.
                         if (!trayIcon.ContextMenuStrip.Items.ContainsKey("AddInstanceMenu"))
@@ -177,8 +204,10 @@ namespace OutlookDesktop.Forms
                                                                                             null,
                                                                                             AddInstanceMenu_Click,
                                                                                             "AddInstanceMenu"));
-                            trayIcon.ContextMenuStrip.Items.Insert(1, new ToolStripSeparator());
+
+                            trayIcon.ContextMenuStrip.Items.Insert(1, new ToolStripSeparator { Name = "AddInstanceSeparator" });
                         }
+
                         if (!trayIcon.ContextMenuStrip.Items.ContainsKey("StartWithWindows"))
                         {
                             trayIcon.ContextMenuStrip.Items.Insert(12, new ToolStripMenuItem(Resources.StartWithWindows,
@@ -186,9 +215,18 @@ namespace OutlookDesktop.Forms
                                                                                              StartWithWindowsMenu_Click,
                                                                                              "StartWithWindows"));
                         }
+
+                        if (!trayIcon.ContextMenuStrip.Items.ContainsKey("LockPositionMenu"))
+                        {
+                            trayIcon.ContextMenuStrip.Items.Insert(15, new ToolStripMenuItem(Resources.LockPosition,
+                                                                                      null,
+                                                                                      LockPositionMenu_Click,
+                                                                                      "LockPositionMenu"));
+                        }
+
                         if (!trayIcon.ContextMenuStrip.Items.ContainsKey("AboutMenu"))
                         {
-                            trayIcon.ContextMenuStrip.Items.Insert(18, new ToolStripMenuItem(Resources.About, null,
+                            trayIcon.ContextMenuStrip.Items.Insert(19, new ToolStripMenuItem(Resources.About, null,
                                                                                              AboutMenu_Click,
                                                                                              "AboutMenu"));
                         }
@@ -204,8 +242,10 @@ namespace OutlookDesktop.Forms
             }
 
             var startWithWindowsMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["StartWithWindows"];
-
             startWithWindowsMenu.Checked = GlobalPreferences.StartWithWindows;
+
+            var lockPositionMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["LockPositionMenu"];
+            lockPositionMenu.Checked = GlobalPreferences.LockPosition;
         }
 
         private void ChangeTrayIconDate()
@@ -297,15 +337,8 @@ namespace OutlookDesktop.Forms
                     formInstance.Value.Visible = false;
                     formInstance.Value.TrayMenu.Items["HideShowMenu"].Text = Resources.Show;
                 }
-                
-                if (_mainFormInstances.Count == 1)
-                {
-                    trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.Show;
-                }
-                else
-                {
-                    trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.ShowAll;
-                }
+
+                trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = _mainFormInstances.Count == 1 ? Resources.Show : Resources.ShowAll;
             }
             else if (hideShowMenuText == Resources.ShowAll || hideShowMenuText == Resources.Show)
             {
@@ -315,14 +348,33 @@ namespace OutlookDesktop.Forms
                     formInstance.Value.TrayMenu.Items["HideShowMenu"].Text = Resources.Hide;
                 }
 
-                if (_mainFormInstances.Count == 1)
+                trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = _mainFormInstances.Count == 1 ? Resources.Hide : Resources.HideAll;
+            }
+        }
+
+        private void LockPositionMenu_Click(object sender, EventArgs e)
+        {
+            var lockPositionMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["LockPositionMenu"];
+            if (lockPositionMenu.Checked)
+            {
+                GlobalPreferences.LockPosition = false;
+                lockPositionMenu.Checked = false;
+
+                foreach (var formInstance in _mainFormInstances)
                 {
-                    trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.Hide;
+                    formInstance.Value.TransparencySlider.Enabled = true;
                 }
-                else
+            }
+            else
+            {
+                GlobalPreferences.LockPosition = true;
+                lockPositionMenu.Checked = true;
+
+                foreach (var formInstance in _mainFormInstances)
                 {
-                    trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = Resources.HideAll;
+                    formInstance.Value.TransparencySlider.Enabled = false;
                 }
+
             }
         }
 
@@ -333,23 +385,29 @@ namespace OutlookDesktop.Forms
 
         private void DisableEnableAllInstances()
         {
-            if (trayIcon.ContextMenuStrip.Items["DisableEnableEditingMenu"].Text == Resources.DisableEditing)
-            {
-                foreach (var formInstance in _mainFormInstances)
-                {
-                    formInstance.Value.Enabled = false;
-                    formInstance.Value.TrayMenu.Items["DisableEnableEditingMenu"].Text = Resources.EnableEditing;
-                }
-                trayIcon.ContextMenuStrip.Items["DisableEnableEditingMenu"].Text = Resources.EnableEditing;
-            }
-            else if (trayIcon.ContextMenuStrip.Items["DisableEnableEditingMenu"].Text == Resources.EnableEditing)
+            var disableEditingMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["DisableEnableEditingMenu"];
+
+            if (disableEditingMenu.Checked)
             {
                 foreach (var formInstance in _mainFormInstances)
                 {
                     formInstance.Value.Enabled = true;
-                    formInstance.Value.TrayMenu.Items["DisableEnableEditingMenu"].Text = Resources.DisableEditing;
+
+                    var instanceDisableEditingMenu = (ToolStripMenuItem)formInstance.Value.TrayMenu.Items["DisableEnableEditingMenu"];
+                    instanceDisableEditingMenu.Checked = !instanceDisableEditingMenu.Checked;
                 }
-                trayIcon.ContextMenuStrip.Items["DisableEnableEditingMenu"].Text = Resources.DisableEditing;
+                disableEditingMenu.Checked = false;
+            }
+            else
+            {
+                foreach (var formInstance in _mainFormInstances)
+                {
+                    formInstance.Value.Enabled = false;
+
+                    var instanceDisableEditingMenu = (ToolStripMenuItem)formInstance.Value.TrayMenu.Items["DisableEnableEditingMenu"];
+                    instanceDisableEditingMenu.Checked = !instanceDisableEditingMenu.Checked;
+                }
+                disableEditingMenu.Checked = true;
             }
         }
 

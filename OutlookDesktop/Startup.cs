@@ -82,14 +82,14 @@ namespace OutlookDesktop
         /// <returns>returns true if already running</returns>
         private static bool IsAlreadyRunning()
         {
-            string strLoc = Assembly.GetExecutingAssembly().Location;
-            if (strLoc != null)
+            var strLoc = Assembly.GetExecutingAssembly().Location;
+            if (!string.IsNullOrEmpty(strLoc))
             {
                 FileSystemInfo fileInfo = new FileInfo(strLoc);
                 string sExeName = fileInfo.Name;
                 bool createdNew = false;
 
-                if (sExeName != null) new Mutex(true, string.Format("Local\\{0}", sExeName), out createdNew);
+                if (!string.IsNullOrEmpty(sExeName)) new Mutex(true, string.Format("Local\\{0}", sExeName), out createdNew);
 
                 return !createdNew;
             }

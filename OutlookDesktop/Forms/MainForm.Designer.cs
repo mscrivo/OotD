@@ -44,17 +44,17 @@ namespace OutlookDesktop.Forms
             this.InboxMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.NotesMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.TasksMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectFolderMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.uxOutlookViews = new System.Windows.Forms.ToolStripMenuItem();
+            this.Separator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.OutlookViewsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.uxDefaultOutlookView = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.Separator3 = new System.Windows.Forms.ToolStripSeparator();
             this.RenameInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.Separator4 = new System.Windows.Forms.ToolStripSeparator();
             this.HideShowMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.DisableEnableEditingMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.Separator5 = new System.Windows.Forms.ToolStripSeparator();
             this.RemoveInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
@@ -83,20 +83,20 @@ namespace OutlookDesktop.Forms
             this.InboxMenu,
             this.NotesMenu,
             this.TasksMenu,
-            this.toolStripMenuItem2,
+            this.Separator1,
             this.SelectFolderMenu,
-            this.toolStripSeparator2,
-            this.uxOutlookViews,
-            this.toolStripSeparator1,
+            this.Separator2,
+            this.OutlookViewsMenu,
+            this.Separator3,
             this.RenameInstanceMenu,
-            this.toolStripMenuItem3,
+            this.Separator4,
             this.HideShowMenu,
             this.DisableEnableEditingMenu,
-            this.toolStripMenuItem4,
+            this.Separator5,
             this.RemoveInstanceMenu,
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(187, 320);
+            this.trayMenu.Size = new System.Drawing.Size(187, 342);
             // 
             // CalendarMenu
             // 
@@ -133,10 +133,10 @@ namespace OutlookDesktop.Forms
             this.TasksMenu.Text = "Tasks";
             this.TasksMenu.Click += new System.EventHandler(this.TasksMenu_Click);
             // 
-            // toolStripMenuItem2
+            // Separator1
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(183, 6);
+            this.Separator1.Name = "Separator1";
+            this.Separator1.Size = new System.Drawing.Size(183, 6);
             // 
             // SelectFolderMenu
             // 
@@ -145,18 +145,18 @@ namespace OutlookDesktop.Forms
             this.SelectFolderMenu.Text = "Select Folder ...";
             this.SelectFolderMenu.Click += new System.EventHandler(this.SelectFolderMenu_Click);
             // 
-            // toolStripSeparator2
+            // Separator2
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(183, 6);
+            this.Separator2.Name = "Separator2";
+            this.Separator2.Size = new System.Drawing.Size(183, 6);
             // 
-            // uxOutlookViews
+            // OutlookViewsMenu
             // 
-            this.uxOutlookViews.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OutlookViewsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.uxDefaultOutlookView});
-            this.uxOutlookViews.Name = "uxOutlookViews";
-            this.uxOutlookViews.Size = new System.Drawing.Size(186, 22);
-            this.uxOutlookViews.Text = "Outlook Views";
+            this.OutlookViewsMenu.Name = "OutlookViewsMenu";
+            this.OutlookViewsMenu.Size = new System.Drawing.Size(186, 22);
+            this.OutlookViewsMenu.Text = "Outlook Views";
             // 
             // uxDefaultOutlookView
             // 
@@ -164,10 +164,10 @@ namespace OutlookDesktop.Forms
             this.uxDefaultOutlookView.Size = new System.Drawing.Size(140, 22);
             this.uxDefaultOutlookView.Text = "Default View";
             // 
-            // toolStripSeparator1
+            // Separator3
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(183, 6);
+            this.Separator3.Name = "Separator3";
+            this.Separator3.Size = new System.Drawing.Size(183, 6);
             // 
             // RenameInstanceMenu
             // 
@@ -176,10 +176,10 @@ namespace OutlookDesktop.Forms
             this.RenameInstanceMenu.Text = "Rename this Instance";
             this.RenameInstanceMenu.Click += new System.EventHandler(this.RenameInstanceMenu_Click);
             // 
-            // toolStripMenuItem3
+            // Separator4
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(183, 6);
+            this.Separator4.Name = "Separator4";
+            this.Separator4.Size = new System.Drawing.Size(183, 6);
             // 
             // HideShowMenu
             // 
@@ -195,10 +195,10 @@ namespace OutlookDesktop.Forms
             this.DisableEnableEditingMenu.Text = "Disable Editing";
             this.DisableEnableEditingMenu.Click += new System.EventHandler(this.DisableEnableEditingMenu_Click);
             // 
-            // toolStripMenuItem4
+            // Separator5
             // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(183, 6);
+            this.Separator5.Name = "Separator5";
+            this.Separator5.Size = new System.Drawing.Size(183, 6);
             // 
             // RemoveInstanceMenu
             // 
@@ -242,7 +242,7 @@ namespace OutlookDesktop.Forms
             // TransparencySlider
             // 
             this.TransparencySlider.AutoSize = false;
-            this.TransparencySlider.Location = new System.Drawing.Point(6, 3);
+            this.TransparencySlider.Location = new System.Drawing.Point(2, 5);
             this.TransparencySlider.Maximum = 100;
             this.TransparencySlider.Minimum = 25;
             this.TransparencySlider.Name = "TransparencySlider";
@@ -354,7 +354,6 @@ namespace OutlookDesktop.Forms
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Outlook on the Desktop";
-            this.Activated += new System.EventHandler(this.MainForm_Activated);
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.MainForm_Layout);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
@@ -384,17 +383,17 @@ namespace OutlookDesktop.Forms
         private System.Windows.Forms.ToolStripMenuItem InboxMenu;
         private System.Windows.Forms.ToolStripMenuItem NotesMenu;
         private System.Windows.Forms.ToolStripMenuItem TasksMenu;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripSeparator Separator1;
+        private System.Windows.Forms.ToolStripSeparator Separator4;
         private System.Windows.Forms.ToolStripMenuItem HideShowMenu;
         private System.Windows.Forms.ToolStripMenuItem RemoveInstanceMenu;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripSeparator Separator5;
         private System.Windows.Forms.ToolStripMenuItem RenameInstanceMenu;
         private System.Windows.Forms.ToolStripMenuItem ExitMenu;
-        private System.Windows.Forms.ToolStripMenuItem uxOutlookViews;
+        private System.Windows.Forms.ToolStripMenuItem OutlookViewsMenu;
         private System.Windows.Forms.ToolStripMenuItem uxDefaultOutlookView;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator Separator3;
+        private System.Windows.Forms.ToolStripSeparator Separator2;
         private System.Windows.Forms.ToolStripMenuItem DisableEnableEditingMenu;
         internal System.Windows.Forms.Panel HeaderPanel;
         private System.Windows.Forms.Panel ViewControlHostPanel;
@@ -404,7 +403,7 @@ namespace OutlookDesktop.Forms
         private System.Windows.Forms.Button MonthButton;
         private System.Windows.Forms.Button WeekButton;
         private System.Windows.Forms.Button WorkWeekButton;
-        private System.Windows.Forms.TrackBar TransparencySlider;
+        public System.Windows.Forms.TrackBar TransparencySlider;
         private System.Windows.Forms.ToolTip ToolTip;
     }
 }

@@ -294,7 +294,7 @@ namespace OutlookDesktop.Forms
         /// </summary>
         private void UpdateOutlookViewsList()
         {
-            uxOutlookViews.DropDownItems.Clear();
+            OutlookViewsMenu.DropDownItems.Clear();
             OulookFolderViews = new List<View>();
 
             if (_outlookFolder != null)
@@ -308,7 +308,7 @@ namespace OutlookDesktop.Forms
                     if (view.Name == Preferences.OutlookFolderView)
                         viewItem.Checked = true;
 
-                    uxOutlookViews.DropDownItems.Add(viewItem);
+                    OutlookViewsMenu.DropDownItems.Add(viewItem);
 
                     OulookFolderViews.Add(view);
                 }
@@ -321,7 +321,7 @@ namespace OutlookDesktop.Forms
         /// <param name="viewItem">ToolStripMenuItem that is to be checked.</param>
         private void CheckSelectedView(ToolStripMenuItem viewItem)
         {
-            CheckSelectedMenuItemInCollection(viewItem, uxOutlookViews.DropDownItems);
+            CheckSelectedMenuItemInCollection(viewItem, OutlookViewsMenu.DropDownItems);
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace OutlookDesktop.Forms
         private static string GetFolderNameFromFullPath(string fullPath)
         {
             //TODO: Revert back and deal with online/offline better!
-            return fullPath.Substring(fullPath.LastIndexOf("\\") + 1, fullPath.Length - fullPath.LastIndexOf("\\") - 1);
+            return fullPath.Substring(fullPath.LastIndexOf("\\", StringComparison.Ordinal) + 1, fullPath.Length - fullPath.LastIndexOf("\\", StringComparison.Ordinal) - 1);
         }
 
         /// <summary>
@@ -387,13 +387,13 @@ namespace OutlookDesktop.Forms
         {
             if (Enabled)
             {
-                DisableEnableEditingMenu.Text = Resources.EnableEditing;
+                DisableEnableEditingMenu.Checked = true;
                 Preferences.DisableEditing = true;
                 Enabled = false;
             }
             else
             {
-                DisableEnableEditingMenu.Text = Resources.DisableEditing;
+                DisableEnableEditingMenu.Checked = false;
                 Preferences.DisableEditing = false;
                 Enabled = true;
             }
@@ -531,6 +531,9 @@ namespace OutlookDesktop.Forms
 
         private void MoveForm()
         {
+            if (GlobalPreferences.LockPosition)
+                return;
+
             UnsafeNativeMethods.ReleaseCapture();
             UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, UnsafeNativeMethods.HTCAPTION, 0);
 
@@ -541,6 +544,8 @@ namespace OutlookDesktop.Forms
 
         private void ResizeForm(ResizeDirection direction)
         {
+            if (GlobalPreferences.LockPosition) return;
+
             var dir = -1;
             switch (direction)
             {
@@ -577,18 +582,10 @@ namespace OutlookDesktop.Forms
             }
         }
 
-
         #region Event Handlers
-
-        private void MainForm_Activated(object sender, EventArgs e)
-        {
-            UnsafeNativeMethods.SendWindowToBack(this);
-        }
 
         private void MainForm_Layout(object sender, LayoutEventArgs e)
         {
-            UnsafeNativeMethods.SendWindowToBack(this);
-
             // Update the settings stored in the registry
             Preferences.Width = Width;
             Preferences.Height = Height;
@@ -767,6 +764,9 @@ namespace OutlookDesktop.Forms
 
         private void MainForm_MouseMove(object sender, MouseEventArgs e)
         {
+            if (GlobalPreferences.LockPosition)
+                return;
+
             if (e.Location.X < _resizeBorderWidth && e.Location.Y < _resizeBorderWidth)
                 ResizeDir = ResizeDirection.TopLeft;
 
@@ -835,9 +835,9 @@ namespace OutlookDesktop.Forms
         }
 
         private void TransparencySlider_Scroll(object sender, EventArgs e)
-        {
+        {            
             var opacityVal = (double)TransparencySlider.Value / 100;
-            if (opacityVal == 1)
+            if (Math.Abs(opacityVal - 1) < double.Epsilon)
             {
                 opacityVal = 0.99;
             }
@@ -847,12 +847,26 @@ namespace OutlookDesktop.Forms
 
         private void TransparencySlider_MouseHover(object sender, EventArgs e)
         {
-            ToolTip.SetToolTip(TransparencySlider, "Slide to change this windows transparency level");
+            if (GlobalPreferences.LockPosition)
+            {
+                ToolTip.SetToolTip(TransparencySlider, "You must unlock the form before attempting to change the transparency level.");
+            }
+            else
+            {
+                ToolTip.SetToolTip(TransparencySlider, "Slide to change this windows transparency level");
+            }
         }
 
         private void HeaderPanel_MouseHover(object sender, EventArgs e)
         {
-            ToolTip.SetToolTip(HeaderPanel, "Click and hold this header to move the window");
+            if (GlobalPreferences.LockPosition)
+            {
+                ToolTip.SetToolTip(HeaderPanel, "You must unlock the form before attempting to move the window.");
+            }
+            else
+            {
+                ToolTip.SetToolTip(HeaderPanel, "Click and hold this header to move the window");
+            }
         }
         #endregion
 
@@ -897,6 +911,6 @@ namespace OutlookDesktop.Forms
             }
         }
         private ResizeDirection _resizeDir = ResizeDirection.None;
-        #endregion       
+        #endregion
     }
 }
