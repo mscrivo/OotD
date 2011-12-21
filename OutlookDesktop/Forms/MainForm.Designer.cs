@@ -96,7 +96,7 @@ namespace OutlookDesktop.Forms
             this.RemoveInstanceMenu,
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(187, 342);
+            this.trayMenu.Size = new System.Drawing.Size(187, 298);
             // 
             // CalendarMenu
             // 
