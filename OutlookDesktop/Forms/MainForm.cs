@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
+using BitFactory.Logging;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using OutlookDesktop.Properties;
+using Application = System.Windows.Forms.Application;
 using Exception = System.Exception;
 using View = Microsoft.Office.Interop.Outlook.View;
-using BitFactory.Logging;
-using System.Linq;
 
 namespace OutlookDesktop.Forms
 {
@@ -30,19 +31,6 @@ namespace OutlookDesktop.Forms
     /// </summary>
     public partial class MainForm : Form
     {
-        private enum ResizeDirection
-        {
-            None = 0,
-            Left = 1,
-            TopLeft = 2,
-            Top = 3,
-            TopRight = 4,
-            Right = 5,
-            BottomRight = 6,
-            Bottom = 7,
-            BottomLeft = 8
-        }
-
         private const int _resizeBorderWidth = 4;
 
         private String _customFolder;
@@ -79,7 +67,10 @@ namespace OutlookDesktop.Forms
         }
 
         #region Events
+
         private EventHandler<InstanceRemovedEventArgs> _instanceRemoved;
+        private EventHandler<InstanceRenamedEventArgs> _instanceRenamed;
+
         public event EventHandler<InstanceRemovedEventArgs> InstanceRemoved
         {
             // The following ensures that the event can only be subscribed too at most once
@@ -90,10 +81,7 @@ namespace OutlookDesktop.Forms
                     _instanceRemoved += value;
                 }
             }
-            remove
-            {
-                _instanceRemoved -= value;
-            }
+            remove { _instanceRemoved -= value; }
         }
 
         private void OnInstanceRemoved(object sender, InstanceRemovedEventArgs e)
@@ -104,7 +92,6 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private EventHandler<InstanceRenamedEventArgs> _instanceRenamed;
         public event EventHandler<InstanceRenamedEventArgs> InstanceRenamed
         {
             // The following ensures that the event can only be subscribed too at most once
@@ -115,10 +102,7 @@ namespace OutlookDesktop.Forms
                     _instanceRenamed += value;
                 }
             }
-            remove
-            {
-                _instanceRenamed -= value;
-            }
+            remove { _instanceRenamed -= value; }
         }
 
         private void OnInstanceRenamed(object sender, InstanceRenamedEventArgs e)
@@ -128,6 +112,7 @@ namespace OutlookDesktop.Forms
                 _instanceRenamed(sender, e);
             }
         }
+
         #endregion
 
         protected override CreateParams CreateParams
@@ -182,7 +167,7 @@ namespace OutlookDesktop.Forms
                 MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
-            TransparencySlider.Value = (int)(Preferences.Opacity * 100);
+            TransparencySlider.Value = (int) (Preferences.Opacity*100);
 
             // Sets the position of the instance. 
             try
@@ -231,9 +216,10 @@ namespace OutlookDesktop.Forms
             {
                 // custom folder
                 _customFolder = Preferences.OutlookFolderName;
-                var folderName = GetFolderNameFromFullPath(_customFolder);
-                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
-                _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
+                string folderName = GetFolderNameFromFullPath(_customFolder);
+                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
+                                      new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
+                _customMenu = (ToolStripMenuItem) trayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
             }
 
@@ -278,7 +264,8 @@ namespace OutlookDesktop.Forms
             if (Preferences.OutlookFolderEntryId != "" && Preferences.OutlookFolderStoreId != "")
                 try
                 {
-                    _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId, Preferences.OutlookFolderStoreId);
+                    _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId,
+                                                                              Preferences.OutlookFolderStoreId);
                 }
                 catch (Exception ex)
                 {
@@ -301,7 +288,7 @@ namespace OutlookDesktop.Forms
             {
                 foreach (View view in _outlookFolder.Views)
                 {
-                    var viewItem = new ToolStripMenuItem(view.Name) { Tag = view };
+                    var viewItem = new ToolStripMenuItem(view.Name) {Tag = view};
 
                     viewItem.Click += ViewItem_Click;
 
@@ -332,7 +319,8 @@ namespace OutlookDesktop.Forms
         private static string GetFolderNameFromFullPath(string fullPath)
         {
             //TODO: Revert back and deal with online/offline better!
-            return fullPath.Substring(fullPath.LastIndexOf("\\", StringComparison.Ordinal) + 1, fullPath.Length - fullPath.LastIndexOf("\\", StringComparison.Ordinal) - 1);
+            return fullPath.Substring(fullPath.LastIndexOf("\\", StringComparison.Ordinal) + 1,
+                                      fullPath.Length - fullPath.LastIndexOf("\\", StringComparison.Ordinal) - 1);
         }
 
         /// <summary>
@@ -343,7 +331,7 @@ namespace OutlookDesktop.Forms
         private static string GenerateFolderPathFromObject(MAPIFolder oFolder)
         {
             string fullFolderPath = "\\\\";
-            var subfolders = new List<string> { oFolder.Name };
+            var subfolders = new List<string> {oFolder.Name};
 
             while (oFolder != null && oFolder.Parent != null)
             {
@@ -351,7 +339,7 @@ namespace OutlookDesktop.Forms
                 if (oFolder != null) subfolders.Add(oFolder.Name);
             }
 
-            for (var i = subfolders.Count - 1; i >= 0; i--)
+            for (int i = subfolders.Count - 1; i >= 0; i--)
             {
                 fullFolderPath += subfolders[i] + "\\";
             }
@@ -431,7 +419,7 @@ namespace OutlookDesktop.Forms
         /// <param name="itemToCheck"></param>
         private void CheckSelectedFolder(ToolStripMenuItem itemToCheck)
         {
-            var menuItems = new List<ToolStripMenuItem> { CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu };
+            var menuItems = new List<ToolStripMenuItem> {CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu};
 
             if (_customMenu != null) menuItems.Add(_customMenu);
 
@@ -504,7 +492,7 @@ namespace OutlookDesktop.Forms
                     trayMenu.Items.Remove(_customMenu);
                 }
 
-                var folderPath = GetFolderPath(GenerateFolderPathFromObject(oFolder));
+                string folderPath = GetFolderPath(GenerateFolderPathFromObject(oFolder));
                 axOutlookViewControl.Folder = folderPath;
 
                 // Save the EntryId and the StoreId for this folder in the prefrences. 
@@ -515,8 +503,9 @@ namespace OutlookDesktop.Forms
                 _customFolder = Preferences.OutlookFolderName;
 
                 // Update the UI to reflect the new settings. 
-                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(oFolder.Name, null, CustomFolderMenu_Click));
-                _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
+                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
+                                      new ToolStripMenuItem(oFolder.Name, null, CustomFolderMenu_Click));
+                _customMenu = (ToolStripMenuItem) trayMenu.Items[GetSelectFolderMenuLocation() + 1];
 
                 SetMapiFolder();
                 CheckSelectedFolder(_customMenu);
@@ -535,7 +524,8 @@ namespace OutlookDesktop.Forms
                 return;
 
             UnsafeNativeMethods.ReleaseCapture();
-            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, UnsafeNativeMethods.HTCAPTION, 0);
+            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, UnsafeNativeMethods.HTCAPTION,
+                                            0);
 
             // update the values stored in the registry
             Preferences.Left = Left;
@@ -546,7 +536,7 @@ namespace OutlookDesktop.Forms
         {
             if (GlobalPreferences.LockPosition) return;
 
-            var dir = -1;
+            int dir = -1;
             switch (direction)
             {
                 case ResizeDirection.Left:
@@ -672,15 +662,15 @@ namespace OutlookDesktop.Forms
 
         private void RemoveInstanceMenu_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show(this, Resources.RemoveInstanceConfirmation,
+            DialogResult result = MessageBox.Show(this, Resources.RemoveInstanceConfirmation,
                                                   Resources.ConfirmationCaption, MessageBoxButtons.YesNo,
                                                   MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
             if (result == DialogResult.Yes)
             {
                 using (
                     RegistryKey appReg =
-                        Registry.CurrentUser.CreateSubKey("Software\\" + System.Windows.Forms.Application.CompanyName +
-                                                          "\\" + System.Windows.Forms.Application.ProductName))
+                        Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName +
+                                                          "\\" + Application.ProductName))
                 {
                     if (appReg != null) appReg.DeleteSubKeyTree(InstanceName);
                 }
@@ -718,19 +708,19 @@ namespace OutlookDesktop.Forms
             Startup.OutlookNameSpace = null;
             Startup.OutlookApp = null;
 
-            System.Windows.Forms.Application.Exit();
+            Application.Exit();
         }
 
         private void RenameInstanceMenu_Click(object sender, EventArgs e)
         {
-            var result = InputBox.Show(this, "", "Rename Instance", InstanceName, InputBox_Validating);
+            InputBoxResult result = InputBox.Show(this, "", "Rename Instance", InstanceName, InputBox_Validating);
             if (result.Ok)
             {
                 using (
-                    var parentKey =
+                    RegistryKey parentKey =
                         Registry.CurrentUser.OpenSubKey(
-                            "Software\\" + System.Windows.Forms.Application.CompanyName + "\\" +
-                            System.Windows.Forms.Application.ProductName, true))
+                            "Software\\" + Application.CompanyName + "\\" +
+                            Application.ProductName, true))
                 {
                     if (parentKey != null)
                     {
@@ -835,8 +825,8 @@ namespace OutlookDesktop.Forms
         }
 
         private void TransparencySlider_Scroll(object sender, EventArgs e)
-        {            
-            var opacityVal = (double)TransparencySlider.Value / 100;
+        {
+            double opacityVal = (double) TransparencySlider.Value/100;
             if (Math.Abs(opacityVal - 1) < double.Epsilon)
             {
                 opacityVal = 0.99;
@@ -849,7 +839,8 @@ namespace OutlookDesktop.Forms
         {
             if (GlobalPreferences.LockPosition)
             {
-                ToolTip.SetToolTip(TransparencySlider, "You must unlock the form before attempting to change the transparency level.");
+                ToolTip.SetToolTip(TransparencySlider,
+                                   "You must unlock the form before attempting to change the transparency level.");
             }
             else
             {
@@ -868,20 +859,19 @@ namespace OutlookDesktop.Forms
                 ToolTip.SetToolTip(HeaderPanel, "Click and hold this header to move the window");
             }
         }
+
         #endregion
 
         #region Properties
 
+        private ResizeDirection _resizeDir = ResizeDirection.None;
         private List<View> OulookFolderViews { get; set; }
         private InstancePreferences Preferences { get; set; }
         private string InstanceName { get; set; }
 
         private ResizeDirection ResizeDir
         {
-            get
-            {
-                return _resizeDir;
-            }
+            get { return _resizeDir; }
             set
             {
                 _resizeDir = value;
@@ -910,7 +900,24 @@ namespace OutlookDesktop.Forms
                 }
             }
         }
-        private ResizeDirection _resizeDir = ResizeDirection.None;
+
+        #endregion
+
+        #region Nested type: ResizeDirection
+
+        private enum ResizeDirection
+        {
+            None = 0,
+            Left = 1,
+            TopLeft = 2,
+            Top = 3,
+            TopRight = 4,
+            Right = 5,
+            BottomRight = 6,
+            Bottom = 7,
+            BottomLeft = 8
+        }
+
         #endregion
     }
 }

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using OutlookDesktop.Properties;
 
 namespace OutlookDesktop.Forms
 {
@@ -97,7 +98,7 @@ namespace OutlookDesktop.Forms
             }
             catch
             {
-                MessageBox.Show(this, Properties.Resources.ErrorLaunchingWebsite, Properties.Resources.ErrorCaption,
+                MessageBox.Show(this, Resources.ErrorLaunchingWebsite, Resources.ErrorCaption,
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -109,9 +110,9 @@ namespace OutlookDesktop.Forms
                 Process.Start(
                     "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=mscrivo%40tfnet%2eca&item_name=Outlook%20on%20the%20Desktop%20Donation&amount=5%2e00&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=CA&bn=PP%2dDonationsBF&charset=UTF%2d8");
             }
-            catch 
+            catch
             {
-                MessageBox.Show(this, Properties.Resources.ErrorLaunchingWebsite, Properties.Resources.ErrorCaption,
+                MessageBox.Show(this, Resources.ErrorLaunchingWebsite, Resources.ErrorCaption,
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

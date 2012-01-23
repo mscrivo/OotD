@@ -66,7 +66,7 @@ namespace OutlookDesktop
                     if (key != null)
                     {
                         bool lockPositions;
-                        if (bool.TryParse((string)key.GetValue("LockPosition", "false"), out lockPositions) && lockPositions == true)
+                        if (bool.TryParse((string)key.GetValue("LockPosition", "false"), out lockPositions) && lockPositions)
                         {
                             return true;
                         }
