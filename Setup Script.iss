@@ -42,7 +42,7 @@ UsePreviousAppDir=false
 Name: eng; MessagesFile: compiler:Default.isl
 
 [Tasks]
-Name: installdotnet; Description: Download and Install Microsoft .NET Framework 3.5; Check: NeedsDotNetFramework
+Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4 Client Profile; Check: NeedsDotNetFramework
 
 [Files]
 Source: OutlookDesktop\bin\x86\Release\OutlookDesktop.exe; DestDir: {app}; Flags: ignoreversion
@@ -67,7 +67,7 @@ Root: HKCU; Subkey: Software\SMR Computer Services\Outlook On The Desktop\; Valu
 
 [Code]
 const
-	dotnetURL = 'http://www.microsoft.com/downloads/info.aspx?na=90&p=&SrcDisplayLang=en&SrcCategoryId=&SrcFamilyId=333325fd-ae52-4e35-b531-508d977d32a6&u=http%3a%2f%2fdownload.microsoft.com%2fdownload%2f7%2f0%2f3%2f703455ee-a747-4cc8-bd3e-98a615c3aedb%2fdotNetFx35setup.exe';
+	dotnetURL = 'http://download.microsoft.com/download/7/B/6/7B629E05-399A-4A92-B5BC-484C74B5124B/dotNetFx40_Client_setup.exe';
 
 function NeedsDotNetFramework(): Boolean;
 var
@@ -76,9 +76,9 @@ var
 begin
 	tempResult:= True;
 
-	if RegKeyExists(HKLM,'Software\Microsoft\NET Framework Setup\NDP\v3.5') then
+	if RegKeyExists(HKLM,'Software\Microsoft\NET Framework Setup\NDP\v4\Client') then
 	begin
-		if RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v3.5', 'Install', Installed) then
+		if RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Client', 'Install', Installed) then
 		begin
 			tempResult := False;
 		end;
@@ -102,10 +102,10 @@ begin
 		sTasks := WizardSelectedTasks(false);
 
 		isxdl_ClearFiles;
-		isxdl_SetOption('title', 'Downloading the Microsoft .NET Framework 3.5');
-		isxdl_SetOption('description', 'Please wait while Setup downloads the Microsoft .NET Framework 3.5 to your computer.');
+		isxdl_SetOption('title', 'Downloading the Microsoft .NET Framework 4 Client Profile');
+		isxdl_SetOption('description', 'Please wait while Setup downloads the Microsoft .NET Framework 4 Client Profile to your computer.');
 
-		sFileName := ExpandConstant('{tmp}\dotNetFx35Setup.exe');
+		sFileName := ExpandConstant('{tmp}\dotNetFx40_Client_setup.exe');
 
 		if IsTaskSelected('installdotnet') then
 		begin
@@ -120,6 +120,7 @@ begin
 
 	end;
 end;
+
 [UninstallDelete]
 Name: {app}\*; Type: filesandordirs
 Name: {app}; Type: dirifempty
