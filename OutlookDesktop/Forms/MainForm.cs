@@ -167,7 +167,7 @@ namespace OutlookDesktop.Forms
                 MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
-            TransparencySlider.Value = (int) (Preferences.Opacity*100);
+            TransparencySlider.Value = (int)(Preferences.Opacity * 100);
 
             // Sets the position of the instance. 
             try
@@ -219,7 +219,7 @@ namespace OutlookDesktop.Forms
                 string folderName = GetFolderNameFromFullPath(_customFolder);
                 trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
                                       new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
-                _customMenu = (ToolStripMenuItem) trayMenu.Items[GetSelectFolderMenuLocation() + 1];
+                _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
             }
 
@@ -288,7 +288,7 @@ namespace OutlookDesktop.Forms
             {
                 foreach (View view in _outlookFolder.Views)
                 {
-                    var viewItem = new ToolStripMenuItem(view.Name) {Tag = view};
+                    var viewItem = new ToolStripMenuItem(view.Name) { Tag = view };
 
                     viewItem.Click += ViewItem_Click;
 
@@ -331,7 +331,7 @@ namespace OutlookDesktop.Forms
         private static string GenerateFolderPathFromObject(MAPIFolder oFolder)
         {
             string fullFolderPath = "\\\\";
-            var subfolders = new List<string> {oFolder.Name};
+            var subfolders = new List<string> { oFolder.Name };
 
             while (oFolder != null && oFolder.Parent != null)
             {
@@ -419,7 +419,7 @@ namespace OutlookDesktop.Forms
         /// <param name="itemToCheck"></param>
         private void CheckSelectedFolder(ToolStripMenuItem itemToCheck)
         {
-            var menuItems = new List<ToolStripMenuItem> {CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu};
+            var menuItems = new List<ToolStripMenuItem> { CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu };
 
             if (_customMenu != null) menuItems.Add(_customMenu);
 
@@ -505,7 +505,7 @@ namespace OutlookDesktop.Forms
                 // Update the UI to reflect the new settings. 
                 trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
                                       new ToolStripMenuItem(oFolder.Name, null, CustomFolderMenu_Click));
-                _customMenu = (ToolStripMenuItem) trayMenu.Items[GetSelectFolderMenuLocation() + 1];
+                _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
 
                 SetMapiFolder();
                 CheckSelectedFolder(_customMenu);
@@ -524,8 +524,7 @@ namespace OutlookDesktop.Forms
                 return;
 
             UnsafeNativeMethods.ReleaseCapture();
-            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, UnsafeNativeMethods.HTCAPTION,
-                                            0);
+            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr) UnsafeNativeMethods.HTCAPTION, IntPtr.Zero);
 
             // update the values stored in the registry
             Preferences.Left = Left;
@@ -568,7 +567,7 @@ namespace OutlookDesktop.Forms
             if (dir != -1)
             {
                 UnsafeNativeMethods.ReleaseCapture();
-                UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, dir, 0);
+                UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr) dir, IntPtr.Zero);
             }
         }
 
@@ -826,7 +825,7 @@ namespace OutlookDesktop.Forms
 
         private void TransparencySlider_Scroll(object sender, EventArgs e)
         {
-            double opacityVal = (double) TransparencySlider.Value/100;
+            double opacityVal = (double)TransparencySlider.Value / 100;
             if (Math.Abs(opacityVal - 1) < double.Epsilon)
             {
                 opacityVal = 0.99;
