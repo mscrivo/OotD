@@ -188,8 +188,6 @@ namespace OutlookDesktop.Forms
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
-            ShowCalendarButtons(false);
-
             // Checks the menuitem of the current folder.
             if (Preferences.OutlookFolderName == FolderViewType.Calendar.ToString())
             {
@@ -198,18 +196,22 @@ namespace OutlookDesktop.Forms
             }
             else if (Preferences.OutlookFolderName == FolderViewType.Contacts.ToString())
             {
+                ShowCalendarButtons(false);
                 ContactsMenu.Checked = true;
             }
             else if (Preferences.OutlookFolderName == FolderViewType.Inbox.ToString())
             {
+                ShowCalendarButtons(false);
                 InboxMenu.Checked = true;
             }
             else if (Preferences.OutlookFolderName == FolderViewType.Notes.ToString())
             {
+                ShowCalendarButtons(false);
                 NotesMenu.Checked = true;
             }
             else if (Preferences.OutlookFolderName == FolderViewType.Tasks.ToString())
             {
+                ShowCalendarButtons(false);
                 TasksMenu.Checked = true;
             }
             else
@@ -266,6 +268,8 @@ namespace OutlookDesktop.Forms
                 {
                     _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId,
                                                                               Preferences.OutlookFolderStoreId);
+
+                    ShowCalendarButtonsFor(_outlookFolder);
                 }
                 catch (Exception ex)
                 {
@@ -524,7 +528,8 @@ namespace OutlookDesktop.Forms
                 return;
 
             UnsafeNativeMethods.ReleaseCapture();
-            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr) UnsafeNativeMethods.HTCAPTION, IntPtr.Zero);
+            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN,
+                                            (IntPtr)UnsafeNativeMethods.HTCAPTION, IntPtr.Zero);
 
             // update the values stored in the registry
             Preferences.Left = Left;
@@ -567,7 +572,7 @@ namespace OutlookDesktop.Forms
             if (dir != -1)
             {
                 UnsafeNativeMethods.ReleaseCapture();
-                UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr) dir, IntPtr.Zero);
+                UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)dir, IntPtr.Zero);
             }
         }
 
@@ -606,7 +611,6 @@ namespace OutlookDesktop.Forms
 
         /// <summary>
         /// This handler will select a custom folder.
-        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -614,6 +618,26 @@ namespace OutlookDesktop.Forms
         {
             MAPIFolder oFolder = Startup.OutlookNameSpace.PickFolder();
             UpdateCustomFolder(oFolder);
+
+            ShowCalendarButtonsFor(oFolder);
+        }
+
+        /// <summary>
+        /// Checks to see if the specified folder contains an appointment object, is so, we assume its a calendar
+        /// so we should show the calendar buttons.
+        /// </summary>
+        /// <param name="oFolder"></param>
+        private void ShowCalendarButtonsFor(MAPIFolder oFolder)
+        {
+            if (oFolder.Items != null && oFolder.Items.Count > 0)
+            {
+                var appt = oFolder.Items[1] as AppointmentItem;
+                if (appt != null)
+                {
+                    ShowCalendarButtons(true);
+                    return;
+                }
+            }
             ShowCalendarButtons(false);
         }
 

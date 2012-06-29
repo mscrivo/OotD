@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using OutlookDesktop.Properties;
 using BitFactory.Logging;
+using OutlookDesktop.Properties;
 
 namespace OutlookDesktop
 {
@@ -24,14 +24,6 @@ namespace OutlookDesktop
         public const int HTTOP = 12;
         public const int HTTOPLEFT = 13;
         public const int HTTOPRIGHT = 14;
-
-        private enum DwmNCRenderingPolicy
-        {
-            UseWindowStyle,
-            Disabled,
-            Enabled,
-            Last
-        }
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern bool DwmIsCompositionEnabled();
@@ -60,7 +52,9 @@ namespace OutlookDesktop
             int Y, // vertical position
             int cx, // width
             int cy, // height
-            uint uFlags); // window positioning flags
+            uint uFlags);
+
+        // window positioning flags
 
         public static void PinWindowToDesktop(Form form)
         {
@@ -75,8 +69,10 @@ namespace OutlookDesktop
             }
             catch (Exception ex)
             {
-                ConfigLogger.Instance.LogError(String.Format("Error pinning window to desktop, OS: {0}.",Environment.OSVersion.Version));
-                MessageBox.Show(form, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ConfigLogger.Instance.LogError(String.Format("Error pinning window to desktop, OS: {0}.",
+                                                             Environment.OSVersion.Version));
+                MessageBox.Show(form, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message,
+                                Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -87,7 +83,6 @@ namespace OutlookDesktop
         /// <param name="windowToSendBack">the form to work with</param>
         public static void SendWindowToBack(Form windowToSendBack)
         {
-
             if (Environment.OSVersion.Version.Major >= 6 && DwmIsCompositionEnabled())
             {
                 SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0,
@@ -102,12 +97,25 @@ namespace OutlookDesktop
         /// <param name="window"></param>
         public static void RemoveWindowFromAeroPeek(Form window)
         {
-            if (Environment.OSVersion.Version.Major >= 6 && Environment.OSVersion.Version.Minor >= 1 && DwmIsCompositionEnabled())
+            if (Environment.OSVersion.Version.Major >= 6 && Environment.OSVersion.Version.Minor >= 1 &&
+                DwmIsCompositionEnabled())
             {
-                var renderPolicy = (int)DwmNCRenderingPolicy.Enabled;
+                var renderPolicy = (int) DwmNCRenderingPolicy.Enabled;
 
-                DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof(int));
+                DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof (int));
             }
         }
+
+        #region Nested type: DwmNCRenderingPolicy
+
+        private enum DwmNCRenderingPolicy
+        {
+            UseWindowStyle,
+            Disabled,
+            Enabled,
+            Last
+        }
+
+        #endregion
     }
 }

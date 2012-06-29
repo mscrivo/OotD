@@ -13,7 +13,7 @@ namespace OutlookDesktop
         {
             if (@this.InvokeRequired)
             {
-                @this.Invoke(action, new object[] { @this });
+                @this.Invoke(action, new object[] {@this});
             }
             else
             {

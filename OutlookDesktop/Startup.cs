@@ -4,21 +4,22 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using BitFactory.Logging;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using OutlookDesktop.Forms;
 using OutlookDesktop.Properties;
-using BitFactory.Logging;
-using Application = System.Windows.Forms.Application;
+using Application = Microsoft.Office.Interop.Outlook.Application;
+using Exception = System.Exception;
 
 namespace OutlookDesktop
 {
     internal static class Startup
     {
-        public static Microsoft.Office.Interop.Outlook.Application OutlookApp;
-        public static Microsoft.Office.Interop.Outlook.NameSpace OutlookNameSpace;
-        public static Microsoft.Office.Interop.Outlook.MAPIFolder OutlookFolder;
-        public static Microsoft.Office.Interop.Outlook.Explorer OutlookExplorer;
+        public static Application OutlookApp;
+        public static NameSpace OutlookNameSpace;
+        public static MAPIFolder OutlookFolder;
+        public static Explorer OutlookExplorer;
 
         /// <summary>
         /// The main entry point for the application.
@@ -49,7 +50,7 @@ namespace OutlookDesktop
 
                 try
                 {
-                    OutlookApp = new Microsoft.Office.Interop.Outlook.Application();
+                    OutlookApp = new Application();
                     OutlookNameSpace = OutlookApp.GetNamespace("MAPI");
                     OutlookFolder = OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
 
@@ -59,20 +60,20 @@ namespace OutlookDesktop
                     // is to get this global instance of the active explorer and keep it going until the user closes the app.
                     OutlookExplorer = OutlookFolder.GetExplorer();
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(Resources.ErrorInitializingApp + @" " + ex, Resources.ErrorCaption,
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                Application.EnableVisualStyles();
+                System.Windows.Forms.Application.EnableVisualStyles();
 
                 ConfigLogger.Instance.LogInfo("Starting the instance manager and loading instances.");
                 var instanceManager = new InstanceManager();
                 instanceManager.LoadInstances();
 
-                Application.Run(instanceManager);
+                System.Windows.Forms.Application.Run(instanceManager);
             }
         }
 
@@ -82,14 +83,15 @@ namespace OutlookDesktop
         /// <returns>returns true if already running</returns>
         private static bool IsAlreadyRunning()
         {
-            var strLoc = Assembly.GetExecutingAssembly().Location;
+            string strLoc = Assembly.GetExecutingAssembly().Location;
             if (!string.IsNullOrEmpty(strLoc))
             {
                 FileSystemInfo fileInfo = new FileInfo(strLoc);
                 string sExeName = fileInfo.Name;
                 bool createdNew = false;
 
-                if (!string.IsNullOrEmpty(sExeName)) new Mutex(true, string.Format("Local\\{0}", sExeName), out createdNew);
+                if (!string.IsNullOrEmpty(sExeName))
+                    new Mutex(true, string.Format("Local\\{0}", sExeName), out createdNew);
 
                 return !createdNew;
             }
@@ -122,7 +124,7 @@ namespace OutlookDesktop
                         CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
                         if (double.TryParse(subkey, NumberStyles.Float, culture, out versionSubKey))
                         {
-                            ConfigLogger.Instance.LogDebug(string.Format("Office Version: {0}",versionSubKey));
+                            ConfigLogger.Instance.LogDebug(string.Format("Office Version: {0}", versionSubKey));
                             if (versionSubKey >= 11)
                             {
                                 hasOffice2003OrHigher = true;
@@ -143,8 +145,8 @@ namespace OutlookDesktop
                         Registry.LocalMachine.OpenSubKey(
                             "Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
                 {
-                    if (key != null) outlookPath = (string)key.GetValue("Path");
-                    ConfigLogger.Instance.LogDebug(string.Format("Office path reported as: {0}",outlookPath));
+                    if (key != null) outlookPath = (string) key.GetValue("Path");
+                    ConfigLogger.Instance.LogDebug(string.Format("Office path reported as: {0}", outlookPath));
                     if (outlookPath != null)
                     {
                         ConfigLogger.Instance.LogDebug(string.Format("Checking for Outlook exe in: {0}", outlookPath));
@@ -161,7 +163,7 @@ namespace OutlookDesktop
                 ConfigLogger.Instance.LogError(
                     string.Format("Outlook path was reported as: {0}, but this file could not be found.",
                                   Path.Combine(outlookPath, "Outlook.exe")));
- 
+
             return false;
         }
     }

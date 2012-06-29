@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using Microsoft.Win32;
 using BitFactory.Logging;
+using Microsoft.Win32;
 
 namespace OutlookDesktop
 {
@@ -24,7 +24,7 @@ namespace OutlookDesktop
                 {
                     if (key != null)
                     {
-                        var val = (string)key.GetValue("OutlookOnDesktop");
+                        var val = (string) key.GetValue("OutlookOnDesktop");
                         return (!string.IsNullOrEmpty(val));
                     }
                 }
@@ -32,7 +32,9 @@ namespace OutlookDesktop
             }
             set
             {
-                using (RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true))
+                using (
+                    RegistryKey key =
+                        Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true))
                 {
                     if (key != null)
                     {
@@ -50,7 +52,8 @@ namespace OutlookDesktop
                         }
                         catch (Exception ex)
                         {
-                            ConfigLogger.Instance.LogError(String.Format("Exception caught setting Start with Windows Key: {0}", ex));
+                            ConfigLogger.Instance.LogError(
+                                String.Format("Exception caught setting Start with Windows Key: {0}", ex));
                         }
                     }
                 }
@@ -61,12 +64,16 @@ namespace OutlookDesktop
         {
             get
             {
-                using (RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+                using (
+                    RegistryKey key =
+                        Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
+                                                          Application.ProductName))
                 {
                     if (key != null)
                     {
                         bool lockPositions;
-                        if (bool.TryParse((string)key.GetValue("LockPosition", "false"), out lockPositions) && lockPositions)
+                        if (bool.TryParse((string) key.GetValue("LockPosition", "false"), out lockPositions) &&
+                            lockPositions)
                         {
                             return true;
                         }
@@ -76,7 +83,10 @@ namespace OutlookDesktop
             }
             set
             {
-                using (RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+                using (
+                    RegistryKey key =
+                        Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
+                                                          Application.ProductName))
                 {
                     if (key != null)
                     {
@@ -90,12 +100,15 @@ namespace OutlookDesktop
         {
             get
             {
-                using (RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+                using (
+                    RegistryKey key =
+                        Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
+                                                          Application.ProductName))
                 {
                     if (key != null)
                     {
                         bool isFirstRun;
-                        if (bool.TryParse((string)key.GetValue("FirstRun", "true"), out isFirstRun))
+                        if (bool.TryParse((string) key.GetValue("FirstRun", "true"), out isFirstRun))
                         {
                             if (isFirstRun)
                             {
