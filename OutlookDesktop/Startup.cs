@@ -62,7 +62,7 @@ namespace OutlookDesktop
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(Resources.ErrorInitializingApp + @" " + ex, Resources.ErrorCaption,
+                    MessageBox.Show(Resources.ErrorInitializingApp + ' ' + ex, Resources.ErrorCaption,
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }

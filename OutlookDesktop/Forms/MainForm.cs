@@ -243,7 +243,7 @@ namespace OutlookDesktop.Forms
             // If the view is a calendar view, use the stored ViewXML to restore their day/week/month view setting.
             if (Preferences.OutlookFolderName == FolderViewType.Calendar.ToString())
             {
-                axOutlookViewControl.ViewXML = Preferences.ViewXML;
+                axOutlookViewControl.ViewXML = Preferences.ViewXml;
             }
 
             // Get a copy of the possible outlook views for the selected folder and populate the context menu for this instance. 
@@ -439,10 +439,7 @@ namespace OutlookDesktop.Forms
         {
             foreach (ToolStripMenuItem menuItem in menuItems)
             {
-                if (menuItem == itemToCheck)
-                    menuItem.Checked = true;
-                else
-                    menuItem.Checked = false;
+                menuItem.Checked = menuItem == itemToCheck;
             }
         }
 
@@ -824,7 +821,7 @@ namespace OutlookDesktop.Forms
         private void SetViewXML(string value)
         {
             axOutlookViewControl.ViewXML = value;
-            Preferences.ViewXML = value;
+            Preferences.ViewXml = value;
         }
 
         private void DayButton_Click(object sender, EventArgs e)
@@ -860,27 +857,18 @@ namespace OutlookDesktop.Forms
 
         private void TransparencySlider_MouseHover(object sender, EventArgs e)
         {
-            if (GlobalPreferences.LockPosition)
-            {
-                ToolTip.SetToolTip(TransparencySlider,
-                                   "You must unlock the form before attempting to change the transparency level.");
-            }
-            else
-            {
-                ToolTip.SetToolTip(TransparencySlider, "Slide to change this windows transparency level");
-            }
+            ToolTip.SetToolTip(TransparencySlider,
+                               GlobalPreferences.LockPosition
+                                   ? "You must unlock the form before attempting to change the transparency level."
+                                   : "Slide to change this windows transparency level");
         }
 
         private void HeaderPanel_MouseHover(object sender, EventArgs e)
         {
-            if (GlobalPreferences.LockPosition)
-            {
-                ToolTip.SetToolTip(HeaderPanel, "You must unlock the form before attempting to move the window.");
-            }
-            else
-            {
-                ToolTip.SetToolTip(HeaderPanel, "Click and hold this header to move the window");
-            }
+            ToolTip.SetToolTip(HeaderPanel,
+                               GlobalPreferences.LockPosition
+                                   ? "You must unlock the form before attempting to move the window."
+                                   : "Click and hold this header to move the window");
         }
 
         #endregion

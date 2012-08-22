@@ -61,7 +61,7 @@ namespace OutlookDesktop
             set
             {
                 _appReg.SetValue("Left", value);
-                Debug.Print(String.Format("Left:{0}", value));
+                Debug.Print("Left:{0}", value);
             }
         }
 
@@ -74,7 +74,7 @@ namespace OutlookDesktop
             set
             {
                 _appReg.SetValue("Top", value);
-                Debug.Print(String.Format("Top:{0}", value));
+                Debug.Print("Top:{0}", value);
             }
         }
 
@@ -87,7 +87,7 @@ namespace OutlookDesktop
             set
             {
                 _appReg.SetValue("Width", value);
-                Debug.Print(String.Format("Width:{0}", value));
+                Debug.Print("Width:{0}", value);
             }
         }
 
@@ -100,7 +100,7 @@ namespace OutlookDesktop
             set
             {
                 _appReg.SetValue("Height", value);
-                Debug.Print(String.Format("Height:{0}", value));
+                Debug.Print("Height:{0}", value);
             }
         }
 
@@ -145,7 +145,7 @@ namespace OutlookDesktop
             set { _appReg.SetValue("DisableEditing", value); }
         }
 
-        public string ViewXML
+        public string ViewXml
         {
             get { return (string) _appReg.GetValue("ViewXML", ""); }
             set { _appReg.SetValue("ViewXML", value); }
