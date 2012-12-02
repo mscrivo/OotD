@@ -394,4 +394,16 @@
   <data name="LockPosition" xml:space="preserve">
     <value>Lock Position</value>
   </data>
+  <data name="Transparency_Slider_Locked_Message" xml:space="preserve">
+    <value>You must unlock the form before attempting to change the transparency level.</value>
+  </data>
+  <data name="Transparency_Slider_Help_Message" xml:space="preserve">
+    <value>Slide to change this windows transparency level</value>
+  </data>
+  <data name="Form_Move_Locked_Message" xml:space="preserve">
+    <value>You must unlock the form before attempting to move the window.</value>
+  </data>
+  <data name="Form_Move_Help_Message" xml:space="preserve">
+    <value>Click and hold this header to move the window</value>
+  </data>
 </root>

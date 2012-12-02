@@ -31,7 +31,7 @@ namespace OutlookDesktop.Forms
     /// </summary>
     public partial class MainForm : Form
     {
-        private const int _resizeBorderWidth = 4;
+        private const int ResizeBorderWidth = 4;
 
         private String _customFolder;
         private ToolStripMenuItem _customMenu;
@@ -81,7 +81,7 @@ namespace OutlookDesktop.Forms
                     _instanceRemoved += value;
                 }
             }
-            remove { _instanceRemoved -= value; }
+            remove { if (_instanceRemoved != null) _instanceRemoved -= value; }
         }
 
         private void OnInstanceRemoved(object sender, InstanceRemovedEventArgs e)
@@ -102,7 +102,7 @@ namespace OutlookDesktop.Forms
                     _instanceRenamed += value;
                 }
             }
-            remove { _instanceRenamed -= value; }
+            remove { if (_instanceRenamed != null) _instanceRenamed -= value; }
         }
 
         private void OnInstanceRenamed(object sender, InstanceRenamedEventArgs e)
@@ -452,7 +452,7 @@ namespace OutlookDesktop.Forms
         {
             if (folderViewType != FolderViewType.Calendar)
             {
-                SetViewXML(string.Empty);
+                SetViewXml(string.Empty);
                 ShowCalendarButtons(false);
             }
             else
@@ -504,8 +504,7 @@ namespace OutlookDesktop.Forms
                 _customFolder = Preferences.OutlookFolderName;
 
                 // Update the UI to reflect the new settings. 
-                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
-                                      new ToolStripMenuItem(oFolder.Name, null, CustomFolderMenu_Click));
+                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(oFolder.Name, null, CustomFolderMenu_Click));
                 _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
 
                 SetMapiFolder();
@@ -514,8 +513,7 @@ namespace OutlookDesktop.Forms
             }
             catch (Exception)
             {
-                MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -525,8 +523,7 @@ namespace OutlookDesktop.Forms
                 return;
 
             UnsafeNativeMethods.ReleaseCapture();
-            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN,
-                                            (IntPtr)UnsafeNativeMethods.HTCAPTION, IntPtr.Zero);
+            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)UnsafeNativeMethods.HTCAPTION, IntPtr.Zero);
 
             // update the values stored in the registry
             Preferences.Left = Left;
@@ -682,15 +679,12 @@ namespace OutlookDesktop.Forms
 
         private void RemoveInstanceMenu_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(this, Resources.RemoveInstanceConfirmation,
-                                                  Resources.ConfirmationCaption, MessageBoxButtons.YesNo,
-                                                  MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            var result = MessageBox.Show(this, Resources.RemoveInstanceConfirmation,
+                                               Resources.ConfirmationCaption, MessageBoxButtons.YesNo,
+                                               MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
             if (result == DialogResult.Yes)
             {
-                using (
-                    RegistryKey appReg =
-                        Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName +
-                                                          "\\" + Application.ProductName))
+                using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
                 {
                     if (appReg != null) appReg.DeleteSubKeyTree(InstanceName);
                 }
@@ -736,11 +730,7 @@ namespace OutlookDesktop.Forms
             InputBoxResult result = InputBox.Show(this, "", "Rename Instance", InstanceName, InputBox_Validating);
             if (result.Ok)
             {
-                using (
-                    RegistryKey parentKey =
-                        Registry.CurrentUser.OpenSubKey(
-                            "Software\\" + Application.CompanyName + "\\" +
-                            Application.ProductName, true))
+                using (var parentKey = Registry.CurrentUser.OpenSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName, true))
                 {
                     if (parentKey != null)
                     {
@@ -777,28 +767,28 @@ namespace OutlookDesktop.Forms
             if (GlobalPreferences.LockPosition)
                 return;
 
-            if (e.Location.X < _resizeBorderWidth && e.Location.Y < _resizeBorderWidth)
+            if (e.Location.X < ResizeBorderWidth && e.Location.Y < ResizeBorderWidth)
                 ResizeDir = ResizeDirection.TopLeft;
 
-            else if (e.Location.X < _resizeBorderWidth && e.Location.Y > Height - _resizeBorderWidth)
+            else if (e.Location.X < ResizeBorderWidth && e.Location.Y > Height - ResizeBorderWidth)
                 ResizeDir = ResizeDirection.BottomLeft;
 
-            else if (e.Location.X > Width - _resizeBorderWidth && e.Location.Y > Height - _resizeBorderWidth)
+            else if (e.Location.X > Width - ResizeBorderWidth && e.Location.Y > Height - ResizeBorderWidth)
                 ResizeDir = ResizeDirection.BottomRight;
 
-            else if (e.Location.X > Width - _resizeBorderWidth && e.Location.Y < _resizeBorderWidth)
+            else if (e.Location.X > Width - ResizeBorderWidth && e.Location.Y < ResizeBorderWidth)
                 ResizeDir = ResizeDirection.TopRight;
 
-            else if (e.Location.X < _resizeBorderWidth)
+            else if (e.Location.X < ResizeBorderWidth)
                 ResizeDir = ResizeDirection.Left;
 
-            else if (e.Location.X > Width - _resizeBorderWidth)
+            else if (e.Location.X > Width - ResizeBorderWidth)
                 ResizeDir = ResizeDirection.Right;
 
-            else if (e.Location.Y < _resizeBorderWidth)
+            else if (e.Location.Y < ResizeBorderWidth)
                 ResizeDir = ResizeDirection.Top;
 
-            else if (e.Location.Y > Height - _resizeBorderWidth)
+            else if (e.Location.Y > Height - ResizeBorderWidth)
                 ResizeDir = ResizeDirection.Bottom;
 
             else
@@ -818,7 +808,7 @@ namespace OutlookDesktop.Forms
             ResizeDir = ResizeDirection.None;
         }
 
-        private void SetViewXML(string value)
+        private void SetViewXml(string value)
         {
             axOutlookViewControl.ViewXML = value;
             Preferences.ViewXml = value;
@@ -826,22 +816,22 @@ namespace OutlookDesktop.Forms
 
         private void DayButton_Click(object sender, EventArgs e)
         {
-            SetViewXML(Resources.day);
+            SetViewXml(Resources.day);
         }
 
         private void WorkWeekButton_Click(object sender, EventArgs e)
         {
-            SetViewXML(Resources.WorkWeek);
+            SetViewXml(Resources.WorkWeek);
         }
 
         private void MonthButton_Click(object sender, EventArgs e)
         {
-            SetViewXML(Resources.month);
+            SetViewXml(Resources.month);
         }
 
         private void WeekButton_Click(object sender, EventArgs e)
         {
-            SetViewXML(Resources.week);
+            SetViewXml(Resources.week);
         }
 
         private void TransparencySlider_Scroll(object sender, EventArgs e)
@@ -859,19 +849,36 @@ namespace OutlookDesktop.Forms
         {
             ToolTip.SetToolTip(TransparencySlider,
                                GlobalPreferences.LockPosition
-                                   ? "You must unlock the form before attempting to change the transparency level."
-                                   : "Slide to change this windows transparency level");
+                                   ? Resources.Transparency_Slider_Locked_Message
+                                   : Resources.Transparency_Slider_Help_Message);
         }
 
         private void HeaderPanel_MouseHover(object sender, EventArgs e)
         {
             ToolTip.SetToolTip(HeaderPanel,
                                GlobalPreferences.LockPosition
-                                   ? "You must unlock the form before attempting to move the window."
-                                   : "Click and hold this header to move the window");
+                                   ? Resources.Form_Move_Locked_Message
+                                   : Resources.Form_Move_Help_Message);
         }
 
         #endregion
+
+        [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
+        protected override void WndProc(ref Message m)
+        {
+            // Listen for operating system messages. 
+            switch (m.Msg)
+            {
+                // To properly pin the window to the desktop, it's not enough to set it's z-order to the bottom-most window 
+                // on startup, we also have to do it everytime WM_WINDOWPOSCHANGED is triggered.
+                case UnsafeNativeMethods.WM_WINDOWPOSCHANGED:
+                    SendToBack();
+                    base.WndProc(ref m);
+                    return;
+            }
+
+            base.WndProc(ref m);
+        }
 
         #region Properties
 

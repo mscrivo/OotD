@@ -1,8 +1,8 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "2.0.2"
-#define MyAppVerName "Outlook on the Desktop 2.0.2"
+#define MyAppVersion "2.1.0"
+#define MyAppVerName "Outlook on the Desktop 2.1.0"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"

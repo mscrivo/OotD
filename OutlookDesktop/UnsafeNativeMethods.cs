@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 using BitFactory.Logging;
 using OutlookDesktop.Properties;
@@ -8,10 +9,14 @@ namespace OutlookDesktop
 {
     internal static class UnsafeNativeMethods
     {
-        private const int HWND_BOTTOM = 0x1;
+        static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
         private const int SWP_NOACTIVATE = 0x10;
-        private const int SWP_NOMOVE = 0x2;
-        private const int SWP_NOSIZE = 0x1;
+        private const int SWP_NOMOVE = 0x0002;
+        private const int SWP_NOSIZE = 0x0001;
+        private const int SWP_NOOWNERZORDER = 0x0200;
+        private const int SWP_NOSENDCHANGING = 0x0400;
+        private const int SWP_NOZORDER = 0x0004;
+
         private const int DWMWA_EXCLUDED_FROM_PEEK = 12;
 
         public const int WM_NCLBUTTONDOWN = 0x00A1;
@@ -24,6 +29,8 @@ namespace OutlookDesktop
         public const int HTTOP = 12;
         public const int HTTOPLEFT = 13;
         public const int HTTOPRIGHT = 14;
+
+        public const int WM_WINDOWPOSCHANGED = 0x0047;
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern bool DwmIsCompositionEnabled();
@@ -43,18 +50,19 @@ namespace OutlookDesktop
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool SetWindowPos(
-            IntPtr hWnd, // window handle
-            int hWndInsertAfter, // placement-order handle
-            int X, // horizontal position
-            int Y, // vertical position
-            int cx, // width
-            int cy, // height
+        [DllImport("user32.dll")]
+        static extern bool SetWindowPos(
+            IntPtr hWnd,
+            IntPtr hWndInsertAfter,
+            int X,
+            int Y,
+            int cx,
+            int cy,
             uint uFlags);
 
-        // window positioning flags
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool IsWindowVisible(IntPtr hWnd);
 
         public static void PinWindowToDesktop(Form form)
         {
@@ -69,8 +77,7 @@ namespace OutlookDesktop
             }
             catch (Exception ex)
             {
-                ConfigLogger.Instance.LogError(String.Format("Error pinning window to desktop, OS: {0}.",
-                                                             Environment.OSVersion.Version));
+                ConfigLogger.Instance.LogError(String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version));
                 MessageBox.Show(form, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message,
                                 Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -86,7 +93,7 @@ namespace OutlookDesktop
             if (Environment.OSVersion.Version.Major >= 6 && DwmIsCompositionEnabled())
             {
                 SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0,
-                             SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
+                             SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING | SWP_NOZORDER);
             }
         }
 
@@ -100,13 +107,11 @@ namespace OutlookDesktop
             if (Environment.OSVersion.Version.Major >= 6 && Environment.OSVersion.Version.Minor >= 1 &&
                 DwmIsCompositionEnabled())
             {
-                var renderPolicy = (int) DwmNCRenderingPolicy.Enabled;
+                var renderPolicy = (int)DwmNCRenderingPolicy.Enabled;
 
-                DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof (int));
+                DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof(int));
             }
         }
-
-        #region Nested type: DwmNCRenderingPolicy
 
         private enum DwmNCRenderingPolicy
         {
@@ -114,8 +119,6 @@ namespace OutlookDesktop
             Disabled,
             Enabled,
             Last
-        }
-
-        #endregion
+        }  
     }
 }

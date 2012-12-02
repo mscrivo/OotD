@@ -49,7 +49,7 @@ namespace OutlookDesktop.Forms
                 form.InputTextBox.Text = defaultValue;
                 form.Validator = validator;
 
-                DialogResult result = form.ShowDialog();
+                var result = form.ShowDialog();
 
                 var retval = new InputBoxResult();
                 if (result == DialogResult.OK)

@@ -21,14 +21,11 @@ namespace OutlookDesktop
         {
             try
             {
-                _appReg =
-                    Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
-                                                      Application.ProductName + "\\" + instanceName);
+                _appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName + "\\" + instanceName);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error,
-                                MessageBoxDefaultButton.Button1);
+                MessageBox.Show(ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
         }
 
@@ -42,9 +39,7 @@ namespace OutlookDesktop
                 double opacity = DefaultOpacity;
 
                 if (
-                    double.TryParse(
-                        (string) _appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture)),
-                        out opacity))
+                    double.TryParse((string)_appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture)), out opacity))
                     return opacity;
 
                 return DefaultOpacity;
@@ -57,7 +52,7 @@ namespace OutlookDesktop
         /// </summary>
         public int Left
         {
-            get { return (int) _appReg.GetValue("Left", DefaultLeftPosition); }
+            get { return (int)_appReg.GetValue("Left", DefaultLeftPosition); }
             set
             {
                 _appReg.SetValue("Left", value);
@@ -70,7 +65,7 @@ namespace OutlookDesktop
         /// </summary>
         public int Top
         {
-            get { return (int) _appReg.GetValue("Top", DefaultTopPosition); }
+            get { return (int)_appReg.GetValue("Top", DefaultTopPosition); }
             set
             {
                 _appReg.SetValue("Top", value);
@@ -83,7 +78,7 @@ namespace OutlookDesktop
         /// </summary>
         public int Width
         {
-            get { return (int) _appReg.GetValue("Width", DefaultWidth); }
+            get { return (int)_appReg.GetValue("Width", DefaultWidth); }
             set
             {
                 _appReg.SetValue("Width", value);
@@ -96,7 +91,7 @@ namespace OutlookDesktop
         /// </summary>
         public int Height
         {
-            get { return (int) _appReg.GetValue("Height", DefaultHeight); }
+            get { return (int)_appReg.GetValue("Height", DefaultHeight); }
             set
             {
                 _appReg.SetValue("Height", value);
@@ -106,7 +101,7 @@ namespace OutlookDesktop
 
         public string OutlookFolderName
         {
-            get { return (string) _appReg.GetValue("CurrentViewType", "Calendar"); }
+            get { return (string)_appReg.GetValue("CurrentViewType", "Calendar"); }
             set
             {
                 _appReg.SetValue("CurrentViewType", value);
@@ -116,21 +111,21 @@ namespace OutlookDesktop
 
         public string OutlookFolderView
         {
-            get { return (string) _appReg.GetValue("OutlookView", "Day/Week/Month"); }
+            get { return (string)_appReg.GetValue("OutlookView", "Day/Week/Month"); }
             set { _appReg.SetValue("OutlookView", value); }
         }
 
 
         public string OutlookFolderEntryId
         {
-            get { return (string) _appReg.GetValue("FolderEntryId", ""); }
+            get { return (string)_appReg.GetValue("FolderEntryId", ""); }
             set { _appReg.SetValue("FolderEntryId", value); }
         }
 
 
         public string OutlookFolderStoreId
         {
-            get { return (string) _appReg.GetValue("FolderStoreId", ""); }
+            get { return (string)_appReg.GetValue("FolderStoreId", ""); }
             set { _appReg.SetValue("FolderStoreId", value); }
         }
 
@@ -147,7 +142,7 @@ namespace OutlookDesktop
 
         public string ViewXml
         {
-            get { return (string) _appReg.GetValue("ViewXML", ""); }
+            get { return (string)_appReg.GetValue("ViewXML", ""); }
             set { _appReg.SetValue("ViewXML", value); }
         }
 

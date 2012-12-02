@@ -91,7 +91,11 @@ namespace OutlookDesktop
                 bool createdNew = false;
 
                 if (!string.IsNullOrEmpty(sExeName))
+                {
+                    // ReSharper disable ObjectCreationAsStatement
                     new Mutex(true, string.Format("Local\\{0}", sExeName), out createdNew);
+                    // ReSharper restore ObjectCreationAsStatement
+                }
 
                 return !createdNew;
             }
@@ -110,7 +114,7 @@ namespace OutlookDesktop
 
             // first make sure they have Office/Outlook 2000 (9.0) or higher installed by looking for 
             // the version subkeys in HKLM.
-            using (RegistryKey key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Office"))
+            using (var key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Office"))
             {
                 ConfigLogger.Instance.LogDebug("Successfully read reg key: HKLM\\Software\\Microsoft\\Office");
                 if (key != null)
@@ -140,12 +144,9 @@ namespace OutlookDesktop
             {
                 ConfigLogger.Instance.LogDebug("Office 2003 or higher is installed, now checking for Outlook exe");
 
-                using (
-                    RegistryKey key =
-                        Registry.LocalMachine.OpenSubKey(
-                            "Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
+                using (var key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
                 {
-                    if (key != null) outlookPath = (string) key.GetValue("Path");
+                    if (key != null) outlookPath = (string)key.GetValue("Path");
                     ConfigLogger.Instance.LogDebug(string.Format("Office path reported as: {0}", outlookPath));
                     if (outlookPath != null)
                     {
