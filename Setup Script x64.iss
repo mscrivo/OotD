@@ -1,8 +1,8 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "2.1.0"
-#define MyAppVerName "Outlook on the Desktop 2.1.0"
+#define MyAppVersion "2.1.1"
+#define MyAppVerName "Outlook on the Desktop 2.1.1"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
@@ -11,7 +11,8 @@
 [Setup]
 ArchitecturesInstallIn64BitMode=x64
 AppName={#MyAppName}
-AppVerName={#MyAppVerName}
+AppVersion={#MyAppVersion}
+;AppVerName={#MyAppVerName}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -37,7 +38,8 @@ UninstallLogMode=append
 UninstallDisplayIcon={app}\App.ico
 PrivilegesRequired=none
 AppMutex=Local\OutlookDesktop.exe
-UsePreviousAppDir=false
+DisableDirPage=auto
+AllowRootDirectory=True
 
 [Languages]
 Name: eng; MessagesFile: compiler:Default.isl

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using BitFactory.Logging;
 using Microsoft.Office.Interop.Outlook;
@@ -26,6 +28,16 @@ namespace OutlookDesktop.Forms
     }
 
     /// <summary>
+    /// Structure to hold the currently selected custom folder details
+    /// </summary>
+    struct OutlookFolderDefinition
+    {
+        public string OutlookFolderName;
+        public string OutlookFolderStoreId;
+        public string OutlookFolderEntryId;
+    } 
+
+    /// <summary>
     /// This is the form that hosts the outlook view control. One of these will
     /// exist for each instance.
     /// </summary>
@@ -37,6 +49,7 @@ namespace OutlookDesktop.Forms
         private ToolStripMenuItem _customMenu;
         private MAPIFolder _outlookFolder;
         private DateTime _previousDate;
+        private OutlookFolderDefinition _customFolderDefinition;
 
         /// <summary>
         /// Sets up the form for the current instance.
@@ -61,8 +74,8 @@ namespace OutlookDesktop.Forms
             else
             {
                 // Windows 7 or above
-                UnsafeNativeMethods.SendWindowToBack(this);
                 UnsafeNativeMethods.RemoveWindowFromAeroPeek(this);
+                UnsafeNativeMethods.SendWindowToBack(this);
             }
         }
 
@@ -223,6 +236,11 @@ namespace OutlookDesktop.Forms
                                       new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
                 _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
+
+                // store the custom folder defintion in case the user wants to switch back to it and we need to reload it.
+                _customFolderDefinition.OutlookFolderName = Preferences.OutlookFolderName;
+                _customFolderDefinition.OutlookFolderStoreId = Preferences.OutlookFolderStoreId;
+                _customFolderDefinition.OutlookFolderEntryId = Preferences.OutlookFolderEntryId;
             }
 
             // Sets the viewcontrol folder from preferences. 
@@ -268,7 +286,7 @@ namespace OutlookDesktop.Forms
                 {
                     _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId,
                                                                               Preferences.OutlookFolderStoreId);
-
+                    
                     ShowCalendarButtonsFor(_outlookFolder);
                 }
                 catch (Exception ex)
@@ -417,11 +435,10 @@ namespace OutlookDesktop.Forms
 
         /// <summary>
         /// Checks the passed menu item and unchecks the rest.
-        /// 
         /// This is used only for the folder types menu. 
         /// </summary>
         /// <param name="itemToCheck"></param>
-        private void CheckSelectedFolder(ToolStripMenuItem itemToCheck)
+        private void CheckSelectedMenuItem(ToolStripMenuItem itemToCheck)
         {
             var menuItems = new List<ToolStripMenuItem> { CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu };
 
@@ -470,7 +487,7 @@ namespace OutlookDesktop.Forms
 
             UpdateOutlookViewsList();
 
-            CheckSelectedFolder(itemToCheck);
+            CheckSelectedMenuItem(itemToCheck);
         }
 
         private void ShowCalendarButtons(bool show)
@@ -499,8 +516,13 @@ namespace OutlookDesktop.Forms
                 // Save the EntryId and the StoreId for this folder in the prefrences. 
                 Preferences.OutlookFolderEntryId = oFolder.EntryID;
                 Preferences.OutlookFolderStoreId = oFolder.StoreID;
-
                 Preferences.OutlookFolderName = folderPath;
+
+                // store the custom folder details in memory as well, in case the user wants to switch back to it.
+                _customFolderDefinition.OutlookFolderName = Preferences.OutlookFolderName;
+                _customFolderDefinition.OutlookFolderStoreId = Preferences.OutlookFolderStoreId;
+                _customFolderDefinition.OutlookFolderEntryId = Preferences.OutlookFolderEntryId;
+
                 _customFolder = Preferences.OutlookFolderName;
 
                 // Update the UI to reflect the new settings. 
@@ -508,7 +530,7 @@ namespace OutlookDesktop.Forms
                 _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
 
                 SetMapiFolder();
-                CheckSelectedFolder(_customMenu);
+                CheckSelectedMenuItem(_customMenu);
                 UpdateOutlookViewsList();
             }
             catch (Exception)
@@ -623,23 +645,27 @@ namespace OutlookDesktop.Forms
         /// <param name="oFolder"></param>
         private void ShowCalendarButtonsFor(MAPIFolder oFolder)
         {
-            if (oFolder.Items != null && oFolder.Items.Count > 0)
+            
+            if (oFolder.CurrentView.ViewType == OlViewType.olCalendarView)
             {
-                var appt = oFolder.Items[1] as AppointmentItem;
-                if (appt != null)
-                {
-                    ShowCalendarButtons(true);
-                    return;
-                }
+                ShowCalendarButtons(true);
             }
-            ShowCalendarButtons(false);
+            else
+            {
+                ShowCalendarButtons(false);
+            }
         }
 
         private void CustomFolderMenu_Click(object sender, EventArgs e)
         {
             axOutlookViewControl.Folder = _customFolder;
-            CheckSelectedFolder(_customMenu);
-            ShowCalendarButtons(false);
+            CheckSelectedMenuItem(_customMenu);
+
+            Preferences.OutlookFolderName = _customFolderDefinition.OutlookFolderName;
+            Preferences.OutlookFolderStoreId = _customFolderDefinition.OutlookFolderStoreId;
+            Preferences.OutlookFolderEntryId = _customFolderDefinition.OutlookFolderEntryId;
+
+            SetMapiFolder();
         }
 
         private void CalendarMenu_Click(object sender, EventArgs e)
@@ -863,21 +889,19 @@ namespace OutlookDesktop.Forms
 
         #endregion
 
-        [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
         protected override void WndProc(ref Message m)
         {
-            // Listen for operating system messages. 
-            switch (m.Msg)
+            if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING)
             {
-                // To properly pin the window to the desktop, it's not enough to set it's z-order to the bottom-most window 
-                // on startup, we also have to do it everytime WM_WINDOWPOSCHANGED is triggered.
-                case UnsafeNativeMethods.WM_WINDOWPOSCHANGED:
-                    SendToBack();
-                    base.WndProc(ref m);
-                    return;
+                var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
+                mwp.flags = mwp.flags | UnsafeNativeMethods.SWP_NOZORDER;
+                Marshal.StructureToPtr(mwp, m.LParam, true);
+                UnsafeNativeMethods.SendWindowToBack(this);
+                m.Result = IntPtr.Zero;
             }
 
             base.WndProc(ref m);
+
         }
 
         #region Properties

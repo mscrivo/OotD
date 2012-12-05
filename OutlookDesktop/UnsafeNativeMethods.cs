@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using BitFactory.Logging;
 using OutlookDesktop.Properties;
@@ -9,13 +8,11 @@ namespace OutlookDesktop
 {
     internal static class UnsafeNativeMethods
     {
-        static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+        private static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
         private const int SWP_NOACTIVATE = 0x10;
         private const int SWP_NOMOVE = 0x0002;
         private const int SWP_NOSIZE = 0x0001;
-        private const int SWP_NOOWNERZORDER = 0x0200;
-        private const int SWP_NOSENDCHANGING = 0x0400;
-        private const int SWP_NOZORDER = 0x0004;
+        public const int SWP_NOZORDER = 0x0004;
 
         private const int DWMWA_EXCLUDED_FROM_PEEK = 12;
 
@@ -30,7 +27,19 @@ namespace OutlookDesktop
         public const int HTTOPLEFT = 13;
         public const int HTTOPRIGHT = 14;
 
-        public const int WM_WINDOWPOSCHANGED = 0x0047;
+        [StructLayout(LayoutKind.Sequential)]
+        public struct WINDOWPOS
+        {
+            public IntPtr hwnd;
+            public IntPtr hwndInsertAfter;
+            public int x;
+            public int y;
+            public int cx;
+            public int cy;
+            public int flags;
+        };
+
+        public const int WM_WINDOWPOSCHANGING =70;
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern bool DwmIsCompositionEnabled();
@@ -51,7 +60,7 @@ namespace OutlookDesktop
         public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
-        static extern bool SetWindowPos(
+        public static extern bool SetWindowPos(
             IntPtr hWnd,
             IntPtr hWndInsertAfter,
             int X,
@@ -59,10 +68,6 @@ namespace OutlookDesktop
             int cx,
             int cy,
             uint uFlags);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool IsWindowVisible(IntPtr hWnd);
 
         public static void PinWindowToDesktop(Form form)
         {
@@ -93,7 +98,7 @@ namespace OutlookDesktop
             if (Environment.OSVersion.Version.Major >= 6 && DwmIsCompositionEnabled())
             {
                 SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0,
-                             SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING | SWP_NOZORDER);
+                             SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE );
             }
         }
 
