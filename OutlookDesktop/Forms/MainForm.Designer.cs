@@ -222,7 +222,7 @@ namespace OutlookDesktop.Forms
             // 
             // HeaderPanel
             // 
-            this.HeaderPanel.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.HeaderPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.HeaderPanel.Controls.Add(this.TransparencySlider);
             this.HeaderPanel.Controls.Add(this.WorkWeekButton);
             this.HeaderPanel.Controls.Add(this.MonthButton);
