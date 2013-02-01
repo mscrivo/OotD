@@ -9,14 +9,27 @@ namespace OutlookDesktop
     internal static class UnsafeNativeMethods
     {
         private static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+        private static readonly IntPtr HWND_TOP = new IntPtr(0);
+
         private const int SWP_NOACTIVATE = 0x10;
         private const int SWP_NOMOVE = 0x0002;
         private const int SWP_NOSIZE = 0x0001;
         public const int SWP_NOZORDER = 0x0004;
+        public const int SWP_SHOWWINDOW = 0x00040;
 
         private const int DWMWA_EXCLUDED_FROM_PEEK = 12;
 
         public const int WM_NCLBUTTONDOWN = 0x00A1;
+        public const int WM_PARENTNOTIFY = 0x0210;
+        public const int WM_LBUTTONDOWN = 0x0201;
+        public const int WM_MOUSELEAVE = 0x02A3;
+        public const int WM_MOUSEMOVE = 0x200;
+        public const int WM_ACTIVATE = 0x6;
+        public const int WM_ACTIVATEAPP = 0x1C;
+        public const int WM_NCACTIVATE = 0x86;
+        public const int WM_RBUTTONDOWN = 0x0204;
+        public const int WM_WINDOWPOSCHANGING =70;
+
         public const int HTBOTTOM = 15;
         public const int HTBOTTOMLEFT = 16;
         public const int HTBOTTOMRIGHT = 17;
@@ -38,8 +51,6 @@ namespace OutlookDesktop
             public int cy;
             public int flags;
         };
-
-        public const int WM_WINDOWPOSCHANGING =70;
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern bool DwmIsCompositionEnabled();
@@ -99,6 +110,20 @@ namespace OutlookDesktop
             {
                 SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0,
                              SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE );
+            }
+        }
+
+        /// <summary>
+        /// This will send the specified window to the bottom of the z-order, so that it's effectively behind every other window.
+        /// This only works for Vista or higher and when Aero is disabled, so the code checks for that condition.
+        /// </summary>
+        /// <param name="windowToSendBack">the form to work with</param>
+        public static void SendWindowToTop(Form windowToSendBack)
+        {
+            if (Environment.OSVersion.Version.Major >= 6 && DwmIsCompositionEnabled())
+            {
+                SetWindowPos(windowToSendBack.Handle, HWND_TOP, 0, 0, 0, 0,
+                             SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
             }
         }
 

@@ -37,7 +37,6 @@ namespace OutlookDesktop.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.trayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.CalendarMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ContactsMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,6 +67,7 @@ namespace OutlookDesktop.Forms
             this.axOutlookViewControl = new AxOLXLib.AxViewCtl();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.WindowMessageTimer = new System.Windows.Forms.Timer(this.components);
             this.trayMenu.SuspendLayout();
             this.HeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TransparencySlider)).BeginInit();
@@ -322,7 +322,6 @@ namespace OutlookDesktop.Forms
             this.axOutlookViewControl.Location = new System.Drawing.Point(0, 0);
             this.axOutlookViewControl.Margin = new System.Windows.Forms.Padding(0);
             this.axOutlookViewControl.Name = "axOutlookViewControl";
-            this.axOutlookViewControl.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axOutlookViewControl.OcxState")));
             this.axOutlookViewControl.Size = new System.Drawing.Size(392, 368);
             this.axOutlookViewControl.TabIndex = 3;
             // 
@@ -334,6 +333,10 @@ namespace OutlookDesktop.Forms
             // ToolTip
             // 
             this.ToolTip.IsBalloon = true;
+            // 
+            // WindowMessageTimer
+            // 
+            this.WindowMessageTimer.Tick += new System.EventHandler(this.WindowMessageTimer_Tick);
             // 
             // MainForm
             // 
@@ -405,5 +408,6 @@ namespace OutlookDesktop.Forms
         private System.Windows.Forms.Button WorkWeekButton;
         public System.Windows.Forms.TrackBar TransparencySlider;
         private System.Windows.Forms.ToolTip ToolTip;
+        private System.Windows.Forms.Timer WindowMessageTimer;
     }
 }

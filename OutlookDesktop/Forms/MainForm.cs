@@ -35,21 +35,20 @@ namespace OutlookDesktop.Forms
         public string OutlookFolderName;
         public string OutlookFolderStoreId;
         public string OutlookFolderEntryId;
-    } 
+    }
 
     /// <summary>
-    /// This is the form that hosts the outlook view control. One of these will
-    /// exist for each instance.
+    /// This is the form that hosts the outlook view control. One of these will exist for each instance.
     /// </summary>
     public partial class MainForm : Form
     {
         private const int ResizeBorderWidth = 4;
-
         private String _customFolder;
         private ToolStripMenuItem _customMenu;
         private MAPIFolder _outlookFolder;
         private DateTime _previousDate;
         private OutlookFolderDefinition _customFolderDefinition;
+        private bool _outlookContextMenuActivated;
 
         /// <summary>
         /// Sets up the form for the current instance.
@@ -286,7 +285,7 @@ namespace OutlookDesktop.Forms
                 {
                     _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId,
                                                                               Preferences.OutlookFolderStoreId);
-                    
+
                     ShowCalendarButtonsFor(_outlookFolder);
                 }
                 catch (Exception ex)
@@ -645,7 +644,7 @@ namespace OutlookDesktop.Forms
         /// <param name="oFolder"></param>
         private void ShowCalendarButtonsFor(MAPIFolder oFolder)
         {
-            
+
             if (oFolder.CurrentView.ViewType == OlViewType.olCalendarView)
             {
                 ShowCalendarButtons(true);
@@ -887,12 +886,45 @@ namespace OutlookDesktop.Forms
                                    : Resources.Form_Move_Help_Message);
         }
 
+        private void WindowMessageTimer_Tick(object sender, EventArgs e)
+        {
+            WindowMessageTimer.Enabled = false;
+        }
         #endregion
 
+        /// <summary>
+        /// Standard windows message handler.  The main reason this exists is to ensure 
+        /// the ootd window always stays behind other windows.  A side affect of that is that even
+        /// context menus from ootd show up behind the main window, so we have to do some trickery below
+        /// to handle that case and make sure that the outlook view control context menu shows up in front of 
+        /// the main window.  Since we don't have access to the context menu directly, we have to bring the 
+        /// window to the front temporarily while the context menu is visible.  Terrible hack.
+        /// </summary>
+        /// <param name="m"></param>
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING)
+            if (m.Msg == UnsafeNativeMethods.WM_PARENTNOTIFY)
             {
+                if (m.WParam.ToInt32() == UnsafeNativeMethods.WM_RBUTTONDOWN)
+                {
+                    _outlookContextMenuActivated = true;
+                    UnsafeNativeMethods.SendWindowToTop(this);
+                    WindowMessageTimer.Start();
+                    m.Result = IntPtr.Zero;
+                }
+            }
+            else if (m.Msg == UnsafeNativeMethods.WM_NCACTIVATE)
+            {
+                if (m.WParam.ToInt32() == 1 && _outlookContextMenuActivated && !WindowMessageTimer.Enabled)
+                {
+                    _outlookContextMenuActivated = false;
+                    UnsafeNativeMethods.SendWindowToBack(this);
+                }
+                m.Result = IntPtr.Zero;
+            }
+            else if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING && !_outlookContextMenuActivated)
+            {
+                // 
                 var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
                 mwp.flags = mwp.flags | UnsafeNativeMethods.SWP_NOZORDER;
                 Marshal.StructureToPtr(mwp, m.LParam, true);
@@ -901,7 +933,6 @@ namespace OutlookDesktop.Forms
             }
 
             base.WndProc(ref m);
-
         }
 
         #region Properties
