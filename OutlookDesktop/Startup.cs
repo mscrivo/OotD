@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using BitFactory.Logging;
@@ -52,6 +53,11 @@ namespace OutlookDesktop
                 {
                     OutlookApp = new Application();
                     OutlookNameSpace = OutlookApp.GetNamespace("MAPI");
+
+                    // Before we do anything else, wait for the RPC server to be available, as the program will crash if it's not.
+                    // This is especially likely when Ootd is set to start with windows.
+                    if (!IsRpcServerAvailable(OutlookNameSpace)) return;
+
                     OutlookFolder = OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
 
                     // WORKAROUND: Beginning wih Outlook 2007 SP2, Microsoft decided to kill all outlook instances 
@@ -71,10 +77,52 @@ namespace OutlookDesktop
 
                 ConfigLogger.Instance.LogInfo("Starting the instance manager and loading instances.");
                 var instanceManager = new InstanceManager();
-                instanceManager.LoadInstances();
+
+                try
+                {
+                    instanceManager.LoadInstances();
+                }
+                catch (Exception ex)
+                {
+                    ConfigLogger.Instance.LogError("Could not initialize OotD", ex);
+                    return;
+                }
 
                 System.Windows.Forms.Application.Run(instanceManager);
             }
+        }
+
+        /// <summary>
+        /// This method will test that the RPC server is available by calling GetDefaultFolder on the outlook namespace object.
+        /// It will try this for up to 1 minute before giving up and showing the user an error message.
+        /// </summary>
+        /// <param name="outlookNameSpace"></param>
+        /// <returns></returns>
+        private static bool IsRpcServerAvailable(NameSpace outlookNameSpace)
+        {
+            int retryCount = 0;
+            while (retryCount < 120)
+            {
+                try
+                {
+                    outlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
+                    return true;
+                }
+                catch (COMException loE)
+                {
+                    if ((uint)loE.ErrorCode == 0x80010001)
+                    {
+                        retryCount++;
+                        // RPC_E_CALL_REJECTED - sleep half a second then try again
+                        Thread.Sleep(500);
+                    }
+                }
+            }
+
+            MessageBox.Show(Resources.ErrorInitializingApp + ' ' + Resources.Windows_RPC_Server_is_not_available, Resources.ErrorCaption,
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            return false;
         }
 
         /// <summary>

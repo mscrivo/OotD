@@ -55,7 +55,19 @@ namespace OutlookDesktop.Forms
         /// <param name="instanceName">The name of the instance to display.</param>
         public MainForm(String instanceName)
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (COMException loE)
+            {
+                if ((uint)loE.ErrorCode == 0x80040154)
+                {
+                    MessageBox.Show(this, Resources.Incorrect_bittedness_of_OotD, Resources.ErrorCaption, MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    throw;
+                }
+            }
 
             InstanceName = instanceName;
 
@@ -155,7 +167,7 @@ namespace OutlookDesktop.Forms
             Preferences = new InstancePreferences(InstanceName);
 
             // There should ne no reason other than first run as to why the Store and Entry IDs are 
-            //empty. 
+            // empty. 
             if (String.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
             {
                 // Set the Mapi Folder Details and the IDs.
