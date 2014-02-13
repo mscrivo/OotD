@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using BitFactory.Logging;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
+using NLog;
 using OutlookDesktop.Properties;
 using Application = System.Windows.Forms.Application;
 using Exception = System.Exception;
@@ -48,6 +48,7 @@ namespace OutlookDesktop.Forms
         private DateTime _previousDate;
         private OutlookFolderDefinition _customFolderDefinition;
         private bool _outlookContextMenuActivated;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Sets up the form for the current instance.
@@ -63,18 +64,30 @@ namespace OutlookDesktop.Forms
             {
                 if ((uint)loE.ErrorCode == 0x80040154)
                 {
-                    MessageBox.Show(this, Resources.Incorrect_bittedness_of_OotD, Resources.ErrorCaption, MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    MessageBox.Show(this, Resources.Incorrect_bittedness_of_OotD, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     throw;
                 }
             }
 
             InstanceName = instanceName;
 
-            SuspendLayout();
-            LoadSettings();
-            ResumeLayout();
+            try
+            {
+                SuspendLayout();
+                LoadSettings();
+                ResumeLayout();
+                SendWindowToBack();
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorException("Error initializing window.", ex);
+                MessageBox.Show(this, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw;
+            }
+        }
 
+        private void SendWindowToBack()
+        {
             if (Environment.OSVersion.Version.Major < 6 || !UnsafeNativeMethods.DwmIsCompositionEnabled())
                 // Windows XP or higher with DWM window composition disabled
                 UnsafeNativeMethods.PinWindowToDesktop(this);
@@ -176,17 +189,18 @@ namespace OutlookDesktop.Forms
                 Preferences.OutlookFolderEntryId = GetFolderFromViewType(FolderViewType.Calendar).EntryID;
             }
 
-            SetMapiFolder();
+            SetMAPIFolder();
 
             // Sets the opacity of the instance. 
             try
             {
                 Opacity = Preferences.Opacity;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // use default if there was a problem
                 Opacity = InstancePreferences.DefaultOpacity;
+                Logger.ErrorException("Error setting opacity.", ex);
                 MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
@@ -200,13 +214,14 @@ namespace OutlookDesktop.Forms
                 Width = Preferences.Width;
                 Height = Preferences.Height;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // use defaults if there was a problem
                 Left = InstancePreferences.DefaultTopPosition;
                 Top = InstancePreferences.DefaultLeftPosition;
                 Width = InstancePreferences.DefaultWidth;
                 Height = InstancePreferences.DefaultHeight;
+                Logger.ErrorException("Error setting window position.", ex);
                 MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
@@ -288,23 +303,27 @@ namespace OutlookDesktop.Forms
         /// This will populate the _outlookFolder object with the MapiFolder for the EntryID and StoreId stored
         /// in the registry. 
         /// </summary>
-        private void SetMapiFolder()
+        private void SetMAPIFolder()
         {
             // Load up the MAPI Folder from Entry / Store IDs 
             if (Preferences.OutlookFolderEntryId != "" && Preferences.OutlookFolderStoreId != "")
+            {
                 try
                 {
                     _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId,
-                                                                              Preferences.OutlookFolderStoreId);
+                        Preferences.OutlookFolderStoreId);
 
                     ShowCalendarButtonsFor(_outlookFolder);
                 }
                 catch (Exception ex)
                 {
-                    ConfigLogger.Instance.LogError(ex);
+                    Logger.ErrorException("Error setting MAPI folder.", ex);
                 }
+            }
             else
+            {
                 _outlookFolder = null;
+            }
         }
 
         /// <summary>
@@ -493,7 +512,7 @@ namespace OutlookDesktop.Forms
             Preferences.OutlookFolderStoreId = GetFolderFromViewType(folderViewType).StoreID;
             Preferences.OutlookFolderEntryId = GetFolderFromViewType(folderViewType).EntryID;
 
-            SetMapiFolder();
+            SetMAPIFolder();
 
             UpdateOutlookViewsList();
 
@@ -539,7 +558,7 @@ namespace OutlookDesktop.Forms
                 trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(oFolder.Name, null, CustomFolderMenu_Click));
                 _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
 
-                SetMapiFolder();
+                SetMAPIFolder();
                 CheckSelectedMenuItem(_customMenu);
                 UpdateOutlookViewsList();
             }
@@ -675,7 +694,7 @@ namespace OutlookDesktop.Forms
             Preferences.OutlookFolderStoreId = _customFolderDefinition.OutlookFolderStoreId;
             Preferences.OutlookFolderEntryId = _customFolderDefinition.OutlookFolderEntryId;
 
-            SetMapiFolder();
+            SetMAPIFolder();
         }
 
         private void CalendarMenu_Click(object sender, EventArgs e)
@@ -742,7 +761,7 @@ namespace OutlookDesktop.Forms
                 catch (Exception ex)
                 {
                     // no big deal if we can't set the day, just ignore and go on.
-                    ConfigLogger.Instance.LogError(ex);
+                    Logger.WarnException("Unable to go to today on calendar.", ex);
                 }
             }
             _previousDate = DateTime.Now;

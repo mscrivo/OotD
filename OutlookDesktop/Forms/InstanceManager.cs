@@ -6,14 +6,16 @@ using System.Globalization;
 using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
-using BitFactory.Logging;
 using Microsoft.Win32;
+using NLog;
 using OutlookDesktop.Properties;
 
 namespace OutlookDesktop.Forms
 {
     public partial class InstanceManager : Form
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly Dictionary<string, MainForm> _mainFormInstances = new Dictionary<string, MainForm>();
 
         public InstanceManager()
@@ -24,7 +26,7 @@ namespace OutlookDesktop.Forms
             {
                 trayIcon.ShowBalloonTip(2000, Resources.OotdRunning, Resources.RightClickToConfigure, ToolTipIcon.Info);
 
-                ConfigLogger.Instance.LogDebug("First Run");
+                Logger.Debug("First Run");
             }
         }
 
@@ -41,18 +43,18 @@ namespace OutlookDesktop.Forms
 
         public void LoadInstances()
         {
-            ConfigLogger.Instance.LogDebug("Loading app settings from registry");
+            Logger.Debug("Loading app settings from registry");
 
             // Each subkey in our main registry key represents an instance. 
             // Read each subkey and load the instance.
             using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
             {
-                ConfigLogger.Instance.LogDebug("Settings Found.");
+                Logger.Debug("Settings Found.");
                 if (appReg != null)
                 {
                     if (appReg.SubKeyCount > 1)
                     {
-                        ConfigLogger.Instance.LogDebug("Multiple instances to load");
+                        Logger.Debug("Multiple instances to load");
 
                         // There are multiple instances defined, so we build the context menu strip dynamically.
                         trayIcon.ContextMenuStrip = new ContextMenuStrip();
@@ -70,7 +72,7 @@ namespace OutlookDesktop.Forms
                             bool newlyAdded = false;
                             if (!_mainFormInstances.ContainsKey(instanceName))
                             {
-                                ConfigLogger.Instance.LogDebug(String.Format("Instanciating up instance {0}", instanceName));
+                                Logger.Debug(String.Format("Instantiating instance {0}", instanceName));
                                 _mainFormInstances.Add(instanceName, new MainForm(instanceName));
                                 newlyAdded = true;
                             }
@@ -125,7 +127,7 @@ namespace OutlookDesktop.Forms
                             // finally, show the form
                             if (newlyAdded)
                             {
-                                ConfigLogger.Instance.LogDebug(string.Format("Showing Instance {0}", instanceName));
+                                Logger.Debug(string.Format("Showing Instance {0}", instanceName));
                                 _mainFormInstances[instanceName].Show();
                                 UnsafeNativeMethods.SendWindowToBack(_mainFormInstances[instanceName]);
                             }

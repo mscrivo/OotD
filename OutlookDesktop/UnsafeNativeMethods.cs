@@ -1,13 +1,15 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using BitFactory.Logging;
+using NLog;
 using OutlookDesktop.Properties;
 
 namespace OutlookDesktop
 {
     internal static class UnsafeNativeMethods
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
         private static readonly IntPtr HWND_TOP = new IntPtr(0);
 
@@ -93,7 +95,7 @@ namespace OutlookDesktop
             }
             catch (Exception ex)
             {
-                ConfigLogger.Instance.LogError(String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version));
+                Logger.ErrorException(String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version), ex);
                 MessageBox.Show(form, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message,
                                 Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Windows.Forms;
-using BitFactory.Logging;
 using Microsoft.Win32;
+using NLog;
 
 namespace OutlookDesktop
 {
     internal static class GlobalPreferences
     {
         // never instantiated, only contains static methods
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Returns true if there is a registry entry that makes Outlook on the Desktop start
@@ -49,7 +51,7 @@ namespace OutlookDesktop
                         }
                         catch (Exception ex)
                         {
-                            ConfigLogger.Instance.LogError(String.Format("Exception caught setting Start with Windows Key: {0}", ex));
+                            Logger.ErrorException("Exception caught setting Start with Windows Key", ex);
                         }
                     }
                 }

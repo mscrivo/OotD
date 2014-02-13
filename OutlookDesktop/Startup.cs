@@ -5,9 +5,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using BitFactory.Logging;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
+using NLog;
 using OutlookDesktop.Forms;
 using OutlookDesktop.Properties;
 using Application = Microsoft.Office.Interop.Outlook.Application;
@@ -17,6 +17,7 @@ namespace OutlookDesktop
 {
     internal static class Startup
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public static Application OutlookApp;
         public static NameSpace OutlookNameSpace;
         public static MAPIFolder OutlookFolder;
@@ -29,11 +30,11 @@ namespace OutlookDesktop
         [STAThread]
         private static void Main()
         {
-            ConfigLogger.Instance.LogDebug("Checking to see if there is an instance running.");
+            Logger.Debug("Checking to see if there is an instance running.");
             if (IsAlreadyRunning())
             {
                 // let the user know the program is already running.
-                ConfigLogger.Instance.LogWarning("Instance is already running, exiting.");
+                Logger.Warn("Instance is already running, exiting.");
                 MessageBox.Show(Resources.ProgramIsAlreadyRunning, Resources.ProgramIsAlreadyRunningCaption,
                                 MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
@@ -41,7 +42,7 @@ namespace OutlookDesktop
             {
                 if (!IsOutlook2003OrHigherInstalled())
                 {
-                    ConfigLogger.Instance.LogDebug("Outlook is not avaliable or installed.");
+                    Logger.Debug("Outlook is not avaliable or installed.");
                     MessageBox.Show(
                         Resources.Office2000Requirement + Environment.NewLine +
                         Resources.InstallOutlookMsg, Resources.MissingRequirementsCapation, MessageBoxButtons.OK,
@@ -75,7 +76,7 @@ namespace OutlookDesktop
 
                 System.Windows.Forms.Application.EnableVisualStyles();
 
-                ConfigLogger.Instance.LogInfo("Starting the instance manager and loading instances.");
+                Logger.Info("Starting the instance manager and loading instances.");
                 var instanceManager = new InstanceManager();
 
                 try
@@ -84,7 +85,7 @@ namespace OutlookDesktop
                 }
                 catch (Exception ex)
                 {
-                    ConfigLogger.Instance.LogError("Could not initialize OotD", ex);
+                    Logger.ErrorException("Could not load instances", ex);
                     return;
                 }
 
@@ -164,19 +165,19 @@ namespace OutlookDesktop
             // the version subkeys in HKLM.
             using (var key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Office"))
             {
-                ConfigLogger.Instance.LogDebug("Successfully read reg key: HKLM\\Software\\Microsoft\\Office");
+                Logger.Debug("Successfully read reg key: HKLM\\Software\\Microsoft\\Office");
                 if (key != null)
                 {
                     string[] subkeys = key.GetSubKeyNames();
 
                     foreach (string subkey in subkeys)
                     {
-                        ConfigLogger.Instance.LogDebug(String.Format("Analyzing subkey '{0}'", subkey));
+                        Logger.Debug(String.Format("Analyzing subkey '{0}'", subkey));
                         double versionSubKey;
                         CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
                         if (double.TryParse(subkey, NumberStyles.Float, culture, out versionSubKey))
                         {
-                            ConfigLogger.Instance.LogDebug(string.Format("Office Version: {0}", versionSubKey));
+                            Logger.Debug(string.Format("Office Version: {0}", versionSubKey));
                             if (versionSubKey >= 11)
                             {
                                 hasOffice2003OrHigher = true;
@@ -190,18 +191,18 @@ namespace OutlookDesktop
             // now check for the existence of the actual Outlook.exe.
             if (hasOffice2003OrHigher)
             {
-                ConfigLogger.Instance.LogDebug("Office 2003 or higher is installed, now checking for Outlook exe");
+                Logger.Debug("Office 2003 or higher is installed, now checking for Outlook exe");
 
                 using (var key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
                 {
                     if (key != null) outlookPath = (string)key.GetValue("Path");
-                    ConfigLogger.Instance.LogDebug(string.Format("Office path reported as: {0}", outlookPath));
+                    Logger.Debug(string.Format("Office path reported as: {0}", outlookPath));
                     if (outlookPath != null)
                     {
-                        ConfigLogger.Instance.LogDebug(string.Format("Checking for Outlook exe in: {0}", outlookPath));
+                        Logger.Debug(string.Format("Checking for Outlook exe in: {0}", outlookPath));
                         if (File.Exists(Path.Combine(outlookPath, "Outlook.exe")))
                         {
-                            ConfigLogger.Instance.LogDebug("Outlook exe found.");
+                            Logger.Debug("Outlook exe found.");
                             return true;
                         }
                     }
@@ -209,7 +210,7 @@ namespace OutlookDesktop
             }
 
             if (outlookPath != null)
-                ConfigLogger.Instance.LogError(
+                Logger.Error(
                     string.Format("Outlook path was reported as: {0}, but this file could not be found.",
                                   Path.Combine(outlookPath, "Outlook.exe")));
 
