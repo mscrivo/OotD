@@ -136,6 +136,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="..\ServerStaging\ootdReleaseNotes.md" />
+    <None Include="..\README" />
+    <None Include="..\LICENSE" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
