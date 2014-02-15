@@ -172,7 +172,7 @@
     <None Include="Resources\Icons\30.ico" />
     <None Include="Resources\Icons\31.ico" />
     <None Include="Resources\Icons\paypal.gif" />
-    <Compile Include="SynchronizeInvokeExtensions.cs" />
+    <Compile Include="Utility\SynchronizeInvokeExtensions.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,7 +182,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GlobalPreferences.cs" />
+    <Compile Include="Preferences\GlobalPreferences.cs" />
     <Compile Include="Forms\InputBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,15 +197,15 @@
     <Compile Include="Forms\InstanceManager.Designer.cs">
       <DependentUpon>InstanceManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="InstanceRemovedEventArgs.cs" />
-    <Compile Include="InstanceRenamedEventArgs.cs" />
+    <Compile Include="Forms\InstanceRemovedEventArgs.cs" />
+    <Compile Include="Forms\InstanceRenamedEventArgs.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InstancePreferences.cs">
+    <Compile Include="Preferences\InstancePreferences.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -213,9 +213,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RegistryHelper.cs" />
+    <Compile Include="Utility\RegistryHelper.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="UnsafeNativeMethods.cs" />
+    <Compile Include="Utility\UnsafeNativeMethods.cs" />
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AboutBox.cs</DependentUpon>

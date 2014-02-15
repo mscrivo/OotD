@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using NLog;
 
-namespace OutlookDesktop
+namespace OutlookDesktop.Preferences
 {
     internal static class GlobalPreferences
     {

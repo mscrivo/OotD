@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using NLog;
 using OutlookDesktop.Properties;
 
-namespace OutlookDesktop
+namespace OutlookDesktop.Utility
 {
     internal static class UnsafeNativeMethods
     {
