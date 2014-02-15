@@ -154,10 +154,10 @@ namespace OutlookDesktop.Forms
         protected override CreateParams CreateParams
         {
             get
-            {
-                // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
+            {                
                 CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x80;
+                cp.ExStyle |= 0x80;             // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
+                cp.ExStyle |= 0x02000000;       // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
                 return cp;
             }
         }
@@ -953,8 +953,7 @@ namespace OutlookDesktop.Forms
                 m.Result = IntPtr.Zero;
             }
             else if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING && !_outlookContextMenuActivated)
-            {
-                // 
+            {               
                 var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
                 mwp.flags = mwp.flags | UnsafeNativeMethods.SWP_NOZORDER;
                 Marshal.StructureToPtr(mwp, m.LParam, true);

@@ -30,7 +30,7 @@ namespace OutlookDesktop
         public const int WM_ACTIVATEAPP = 0x1C;
         public const int WM_NCACTIVATE = 0x86;
         public const int WM_RBUTTONDOWN = 0x0204;
-        public const int WM_WINDOWPOSCHANGING =70;
+        public const int WM_WINDOWPOSCHANGING = 70;
 
         public const int HTBOTTOM = 15;
         public const int HTBOTTOMLEFT = 16;
@@ -110,14 +110,13 @@ namespace OutlookDesktop
         {
             if (Environment.OSVersion.Version.Major >= 6 && DwmIsCompositionEnabled())
             {
-                SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0,
-                             SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE );
+                windowToSendBack.SendToBack();
+                //SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
             }
         }
 
         /// <summary>
-        /// This will send the specified window to the bottom of the z-order, so that it's effectively behind every other window.
-        /// This only works for Vista or higher and when Aero is disabled, so the code checks for that condition.
+        /// This will send the specified window to the top of the z-order, so that it's effectively on top of every other window.
         /// </summary>
         /// <param name="windowToSendBack">the form to work with</param>
         public static void SendWindowToTop(Form windowToSendBack)
@@ -151,6 +150,11 @@ namespace OutlookDesktop
             Disabled,
             Enabled,
             Last
-        }  
+        }
+
+        public static Boolean Is64Bit()
+        {
+            return Marshal.SizeOf(typeof(IntPtr)) == 8;
+        }
     }
 }

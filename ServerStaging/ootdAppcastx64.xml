@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Outlook on the Desktop</title>
+    <link>http://www.outlookonthedesktop.com/ootdAppcast.xml</link>
+    <description>Most recent changes with links to updates.</description>
+    <language>en</language>
+    <item>
+      <title>Version 2.2.0</title>
+      <sparkle:releaseNotesLink>
+        http://www.outlookonthedesktop.com/ootdReleaseNotes.md
+      </sparkle:releaseNotesLink>
+      <pubDate>Fri, 14 Feb 2014 20:00:00 +0000</pubDate>
+      <enclosure url="http://www.outlookonthedesktop.com/ootd-2.1.4-x64.exe" sparkle:version="2.2.0" length="654414" type="application/octet-stream" />
+    </item>   
+  </channel>
+</rss>

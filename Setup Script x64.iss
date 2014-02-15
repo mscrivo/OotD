@@ -1,12 +1,12 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "2.1.3"
-#define MyAppVerName "Outlook on the Desktop 2.1.3"
+#define MyAppVersion "2.2.0"
+#define MyAppVerName "Outlook on the Desktop 2.2.0"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
-#define MyAppCopyright "©2006-2013 Michael Scrivo"
+#define MyAppCopyright "©2006-2014 Michael Scrivo"
 
 [Setup]
 ArchitecturesInstallIn64BitMode=x64
@@ -31,7 +31,7 @@ WizardImageFile=C:\Program Files (x86)\Inno Setup 5\WizModernImage-IS.bmp
 WizardSmallImageFile=C:\Program Files (x86)\Inno Setup 5\WizModernSmallImage-IS.bmp
 AppID={{6D9785D9-FF53-4C06-9C2A-E4173D41A2FD}
 ShowLanguageDialog=yes
-OutputDir=./
+OutputDir=ServerStaging
 MinVersion=0,5.0.2195
 AllowUNCPath=false
 UninstallLogMode=append
@@ -48,11 +48,13 @@ Name: eng; MessagesFile: compiler:Default.isl
 Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4 Client Profile; Check: NeedsDotNetFramework
 
 [Files]
-Source: OutlookDesktop\bin\x64\Release\OutlookDesktop.exe; DestDir: {app}; Flags: ignoreversion
-Source: OutlookDesktop\bin\x64\Release\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll; DestDir: {app}; Flags: ignoreversion
-Source: OutlookDesktop\bin\x86\Release\OLXLib.dll; DestDir: {app}; Flags: ignoreversion
-Source: OutlookDesktop\bin\x64\Release\OutlookDesktop.exe.config; DestDir: {app}; Flags: ignoreversion
-Source: OutlookDesktop\bin\x64\Release\BitFactory.Logging.dll; DestDir: {app}; Flags: ignoreversion
+Source: "OutlookDesktop\bin\x64\Release\OutlookDesktop.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OutlookDesktop\bin\x64\Release\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OutlookDesktop\bin\x86\Release\OLXLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OutlookDesktop\bin\x64\Release\OutlookDesktop.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OutlookDesktop\bin\x64\Release\NetSparkle.Net40.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OutlookDesktop\bin\x64\Release\NLog.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OutlookDesktop\bin\x64\Release\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}

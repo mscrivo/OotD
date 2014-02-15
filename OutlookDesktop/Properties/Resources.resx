@@ -416,4 +416,10 @@ If you have 64-bit Office installed please use the 64-bit Outlook on the Desktop
 
 If you have 32-bit Office installed, please use the 32-bit Outlook on the Desktop.</value>
   </data>
+  <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icons\appicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
 </root>

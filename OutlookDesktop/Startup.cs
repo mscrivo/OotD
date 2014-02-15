@@ -18,6 +18,7 @@ namespace OutlookDesktop
     internal static class Startup
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public static Application OutlookApp;
         public static NameSpace OutlookNameSpace;
         public static MAPIFolder OutlookFolder;
@@ -45,8 +46,7 @@ namespace OutlookDesktop
                     Logger.Debug("Outlook is not avaliable or installed.");
                     MessageBox.Show(
                         Resources.Office2000Requirement + Environment.NewLine +
-                        Resources.InstallOutlookMsg, Resources.MissingRequirementsCapation, MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                        Resources.InstallOutlookMsg, Resources.MissingRequirementsCapation, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -57,7 +57,7 @@ namespace OutlookDesktop
 
                     // Before we do anything else, wait for the RPC server to be available, as the program will crash if it's not.
                     // This is especially likely when Ootd is set to start with windows.
-                    if (!IsRpcServerAvailable(OutlookNameSpace)) return;
+                    if (!IsRPCServerAvailable(OutlookNameSpace)) return;
 
                     OutlookFolder = OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
 
@@ -69,8 +69,7 @@ namespace OutlookDesktop
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(Resources.ErrorInitializingApp + ' ' + ex, Resources.ErrorCaption,
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(Resources.ErrorInitializingApp + ' ' + ex, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -99,7 +98,7 @@ namespace OutlookDesktop
         /// </summary>
         /// <param name="outlookNameSpace"></param>
         /// <returns></returns>
-        private static bool IsRpcServerAvailable(NameSpace outlookNameSpace)
+        private static bool IsRPCServerAvailable(NameSpace outlookNameSpace)
         {
             int retryCount = 0;
             while (retryCount < 120)
@@ -127,15 +126,15 @@ namespace OutlookDesktop
         }
 
         /// <summary>
-        /// check if given exe alread running or not
+        /// check if given exe already running or not
         /// </summary>
         /// <returns>returns true if already running</returns>
         private static bool IsAlreadyRunning()
         {
-            string strLoc = Assembly.GetExecutingAssembly().Location;
-            if (!string.IsNullOrEmpty(strLoc))
+            string programPath = Assembly.GetExecutingAssembly().Location;
+            if (!string.IsNullOrEmpty(programPath))
             {
-                FileSystemInfo fileInfo = new FileInfo(strLoc);
+                var fileInfo = new FileInfo(programPath);
                 string sExeName = fileInfo.Name;
                 bool createdNew = false;
 
@@ -174,7 +173,7 @@ namespace OutlookDesktop
                     {
                         Logger.Debug(String.Format("Analyzing subkey '{0}'", subkey));
                         double versionSubKey;
-                        CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+                        var culture = CultureInfo.CreateSpecificCulture("en-US");
                         if (double.TryParse(subkey, NumberStyles.Float, culture, out versionSubKey))
                         {
                             Logger.Debug(string.Format("Office Version: {0}", versionSubKey));

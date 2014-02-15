@@ -22,7 +22,7 @@
     <ProjectGuid>{C38D62CC-0544-4D90-83B9-B222CB5A8EF1}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>Resources\Icons\App.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icons\AppIcon.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>OutlookDesktop</AssemblyName>
@@ -129,9 +129,13 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\ServerStaging\ootdAppcastx64.xml" />
+    <Content Include="..\ServerStaging\ootdAppcastx86.xml" />
+    <Content Include="..\ServerStaging\ootdReleaseNotes.html" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="..\ServerStaging\ootdReleaseNotes.md" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -238,7 +242,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Icons\App.ico" />
+    <None Include="Resources\AppIcon.ico" />
+    <Content Include="Resources\Icons\AppIcon.ico" />
     <Content Include="Resources\Icons\notifyIcon.ico" />
     <None Include="Resources\WorkWeek.xml" />
     <None Include="Resources\day.xml" />
@@ -271,6 +276,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\NetSparkle\NetSparkle\NetSparkle2010.csproj">
+      <Project>{74635a21-2bad-4522-ab95-e3e5703cd301}</Project>
+      <Name>NetSparkle2010</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

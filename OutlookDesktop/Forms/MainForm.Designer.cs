@@ -37,6 +37,7 @@ namespace OutlookDesktop.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.trayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.CalendarMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ContactsMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,6 +56,7 @@ namespace OutlookDesktop.Forms
             this.DisableEnableEditingMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator5 = new System.Windows.Forms.ToolStripSeparator();
             this.RemoveInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.Separator6 = new System.Windows.Forms.ToolStripSeparator();
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.HeaderPanel = new System.Windows.Forms.Panel();
@@ -94,9 +96,10 @@ namespace OutlookDesktop.Forms
             this.DisableEnableEditingMenu,
             this.Separator5,
             this.RemoveInstanceMenu,
+            this.Separator6,
             this.ExitMenu});
             this.trayMenu.Name = "trayMenu";
-            this.trayMenu.Size = new System.Drawing.Size(187, 298);
+            this.trayMenu.Size = new System.Drawing.Size(187, 304);
             // 
             // CalendarMenu
             // 
@@ -206,6 +209,11 @@ namespace OutlookDesktop.Forms
             this.RemoveInstanceMenu.Size = new System.Drawing.Size(186, 22);
             this.RemoveInstanceMenu.Text = "Remove this Instance";
             this.RemoveInstanceMenu.Click += new System.EventHandler(this.RemoveInstanceMenu_Click);
+            // 
+            // Separator6
+            // 
+            this.Separator6.Name = "Separator6";
+            this.Separator6.Size = new System.Drawing.Size(183, 6);
             // 
             // ExitMenu
             // 
@@ -322,6 +330,7 @@ namespace OutlookDesktop.Forms
             this.axOutlookViewControl.Location = new System.Drawing.Point(0, 0);
             this.axOutlookViewControl.Margin = new System.Windows.Forms.Padding(0);
             this.axOutlookViewControl.Name = "axOutlookViewControl";
+            this.axOutlookViewControl.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axOutlookViewControl.OcxState")));
             this.axOutlookViewControl.Size = new System.Drawing.Size(392, 368);
             this.axOutlookViewControl.TabIndex = 3;
             // 
@@ -409,5 +418,6 @@ namespace OutlookDesktop.Forms
         public System.Windows.Forms.TrackBar TransparencySlider;
         private System.Windows.Forms.ToolTip ToolTip;
         private System.Windows.Forms.Timer WindowMessageTimer;
+        private System.Windows.Forms.ToolStripSeparator Separator6;
     }
 }

@@ -4,6 +4,8 @@ VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookDesktop", "OutlookDesktop\OutlookDesktop.csproj", "{C38D62CC-0544-4D90-83B9-B222CB5A8EF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetSparkle2010", "..\NetSparkle\NetSparkle\NetSparkle2010.csproj", "{74635A21-2BAD-4522-AB95-E3E5703CD301}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -20,6 +22,14 @@ Global
 		{C38D62CC-0544-4D90-83B9-B222CB5A8EF1}.Release|x64.Build.0 = Release|x64
 		{C38D62CC-0544-4D90-83B9-B222CB5A8EF1}.Release|x86.ActiveCfg = Release|x86
 		{C38D62CC-0544-4D90-83B9-B222CB5A8EF1}.Release|x86.Build.0 = Release|x86
+		{74635A21-2BAD-4522-AB95-E3E5703CD301}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{74635A21-2BAD-4522-AB95-E3E5703CD301}.Debug|x64.Build.0 = Debug|Any CPU
+		{74635A21-2BAD-4522-AB95-E3E5703CD301}.Debug|x64.Deploy.0 = Debug|Any CPU
+		{74635A21-2BAD-4522-AB95-E3E5703CD301}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{74635A21-2BAD-4522-AB95-E3E5703CD301}.Debug|x86.Build.0 = Debug|Any CPU
+		{74635A21-2BAD-4522-AB95-E3E5703CD301}.Release|x64.ActiveCfg = Release|Any CPU
+		{74635A21-2BAD-4522-AB95-E3E5703CD301}.Release|x86.ActiveCfg = Release|x86
+		{74635A21-2BAD-4522-AB95-E3E5703CD301}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

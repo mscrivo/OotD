@@ -7,6 +7,7 @@ using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using NetSparkle;
 using NLog;
 using OutlookDesktop.Properties;
 
@@ -15,8 +16,8 @@ namespace OutlookDesktop.Forms
     public partial class InstanceManager : Form
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private readonly Dictionary<string, MainForm> _mainFormInstances = new Dictionary<string, MainForm>();
+        private static Sparkle _sparkle;
 
         public InstanceManager()
         {
@@ -28,6 +29,18 @@ namespace OutlookDesktop.Forms
 
                 Logger.Debug("First Run");
             }
+
+            // setup update checker.
+            if (UnsafeNativeMethods.Is64Bit())
+            {
+                _sparkle = new Sparkle("http://www.outlookonthedesktop.com/ootdAppcastx64.xml", Resources.AppIcon);
+            }
+            else
+            {
+                _sparkle = new Sparkle("http://www.outlookonthedesktop.com/ootdAppcastx86.xml", Resources.AppIcon);
+            }
+            _sparkle.CheckOnFirstApplicationIdle();                        
+            //_sparkle.CheckForUpdatesAtUserRequest();
         }
 
         protected override CreateParams CreateParams
@@ -52,15 +65,14 @@ namespace OutlookDesktop.Forms
                 Logger.Debug("Settings Found.");
                 if (appReg != null)
                 {
-                    if (appReg.SubKeyCount > 1)
+                    // check if we have more than 2 subkeys, since the NetSparkle creates one sub key for it's settings.
+                    if (appReg.SubKeyCount > 2)
                     {
                         Logger.Debug("Multiple instances to load");
 
                         // There are multiple instances defined, so we build the context menu strip dynamically.
                         trayIcon.ContextMenuStrip = new ContextMenuStrip();
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.AddInstance, null,
-                                                                                  AddInstanceMenu_Click,
-                                                                                  "AddInstanceMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.AddInstance, null, AddInstanceMenu_Click, "AddInstanceMenu"));
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
                         var instanceSubmenu = new ToolStripMenuItem[appReg.SubKeyCount];
@@ -69,6 +81,8 @@ namespace OutlookDesktop.Forms
                         // each instance will get it's own submenu in the main context menu.
                         foreach (string instanceName in appReg.GetSubKeyNames())
                         {
+                            if (instanceName =="AutoUpdate") continue;
+                            
                             bool newlyAdded = false;
                             if (!_mainFormInstances.ContainsKey(instanceName))
                             {
@@ -147,7 +161,11 @@ namespace OutlookDesktop.Forms
 
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click, "CheckForUpdatesMenu"));
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
+
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.Exit, null, ExitMenu_Click, "ExitMenu"));
                     }
                     else
@@ -210,10 +228,16 @@ namespace OutlookDesktop.Forms
                             trayIcon.ContextMenuStrip.Items.Insert(15, new ToolStripMenuItem(Resources.LockPosition, null, LockPositionMenu_Click, "LockPositionMenu"));
                         }
 
+                        if (!trayIcon.ContextMenuStrip.Items.ContainsKey("CheckForUpdatesMenu"))
+                        {
+                            trayIcon.ContextMenuStrip.Items.Insert(19, new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click, "CheckForUpdatesMenu"));
+                        }
+
                         if (!trayIcon.ContextMenuStrip.Items.ContainsKey("AboutMenu"))
                         {
                             trayIcon.ContextMenuStrip.Items.Insert(19, new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
                         }
+
                         _mainFormInstances[instanceName].TrayMenu.Items["ExitMenu"].Visible = true;
 
                         if (newlyAdded)
@@ -260,7 +284,7 @@ namespace OutlookDesktop.Forms
 
         private void AddInstanceMenu_Click(object sender, EventArgs e)
         {
-            InputBoxResult result = InputBox.Show(this, "", Resources.NewInstanceName, String.Empty, InputBox_Validating);
+            var result = InputBox.Show(this, "", Resources.NewInstanceName, String.Empty, InputBox_Validating);
             if (result.Ok)
             {
                 // trigger the tray icon context menu to show the second instance
@@ -288,6 +312,11 @@ namespace OutlookDesktop.Forms
         {
             var aboutForm = new AboutBox();
             aboutForm.ShowDialog();
+        }
+
+        private static void CheckForUpdates_Click(object sender, EventArgs e)
+        {
+            _sparkle.CheckForUpdatesAtUserRequest();
         }
 
         private void StartWithWindowsMenu_Click(object sender, EventArgs e)
@@ -424,13 +453,13 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private void FlashForm(ToolStripDropDownItem dropDownitem)
+        private void FlashForm(ToolStripDropDownItem dropDownItem)
         {
-            if (dropDownitem != null)
+            if (dropDownItem != null)
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    MainForm formInstance = _mainFormInstances[dropDownitem.DropDownItems[0].Text];
+                    MainForm formInstance = _mainFormInstances[dropDownItem.DropDownItems[0].Text];
 
                     double currentOpacity = formInstance.Opacity;
                     formInstance.InvokeEx(f => formInstance.Opacity = .3);
