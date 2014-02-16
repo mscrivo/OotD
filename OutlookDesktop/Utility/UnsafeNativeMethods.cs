@@ -110,8 +110,7 @@ namespace OutlookDesktop.Utility
         {
             if (Environment.OSVersion.Version.Major >= 6 && DwmIsCompositionEnabled())
             {
-                windowToSendBack.SendToBack();
-                //SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
+                SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
             }
         }
 
@@ -123,8 +122,7 @@ namespace OutlookDesktop.Utility
         {
             if (Environment.OSVersion.Version.Major >= 6 && DwmIsCompositionEnabled())
             {
-                SetWindowPos(windowToSendBack.Handle, HWND_TOP, 0, 0, 0, 0,
-                             SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
+                SetWindowPos(windowToSendBack.Handle, HWND_TOP, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Resources;
@@ -41,17 +42,37 @@ namespace OutlookDesktop.Forms
             {
                 _sparkle = new Sparkle("http://www.outlookonthedesktop.com/ootdAppcastx86.xml", Resources.AppIcon);
             }
-            _sparkle.CheckOnFirstApplicationIdle();                        
-            //_sparkle.CheckForUpdatesAtUserRequest();
+
+            _sparkle.UpdateDetected += OnSparkleOnUpdateDetectedShowWithToast;
+            _sparkle.UpdateWindowDismissed += OnSparkleOnUpdateWindowDismissed;
+
+            _sparkle.CheckOnFirstApplicationIdle();
+        }
+
+        private static void OnSparkleOnUpdateWindowDismissed(object sender, EventArgs args)
+        {
+            Startup.UpdateDetected = false;
+        }
+
+        private static void OnSparkleOnUpdateDetectedShowWithToast(object sender, UpdateDetectedEventArgs args)
+        {
+            Startup.UpdateDetected = true;
+            _sparkle.ShowUpdateNeededUI(args.LatestVersion, true);
+        }
+
+        private static void OnSparkleOnUpdateDetectedShowWithoutToast(object sender, UpdateDetectedEventArgs args)
+        {
+            Startup.UpdateDetected = true;
+            _sparkle.ShowUpdateNeededUI(args.LatestVersion, false);
         }
 
         protected override CreateParams CreateParams
         {
             get
             {
-                // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
                 CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x80;
+                cp.ExStyle |= 0x80;             // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
+                cp.ExStyle |= 0x02000000;       // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
                 return cp;
             }
         }
@@ -83,8 +104,8 @@ namespace OutlookDesktop.Forms
                         // each instance will get it's own submenu in the main context menu.
                         foreach (string instanceName in appReg.GetSubKeyNames())
                         {
-                            if (instanceName =="AutoUpdate") continue;
-                            
+                            if (instanceName == "AutoUpdate") continue;
+
                             bool newlyAdded = false;
                             if (!_mainFormInstances.ContainsKey(instanceName))
                             {
@@ -318,6 +339,9 @@ namespace OutlookDesktop.Forms
 
         private static void CheckForUpdates_Click(object sender, EventArgs e)
         {
+            _sparkle.UpdateDetected -= OnSparkleOnUpdateDetectedShowWithToast;
+            _sparkle.UpdateDetected += OnSparkleOnUpdateDetectedShowWithoutToast;
+                        
             _sparkle.CheckForUpdatesAtUserRequest();
         }
 

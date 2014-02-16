@@ -60,6 +60,8 @@ namespace OutlookDesktop.Forms
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.HeaderPanel = new System.Windows.Forms.Panel();
+            this.ButtonNext = new System.Windows.Forms.Button();
+            this.TodayButton = new System.Windows.Forms.Button();
             this.TransparencySlider = new System.Windows.Forms.TrackBar();
             this.WorkWeekButton = new System.Windows.Forms.Button();
             this.MonthButton = new System.Windows.Forms.Button();
@@ -231,6 +233,8 @@ namespace OutlookDesktop.Forms
             // HeaderPanel
             // 
             this.HeaderPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.HeaderPanel.Controls.Add(this.ButtonNext);
+            this.HeaderPanel.Controls.Add(this.TodayButton);
             this.HeaderPanel.Controls.Add(this.TransparencySlider);
             this.HeaderPanel.Controls.Add(this.WorkWeekButton);
             this.HeaderPanel.Controls.Add(this.MonthButton);
@@ -241,11 +245,35 @@ namespace OutlookDesktop.Forms
             this.HeaderPanel.Margin = new System.Windows.Forms.Padding(4);
             this.HeaderPanel.Name = "HeaderPanel";
             this.HeaderPanel.Padding = new System.Windows.Forms.Padding(3);
-            this.HeaderPanel.Size = new System.Drawing.Size(392, 20);
+            this.HeaderPanel.Size = new System.Drawing.Size(507, 20);
             this.HeaderPanel.TabIndex = 3;
             this.HeaderPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HeaderPanel_MouseDown);
             this.HeaderPanel.MouseHover += new System.EventHandler(this.HeaderPanel_MouseHover);
             this.HeaderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HeaderPanel_MouseMove);
+            // 
+            // ButtonNext
+            // 
+            this.ButtonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButtonNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonNext.Image = global::OutlookDesktop.Properties.Resources.next;
+            this.ButtonNext.Location = new System.Drawing.Point(484, 0);
+            this.ButtonNext.Name = "ButtonNext";
+            this.ButtonNext.Size = new System.Drawing.Size(22, 20);
+            this.ButtonNext.TabIndex = 7;
+            this.ButtonNext.UseVisualStyleBackColor = true;
+            this.ButtonNext.Click += new System.EventHandler(this.ButtonNext_Click);
+            // 
+            // TodayButton
+            // 
+            this.TodayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.TodayButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TodayButton.Location = new System.Drawing.Point(179, 0);
+            this.TodayButton.Name = "TodayButton";
+            this.TodayButton.Size = new System.Drawing.Size(52, 20);
+            this.TodayButton.TabIndex = 6;
+            this.TodayButton.Text = "Today";
+            this.TodayButton.UseVisualStyleBackColor = true;
+            this.TodayButton.Click += new System.EventHandler(this.TodayButton_Click);
             // 
             // TransparencySlider
             // 
@@ -266,7 +294,7 @@ namespace OutlookDesktop.Forms
             // 
             this.WorkWeekButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.WorkWeekButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WorkWeekButton.Location = new System.Drawing.Point(216, 0);
+            this.WorkWeekButton.Location = new System.Drawing.Point(287, 0);
             this.WorkWeekButton.Name = "WorkWeekButton";
             this.WorkWeekButton.Size = new System.Drawing.Size(68, 20);
             this.WorkWeekButton.TabIndex = 4;
@@ -278,7 +306,7 @@ namespace OutlookDesktop.Forms
             // 
             this.MonthButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.MonthButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MonthButton.Location = new System.Drawing.Point(339, 0);
+            this.MonthButton.Location = new System.Drawing.Point(410, 0);
             this.MonthButton.Name = "MonthButton";
             this.MonthButton.Size = new System.Drawing.Size(52, 20);
             this.MonthButton.TabIndex = 2;
@@ -290,7 +318,7 @@ namespace OutlookDesktop.Forms
             // 
             this.WeekButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.WeekButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WeekButton.Location = new System.Drawing.Point(286, 0);
+            this.WeekButton.Location = new System.Drawing.Point(357, 0);
             this.WeekButton.Name = "WeekButton";
             this.WeekButton.Size = new System.Drawing.Size(52, 20);
             this.WeekButton.TabIndex = 1;
@@ -302,7 +330,7 @@ namespace OutlookDesktop.Forms
             // 
             this.DayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DayButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DayButton.Location = new System.Drawing.Point(162, 0);
+            this.DayButton.Location = new System.Drawing.Point(233, 0);
             this.DayButton.Name = "DayButton";
             this.DayButton.Size = new System.Drawing.Size(52, 20);
             this.DayButton.TabIndex = 0;
@@ -319,7 +347,7 @@ namespace OutlookDesktop.Forms
             this.ViewControlHostPanel.Location = new System.Drawing.Point(4, 28);
             this.ViewControlHostPanel.Margin = new System.Windows.Forms.Padding(0);
             this.ViewControlHostPanel.Name = "ViewControlHostPanel";
-            this.ViewControlHostPanel.Size = new System.Drawing.Size(392, 368);
+            this.ViewControlHostPanel.Size = new System.Drawing.Size(507, 368);
             this.ViewControlHostPanel.TabIndex = 4;
             // 
             // axOutlookViewControl
@@ -331,7 +359,7 @@ namespace OutlookDesktop.Forms
             this.axOutlookViewControl.Margin = new System.Windows.Forms.Padding(0);
             this.axOutlookViewControl.Name = "axOutlookViewControl";
             this.axOutlookViewControl.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axOutlookViewControl.OcxState")));
-            this.axOutlookViewControl.Size = new System.Drawing.Size(392, 368);
+            this.axOutlookViewControl.Size = new System.Drawing.Size(507, 368);
             this.axOutlookViewControl.TabIndex = 3;
             // 
             // notifyIcon
@@ -351,7 +379,7 @@ namespace OutlookDesktop.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 400);
+            this.ClientSize = new System.Drawing.Size(515, 400);
             this.Controls.Add(this.ViewControlHostPanel);
             this.Controls.Add(this.HeaderPanel);
             this.DoubleBuffered = true;
@@ -419,5 +447,7 @@ namespace OutlookDesktop.Forms
         private System.Windows.Forms.ToolTip ToolTip;
         private System.Windows.Forms.Timer WindowMessageTimer;
         private System.Windows.Forms.ToolStripSeparator Separator6;
+        private System.Windows.Forms.Button TodayButton;
+        private System.Windows.Forms.Button ButtonNext;
     }
 }

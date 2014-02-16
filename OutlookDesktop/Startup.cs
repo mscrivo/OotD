@@ -24,6 +24,8 @@ namespace OutlookDesktop
         public static MAPIFolder OutlookFolder;
         public static Explorer OutlookExplorer;
 
+        public static bool UpdateDetected;
+
         /// <summary>
         /// The main entry point for the application.
         /// We only only one instance of the application to be running.

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using NLog;
@@ -26,6 +29,14 @@ namespace OutlookDesktop.Forms
         Contacts,
         Notes,
         Tasks,
+    }
+
+    public enum CurrentCalendarView
+    {
+        Day = 0,
+        Week = 1,
+        Month = 2,
+        WorkWeek = 4,
     }
 
     /// <summary>
@@ -156,7 +167,7 @@ namespace OutlookDesktop.Forms
         protected override CreateParams CreateParams
         {
             get
-            {                
+            {
                 CreateParams cp = base.CreateParams;
                 cp.ExStyle |= 0x80;             // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
                 cp.ExStyle |= 0x02000000;       // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
@@ -544,7 +555,7 @@ namespace OutlookDesktop.Forms
                 string folderPath = GetFolderPath(GenerateFolderPathFromObject(oFolder));
                 axOutlookViewControl.Folder = folderPath;
 
-                // Save the EntryId and the StoreId for this folder in the prefrences. 
+                // Save the EntryId and the StoreId for this folder in the preferences. 
                 Preferences.OutlookFolderEntryId = oFolder.EntryID;
                 Preferences.OutlookFolderStoreId = oFolder.StoreID;
                 Preferences.OutlookFolderName = folderPath;
@@ -891,6 +902,49 @@ namespace OutlookDesktop.Forms
             SetViewXml(Resources.week);
         }
 
+        private void TodayButton_Click(object sender, EventArgs e)
+        {
+            axOutlookViewControl.GoToToday();
+        }
+
+        private void ButtonNext_Click(object sender, EventArgs e)
+        {
+            double offset = 0;
+            var mode = CurrentCalendarView.Day;
+
+            // get the view mode from the current ViewXML, this will tell us what calendar view we're in
+            var xElement = XDocument.Parse(axOutlookViewControl.ViewXML).Element("view");
+            if (xElement != null)
+            {
+                var element = xElement.Element("mode");
+                if (element != null)
+                {
+                    mode = (CurrentCalendarView)Convert.ToInt32(element.Value);
+                }
+            }
+
+            switch (mode)
+            {
+                case CurrentCalendarView.Day:
+                    offset = 1;
+                    break;
+                case CurrentCalendarView.Week:
+                case CurrentCalendarView.WorkWeek:
+                    offset = 7;
+                    break;
+                case CurrentCalendarView.Month:
+                    offset = 31;
+                    break;
+            }
+
+            Debug.Print("Calendar Mode Detected: {0}", mode);
+            Debug.WriteLine("Selected Date: {0}", axOutlookViewControl.SelectedDate);
+            Debug.WriteLine("Going to date: {0}", axOutlookViewControl.SelectedDate.AddDays(offset));
+
+            axOutlookViewControl.GoToDate(axOutlookViewControl.SelectedDate.AddDays(offset).ToString(CultureInfo.InvariantCulture));
+
+        }
+
         private void TransparencySlider_Scroll(object sender, EventArgs e)
         {
             double opacityVal = (double)TransparencySlider.Value / 100;
@@ -951,11 +1005,12 @@ namespace OutlookDesktop.Forms
                 {
                     _outlookContextMenuActivated = false;
                     UnsafeNativeMethods.SendWindowToBack(this);
+                    m.Result = IntPtr.Zero;
                 }
-                m.Result = IntPtr.Zero;
             }
-            else if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING && !_outlookContextMenuActivated)
-            {               
+            else if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING && !_outlookContextMenuActivated && !Startup.UpdateDetected)
+            {
+                Debug.WriteLine("Window position changing");
                 var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
                 mwp.flags = mwp.flags | UnsafeNativeMethods.SWP_NOZORDER;
                 Marshal.StructureToPtr(mwp, m.LParam, true);

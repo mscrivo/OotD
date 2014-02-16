@@ -202,9 +202,6 @@
   <data name="Tasks" xml:space="preserve">
     <value>Tasks</value>
   </data>
-  <data name="paypal" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Icons\paypal.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="AboutDialogTitle" xml:space="preserve">
     <value>About Outlook on the Desktop</value>
   </data>
@@ -421,5 +418,14 @@ If you have 32-bit Office installed, please use the 32-bit Outlook on the Deskto
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
     <value>Check for updates</value>
+  </data>
+  <data name="next" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\next.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="paypal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\paypal.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="prev" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\prev.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

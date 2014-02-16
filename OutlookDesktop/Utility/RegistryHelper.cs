@@ -36,10 +36,10 @@ namespace OutlookDesktop.Utility
             //Open the sourceKey we are copying from
             RegistryKey sourceKey = parentKey.OpenSubKey(keyNameToCopy);
 
-            RecurseCopyKey(sourceKey, destinationKey);
+            RecursivelyCopyKey(sourceKey, destinationKey);
         }
 
-        private static void RecurseCopyKey(RegistryKey sourceKey, RegistryKey destinationKey)
+        private static void RecursivelyCopyKey(RegistryKey sourceKey, RegistryKey destinationKey)
         {
             //copy all the values
             foreach (string valueName in sourceKey.GetValueNames())
@@ -56,7 +56,7 @@ namespace OutlookDesktop.Utility
             {
                 RegistryKey sourceSubKey = sourceKey.OpenSubKey(sourceSubKeyName);
                 RegistryKey destSubKey = destinationKey.CreateSubKey(sourceSubKeyName);
-                RecurseCopyKey(sourceSubKey, destSubKey);
+                RecursivelyCopyKey(sourceSubKey, destSubKey);
             }
         }
     }
