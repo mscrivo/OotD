@@ -72,6 +72,8 @@ namespace OutlookDesktop.Forms
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.WindowMessageTimer = new System.Windows.Forms.Timer(this.components);
+            this.ButtonPrevious = new System.Windows.Forms.Button();
+            this.LabelCurrentDate = new System.Windows.Forms.Label();
             this.trayMenu.SuspendLayout();
             this.HeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TransparencySlider)).BeginInit();
@@ -233,6 +235,8 @@ namespace OutlookDesktop.Forms
             // HeaderPanel
             // 
             this.HeaderPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.HeaderPanel.Controls.Add(this.LabelCurrentDate);
+            this.HeaderPanel.Controls.Add(this.ButtonPrevious);
             this.HeaderPanel.Controls.Add(this.ButtonNext);
             this.HeaderPanel.Controls.Add(this.TodayButton);
             this.HeaderPanel.Controls.Add(this.TransparencySlider);
@@ -375,6 +379,28 @@ namespace OutlookDesktop.Forms
             // 
             this.WindowMessageTimer.Tick += new System.EventHandler(this.WindowMessageTimer_Tick);
             // 
+            // ButtonPrevious
+            // 
+            this.ButtonPrevious.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButtonPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonPrevious.Image = global::OutlookDesktop.Properties.Resources.prev;
+            this.ButtonPrevious.Location = new System.Drawing.Point(462, 0);
+            this.ButtonPrevious.Name = "ButtonPrevious";
+            this.ButtonPrevious.Size = new System.Drawing.Size(22, 20);
+            this.ButtonPrevious.TabIndex = 8;
+            this.ButtonPrevious.UseVisualStyleBackColor = true;
+            this.ButtonPrevious.Click += new System.EventHandler(this.ButtonPrevious_Click);
+            // 
+            // LabelCurrentDate
+            // 
+            this.LabelCurrentDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LabelCurrentDate.AutoSize = true;
+            this.LabelCurrentDate.Location = new System.Drawing.Point(95, 3);
+            this.LabelCurrentDate.Name = "LabelCurrentDate";
+            this.LabelCurrentDate.Size = new System.Drawing.Size(0, 13);
+            this.LabelCurrentDate.TabIndex = 9;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -399,6 +425,7 @@ namespace OutlookDesktop.Forms
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
             this.trayMenu.ResumeLayout(false);
             this.HeaderPanel.ResumeLayout(false);
+            this.HeaderPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TransparencySlider)).EndInit();
             this.ViewControlHostPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).EndInit();
@@ -449,5 +476,7 @@ namespace OutlookDesktop.Forms
         private System.Windows.Forms.ToolStripSeparator Separator6;
         private System.Windows.Forms.Button TodayButton;
         private System.Windows.Forms.Button ButtonNext;
+        private System.Windows.Forms.Button ButtonPrevious;
+        private System.Windows.Forms.Label LabelCurrentDate;
     }
 }

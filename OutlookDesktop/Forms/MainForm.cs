@@ -85,7 +85,15 @@ namespace OutlookDesktop.Forms
             InstanceName = instanceName;
 
             try
-            {
+            {                
+                ButtonNext.Tag = Guid.NewGuid();
+                ButtonPrevious.Tag = Guid.NewGuid();
+
+                axOutlookViewControl.SelectionChange += (sender, args) =>
+                {
+                     LabelCurrentDate.Text = axOutlookViewControl.SelectedDate.ToShortDateString();
+                };
+
                 SuspendLayout();
                 LoadSettings();
                 ResumeLayout();
@@ -534,10 +542,14 @@ namespace OutlookDesktop.Forms
 
         private void ShowCalendarButtons(bool show)
         {
+            TodayButton.Visible = show;
             DayButton.Visible = show;
             WeekButton.Visible = show;
             WorkWeekButton.Visible = show;
             MonthButton.Visible = show;
+            ButtonPrevious.Visible = show;
+            ButtonNext.Visible = show;
+            LabelCurrentDate.Visible = show;
         }
 
         private void UpdateCustomFolder(MAPIFolder oFolder)
@@ -687,7 +699,6 @@ namespace OutlookDesktop.Forms
         /// <param name="oFolder"></param>
         private void ShowCalendarButtonsFor(MAPIFolder oFolder)
         {
-
             if (oFolder.CurrentView.ViewType == OlViewType.olCalendarView)
             {
                 ShowCalendarButtons(true);
@@ -892,14 +903,14 @@ namespace OutlookDesktop.Forms
             SetViewXml(Resources.WorkWeek);
         }
 
-        private void MonthButton_Click(object sender, EventArgs e)
-        {
-            SetViewXml(Resources.month);
-        }
-
         private void WeekButton_Click(object sender, EventArgs e)
         {
             SetViewXml(Resources.week);
+        }
+
+        private void MonthButton_Click(object sender, EventArgs e)
+        {
+            SetViewXml(Resources.month);
         }
 
         private void TodayButton_Click(object sender, EventArgs e)
@@ -907,21 +918,33 @@ namespace OutlookDesktop.Forms
             axOutlookViewControl.GoToToday();
         }
 
+        private void ButtonPrevious_Click(object sender, EventArgs e)
+        {            
+            // get the view mode from the current ViewXML, this will tell us what calendar view we're in
+            var mode = GetCurrentCalendarViewMode();
+
+            SetCurrentViewControlAsActiveIfNecessary(mode, ButtonPrevious, ref InstanceManager.LastPreviousButtonClicked);
+            
+            var offset = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
+
+            axOutlookViewControl.GoToDate(axOutlookViewControl.SelectedDate.AddDays(offset*-1).ToString(CultureInfo.InvariantCulture));
+        }
+
         private void ButtonNext_Click(object sender, EventArgs e)
         {
-            double offset = 0;
-            var mode = CurrentCalendarView.Day;
-
             // get the view mode from the current ViewXML, this will tell us what calendar view we're in
-            var xElement = XDocument.Parse(axOutlookViewControl.ViewXML).Element("view");
-            if (xElement != null)
-            {
-                var element = xElement.Element("mode");
-                if (element != null)
-                {
-                    mode = (CurrentCalendarView)Convert.ToInt32(element.Value);
-                }
-            }
+            var mode = GetCurrentCalendarViewMode();
+
+            SetCurrentViewControlAsActiveIfNecessary(mode, ButtonNext, ref InstanceManager.LastNextButtonClicked);
+
+            var offset = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
+
+            axOutlookViewControl.GoToDate(axOutlookViewControl.SelectedDate.AddDays(offset).ToString(CultureInfo.InvariantCulture));
+        }
+
+        private static double GetNextPreviousOffsetBasedOnCalendarViewMode(CurrentCalendarView mode)
+        {
+            double offset = 0;
 
             switch (mode)
             {
@@ -936,13 +959,54 @@ namespace OutlookDesktop.Forms
                     offset = 31;
                     break;
             }
+            return offset;
+        }
 
-            Debug.Print("Calendar Mode Detected: {0}", mode);
-            Debug.WriteLine("Selected Date: {0}", axOutlookViewControl.SelectedDate);
-            Debug.WriteLine("Going to date: {0}", axOutlookViewControl.SelectedDate.AddDays(offset));
+        private void SetCurrentViewControlAsActiveIfNecessary(CurrentCalendarView mode, Button button, ref Guid lastButtonGuidClicked)
+        {
+            // Terrible hack to get around a bug in the Outlook View Control where if you have more than one
+            // calendar view active, GoToDate will not work on the instance it's called on, instead it will 
+            // work on the last "active" view of the calendar, which may or may not be the current one.  
+            // So to get around that, if the last clicked next button was not this one, we reset the 
+            // calendar view to make it active, before using GoToDate.            
+            if ((Guid)button.Tag != lastButtonGuidClicked)
+            {
+                var currentDate = axOutlookViewControl.SelectedDate;
+                switch (mode)
+                {
+                    case CurrentCalendarView.Day:
+                        SetViewXml(Resources.day);
+                        break;
+                    case CurrentCalendarView.Week:
+                        SetViewXml(Resources.week);
+                        break;
+                    case CurrentCalendarView.WorkWeek:
+                        SetViewXml(Resources.WorkWeek);
+                        break;
+                    case CurrentCalendarView.Month:
+                        SetViewXml(Resources.month);
+                        break;
+                }
 
-            axOutlookViewControl.GoToDate(axOutlookViewControl.SelectedDate.AddDays(offset).ToString(CultureInfo.InvariantCulture));
+                axOutlookViewControl.GoToDate(currentDate.ToString(CultureInfo.InvariantCulture));
+                lastButtonGuidClicked = (Guid)button.Tag;
+            }
+        }
 
+        private CurrentCalendarView GetCurrentCalendarViewMode()
+        {
+            var mode = CurrentCalendarView.Day;
+
+            var xElement = XDocument.Parse(axOutlookViewControl.ViewXML).Element("view");
+            if (xElement != null)
+            {
+                var element = xElement.Element("mode");
+                if (element != null)
+                {
+                    mode = (CurrentCalendarView)Convert.ToInt32(element.Value);
+                }
+            }
+            return mode;
         }
 
         private void TransparencySlider_Scroll(object sender, EventArgs e)

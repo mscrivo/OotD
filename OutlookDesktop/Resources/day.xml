@@ -1,20 +1,5 @@
 <?xml version="1.0"?>
 <view type="calendar">
 	<viewname>Calendar</viewname>
-	<viewstyle>table-layout:fixed;width:100%;font-family:Segoe UI;font-style:normal;font-weight:normal;font-size:8pt;color:Black;font-charset:0</viewstyle>
-	<viewtime>0</viewtime>
 	<mode>0</mode>
-	<daymode>5</daymode>
-	<splitterwidth>-1</splitterwidth>
-	<splitterheight>-1</splitterheight>
-	<displaytimeunits>30</displaytimeunits>
-	<taskfilter>1</taskfilter>
-	<includenodue>1</includenodue>
-	<lunarinfotype>0</lunarinfotype>
-	<rokuyou>0</rokuyou>
-	<startfield>urn:schemas:calendar:dtstart</startfield>
-	<endfield>urn:schemas:calendar:dtend</endfield>
-	<showfullweek>1</showfullweek>
-	<showworkweek>0</showworkweek>
-	<calendarstyle>font-size:16pt</calendarstyle>
 </view>

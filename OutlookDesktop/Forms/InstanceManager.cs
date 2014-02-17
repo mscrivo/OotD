@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Resources;
@@ -21,6 +20,8 @@ namespace OutlookDesktop.Forms
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<string, MainForm> _mainFormInstances = new Dictionary<string, MainForm>();
         private static Sparkle _sparkle;
+        public static Guid LastNextButtonClicked = new Guid();
+        public static Guid LastPreviousButtonClicked = new Guid();
 
         public InstanceManager()
         {
