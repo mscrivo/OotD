@@ -232,6 +232,7 @@ namespace OutlookDesktop.Forms
                 MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
+
             TransparencySlider.Value = (int)(Preferences.Opacity * 100);
 
             // Sets the position of the instance. 
