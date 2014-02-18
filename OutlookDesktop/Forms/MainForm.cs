@@ -85,13 +85,20 @@ namespace OutlookDesktop.Forms
             InstanceName = instanceName;
 
             try
-            {                
+            {
                 ButtonNext.Tag = Guid.NewGuid();
                 ButtonPrevious.Tag = Guid.NewGuid();
 
                 axOutlookViewControl.SelectionChange += (sender, args) =>
                 {
-                     LabelCurrentDate.Text = axOutlookViewControl.SelectedDate.ToShortDateString();
+                    try
+                    {
+                        LabelCurrentDate.Text = axOutlookViewControl.SelectedDate.ToShortDateString();
+                    }
+                    catch (Exception)
+                    {                        
+                        // ignore
+                    }
                 };
 
                 SuspendLayout();
@@ -307,7 +314,14 @@ namespace OutlookDesktop.Forms
             // If the view is a calendar view, use the stored ViewXML to restore their day/week/month view setting.
             if (Preferences.OutlookFolderName == FolderViewType.Calendar.ToString())
             {
-                axOutlookViewControl.ViewXML = Preferences.ViewXml;
+                if (!String.IsNullOrEmpty(Preferences.ViewXml))
+                {
+                    axOutlookViewControl.ViewXML = Preferences.ViewXml;
+                }
+                else
+                {
+                    SetViewXml(Resources.month);
+                }
             }
 
             // Get a copy of the possible outlook views for the selected folder and populate the context menu for this instance. 
@@ -887,7 +901,7 @@ namespace OutlookDesktop.Forms
             ResizeDir = ResizeDirection.None;
         }
 
-        private void SetViewXml(string value)
+        public void SetViewXml(string value)
         {
             axOutlookViewControl.ViewXML = value;
             Preferences.ViewXml = value;
@@ -919,15 +933,15 @@ namespace OutlookDesktop.Forms
         }
 
         private void ButtonPrevious_Click(object sender, EventArgs e)
-        {            
+        {
             // get the view mode from the current ViewXML, this will tell us what calendar view we're in
             var mode = GetCurrentCalendarViewMode();
 
             SetCurrentViewControlAsActiveIfNecessary(mode, ButtonPrevious, ref InstanceManager.LastPreviousButtonClicked);
-            
+
             var offset = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
 
-            axOutlookViewControl.GoToDate(axOutlookViewControl.SelectedDate.AddDays(offset*-1).ToString(CultureInfo.InvariantCulture));
+            axOutlookViewControl.GoToDate(axOutlookViewControl.SelectedDate.AddDays(offset * -1).ToString(CultureInfo.InvariantCulture));
         }
 
         private void ButtonNext_Click(object sender, EventArgs e)

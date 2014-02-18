@@ -108,6 +108,7 @@ namespace OutlookDesktop.Forms
                         // each instance will get it's own submenu in the main context menu.
                         foreach (string instanceName in appReg.GetSubKeyNames())
                         {
+                            // Skip the key named "AutoUpdate" since it's the settings for the updater component
                             if (instanceName == "AutoUpdate") continue;
 
                             bool newlyAdded = false;
@@ -163,6 +164,7 @@ namespace OutlookDesktop.Forms
                             {
                                 _mainFormInstances[instanceName].TrayMenu.Items["LockPositionMenu"].Visible = false;
                             }
+                            _mainFormInstances[instanceName].TrayMenu.Items["Separator6"].Visible = false;
                             _mainFormInstances[instanceName].TrayMenu.Items["ExitMenu"].Visible = false;
 
                             // finally, show the form
@@ -206,15 +208,14 @@ namespace OutlookDesktop.Forms
                         bool newlyAdded = false;
                         if (!_mainFormInstances.ContainsKey(instanceName))
                         {
-                            _mainFormInstances.Add(instanceName, new MainForm(instanceName));
+                            _mainFormInstances.Add(instanceName, new MainForm(instanceName));                            
                             newlyAdded = true;
                         }
 
                         trayIcon.ContextMenuStrip = _mainFormInstances[instanceName].TrayMenu;
 
                         // remove unnecessary menu items
-                        while (trayIcon.ContextMenuStrip.Items.Count > 0 &&
-                               trayIcon.ContextMenuStrip.Items[0].Text != Resources.Calendar)
+                        while (trayIcon.ContextMenuStrip.Items.Count > 0 && trayIcon.ContextMenuStrip.Items[0].Text != Resources.Calendar)
                         {
                             trayIcon.ContextMenuStrip.Items.RemoveAt(0);
                         }
@@ -347,7 +348,7 @@ namespace OutlookDesktop.Forms
         {
             _sparkle.UpdateDetected -= OnSparkleOnUpdateDetectedShowWithToast;
             _sparkle.UpdateDetected += OnSparkleOnUpdateDetectedShowWithoutToast;
-                        
+
             _sparkle.CheckForUpdatesAtUserRequest();
         }
 
