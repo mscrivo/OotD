@@ -22,7 +22,7 @@ namespace OutlookDesktop.Forms
                 // Ensure we cleanup the Outlook resources, but do not call Quit() on the Outlook
                 // app object or we will inadvertantly close any full blown Outlook instances 
                 // that are open.
-                OulookFolderViews = null;
+                OutlookFolderViews = null;
                 _outlookFolder = null;
             }
             base.Dispose(disposing);
@@ -60,6 +60,8 @@ namespace OutlookDesktop.Forms
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.HeaderPanel = new System.Windows.Forms.Panel();
+            this.LabelCurrentDate = new System.Windows.Forms.Label();
+            this.ButtonPrevious = new System.Windows.Forms.Button();
             this.ButtonNext = new System.Windows.Forms.Button();
             this.TodayButton = new System.Windows.Forms.Button();
             this.TransparencySlider = new System.Windows.Forms.TrackBar();
@@ -72,8 +74,6 @@ namespace OutlookDesktop.Forms
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.WindowMessageTimer = new System.Windows.Forms.Timer(this.components);
-            this.ButtonPrevious = new System.Windows.Forms.Button();
-            this.LabelCurrentDate = new System.Windows.Forms.Label();
             this.trayMenu.SuspendLayout();
             this.HeaderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TransparencySlider)).BeginInit();
@@ -255,6 +255,29 @@ namespace OutlookDesktop.Forms
             this.HeaderPanel.MouseHover += new System.EventHandler(this.HeaderPanel_MouseHover);
             this.HeaderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HeaderPanel_MouseMove);
             // 
+            // LabelCurrentDate
+            // 
+            this.LabelCurrentDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LabelCurrentDate.AutoSize = true;
+            this.LabelCurrentDate.Location = new System.Drawing.Point(95, 3);
+            this.LabelCurrentDate.Name = "LabelCurrentDate";
+            this.LabelCurrentDate.Size = new System.Drawing.Size(0, 13);
+            this.LabelCurrentDate.TabIndex = 9;
+            // 
+            // ButtonPrevious
+            // 
+            this.ButtonPrevious.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButtonPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonPrevious.Image = global::OutlookDesktop.Properties.Resources.prev;
+            this.ButtonPrevious.Location = new System.Drawing.Point(462, 0);
+            this.ButtonPrevious.Name = "ButtonPrevious";
+            this.ButtonPrevious.Size = new System.Drawing.Size(22, 20);
+            this.ButtonPrevious.TabIndex = 8;
+            this.ButtonPrevious.UseVisualStyleBackColor = true;
+            this.ButtonPrevious.Click += new System.EventHandler(this.ButtonPrevious_Click);
+            this.ButtonPrevious.MouseHover += new System.EventHandler(this.ButtonPrevious_MouseHover);
+            // 
             // ButtonNext
             // 
             this.ButtonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -266,6 +289,7 @@ namespace OutlookDesktop.Forms
             this.ButtonNext.TabIndex = 7;
             this.ButtonNext.UseVisualStyleBackColor = true;
             this.ButtonNext.Click += new System.EventHandler(this.ButtonNext_Click);
+            this.ButtonNext.MouseHover += new System.EventHandler(this.ButtonNext_MouseHover);
             // 
             // TodayButton
             // 
@@ -278,6 +302,7 @@ namespace OutlookDesktop.Forms
             this.TodayButton.Text = "Today";
             this.TodayButton.UseVisualStyleBackColor = true;
             this.TodayButton.Click += new System.EventHandler(this.TodayButton_Click);
+            this.TodayButton.MouseHover += new System.EventHandler(this.TodayButton_MouseHover);
             // 
             // TransparencySlider
             // 
@@ -305,6 +330,7 @@ namespace OutlookDesktop.Forms
             this.WorkWeekButton.Text = "Work Week";
             this.WorkWeekButton.UseVisualStyleBackColor = true;
             this.WorkWeekButton.Click += new System.EventHandler(this.WorkWeekButton_Click);
+            this.WorkWeekButton.MouseHover += new System.EventHandler(this.WorkWeekButton_MouseHover);
             // 
             // MonthButton
             // 
@@ -317,6 +343,7 @@ namespace OutlookDesktop.Forms
             this.MonthButton.Text = "Month";
             this.MonthButton.UseVisualStyleBackColor = true;
             this.MonthButton.Click += new System.EventHandler(this.MonthButton_Click);
+            this.MonthButton.MouseHover += new System.EventHandler(this.MonthButton_MouseHover);
             // 
             // WeekButton
             // 
@@ -329,6 +356,7 @@ namespace OutlookDesktop.Forms
             this.WeekButton.Text = "Week";
             this.WeekButton.UseVisualStyleBackColor = true;
             this.WeekButton.Click += new System.EventHandler(this.WeekButton_Click);
+            this.WeekButton.MouseHover += new System.EventHandler(this.WeekButton_MouseHover);
             // 
             // DayButton
             // 
@@ -341,6 +369,7 @@ namespace OutlookDesktop.Forms
             this.DayButton.Text = "Day";
             this.DayButton.UseVisualStyleBackColor = true;
             this.DayButton.Click += new System.EventHandler(this.DayButton_Click);
+            this.DayButton.MouseHover += new System.EventHandler(this.DayButton_MouseHover);
             // 
             // ViewControlHostPanel
             // 
@@ -378,28 +407,6 @@ namespace OutlookDesktop.Forms
             // WindowMessageTimer
             // 
             this.WindowMessageTimer.Tick += new System.EventHandler(this.WindowMessageTimer_Tick);
-            // 
-            // ButtonPrevious
-            // 
-            this.ButtonPrevious.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ButtonPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonPrevious.Image = global::OutlookDesktop.Properties.Resources.prev;
-            this.ButtonPrevious.Location = new System.Drawing.Point(462, 0);
-            this.ButtonPrevious.Name = "ButtonPrevious";
-            this.ButtonPrevious.Size = new System.Drawing.Size(22, 20);
-            this.ButtonPrevious.TabIndex = 8;
-            this.ButtonPrevious.UseVisualStyleBackColor = true;
-            this.ButtonPrevious.Click += new System.EventHandler(this.ButtonPrevious_Click);
-            // 
-            // LabelCurrentDate
-            // 
-            this.LabelCurrentDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.LabelCurrentDate.AutoSize = true;
-            this.LabelCurrentDate.Location = new System.Drawing.Point(95, 3);
-            this.LabelCurrentDate.Name = "LabelCurrentDate";
-            this.LabelCurrentDate.Size = new System.Drawing.Size(0, 13);
-            this.LabelCurrentDate.TabIndex = 9;
             // 
             // MainForm
             // 

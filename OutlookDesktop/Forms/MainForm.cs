@@ -368,7 +368,7 @@ namespace OutlookDesktop.Forms
         private void UpdateOutlookViewsList()
         {
             OutlookViewsMenu.DropDownItems.Clear();
-            OulookFolderViews = new List<View>();
+            OutlookFolderViews = new List<View>();
 
             if (_outlookFolder != null)
             {
@@ -383,7 +383,7 @@ namespace OutlookDesktop.Forms
 
                     OutlookViewsMenu.DropDownItems.Add(viewItem);
 
-                    OulookFolderViews.Add(view);
+                    OutlookFolderViews.Add(view);
                 }
             }
         }
@@ -820,21 +820,19 @@ namespace OutlookDesktop.Forms
 
         private void RenameInstanceMenu_Click(object sender, EventArgs e)
         {
-            InputBoxResult result = InputBox.Show(this, "", "Rename Instance", InstanceName, InputBox_Validating);
-            if (result.Ok)
-            {
-                using (var parentKey = Registry.CurrentUser.OpenSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName, true))
-                {
-                    if (parentKey != null)
-                    {
-                        RegistryHelper.RenameSubKey(parentKey, InstanceName, result.Text);
-                        String oldInstanceName = InstanceName;
-                        InstanceName = result.Text;
-                        Preferences = new InstancePreferences(InstanceName);
+            var result = InputBox.Show(this, "", "Rename Instance", InstanceName, InputBox_Validating);
+            if (!result.Ok) return;
 
-                        OnInstanceRenamed(this, new InstanceRenamedEventArgs(oldInstanceName, InstanceName));
-                    }
-                }
+            using (var parentKey = Registry.CurrentUser.OpenSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName, true))
+            {
+                if (parentKey == null) return;
+
+                RegistryHelper.RenameSubKey(parentKey, InstanceName, result.Text);
+                String oldInstanceName = InstanceName;
+                InstanceName = result.Text;
+                Preferences = new InstancePreferences(InstanceName);
+
+                OnInstanceRenamed(this, new InstanceRenamedEventArgs(oldInstanceName, InstanceName));
             }
         }
 
@@ -896,12 +894,49 @@ namespace OutlookDesktop.Forms
             }
         }
 
+#region "Resize Cursor Reset Events"
         private void HeaderPanel_MouseMove(object sender, MouseEventArgs e)
         {
             ResizeDir = ResizeDirection.None;
         }
 
-        public void SetViewXml(string value)
+        private void WorkWeekButton_MouseHover(object sender, EventArgs e)
+        {
+            ResizeDir = ResizeDirection.None;
+        }
+
+        private void DayButton_MouseHover(object sender, EventArgs e)
+        {
+            ResizeDir = ResizeDirection.None;
+        }
+
+        private void TodayButton_MouseHover(object sender, EventArgs e)
+        {
+            ResizeDir = ResizeDirection.None;
+        }
+
+        private void WeekButton_MouseHover(object sender, EventArgs e)
+        {
+            ResizeDir = ResizeDirection.None;
+        }
+
+        private void MonthButton_MouseHover(object sender, EventArgs e)
+        {
+            ResizeDir = ResizeDirection.None;
+        }
+
+        private void ButtonPrevious_MouseHover(object sender, EventArgs e)
+        {
+            ResizeDir = ResizeDirection.None;
+        }
+
+        private void ButtonNext_MouseHover(object sender, EventArgs e)
+        {
+            ResizeDir = ResizeDirection.None;
+        }
+#endregion
+
+        private void SetViewXml(string value)
         {
             axOutlookViewControl.ViewXML = value;
             Preferences.ViewXml = value;
@@ -986,28 +1021,28 @@ namespace OutlookDesktop.Forms
             // we don't need to do this if we only have one instance, so bail right away.
             if (InstanceManager.InstanceCount == 1) return;
 
-            if ((Guid)button.Tag != lastButtonGuidClicked)
-            {
-                var currentDate = axOutlookViewControl.SelectedDate;
-                switch (mode)
-                {
-                    case CurrentCalendarView.Day:
-                        SetViewXml(Resources.day);
-                        break;
-                    case CurrentCalendarView.Week:
-                        SetViewXml(Resources.week);
-                        break;
-                    case CurrentCalendarView.WorkWeek:
-                        SetViewXml(Resources.WorkWeek);
-                        break;
-                    case CurrentCalendarView.Month:
-                        SetViewXml(Resources.month);
-                        break;
-                }
+            // we can bail if we know the last button clicked was the one on this form.
+            if ((Guid) button.Tag == lastButtonGuidClicked) return;
 
-                axOutlookViewControl.GoToDate(currentDate.ToString(CultureInfo.InvariantCulture));
-                lastButtonGuidClicked = (Guid)button.Tag;
+            var currentDate = axOutlookViewControl.SelectedDate;
+            switch (mode)
+            {
+                case CurrentCalendarView.Day:
+                    SetViewXml(Resources.day);
+                    break;
+                case CurrentCalendarView.Week:
+                    SetViewXml(Resources.week);
+                    break;
+                case CurrentCalendarView.WorkWeek:
+                    SetViewXml(Resources.WorkWeek);
+                    break;
+                case CurrentCalendarView.Month:
+                    SetViewXml(Resources.month);
+                    break;
             }
+
+            axOutlookViewControl.GoToDate(currentDate.ToString(CultureInfo.InvariantCulture));
+            lastButtonGuidClicked = (Guid)button.Tag;
         }
 
         private CurrentCalendarView GetCurrentCalendarViewMode()
@@ -1105,7 +1140,7 @@ namespace OutlookDesktop.Forms
         #region Properties
 
         private ResizeDirection _resizeDir = ResizeDirection.None;
-        private List<View> OulookFolderViews { get; set; }
+        private List<View> OutlookFolderViews { get; set; }
         private InstancePreferences Preferences { get; set; }
         private string InstanceName { get; set; }
 
@@ -1159,5 +1194,7 @@ namespace OutlookDesktop.Forms
         }
 
         #endregion
+
+
     }
 }
