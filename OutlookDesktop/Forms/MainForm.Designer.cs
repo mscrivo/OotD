@@ -265,7 +265,7 @@ namespace OutlookDesktop.Forms
             this.TransparencySlider.BackgroundImage = null;
             this.TransparencySlider.ButtonAccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.TransparencySlider.ButtonBorderColor = System.Drawing.Color.Black;
-            this.TransparencySlider.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.TransparencySlider.ButtonColor = System.Drawing.SystemColors.GrayText;
             this.TransparencySlider.ButtonCornerRadius = ((uint)(4u));
             this.TransparencySlider.ButtonSize = new System.Drawing.Size(12, 12);
             this.TransparencySlider.ButtonStyle = MediaSlider.MediaSlider.ButtonType.Round;

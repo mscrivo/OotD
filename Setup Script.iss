@@ -1,8 +1,8 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "2.2.0"
-#define MyAppVerName "Outlook on the Desktop 2.2.0"
+#define MyAppVersion "3.0.0"
+#define MyAppVerName "Outlook on the Desktop 3.0.0"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
@@ -52,6 +52,7 @@ Source: "OutlookDesktop\bin\x86\Release\OutlookDesktop.exe.config"; DestDir: {ap
 Source: "OutlookDesktop\bin\x86\Release\NetSparkle.Net40.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OutlookDesktop\bin\x86\Release\NLog.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OutlookDesktop\bin\x86\Release\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OutlookDesktop\bin\x86\Release\MediaSlider.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
@@ -65,6 +66,9 @@ Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; F
 Root: HKCU; Subkey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: OutlookOnDesktop; ValueData: {app}\OutlookDesktop.exe; Flags: uninsdeletevalue
 Root: HKCU; Subkey: Software\SMR Computer Services\Outlook On The Desktop; Flags: createvalueifdoesntexist uninsdeletekey
 Root: HKCU; Subkey: Software\SMR Computer Services\Outlook On The Desktop\; ValueType: string; ValueName: First Run; ValueData: True
+
+[Dirs]
+Name: "{app}\logs"; Permissions: everyone-modify
 
 [Code]
 const
