@@ -98,7 +98,7 @@ namespace OutlookDesktop.Forms
             // picDonate
             // 
             this.picDonate.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picDonate.Image = global::OutlookDesktop.Properties.Resources.paypal;
+            this.picDonate.Image = global::OutlookDesktop.Properties.Resources.PayPal;
             this.picDonate.Location = new System.Drawing.Point(111, 120);
             this.picDonate.Name = "picDonate";
             this.picDonate.Size = new System.Drawing.Size(62, 31);

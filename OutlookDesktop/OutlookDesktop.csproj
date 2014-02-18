@@ -141,6 +141,11 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Images\sevenDays.png" />
+    <None Include="Resources\Images\oneDay.png" />
+    <None Include="Resources\Images\fiveDays.png" />
+    <None Include="Resources\Images\today.png" />
+    <None Include="Resources\Images\month.png" />
     <None Include="Resources\Images\prev.png" />
     <None Include="Resources\Images\next.png" />
     <None Include="..\ServerStaging\ootdReleaseNotes.md" />
@@ -182,7 +187,6 @@
     <None Include="Resources\Icons\30.ico" />
     <None Include="Resources\Icons\31.ico" />
     <None Include="Resources\Images\paypal.gif" />
-    <Compile Include="Utility\DateTimeExtensions.cs" />
     <Compile Include="Utility\SynchronizeInvokeExtensions.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
@@ -255,7 +259,7 @@
   <ItemGroup>
     <Content Include="Resources\Icons\AppIcon.ico" />
     <Content Include="Resources\Icons\notifyIcon.ico" />
-    <None Include="Resources\WorkWeek.xml" />
+    <None Include="Resources\workweek.xml" />
     <None Include="Resources\day.xml" />
     <None Include="Resources\month.xml" />
     <None Include="Resources\week.xml" />

@@ -483,21 +483,13 @@ namespace OutlookDesktop.Properties {
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;view type=&quot;calendar&quot;&gt;
         ///	&lt;viewname&gt;Calendar&lt;/viewname&gt;
-        ///	&lt;viewstyle&gt;table-layout:fixed;width:100%;font-family:Segoe UI;font-style:normal;font-weight:normal;font-size:8pt;color:Black;font-charset:0&lt;/viewstyle&gt;
-        ///	&lt;viewtime&gt;0&lt;/viewtime&gt;
         ///	&lt;mode&gt;0&lt;/mode&gt;
-        ///	&lt;daymode&gt;5&lt;/daymode&gt;
-        ///	&lt;splitterwidth&gt;-1&lt;/splitterwidth&gt;
-        ///	&lt;splitterheight&gt;-1&lt;/splitterheight&gt;
-        ///	&lt;displaytimeunits&gt;30&lt;/displaytimeunits&gt;
-        ///	&lt;taskfilter&gt;1&lt;/taskfilter&gt;
-        ///	&lt;includenodue&gt;1&lt;/includenodue&gt;
-        ///	&lt;lunarinfotype&gt;0&lt;/lunarinfotype&gt;
-        ///	 [rest of string was truncated]&quot;;.
+        ///&lt;/view&gt;
+        ///.
         /// </summary>
-        internal static string day {
+        internal static string DayXML {
             get {
-                return ResourceManager.GetString("day", resourceCulture);
+                return ResourceManager.GetString("DayXML", resourceCulture);
             }
         }
         
@@ -588,6 +580,16 @@ namespace OutlookDesktop.Properties {
         internal static string Exit {
             get {
                 return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FiveDays {
+            get {
+                object obj = ResourceManager.GetObject("FiveDays", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -686,24 +688,26 @@ namespace OutlookDesktop.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Month {
+            get {
+                object obj = ResourceManager.GetObject("Month", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;view type=&quot;calendar&quot;&gt;
         ///	&lt;viewname&gt;Calendar&lt;/viewname&gt;
-        ///	&lt;viewstyle&gt;table-layout:fixed;width:100%;font-family:Segoe UI;font-style:normal;font-weight:normal;font-size:8pt;color:Black;font-charset:0&lt;/viewstyle&gt;
-        ///	&lt;viewtime&gt;0&lt;/viewtime&gt;
         ///	&lt;mode&gt;2&lt;/mode&gt;
-        ///	&lt;daymode&gt;5&lt;/daymode&gt;
-        ///	&lt;splitterwidth&gt;-1&lt;/splitterwidth&gt;
-        ///	&lt;splitterheight&gt;-1&lt;/splitterheight&gt;
-        ///	&lt;displaytimeunits&gt;30&lt;/displaytimeunits&gt;
-        ///	&lt;taskfilter&gt;1&lt;/taskfilter&gt;
-        ///	&lt;includenodue&gt;1&lt;/includenodue&gt;
-        ///	&lt;lunarinfotype&gt;0&lt;/lunarinfotype&gt;
-        ///	 [rest of string was truncated]&quot;;.
+        ///&lt;/view&gt;
+        ///.
         /// </summary>
-        internal static string month {
+        internal static string MonthXML {
             get {
-                return ResourceManager.GetString("month", resourceCulture);
+                return ResourceManager.GetString("MonthXML", resourceCulture);
             }
         }
         
@@ -728,9 +732,9 @@ namespace OutlookDesktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap next {
+        internal static System.Drawing.Bitmap Next {
             get {
-                object obj = ResourceManager.GetObject("next", resourceCulture);
+                object obj = ResourceManager.GetObject("Next", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -759,6 +763,16 @@ namespace OutlookDesktop.Properties {
         internal static string OKButton {
             get {
                 return ResourceManager.GetString("OKButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OneDay {
+            get {
+                object obj = ResourceManager.GetObject("OneDay", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -792,9 +806,9 @@ namespace OutlookDesktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap paypal {
+        internal static System.Drawing.Bitmap PayPal {
             get {
-                object obj = ResourceManager.GetObject("paypal", resourceCulture);
+                object obj = ResourceManager.GetObject("PayPal", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -829,9 +843,9 @@ namespace OutlookDesktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap prev {
+        internal static System.Drawing.Bitmap Previous {
             get {
-                object obj = ResourceManager.GetObject("prev", resourceCulture);
+                object obj = ResourceManager.GetObject("Previous", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -900,6 +914,16 @@ namespace OutlookDesktop.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SevenDays {
+            get {
+                object obj = ResourceManager.GetObject("SevenDays", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Short.
         /// </summary>
         internal static string Short {
@@ -954,6 +978,16 @@ namespace OutlookDesktop.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Today {
+            get {
+                object obj = ResourceManager.GetObject("Today", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Slide to change this windows transparency level.
         /// </summary>
         internal static string Transparency_Slider_Help_Message {
@@ -1002,21 +1036,15 @@ namespace OutlookDesktop.Properties {
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;view type=&quot;calendar&quot;&gt;
         ///	&lt;viewname&gt;Calendar&lt;/viewname&gt;
-        ///	&lt;viewstyle&gt;table-layout:fixed;width:100%;font-family:Segoe UI;font-style:normal;font-weight:normal;font-size:8pt;color:Black;font-charset:0&lt;/viewstyle&gt;
-        ///	&lt;viewtime&gt;0&lt;/viewtime&gt;
         ///	&lt;mode&gt;1&lt;/mode&gt;
-        ///	&lt;daymode&gt;5&lt;/daymode&gt;
-        ///	&lt;splitterwidth&gt;-1&lt;/splitterwidth&gt;
-        ///	&lt;splitterheight&gt;-1&lt;/splitterheight&gt;
-        ///	&lt;displaytimeunits&gt;30&lt;/displaytimeunits&gt;
-        ///	&lt;taskfilter&gt;1&lt;/taskfilter&gt;
-        ///	&lt;includenodue&gt;1&lt;/includenodue&gt;
-        ///	&lt;lunarinfotype&gt;0&lt;/lunarinfotype&gt;
-        ///	 [rest of string was truncated]&quot;;.
+        ///	&lt;showfullweek&gt;1&lt;/showfullweek&gt;
+        ///	&lt;showworkweek&gt;0&lt;/showworkweek&gt;
+        ///&lt;/view&gt;
+        ///.
         /// </summary>
-        internal static string week {
+        internal static string WeekXML {
             get {
-                return ResourceManager.GetString("week", resourceCulture);
+                return ResourceManager.GetString("WeekXML", resourceCulture);
             }
         }
         
@@ -1051,21 +1079,14 @@ namespace OutlookDesktop.Properties {
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;view type=&quot;calendar&quot;&gt;
         ///	&lt;viewname&gt;Calendar&lt;/viewname&gt;
-        ///	&lt;viewstyle&gt;table-layout:fixed;width:100%;font-family:Segoe UI;font-style:normal;font-weight:normal;font-size:8pt;color:Black;font-charset:0&lt;/viewstyle&gt;
-        ///	&lt;viewtime&gt;0&lt;/viewtime&gt;
         ///	&lt;mode&gt;4&lt;/mode&gt;
-        ///	&lt;daymode&gt;5&lt;/daymode&gt;
-        ///	&lt;splitterwidth&gt;-1&lt;/splitterwidth&gt;
-        ///	&lt;splitterheight&gt;-1&lt;/splitterheight&gt;
-        ///	&lt;displaytimeunits&gt;30&lt;/displaytimeunits&gt;
-        ///	&lt;taskfilter&gt;1&lt;/taskfilter&gt;
-        ///	&lt;includenodue&gt;1&lt;/includenodue&gt;
-        ///	&lt;lunarinfotype&gt;0&lt;/lunarinfotype&gt;
-        ///	 [rest of string was truncated]&quot;;.
+        ///	&lt;showfullweek&gt;0&lt;/showfullweek&gt;
+        ///  &lt;showworkweek&gt;1&lt;/showworkweek&gt;	
+        ///&lt;/view&gt;.
         /// </summary>
-        internal static string WorkWeek {
+        internal static string WorkWeekXML {
             get {
-                return ResourceManager.GetString("WorkWeek", resourceCulture);
+                return ResourceManager.GetString("WorkWeekXML", resourceCulture);
             }
         }
     }

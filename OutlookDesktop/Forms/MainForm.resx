@@ -123,6 +123,28 @@
   <metadata name="updateTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>121, 17</value>
   </metadata>
+  <metadata name="ToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>355, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="MonthButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAB
+        uwAAAbsBOuzj4gAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAHwSURBVDhPnZPP
+        SxRhGMefFlpbcFgNmRiaLLUixRSJqMiIEGlXQcRLdOjWwZMX/4JQJNhcK4mwaFkrduZgkHSIUgs9CYt4
+        caPdTAakdk9rgRnsj/n6Pu8yi2wRYwMfnvd9fnzelxmGAJBhGFokEgETjUZ/E5GnEqfO8J7nGKJLNFTX
+        U7eUzWbBbH7fzFMnfazEqTN0mT7QFRosCcRmYLYXoZmQZOJ1GGNrw5iyRmCmwzAzYTyxRst15sZcP3zd
+        vndlwZlnJ3HgHqHm0SE0TR/GhVfH0DfXjNvL5yW85hzXuOeccRZKUHlfEojrnX7aBAoRqie9qI/UoN3U
+        cO1NoxwcWGjDrPUS46t3YCSncevtTXTEWqH0KvNlQePj4/Dc9cB33wt1SsGp5yo6zKO4OFMv4TXnuMY9
+        7S9aoPQ4goPUVSgUbAHcUiwWoTfowZKA6Go+n7e/+v1Yr6rCFyJXMUWUKwtyuZz9QCR/WhbCosFtlILP
+        RNuOeb9Iwbi4itsTK6MUJMTik9eL/4lSMCFu8COZxEOR+Fuc3LP/trGBlcVFrCcSdkttbUAK1oTA7Ynx
+        eFx+RtM0V8TL90nBEaKuna2t4nYmg1/iR/kjptMyMqlUyo7FYqtiuJqHpUA8JzRNu67rekAQ/AcBVVW7
+        Rb/fGQZAu092OCV66NLZAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <metadata name="ToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>355, 17</value>
+  </metadata>
   <data name="axOutlookViewControl.OcxState" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
@@ -267,9 +289,6 @@
   </data>
   <metadata name="notifyIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>242, 17</value>
-  </metadata>
-  <metadata name="ToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>355, 17</value>
   </metadata>
   <metadata name="WindowMessageTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>447, 17</value>

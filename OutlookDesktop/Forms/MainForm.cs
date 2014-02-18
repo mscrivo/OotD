@@ -93,7 +93,7 @@ namespace OutlookDesktop.Forms
                 {
                     try
                     {
-                        LabelCurrentDate.Text = axOutlookViewControl.SelectedDate.ToShortDateString();
+                        LabelCurrentDate.Text = axOutlookViewControl.SelectedDate.ToLongDateString();
                     }
                     catch (Exception)
                     {                        
@@ -320,7 +320,7 @@ namespace OutlookDesktop.Forms
                 }
                 else
                 {
-                    SetViewXml(Resources.month);
+                    SetViewXml(Resources.MonthXML);
                 }
             }
 
@@ -944,22 +944,22 @@ namespace OutlookDesktop.Forms
 
         private void DayButton_Click(object sender, EventArgs e)
         {
-            SetViewXml(Resources.day);
+            SetViewXml(Resources.DayXML);
         }
 
         private void WorkWeekButton_Click(object sender, EventArgs e)
         {
-            SetViewXml(Resources.WorkWeek);
+            SetViewXml(Resources.WorkWeekXML);
         }
 
         private void WeekButton_Click(object sender, EventArgs e)
         {
-            SetViewXml(Resources.week);
+            SetViewXml(Resources.WeekXML);
         }
 
         private void MonthButton_Click(object sender, EventArgs e)
         {
-            SetViewXml(Resources.month);
+            SetViewXml(Resources.MonthXML);
         }
 
         private void TodayButton_Click(object sender, EventArgs e)
@@ -1028,16 +1028,16 @@ namespace OutlookDesktop.Forms
             switch (mode)
             {
                 case CurrentCalendarView.Day:
-                    SetViewXml(Resources.day);
+                    SetViewXml(Resources.DayXML);
                     break;
                 case CurrentCalendarView.Week:
-                    SetViewXml(Resources.week);
+                    SetViewXml(Resources.WeekXML);
                     break;
                 case CurrentCalendarView.WorkWeek:
-                    SetViewXml(Resources.WorkWeek);
+                    SetViewXml(Resources.WorkWeekXML);
                     break;
                 case CurrentCalendarView.Month:
-                    SetViewXml(Resources.month);
+                    SetViewXml(Resources.MonthXML);
                     break;
             }
 

@@ -307,7 +307,7 @@
   <data name="_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\18.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="month" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="MonthXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\month.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="MissingRequirementsCapation" xml:space="preserve">
@@ -319,7 +319,7 @@
   <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="week" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="WeekXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\week.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="Close" xml:space="preserve">
@@ -358,7 +358,7 @@
   <data name="_9" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\9.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="day" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="DayXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\day.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="StartWithWindows" xml:space="preserve">
@@ -367,7 +367,7 @@
   <data name="OotdRunning" xml:space="preserve">
     <value>Outlook on the Desktop is running</value>
   </data>
-  <data name="WorkWeek" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="WorkWeekXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WorkWeek.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="_26" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -419,13 +419,28 @@ If you have 32-bit Office installed, please use the 32-bit Outlook on the Deskto
   <data name="CheckForUpdates" xml:space="preserve">
     <value>Check for updates</value>
   </data>
-  <data name="next" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Next" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\next.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="paypal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="PayPal" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\paypal.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="prev" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Previous" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\prev.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FiveDays" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\fiveDays.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OneDay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\oneDay.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SevenDays" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\sevenDays.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Today" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\today.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Month" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\month.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
