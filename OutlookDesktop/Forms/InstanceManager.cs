@@ -22,6 +22,7 @@ namespace OutlookDesktop.Forms
         private static Sparkle _sparkle;
         public static Guid LastNextButtonClicked = new Guid();
         public static Guid LastPreviousButtonClicked = new Guid();
+        public static int InstanceCount { get; set; }
 
         public InstanceManager()
         {
@@ -93,6 +94,8 @@ namespace OutlookDesktop.Forms
                     if (appReg.SubKeyCount > 2)
                     {
                         Logger.Debug("Multiple instances to load");
+
+                        InstanceCount = appReg.SubKeyCount - 1;
 
                         // There are multiple instances defined, so we build the context menu strip dynamically.
                         trayIcon.ContextMenuStrip = new ContextMenuStrip();
@@ -194,6 +197,8 @@ namespace OutlookDesktop.Forms
                     }
                     else
                     {
+                        InstanceCount = 1;
+
                         // this is a first run, or there is only 1 instance defined.
                         string instanceName = appReg.SubKeyCount == 1 ? appReg.GetSubKeyNames()[0] : "Default Instance";
 

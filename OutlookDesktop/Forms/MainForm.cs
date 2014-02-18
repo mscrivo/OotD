@@ -962,13 +962,16 @@ namespace OutlookDesktop.Forms
             return offset;
         }
 
+        // Terrible hack to get around a bug in the Outlook View Control where if you have more than one
+        // calendar view active, GoToDate will not work on the instance it's called on, instead it will 
+        // work on the last "active" view of the calendar, which may or may not be the current one.  
+        // So to get around that, if the last clicked next button was not this one, we reset the 
+        // calendar view to make it active, before using GoToDate.            
         private void SetCurrentViewControlAsActiveIfNecessary(CurrentCalendarView mode, Button button, ref Guid lastButtonGuidClicked)
         {
-            // Terrible hack to get around a bug in the Outlook View Control where if you have more than one
-            // calendar view active, GoToDate will not work on the instance it's called on, instead it will 
-            // work on the last "active" view of the calendar, which may or may not be the current one.  
-            // So to get around that, if the last clicked next button was not this one, we reset the 
-            // calendar view to make it active, before using GoToDate.            
+            // we don't need to do this if we only have one instance, so bail right away.
+            if (InstanceManager.InstanceCount == 1) return;
+
             if ((Guid)button.Tag != lastButtonGuidClicked)
             {
                 var currentDate = axOutlookViewControl.SelectedDate;
