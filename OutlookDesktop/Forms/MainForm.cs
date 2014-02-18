@@ -68,13 +68,14 @@ namespace OutlookDesktop.Forms
         /// </summary>
         /// <param name="instanceName">The name of the instance to display.</param>
         public MainForm(String instanceName)
-        {
+        {            
             try
             {
                 InitializeComponent();
             }
             catch (COMException loE)
             {
+                Logger.ErrorException("Error initializing main view: ", loE);
                 if ((uint)loE.ErrorCode == 0x80040154)
                 {
                     MessageBox.Show(this, Resources.Incorrect_bittedness_of_OotD, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -84,23 +85,12 @@ namespace OutlookDesktop.Forms
 
             InstanceName = instanceName;
 
+            // Uniquely identify the prev/next buttons for use in an ugly hack below.
+            ButtonNext.Tag = Guid.NewGuid();
+            ButtonPrevious.Tag = Guid.NewGuid();
+
             try
             {
-                ButtonNext.Tag = Guid.NewGuid();
-                ButtonPrevious.Tag = Guid.NewGuid();
-
-                axOutlookViewControl.SelectionChange += (sender, args) =>
-                {
-                    try
-                    {
-                        LabelCurrentDate.Text = axOutlookViewControl.SelectedDate.ToLongDateString();
-                    }
-                    catch (Exception)
-                    {                        
-                        // ignore
-                    }
-                };
-
                 SuspendLayout();
                 LoadSettings();
                 ResumeLayout();
@@ -111,6 +101,21 @@ namespace OutlookDesktop.Forms
                 Logger.ErrorException("Error initializing window.", ex);
                 MessageBox.Show(this, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
+            }
+
+            // hook up event to keep the date in the header bar up to date
+            axOutlookViewControl.SelectionChange += OnAxOutlookViewControlOnSelectionChange;
+        }
+
+        private void OnAxOutlookViewControlOnSelectionChange(object sender, EventArgs args)
+        {
+            try
+            {
+                LabelCurrentDate.Text = axOutlookViewControl.SelectedDate.ToLongDateString();
+            }
+            catch (Exception ex)
+            {
+                Logger.DebugException("Error setting date in header: ", ex);
             }
         }
 
@@ -185,7 +190,8 @@ namespace OutlookDesktop.Forms
             {
                 CreateParams cp = base.CreateParams;
                 cp.ExStyle |= 0x80;             // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
-                cp.ExStyle |= 0x02000000;       // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
+                // the following seems to cause a problem with the MediaSlider control on Win7 
+                //cp.ExStyle |= 0x02000000;       // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
                 return cp;
             }
         }
@@ -895,6 +901,14 @@ namespace OutlookDesktop.Forms
             }
         }
 
+        private void LabelCurrentDate_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && WindowState != FormWindowState.Maximized)
+            {
+                MoveForm();
+            }
+        }
+
 #region "Resize Cursor Reset Events"
         private void HeaderPanel_MouseMove(object sender, MouseEventArgs e)
         {
@@ -1193,9 +1207,6 @@ namespace OutlookDesktop.Forms
             Bottom = 7,
             BottomLeft = 8
         }
-
         #endregion
-
-
     }
 }
