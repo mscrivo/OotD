@@ -1,9 +1,24 @@
 <h1>Outlook on the Desktop Release Notes</h1>
 
-<h2>2.2.0</h2>
+<h2>3.0.0</h2>
 
 <ul>
-<li>Added automatic check for update functionality</li>
+<li>Added buttons for: Go To Today, Previous and Next to the calendar view.  They are context 
+sensitive depending on what view you are looking at.</li>
+<li>Replaced text on calendar buttons with images to make it more visually appealing and compact.</li>
+<li>Added currently selected date to the header bar in the calendar view.</li>
+<li>Made transparency slider bar much easier to use.</li>
+<li>Added automatic check for updates functionality.
+<ul>
+<li>Checks automatically every 20 days, or can be triggered via icon in system tray.</li>
+</ul></li>
 <li>Added new logging framework to capture failures/program flow to help diagnose issues.</li>
-<li>Fixed several bugs</li>
+<li>Fixed several bugs:
+<ul>
+<li>"Calendar Could Not be Read" no longer pops up when switch calendar views in Outlook 2013</li>
+<li>Fixed issue where month view would not be the default calendar view for new instances.</li>
+<li>Fixed issue where moving cursor down from top of the window onto the calendar buttons would continue to show the resize cursor.</li>
+<li>Fixed issue where "Remove Instance" dialog would pop up behind instance windows.</li>
+<li>When adding a new instance, its position is now properly saved.</li>
+</ul></li>
 </ul>
