@@ -48,7 +48,16 @@ namespace OutlookDesktop.Forms
             _sparkle.UpdateDetected += OnSparkleOnUpdateDetectedShowWithToast;
             _sparkle.UpdateWindowDismissed += OnSparkleOnUpdateWindowDismissed;
 
-            _sparkle.CheckOnFirstApplicationIdle();
+            // check for updates every 20 days
+            if (!GlobalPreferences.IsFirstRun)
+            {
+                _sparkle.StartLoop(true, TimeSpan.FromDays(20));
+            }
+            else
+            {
+                // don't check on first run because we'll have 2 tooltips popup and will likely confuse the user.
+                _sparkle.StartLoop(false, TimeSpan.FromDays(20));
+            }
         }
 
         private static void OnSparkleOnUpdateWindowDismissed(object sender, EventArgs args)
@@ -326,6 +335,10 @@ namespace OutlookDesktop.Forms
                 // reposition the newly added instance so that it's not directly on top of the previous one
                 _mainFormInstances[result.Text].Left = _mainFormInstances[result.Text].Left + 400;
                 _mainFormInstances[result.Text].Top = _mainFormInstances[result.Text].Top + 200;
+
+                // Save the new position so that it's correctly loaded on next run
+                _mainFormInstances[result.Text].Preferences.Left = _mainFormInstances[result.Text].Left;
+                _mainFormInstances[result.Text].Preferences.Top = _mainFormInstances[result.Text].Top;
             }
         }
 

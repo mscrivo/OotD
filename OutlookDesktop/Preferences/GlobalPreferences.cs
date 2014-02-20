@@ -92,6 +92,8 @@ namespace OutlookDesktop.Preferences
         {
             get
             {
+                if (_isFirstRun.HasValue) return _isFirstRun.Value;
+
                 using (var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
                 {
                     if (key != null)
@@ -102,13 +104,17 @@ namespace OutlookDesktop.Preferences
                             if (isFirstRun)
                             {
                                 key.SetValue("FirstRun", false);
-                                return true;
+                                _isFirstRun = true;
+                                return _isFirstRun.Value;
                             }
                         }
                     }
                 }
-                return false;
-            }
+                _isFirstRun = false;
+
+                return _isFirstRun.Value;
+            }            
         }
+        private static bool? _isFirstRun;
     }
 }

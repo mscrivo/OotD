@@ -83,18 +83,21 @@ namespace OutlookDesktop.Forms
                 }
             }
 
-            InstanceName = instanceName;
-
-            // Uniquely identify the prev/next buttons for use in an ugly hack below.
-            ButtonNext.Tag = Guid.NewGuid();
-            ButtonPrevious.Tag = Guid.NewGuid();
-
             try
             {
+                InstanceName = instanceName;
+
+                // Uniquely identify the prev/next buttons for use in an ugly hack below.
+                ButtonNext.Tag = Guid.NewGuid();
+                ButtonPrevious.Tag = Guid.NewGuid();
+
                 SuspendLayout();
                 LoadSettings();
                 ResumeLayout();
                 SendWindowToBack();
+
+                // hook up event to keep the date in the header bar up to date
+                axOutlookViewControl.SelectionChange += OnAxOutlookViewControlOnSelectionChange;
             }
             catch (Exception ex)
             {
@@ -102,9 +105,6 @@ namespace OutlookDesktop.Forms
                 MessageBox.Show(this, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
-
-            // hook up event to keep the date in the header bar up to date
-            axOutlookViewControl.SelectionChange += OnAxOutlookViewControlOnSelectionChange;
         }
 
         private void OnAxOutlookViewControlOnSelectionChange(object sender, EventArgs args)
@@ -779,7 +779,7 @@ namespace OutlookDesktop.Forms
 
         private void RemoveInstanceMenu_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show(this, Resources.RemoveInstanceConfirmation,
+            var result = MessageBox.Show(this.Parent, Resources.RemoveInstanceConfirmation,
                                                Resources.ConfirmationCaption, MessageBoxButtons.YesNo,
                                                MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
             if (result == DialogResult.Yes)
@@ -1156,7 +1156,7 @@ namespace OutlookDesktop.Forms
 
         private ResizeDirection _resizeDir = ResizeDirection.None;
         private List<View> OutlookFolderViews { get; set; }
-        private InstancePreferences Preferences { get; set; }
+        public InstancePreferences Preferences { get; set; }
         private string InstanceName { get; set; }
 
         private ResizeDirection ResizeDir
