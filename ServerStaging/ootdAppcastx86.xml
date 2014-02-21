@@ -11,7 +11,7 @@
         http://www.outlookonthedesktop.com/ootdReleaseNotes.md
       </sparkle:releaseNotesLink>
       <pubDate>Wed, 19 Feb 2014 22:36:00 +0000</pubDate>
-      <enclosure url="http://www.outlookonthedesktop.com/ootd-3.0.0.exe" sparkle:version="3.0.0" length="679213" type="application/octet-stream" />
+      <enclosure url="https://github.com/mscrivo/ootd/releases/download/v3.0.0/ootd-3.0.0.exe" sparkle:version="3.0.0" length="679213" type="application/octet-stream" />
     </item>   
   </channel>
 </rss>
