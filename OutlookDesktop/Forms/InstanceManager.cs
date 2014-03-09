@@ -23,6 +23,7 @@ namespace OutlookDesktop.Forms
         public static Guid LastNextButtonClicked = new Guid();
         public static Guid LastPreviousButtonClicked = new Guid();
         public static int InstanceCount { get; set; }
+        public static Graphics Graphics;
 
         public InstanceManager()
         {
@@ -34,6 +35,8 @@ namespace OutlookDesktop.Forms
 
                 Logger.Debug("First Run");
             }
+
+            Graphics = CreateGraphics();
 
             // setup update checker.
             if (UnsafeNativeMethods.Is64Bit())
@@ -217,7 +220,7 @@ namespace OutlookDesktop.Forms
                         bool newlyAdded = false;
                         if (!_mainFormInstances.ContainsKey(instanceName))
                         {
-                            _mainFormInstances.Add(instanceName, new MainForm(instanceName));                            
+                            _mainFormInstances.Add(instanceName, new MainForm(instanceName));
                             newlyAdded = true;
                         }
 
@@ -300,10 +303,18 @@ namespace OutlookDesktop.Forms
             // get new instance of the resource manager.  This will allow us to look up a resource by name.
             var resourceManager = new ResourceManager("OutlookDesktop.Properties.Resources", typeof(Resources).Assembly);
 
-            DateTime today = DateTime.Now;
+            var today = DateTime.Now;
 
-            // find the icon for the today's day of the month and replace the tray icon with it.
-            trayIcon.Icon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture);
+            // find the icon for the today's day of the month and replace the tray icon with it, compensate for user's DPI settings.
+            if (Graphics.DpiX.Equals(96f))
+            {
+                trayIcon.Icon = new Icon((Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture), new Size(16, 16));
+            }
+            else
+            {
+                // HiDPI, use higher res icon.
+                trayIcon.Icon = new Icon((Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture), new Size(32, 32));
+            }
         }
 
         private void UpdateTimer_Tick(object sender, EventArgs e)
@@ -422,6 +433,8 @@ namespace OutlookDesktop.Forms
                 foreach (var formInstance in _mainFormInstances)
                 {
                     formInstance.Value.TransparencySlider.Enabled = true;
+                    formInstance.Value.ToolTip.SetToolTip(formInstance.Value.TransparencySlider, Resources.Transparency_Slider_Help_Message);
+                    formInstance.Value.ToolTip.SetToolTip(formInstance.Value.LabelCurrentDate, Resources.Form_Move_Help_Message);
                 }
             }
             else
@@ -432,6 +445,9 @@ namespace OutlookDesktop.Forms
                 foreach (var formInstance in _mainFormInstances)
                 {
                     formInstance.Value.TransparencySlider.Enabled = false;
+                    formInstance.Value.ToolTip.SetToolTip(formInstance.Value.TransparencySlider, Resources.Transparency_Slider_Locked_Message);
+                    formInstance.Value.ToolTip.SetToolTip(formInstance.Value.HeaderPanel, Resources.Form_Move_Locked_Message);
+                    formInstance.Value.ToolTip.SetToolTip(formInstance.Value.LabelCurrentDate, Resources.Form_Move_Locked_Message);
                 }
             }
         }

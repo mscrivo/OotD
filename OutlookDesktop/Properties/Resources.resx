@@ -443,4 +443,25 @@ If you have 32-bit Office installed, please use the 32-bit Outlook on the Deskto
   <data name="Month" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\month.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Toggle_Day_View" xml:space="preserve">
+    <value>Toggle Day View</value>
+  </data>
+  <data name="Move_Previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="Move_Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Go_to_Today" xml:space="preserve">
+    <value>Go to Today</value>
+  </data>
+  <data name="Toggle_Work_Week_View" xml:space="preserve">
+    <value>Toggle Work Week View</value>
+  </data>
+  <data name="Toggle_Month_View" xml:space="preserve">
+    <value>Toggle Month View</value>
+  </data>
+  <data name="Toggle_Full_Week_View" xml:space="preserve">
+    <value>Toggle Full Week View</value>
+  </data>
 </root>

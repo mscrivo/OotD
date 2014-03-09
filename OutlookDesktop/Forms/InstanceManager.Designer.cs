@@ -14,6 +14,7 @@
         protected override void Dispose(bool disposing)
         {
             _sparkle.StopLoop();
+            Graphics.Dispose();
 
             if (disposing && (components != null))
             {

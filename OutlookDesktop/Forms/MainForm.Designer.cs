@@ -1,4 +1,5 @@
 ﻿using AxOLXLib;
+using OutlookDesktop.Properties;
 
 namespace OutlookDesktop.Forms
 {
@@ -245,13 +246,13 @@ namespace OutlookDesktop.Forms
             this.HeaderPanel.Controls.Add(this.DayButton);
             this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HeaderPanel.Location = new System.Drawing.Point(4, 4);
-            this.HeaderPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.HeaderPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.HeaderPanel.Name = "HeaderPanel";
-            this.HeaderPanel.Padding = new System.Windows.Forms.Padding(3);
-            this.HeaderPanel.Size = new System.Drawing.Size(507, 20);
+            this.HeaderPanel.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.HeaderPanel.Size = new System.Drawing.Size(507, 19);
             this.HeaderPanel.TabIndex = 3;
+            this.ToolTip.SetToolTip(this.HeaderPanel, global::OutlookDesktop.Properties.Resources.Form_Move_Help_Message);
             this.HeaderPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HeaderPanel_MouseDown);
-            this.HeaderPanel.MouseHover += new System.EventHandler(this.HeaderPanel_MouseHover);
             this.HeaderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HeaderPanel_MouseMove);
             // 
             // TransparencySlider
@@ -261,24 +262,27 @@ namespace OutlookDesktop.Forms
             this.TransparencySlider.AnimationSpeed = MediaSlider.MediaSlider.AnimateSpeed.Normal;
             this.TransparencySlider.AutoScrollMargin = new System.Drawing.Size(0, 0);
             this.TransparencySlider.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.TransparencySlider.AutoSize = true;
             this.TransparencySlider.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.TransparencySlider.BackgroundImage = null;
             this.TransparencySlider.ButtonAccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.TransparencySlider.ButtonBorderColor = System.Drawing.Color.Black;
             this.TransparencySlider.ButtonColor = System.Drawing.SystemColors.GrayText;
             this.TransparencySlider.ButtonCornerRadius = ((uint)(4u));
-            this.TransparencySlider.ButtonSize = new System.Drawing.Size(12, 12);
+            this.TransparencySlider.ButtonSize = new System.Drawing.Size(14, 14);
             this.TransparencySlider.ButtonStyle = MediaSlider.MediaSlider.ButtonType.Round;
             this.TransparencySlider.ContextMenuStrip = null;
             this.TransparencySlider.LargeChange = 15;
-            this.TransparencySlider.Location = new System.Drawing.Point(7, 2);
+            this.TransparencySlider.Location = new System.Drawing.Point(6, 2);
             this.TransparencySlider.Margin = new System.Windows.Forms.Padding(0);
             this.TransparencySlider.Maximum = 100;
+            this.TransparencySlider.MaximumSize = new System.Drawing.Size(200, 28);
             this.TransparencySlider.Minimum = 25;
+            this.TransparencySlider.MinimumSize = new System.Drawing.Size(100, 14);
             this.TransparencySlider.Name = "TransparencySlider";
             this.TransparencySlider.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.TransparencySlider.ShowButtonOnHover = true;
-            this.TransparencySlider.Size = new System.Drawing.Size(100, 14);
+            this.TransparencySlider.Size = new System.Drawing.Size(101, 14);
             this.TransparencySlider.SliderFlyOut = MediaSlider.MediaSlider.FlyOutStyle.None;
             this.TransparencySlider.SmallChange = 5;
             this.TransparencySlider.SmoothScrolling = false;
@@ -286,8 +290,9 @@ namespace OutlookDesktop.Forms
             this.TransparencySlider.TickColor = System.Drawing.Color.DarkGray;
             this.TransparencySlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.TransparencySlider.TickType = MediaSlider.MediaSlider.TickMode.Standard;
+            this.ToolTip.SetToolTip(this.TransparencySlider, global::OutlookDesktop.Properties.Resources.Transparency_Slider_Help_Message);
             this.TransparencySlider.TrackBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.TransparencySlider.TrackDepth = 4;
+            this.TransparencySlider.TrackDepth = 6;
             this.TransparencySlider.TrackFillColor = System.Drawing.Color.Transparent;
             this.TransparencySlider.TrackProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(101)))), ((int)(((byte)(188)))));
             this.TransparencySlider.TrackShadow = false;
@@ -295,7 +300,6 @@ namespace OutlookDesktop.Forms
             this.TransparencySlider.TrackStyle = MediaSlider.MediaSlider.TrackType.Value;
             this.TransparencySlider.Value = 50;
             this.TransparencySlider.ValueChanged += new MediaSlider.MediaSlider.ValueChangedDelegate(this.TransparencySlider_Scroll);
-            this.TransparencySlider.MouseHover += new System.EventHandler(this.TransparencySlider_MouseHover);
             // 
             // LabelCurrentDate
             // 
@@ -306,6 +310,7 @@ namespace OutlookDesktop.Forms
             this.LabelCurrentDate.Size = new System.Drawing.Size(235, 17);
             this.LabelCurrentDate.TabIndex = 9;
             this.LabelCurrentDate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ToolTip.SetToolTip(this.LabelCurrentDate, global::OutlookDesktop.Properties.Resources.Form_Move_Help_Message);
             this.LabelCurrentDate.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LabelCurrentDate_MouseDown);
             // 
             // ButtonPrevious
@@ -317,9 +322,9 @@ namespace OutlookDesktop.Forms
             this.ButtonPrevious.Image = global::OutlookDesktop.Properties.Resources.Previous;
             this.ButtonPrevious.Location = new System.Drawing.Point(461, -1);
             this.ButtonPrevious.Name = "ButtonPrevious";
-            this.ButtonPrevious.Size = new System.Drawing.Size(22, 20);
+            this.ButtonPrevious.Size = new System.Drawing.Size(22, 19);
             this.ButtonPrevious.TabIndex = 6;
-            this.ToolTip.SetToolTip(this.ButtonPrevious, "Previous");
+            this.ToolTip.SetToolTip(this.ButtonPrevious, global::OutlookDesktop.Properties.Resources.Move_Previous);
             this.ButtonPrevious.UseVisualStyleBackColor = true;
             this.ButtonPrevious.Click += new System.EventHandler(this.ButtonPrevious_Click);
             this.ButtonPrevious.MouseHover += new System.EventHandler(this.ButtonPrevious_MouseHover);
@@ -333,9 +338,9 @@ namespace OutlookDesktop.Forms
             this.ButtonNext.Image = global::OutlookDesktop.Properties.Resources.Next;
             this.ButtonNext.Location = new System.Drawing.Point(483, -1);
             this.ButtonNext.Name = "ButtonNext";
-            this.ButtonNext.Size = new System.Drawing.Size(22, 20);
+            this.ButtonNext.Size = new System.Drawing.Size(22, 19);
             this.ButtonNext.TabIndex = 7;
-            this.ToolTip.SetToolTip(this.ButtonNext, "Next");
+            this.ToolTip.SetToolTip(this.ButtonNext, global::OutlookDesktop.Properties.Resources.Move_Next);
             this.ButtonNext.UseVisualStyleBackColor = true;
             this.ButtonNext.Click += new System.EventHandler(this.ButtonNext_Click);
             this.ButtonNext.MouseHover += new System.EventHandler(this.ButtonNext_MouseHover);
@@ -349,9 +354,9 @@ namespace OutlookDesktop.Forms
             this.TodayButton.Image = global::OutlookDesktop.Properties.Resources.Today;
             this.TodayButton.Location = new System.Drawing.Point(349, -1);
             this.TodayButton.Name = "TodayButton";
-            this.TodayButton.Size = new System.Drawing.Size(20, 20);
+            this.TodayButton.Size = new System.Drawing.Size(20, 19);
             this.TodayButton.TabIndex = 1;
-            this.ToolTip.SetToolTip(this.TodayButton, "Go to Today");
+            this.ToolTip.SetToolTip(this.TodayButton, global::OutlookDesktop.Properties.Resources.Go_to_Today);
             this.TodayButton.UseVisualStyleBackColor = true;
             this.TodayButton.Click += new System.EventHandler(this.TodayButton_Click);
             this.TodayButton.MouseHover += new System.EventHandler(this.TodayButton_MouseHover);
@@ -365,9 +370,9 @@ namespace OutlookDesktop.Forms
             this.WorkWeekButton.Image = global::OutlookDesktop.Properties.Resources.FiveDays;
             this.WorkWeekButton.Location = new System.Drawing.Point(393, -1);
             this.WorkWeekButton.Name = "WorkWeekButton";
-            this.WorkWeekButton.Size = new System.Drawing.Size(20, 20);
+            this.WorkWeekButton.Size = new System.Drawing.Size(20, 19);
             this.WorkWeekButton.TabIndex = 3;
-            this.ToolTip.SetToolTip(this.WorkWeekButton, "Toggle Work Week View");
+            this.ToolTip.SetToolTip(this.WorkWeekButton, global::OutlookDesktop.Properties.Resources.Toggle_Work_Week_View);
             this.WorkWeekButton.UseVisualStyleBackColor = true;
             this.WorkWeekButton.Click += new System.EventHandler(this.WorkWeekButton_Click);
             this.WorkWeekButton.MouseHover += new System.EventHandler(this.WorkWeekButton_MouseHover);
@@ -381,9 +386,9 @@ namespace OutlookDesktop.Forms
             this.MonthButton.Image = ((System.Drawing.Image)(resources.GetObject("MonthButton.Image")));
             this.MonthButton.Location = new System.Drawing.Point(438, -1);
             this.MonthButton.Name = "MonthButton";
-            this.MonthButton.Size = new System.Drawing.Size(20, 20);
+            this.MonthButton.Size = new System.Drawing.Size(20, 19);
             this.MonthButton.TabIndex = 5;
-            this.ToolTip.SetToolTip(this.MonthButton, "Toggle Month View");
+            this.ToolTip.SetToolTip(this.MonthButton, global::OutlookDesktop.Properties.Resources.Toggle_Month_View);
             this.MonthButton.UseVisualStyleBackColor = true;
             this.MonthButton.Click += new System.EventHandler(this.MonthButton_Click);
             this.MonthButton.MouseHover += new System.EventHandler(this.MonthButton_MouseHover);
@@ -397,9 +402,9 @@ namespace OutlookDesktop.Forms
             this.WeekButton.Image = global::OutlookDesktop.Properties.Resources.SevenDays;
             this.WeekButton.Location = new System.Drawing.Point(416, -1);
             this.WeekButton.Name = "WeekButton";
-            this.WeekButton.Size = new System.Drawing.Size(20, 20);
+            this.WeekButton.Size = new System.Drawing.Size(20, 19);
             this.WeekButton.TabIndex = 4;
-            this.ToolTip.SetToolTip(this.WeekButton, "Toggle Full Week View");
+            this.ToolTip.SetToolTip(this.WeekButton, global::OutlookDesktop.Properties.Resources.Toggle_Full_Week_View);
             this.WeekButton.UseVisualStyleBackColor = true;
             this.WeekButton.Click += new System.EventHandler(this.WeekButton_Click);
             this.WeekButton.MouseHover += new System.EventHandler(this.WeekButton_MouseHover);
@@ -413,9 +418,9 @@ namespace OutlookDesktop.Forms
             this.DayButton.Image = global::OutlookDesktop.Properties.Resources.OneDay;
             this.DayButton.Location = new System.Drawing.Point(371, -1);
             this.DayButton.Name = "DayButton";
-            this.DayButton.Size = new System.Drawing.Size(20, 20);
+            this.DayButton.Size = new System.Drawing.Size(20, 19);
             this.DayButton.TabIndex = 2;
-            this.ToolTip.SetToolTip(this.DayButton, "Toggle Day View");
+            this.ToolTip.SetToolTip(this.DayButton, global::OutlookDesktop.Properties.Resources.Toggle_Day_View);
             this.DayButton.UseVisualStyleBackColor = true;
             this.DayButton.Click += new System.EventHandler(this.DayButton_Click);
             this.DayButton.MouseHover += new System.EventHandler(this.DayButton_MouseHover);
@@ -451,7 +456,10 @@ namespace OutlookDesktop.Forms
             // 
             // ToolTip
             // 
+            this.ToolTip.AutoPopDelay = 5000;
+            this.ToolTip.InitialDelay = 1000;
             this.ToolTip.IsBalloon = true;
+            this.ToolTip.ReshowDelay = 100;
             // 
             // WindowMessageTimer
             // 
@@ -471,7 +479,7 @@ namespace OutlookDesktop.Forms
             this.MinimumSize = new System.Drawing.Size(325, 125);
             this.Name = "MainForm";
             this.Opacity = 0.5D;
-            this.Padding = new System.Windows.Forms.Padding(4);
+            this.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -481,6 +489,7 @@ namespace OutlookDesktop.Forms
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
             this.trayMenu.ResumeLayout(false);
             this.HeaderPanel.ResumeLayout(false);
+            this.HeaderPanel.PerformLayout();
             this.ViewControlHostPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.axOutlookViewControl)).EndInit();
             this.ResumeLayout(false);
@@ -524,13 +533,13 @@ namespace OutlookDesktop.Forms
         private System.Windows.Forms.Button MonthButton;
         private System.Windows.Forms.Button WeekButton;
         private System.Windows.Forms.Button WorkWeekButton;
-        private System.Windows.Forms.ToolTip ToolTip;
+        public System.Windows.Forms.ToolTip ToolTip;
         private System.Windows.Forms.Timer WindowMessageTimer;
         private System.Windows.Forms.ToolStripSeparator Separator6;
         private System.Windows.Forms.Button TodayButton;
         private System.Windows.Forms.Button ButtonNext;
         private System.Windows.Forms.Button ButtonPrevious;
-        private System.Windows.Forms.Label LabelCurrentDate;
+        public System.Windows.Forms.Label LabelCurrentDate;
         public MediaSlider.MediaSlider TransparencySlider;
     }
 }

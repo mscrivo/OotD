@@ -1087,22 +1087,6 @@ namespace OutlookDesktop.Forms
             Preferences.Opacity = opacityVal;
         }
 
-        private void TransparencySlider_MouseHover(object sender, EventArgs e)
-        {
-            ToolTip.SetToolTip(TransparencySlider,
-                               GlobalPreferences.LockPosition
-                                   ? Resources.Transparency_Slider_Locked_Message
-                                   : Resources.Transparency_Slider_Help_Message);
-        }
-
-        private void HeaderPanel_MouseHover(object sender, EventArgs e)
-        {
-            ToolTip.SetToolTip(HeaderPanel,
-                               GlobalPreferences.LockPosition
-                                   ? Resources.Form_Move_Locked_Message
-                                   : Resources.Form_Move_Help_Message);
-        }
-
         private void WindowMessageTimer_Tick(object sender, EventArgs e)
         {
             WindowMessageTimer.Enabled = false;

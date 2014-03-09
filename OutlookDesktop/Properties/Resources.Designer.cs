@@ -612,6 +612,15 @@ namespace OutlookDesktop.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go to Today.
+        /// </summary>
+        internal static string Go_to_Today {
+            get {
+                return ResourceManager.GetString("Go_to_Today", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Height.
         /// </summary>
         internal static string Height {
@@ -708,6 +717,24 @@ namespace OutlookDesktop.Properties {
         internal static string MonthXML {
             get {
                 return ResourceManager.GetString("MonthXML", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        internal static string Move_Next {
+            get {
+                return ResourceManager.GetString("Move_Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        internal static string Move_Previous {
+            get {
+                return ResourceManager.GetString("Move_Previous", resourceCulture);
             }
         }
         
@@ -984,6 +1011,42 @@ namespace OutlookDesktop.Properties {
             get {
                 object obj = ResourceManager.GetObject("Today", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Day View.
+        /// </summary>
+        internal static string Toggle_Day_View {
+            get {
+                return ResourceManager.GetString("Toggle_Day_View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Full Week View.
+        /// </summary>
+        internal static string Toggle_Full_Week_View {
+            get {
+                return ResourceManager.GetString("Toggle_Full_Week_View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Month View.
+        /// </summary>
+        internal static string Toggle_Month_View {
+            get {
+                return ResourceManager.GetString("Toggle_Month_View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle Work Week View.
+        /// </summary>
+        internal static string Toggle_Work_Week_View {
+            get {
+                return ResourceManager.GetString("Toggle_Work_Week_View", resourceCulture);
             }
         }
         
