@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookDesktop", "OutlookDe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetSparkle2010", "..\NetSparkle\NetSparkle\NetSparkle2010.csproj", "{74635A21-2BAD-4522-AB95-E3E5703CD301}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MACTrackBarLib", "..\MACTrackBarLib\MACTrackBarLib\MACTrackBarLib.csproj", "{77A112B1-5440-440B-A0F6-2EDCC5B093CB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -33,14 +31,6 @@ Global
 		{74635A21-2BAD-4522-AB95-E3E5703CD301}.Release|x64.Build.0 = Release|Any CPU
 		{74635A21-2BAD-4522-AB95-E3E5703CD301}.Release|x86.ActiveCfg = Release|x86
 		{74635A21-2BAD-4522-AB95-E3E5703CD301}.Release|x86.Build.0 = Release|x86
-		{77A112B1-5440-440B-A0F6-2EDCC5B093CB}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{77A112B1-5440-440B-A0F6-2EDCC5B093CB}.Debug|x64.Build.0 = Debug|Any CPU
-		{77A112B1-5440-440B-A0F6-2EDCC5B093CB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{77A112B1-5440-440B-A0F6-2EDCC5B093CB}.Debug|x86.Build.0 = Debug|Any CPU
-		{77A112B1-5440-440B-A0F6-2EDCC5B093CB}.Release|x64.ActiveCfg = Release|Any CPU
-		{77A112B1-5440-440B-A0F6-2EDCC5B093CB}.Release|x64.Build.0 = Release|Any CPU
-		{77A112B1-5440-440B-A0F6-2EDCC5B093CB}.Release|x86.ActiveCfg = Release|Any CPU
-		{77A112B1-5440-440B-A0F6-2EDCC5B093CB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
