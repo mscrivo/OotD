@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -68,7 +69,7 @@ namespace OutlookDesktop.Forms
         /// </summary>
         /// <param name="instanceName">The name of the instance to display.</param>
         public MainForm(String instanceName)
-        {            
+        {
             try
             {
                 InitializeComponent();
@@ -411,7 +412,6 @@ namespace OutlookDesktop.Forms
         /// <returns></returns>
         private static string GetFolderNameFromFullPath(string fullPath)
         {
-            //TODO: Revert back and deal with online/offline better!
             return fullPath.Substring(fullPath.LastIndexOf("\\", StringComparison.Ordinal) + 1,
                                       fullPath.Length - fullPath.LastIndexOf("\\", StringComparison.Ordinal) - 1);
         }
@@ -779,7 +779,7 @@ namespace OutlookDesktop.Forms
 
         private void RemoveInstanceMenu_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show(this.Parent, Resources.RemoveInstanceConfirmation,
+            var result = MessageBox.Show(Parent, Resources.RemoveInstanceConfirmation,
                                                Resources.ConfirmationCaption, MessageBoxButtons.YesNo,
                                                MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
             if (result == DialogResult.Yes)
@@ -909,47 +909,72 @@ namespace OutlookDesktop.Forms
             }
         }
 
-#region "Resize Cursor Reset Events"
+        #region "Resize Cursor Reset Events"
         private void HeaderPanel_MouseMove(object sender, MouseEventArgs e)
         {
             ResizeDir = ResizeDirection.None;
+            Cursor = Cursors.SizeAll;
         }
 
         private void WorkWeekButton_MouseHover(object sender, EventArgs e)
         {
             ResizeDir = ResizeDirection.None;
+            Cursor = Cursors.Default;
         }
 
         private void DayButton_MouseHover(object sender, EventArgs e)
         {
             ResizeDir = ResizeDirection.None;
+            Cursor = Cursors.Default;
         }
 
         private void TodayButton_MouseHover(object sender, EventArgs e)
         {
             ResizeDir = ResizeDirection.None;
+            Cursor = Cursors.Default;
         }
 
         private void WeekButton_MouseHover(object sender, EventArgs e)
         {
             ResizeDir = ResizeDirection.None;
+            Cursor = Cursors.Default;
         }
 
         private void MonthButton_MouseHover(object sender, EventArgs e)
         {
             ResizeDir = ResizeDirection.None;
+            Cursor = Cursors.Default;
         }
 
         private void ButtonPrevious_MouseHover(object sender, EventArgs e)
         {
             ResizeDir = ResizeDirection.None;
+            Cursor = Cursors.Default;
         }
 
         private void ButtonNext_MouseHover(object sender, EventArgs e)
         {
             ResizeDir = ResizeDirection.None;
+            Cursor = Cursors.Default;
         }
-#endregion
+
+        private void TransparencySlider_MouseHover(object sender, EventArgs e)
+        {
+            ResizeDir = ResizeDirection.None;
+            Cursor = Cursors.Default;
+        }
+
+        private void sliderContainerPanel_MouseHover(object sender, EventArgs e)
+        {
+            ResizeDir = ResizeDirection.None;
+            Cursor = Cursors.Default;
+        }
+
+        private void LabelCurrentDate_MouseHover(object sender, EventArgs e)
+        {
+            Cursor = Cursors.SizeAll;
+        }
+        #endregion
 
         private void SetViewXml(string value)
         {
@@ -1037,7 +1062,7 @@ namespace OutlookDesktop.Forms
             if (InstanceManager.InstanceCount == 1) return;
 
             // we can bail if we know the last button clicked was the one on this form.
-            if ((Guid) button.Tag == lastButtonGuidClicked) return;
+            if ((Guid)button.Tag == lastButtonGuidClicked) return;
 
             var currentDate = axOutlookViewControl.SelectedDate;
             switch (mode)
@@ -1076,9 +1101,9 @@ namespace OutlookDesktop.Forms
             return mode;
         }
 
-        private void TransparencySlider_Scroll(object sender, EventArgs e)
+        private void TransparencySlider_ValueChanged(object sender, decimal value)
         {
-            double opacityVal = (double)TransparencySlider.Value / 100;
+            var opacityVal = (double)(value / 100);
             if (Math.Abs(opacityVal - 1) < double.Epsilon)
             {
                 opacityVal = 0.99;
