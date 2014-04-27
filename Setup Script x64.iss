@@ -1,8 +1,8 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "3.0.0"
-#define MyAppVerName "Outlook on the Desktop 3.0.0"
+#define MyAppVersion "3.1.0"
+#define MyAppVerName "Outlook on the Desktop 3.1.0"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
@@ -55,7 +55,7 @@ Source: "OutlookDesktop\bin\x64\Release\OutlookDesktop.exe.config"; DestDir: "{a
 Source: "OutlookDesktop\bin\x64\Release\NetSparkle.Net40.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OutlookDesktop\bin\x64\Release\NLog.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OutlookDesktop\bin\x64\Release\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OutlookDesktop\bin\x64\Release\MediaSlider.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OutlookDesktop\bin\x64\Release\MACTrackBarLib.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}

@@ -8,4 +8,6 @@ Outlook on the Desktop (aka OotD) is a Windows application written in C# which p
 
 ### Build Requirements:
 
-* To open and build the OutlookDesktop.sln, you'll need to clone my forked [NetSparkle repo] (https://github.com/mscrivo/NetSparkle) along side where you cloned the OotD repo, as it's referenced in the solution.
+* To open and build the OutlookDesktop.sln, you'll need to clone the following repos along side where you close OotD:
+  1. [NetSparkle] (https://github.com/mscrivo/NetSparkle)
+  2. [MACTrackBarLib] (https://github.com/mscrivo/MACTrackBarLib)

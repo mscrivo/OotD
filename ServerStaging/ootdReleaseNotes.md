@@ -1,5 +1,9 @@
 # Outlook on the Desktop Release Notes
 
+## 3.1.0
+
+* Added HiDPI support. Requires that you are using a version of Microsoft Office that supports HiDPI as well.
+
 ## 3.0.0
 
 * Added buttons for: Go To Today, Previous and Next to the calendar view.  They are context 
