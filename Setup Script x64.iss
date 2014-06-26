@@ -1,8 +1,8 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "3.1.0"
-#define MyAppVerName "Outlook on the Desktop 3.1.0"
+#define MyAppVersion "3.2.0"
+#define MyAppVerName "Outlook on the Desktop 3.2.0"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
@@ -12,7 +12,6 @@
 ArchitecturesInstallIn64BitMode=x64
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppVerName}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -32,7 +31,7 @@ WizardSmallImageFile=C:\Program Files (x86)\Inno Setup 5\WizModernSmallImage-IS.
 AppID={{6D9785D9-FF53-4C06-9C2A-E4173D41A2FD}
 ShowLanguageDialog=yes
 OutputDir=ServerStaging
-MinVersion=0,5.0.2195
+MinVersion=0,6.0.6001sp2
 AllowUNCPath=false
 UninstallLogMode=append
 UninstallDisplayIcon={app}\App.ico
@@ -45,14 +44,14 @@ AllowRootDirectory=True
 Name: eng; MessagesFile: compiler:Default.isl
 
 [Tasks]
-Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4 Client Profile; Check: NeedsDotNetFramework
+Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4.5.2; Check: NeedsDotNetFramework
 
 [Files]
 Source: "OutlookDesktop\bin\x64\Release\OutlookDesktop.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OutlookDesktop\bin\x64\Release\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OutlookDesktop\bin\x64\Release\OLXLib.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OutlookDesktop\bin\x64\Release\OutlookDesktop.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OutlookDesktop\bin\x64\Release\NetSparkle.Net40.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OutlookDesktop\bin\x64\Release\NetSparkle.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OutlookDesktop\bin\x64\Release\NLog.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OutlookDesktop\bin\x64\Release\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OutlookDesktop\bin\x64\Release\MACTrackBarLib.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -76,20 +75,23 @@ Name: "{app}\logs"; Permissions: everyone-modify
 
 [Code]
 const
-	dotnetURL = 'http://download.microsoft.com/download/7/B/6/7B629E05-399A-4A92-B5BC-484C74B5124B/dotNetFx40_Client_setup.exe';
+	dotnetURL = 'http://download.microsoft.com/download/E/2/1/E21644B5-2DF2-47C2-91BD-63C560427900/NDP452-KB2901907-x86-x64-AllOS-ENU.exe';
 
 function NeedsDotNetFramework(): Boolean;
 var
-	Installed: Cardinal;
+	ReleaseVersion: Cardinal;
 	tempResult: Boolean;
 begin
 	tempResult:= True;
 
-	if RegKeyExists(HKLM,'Software\Microsoft\NET Framework Setup\NDP\v4\Client') then
+	if RegKeyExists(HKLM,'Software\Microsoft\NET Framework Setup\NDP\v4\Full') then
 	begin
-		if RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Client', 'Install', Installed) then
+		if RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', ReleaseVersion) then
 		begin
-			tempResult := False;
+      if (ReleaseVersion >= 379893) then
+      begin
+        tempResult := False;
+      end;
 		end;
 	end;
 
@@ -111,10 +113,10 @@ begin
 		sTasks := WizardSelectedTasks(false);
 
 		isxdl_ClearFiles;
-		isxdl_SetOption('title', 'Downloading the Microsoft .NET Framework 4 Client Profile');
-		isxdl_SetOption('description', 'Please wait while Setup downloads the Microsoft .NET Framework 4 Client Profile to your computer.');
+		isxdl_SetOption('title', 'Downloading the Microsoft .NET Framework 4.5 Framework');
+		isxdl_SetOption('description', 'Please wait while Setup downloads the Microsoft .NET 4.5 Framework.');
 
-		sFileName := ExpandConstant('{tmp}\dotNetFx40_Client_setup.exe');
+		sFileName := ExpandConstant('{tmp}\NDP452-KB2901907-x86-x64-AllOS-ENU.exe');
 
 		if IsTaskSelected('installdotnet') then
 		begin
@@ -123,10 +125,20 @@ begin
 
 		if isxdl_DownloadFiles(hWnd) <> 0 then
 		begin
-			if FileExists(sFileName) then Exec(sFileName,'/qb','',SW_SHOW,ewWaitUntilTerminated,nCode)
-		end else
+			if FileExists(sFileName) then 
+      begin 
+        if Exec(sFileName,'/Passive','',SW_SHOW,ewWaitUntilTerminated,nCode) then        
+        begin 
+          Result := true;
+        end 
+        else begin
+          Result := false;
+        end
+      end 
+		end 
+    else begin
 			Result := false;
-
+    end
 	end;
 end;
 

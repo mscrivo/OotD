@@ -310,9 +310,9 @@
       <Project>{77a112b1-5440-440b-a0f6-2edcc5b093cb}</Project>
       <Name>MACTrackBarLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NetSparkle\NetSparkle\NetSparkle2010.csproj">
+    <ProjectReference Include="..\..\NetSparkle\NetSparkle\NetSparkle.csproj">
       <Project>{74635a21-2bad-4522-ab95-e3e5703cd301}</Project>
-      <Name>NetSparkle2010</Name>
+      <Name>NetSparkle</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

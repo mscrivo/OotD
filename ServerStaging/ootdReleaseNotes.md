@@ -1,5 +1,9 @@
 # Outlook on the Desktop Release Notes
 
+## 3.2.0
+
+* Updated from .NET Framework 4.0 to 4.5.2.  This not only fixes several HiDPI issues, but also gives a nice boost in performance.  However, the minimum supported versions of Windows for .NET 4.5.2 is Vista SP2, so this release and going forward, OotD will only work on Windows Vista SP2 and higher.
+
 ## 3.1.0
 
 * Added HiDPI support. Requires that you are using a version of Microsoft Office that supports HiDPI as well.
