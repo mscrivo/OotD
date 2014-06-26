@@ -51,7 +51,7 @@ namespace OutlookDesktop.Preferences
                         }
                         catch (Exception ex)
                         {
-                            Logger.ErrorException("Exception caught setting Start with Windows Key", ex);
+                            Logger.Error("Exception caught setting Start with Windows Key", ex);
                         }
                     }
                 }

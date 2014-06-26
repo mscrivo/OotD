@@ -76,7 +76,7 @@ namespace OutlookDesktop.Forms
             }
             catch (COMException loE)
             {
-                Logger.ErrorException("Error initializing main view: ", loE);
+                Logger.Error("Error initializing main view: ", loE);
                 if ((uint)loE.ErrorCode == 0x80040154)
                 {
                     MessageBox.Show(this, Resources.Incorrect_bittedness_of_OotD, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -102,7 +102,7 @@ namespace OutlookDesktop.Forms
             }
             catch (Exception ex)
             {
-                Logger.ErrorException("Error initializing window.", ex);
+                Logger.Error("Error initializing window.", ex);
                 MessageBox.Show(this, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
@@ -116,7 +116,7 @@ namespace OutlookDesktop.Forms
             }
             catch (Exception ex)
             {
-                Logger.DebugException("Error setting date in header: ", ex);
+                Logger.Debug("Error setting date in header: ", ex);
             }
         }
 
@@ -235,7 +235,7 @@ namespace OutlookDesktop.Forms
             {
                 // use default if there was a problem
                 Opacity = InstancePreferences.DefaultOpacity;
-                Logger.ErrorException("Error setting opacity.", ex);
+                Logger.Error("Error setting opacity.", ex);
                 MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
@@ -257,7 +257,7 @@ namespace OutlookDesktop.Forms
                 Top = InstancePreferences.DefaultLeftPosition;
                 Width = InstancePreferences.DefaultWidth;
                 Height = InstancePreferences.DefaultHeight;
-                Logger.ErrorException("Error setting window position.", ex);
+                Logger.Error("Error setting window position.", ex);
                 MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
@@ -360,7 +360,7 @@ namespace OutlookDesktop.Forms
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorException("Error setting MAPI folder.", ex);
+                    Logger.Error("Error setting MAPI folder.", ex);
                 }
             }
             else
@@ -806,7 +806,7 @@ namespace OutlookDesktop.Forms
                 catch (Exception ex)
                 {
                     // no big deal if we can't set the day, just ignore and go on.
-                    Logger.WarnException("Unable to go to today on calendar.", ex);
+                    Logger.Warn("Unable to go to today on calendar.", ex);
                 }
             }
             _previousDate = DateTime.Now;
