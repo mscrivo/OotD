@@ -16,7 +16,6 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
-DefaultGroupName={#MyAppName}
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoCopyright={#MyAppCopyright}
 AppCopyright={#MyAppCopyright}
@@ -33,13 +32,17 @@ OutputDir=ServerStaging
 MinVersion=0,6.0.6001sp2
 AllowUNCPath=false
 UninstallLogMode=append
-UninstallDisplayIcon={app}\App.ico
+UninstallDisplayIcon={app}\OutlookDesktop.exe
 PrivilegesRequired=none
-AppMutex=Local\OutlookDesktop.exe
 DisableDirPage=auto
+DisableReadyMemo=True
+DisableProgramGroupPage=yes
 
 [Languages]
 Name: eng; MessagesFile: compiler:Default.isl
+
+[Run]
+Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser unchecked; Description: "{cm:LaunchProgram,{#MyAppName}}"
 
 [Tasks]
 Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4.5.2; Check: NeedsDotNetFramework
@@ -58,9 +61,6 @@ Source: "OutlookDesktop\bin\x86\Release\MACTrackBarLib.dll"; DestDir: "{app}"; F
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
 Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {#MyAppURL}
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
-
-[Run]
-Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: postinstall skipifsilent nowait runasoriginaluser; WorkingDir: {app}
 
 [Registry]
 Root: "HKCU"; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: OutlookOnDesktop; ValueData: {app}\OutlookDesktop.exe; Flags: uninsdeletevalue
