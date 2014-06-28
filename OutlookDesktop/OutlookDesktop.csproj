@@ -146,8 +146,12 @@
       <Link>README.html</Link>
       <DependentUpon>README.md</DependentUpon>
     </Content>
-    <Content Include="..\ServerStaging\ootdAppcastx64.xml" />
-    <Content Include="..\ServerStaging\ootdAppcastx86.xml" />
+    <Content Include="..\ServerStaging\ootdAppcastx64.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\ServerStaging\ootdAppcastx86.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="..\ServerStaging\ootdReleaseNotes.html" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
