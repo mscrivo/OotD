@@ -3,6 +3,7 @@
 ## 3.2.1
 
 * Fixed issue where HighDPI improvements in .NET 4.5.2 were not enabled.
+* Streamlined installation/upgrade process.  Will now offer to close app automatically if it is running.
 
 ## 3.2.0
 
