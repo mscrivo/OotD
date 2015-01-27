@@ -62,6 +62,7 @@ namespace OutlookDesktop.Forms
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.HeaderPanel = new System.Windows.Forms.Panel();
+            this.TransparencySlider = new MACTrackBarLib.MACTrackBar();
             this.LabelCurrentDate = new System.Windows.Forms.Label();
             this.ButtonPrevious = new System.Windows.Forms.Button();
             this.ButtonNext = new System.Windows.Forms.Button();
@@ -75,7 +76,6 @@ namespace OutlookDesktop.Forms
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.WindowMessageTimer = new System.Windows.Forms.Timer(this.components);
-            this.TransparencySlider = new MACTrackBarLib.MACTrackBar();
             this.trayMenu.SuspendLayout();
             this.HeaderPanel.SuspendLayout();
             this.ViewControlHostPanel.SuspendLayout();
@@ -256,6 +256,37 @@ namespace OutlookDesktop.Forms
             this.HeaderPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HeaderPanel_MouseDown);
             this.HeaderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HeaderPanel_MouseMove);
             // 
+            // TransparencySlider
+            // 
+            this.TransparencySlider.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.TransparencySlider.BorderColor = System.Drawing.SystemColors.ActiveCaption;
+            this.TransparencySlider.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TransparencySlider.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(125)))), ((int)(((byte)(123)))));
+            this.TransparencySlider.IndentHeight = 6;
+            this.TransparencySlider.LargeChange = 15;
+            this.TransparencySlider.Location = new System.Drawing.Point(0, -3);
+            this.TransparencySlider.Margin = new System.Windows.Forms.Padding(0);
+            this.TransparencySlider.Maximum = 100;
+            this.TransparencySlider.MaximumSize = new System.Drawing.Size(200, 28);
+            this.TransparencySlider.Minimum = 30;
+            this.TransparencySlider.MinimumSize = new System.Drawing.Size(100, 14);
+            this.TransparencySlider.Name = "TransparencySlider";
+            this.TransparencySlider.Size = new System.Drawing.Size(100, 24);
+            this.TransparencySlider.SmallChange = 5;
+            this.TransparencySlider.TabIndex = 10;
+            this.TransparencySlider.TextTickStyle = System.Windows.Forms.TickStyle.None;
+            this.TransparencySlider.TickColor = System.Drawing.Color.DarkGray;
+            this.TransparencySlider.TickHeight = 4;
+            this.TransparencySlider.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.ToolTip.SetToolTip(this.TransparencySlider, global::OutlookDesktop.Properties.Resources.Transparency_Slider_Help_Message);
+            this.TransparencySlider.TrackerColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(130)))), ((int)(((byte)(198)))));
+            this.TransparencySlider.TrackerSize = new System.Drawing.Size(12, 12);
+            this.TransparencySlider.TrackLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(93)))), ((int)(((byte)(90)))));
+            this.TransparencySlider.TrackLineHeight = 2;
+            this.TransparencySlider.Value = 50;
+            this.TransparencySlider.ValueChanged += new MACTrackBarLib.ValueChangedHandler(this.TransparencySlider_ValueChanged);
+            this.TransparencySlider.MouseHover += new System.EventHandler(this.TransparencySlider_MouseHover);
+            // 
             // LabelCurrentDate
             // 
             this.LabelCurrentDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -419,37 +450,6 @@ namespace OutlookDesktop.Forms
             // WindowMessageTimer
             // 
             this.WindowMessageTimer.Tick += new System.EventHandler(this.WindowMessageTimer_Tick);
-            // 
-            // TransparencySlider
-            // 
-            this.TransparencySlider.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.TransparencySlider.BorderColor = System.Drawing.SystemColors.ActiveCaption;
-            this.TransparencySlider.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TransparencySlider.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(125)))), ((int)(((byte)(123)))));
-            this.TransparencySlider.IndentHeight = 6;
-            this.TransparencySlider.LargeChange = 15;
-            this.TransparencySlider.Location = new System.Drawing.Point(0, -3);
-            this.TransparencySlider.Margin = new System.Windows.Forms.Padding(0);
-            this.TransparencySlider.Maximum = 100;
-            this.TransparencySlider.MaximumSize = new System.Drawing.Size(200, 28);
-            this.TransparencySlider.Minimum = 30;
-            this.TransparencySlider.MinimumSize = new System.Drawing.Size(100, 14);
-            this.TransparencySlider.Name = "TransparencySlider";
-            this.TransparencySlider.Size = new System.Drawing.Size(100, 24);
-            this.TransparencySlider.SmallChange = 5;
-            this.TransparencySlider.TabIndex = 10;
-            this.TransparencySlider.TextTickStyle = System.Windows.Forms.TickStyle.None;
-            this.TransparencySlider.TickColor = System.Drawing.Color.DarkGray;
-            this.TransparencySlider.TickHeight = 4;
-            this.TransparencySlider.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.ToolTip.SetToolTip(this.TransparencySlider, global::OutlookDesktop.Properties.Resources.Transparency_Slider_Help_Message);
-            this.TransparencySlider.TrackerColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(130)))), ((int)(((byte)(198)))));
-            this.TransparencySlider.TrackerSize = new System.Drawing.Size(12, 12);
-            this.TransparencySlider.TrackLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(93)))), ((int)(((byte)(90)))));
-            this.TransparencySlider.TrackLineHeight = 2;
-            this.TransparencySlider.Value = 50;
-            this.TransparencySlider.ValueChanged += new MACTrackBarLib.ValueChangedHandler(this.TransparencySlider_ValueChanged);
-            this.TransparencySlider.MouseHover += new System.EventHandler(this.sliderContainerPanel_MouseHover);
             // 
             // MainForm
             // 

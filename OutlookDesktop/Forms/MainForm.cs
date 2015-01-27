@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -959,12 +958,6 @@ namespace OutlookDesktop.Forms
         }
 
         private void TransparencySlider_MouseHover(object sender, EventArgs e)
-        {
-            ResizeDir = ResizeDirection.None;
-            Cursor = Cursors.Default;
-        }
-
-        private void sliderContainerPanel_MouseHover(object sender, EventArgs e)
         {
             ResizeDir = ResizeDirection.None;
             Cursor = Cursors.Default;
