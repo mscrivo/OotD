@@ -97,7 +97,7 @@ namespace OutlookDesktop.Forms
                 SendWindowToBack();
 
                 // hook up event to keep the date in the header bar up to date
-                axOutlookViewControl.SelectionChange += OnAxOutlookViewControlOnSelectionChange;
+                OutlookViewControl.SelectionChange += OnAxOutlookViewControlOnSelectionChange;
             }
             catch (Exception ex)
             {
@@ -111,7 +111,7 @@ namespace OutlookDesktop.Forms
         {
             try
             {
-                LabelCurrentDate.Text = axOutlookViewControl.SelectedDate.ToLongDateString();
+                LabelCurrentDate.Text = OutlookViewControl.SelectedDate.ToLongDateString();
             }
             catch (Exception ex)
             {
@@ -190,8 +190,7 @@ namespace OutlookDesktop.Forms
             {
                 CreateParams cp = base.CreateParams;
                 cp.ExStyle |= 0x80;             // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
-                // the following seems to cause a problem with the MediaSlider control on Win7 
-                //cp.ExStyle |= 0x02000000;       // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
+                cp.ExStyle |= 0x02000000;       // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
                 return cp;
             }
         }
@@ -202,7 +201,7 @@ namespace OutlookDesktop.Forms
         /// <returns></returns>
         private int GetSelectFolderMenuLocation()
         {
-            return trayMenu.Items.IndexOf(SelectFolderMenu);
+            return TrayMenu.Items.IndexOf(SelectFolderMenu);
         }
 
         /// <summary>
@@ -292,9 +291,9 @@ namespace OutlookDesktop.Forms
                 // custom folder
                 _customFolder = Preferences.OutlookFolderName;
                 string folderName = GetFolderNameFromFullPath(_customFolder);
-                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
+                TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
                                       new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
-                _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
+                _customMenu = (ToolStripMenuItem)TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
 
                 // store the custom folder defintion in case the user wants to switch back to it and we need to reload it.
@@ -304,12 +303,12 @@ namespace OutlookDesktop.Forms
             }
 
             // Sets the viewcontrol folder from preferences. 
-            axOutlookViewControl.Folder = Preferences.OutlookFolderName;
+            OutlookViewControl.Folder = Preferences.OutlookFolderName;
 
             // Sets the selected view from preferences. 
             try
             {
-                axOutlookViewControl.View = Preferences.OutlookFolderView;
+                OutlookViewControl.View = Preferences.OutlookFolderView;
             }
             catch
             {
@@ -323,7 +322,7 @@ namespace OutlookDesktop.Forms
             {
                 if (!String.IsNullOrEmpty(Preferences.ViewXml))
                 {
-                    axOutlookViewControl.ViewXML = Preferences.ViewXml;
+                    OutlookViewControl.ViewXML = Preferences.ViewXml;
                 }
                 else
                 {
@@ -547,7 +546,7 @@ namespace OutlookDesktop.Forms
                 ShowCalendarButtons(true);
             }
 
-            axOutlookViewControl.Folder = folderViewType.ToString();
+            OutlookViewControl.Folder = folderViewType.ToString();
 
             Preferences.OutlookFolderName = folderViewType.ToString();
             Preferences.OutlookFolderStoreId = GetFolderFromViewType(folderViewType).StoreID;
@@ -579,13 +578,13 @@ namespace OutlookDesktop.Forms
             try
             {
                 // Remove old item (selectmenu+1)
-                if (trayMenu.Items.Contains(_customMenu))
+                if (TrayMenu.Items.Contains(_customMenu))
                 {
-                    trayMenu.Items.Remove(_customMenu);
+                    TrayMenu.Items.Remove(_customMenu);
                 }
 
                 string folderPath = GetFolderPath(GenerateFolderPathFromObject(oFolder));
-                axOutlookViewControl.Folder = folderPath;
+                OutlookViewControl.Folder = folderPath;
 
                 // Save the EntryId and the StoreId for this folder in the preferences. 
                 Preferences.OutlookFolderEntryId = oFolder.EntryID;
@@ -600,8 +599,8 @@ namespace OutlookDesktop.Forms
                 _customFolder = Preferences.OutlookFolderName;
 
                 // Update the UI to reflect the new settings. 
-                trayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(oFolder.Name, null, CustomFolderMenu_Click));
-                _customMenu = (ToolStripMenuItem)trayMenu.Items[GetSelectFolderMenuLocation() + 1];
+                TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(oFolder.Name, null, CustomFolderMenu_Click));
+                _customMenu = (ToolStripMenuItem)TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
 
                 SetMAPIFolder();
                 CheckSelectedMenuItem(_customMenu);
@@ -690,7 +689,7 @@ namespace OutlookDesktop.Forms
 
                 if (view != null)
                 {
-                    axOutlookViewControl.View = view.Name;
+                    OutlookViewControl.View = view.Name;
 
                     Preferences.OutlookFolderView = view.Name;
                 }
@@ -731,7 +730,7 @@ namespace OutlookDesktop.Forms
 
         private void CustomFolderMenu_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.Folder = _customFolder;
+            OutlookViewControl.Folder = _customFolder;
             CheckSelectedMenuItem(_customMenu);
 
             Preferences.OutlookFolderName = _customFolderDefinition.OutlookFolderName;
@@ -800,7 +799,7 @@ namespace OutlookDesktop.Forms
             {
                 try
                 {
-                    axOutlookViewControl.GoToToday();
+                    OutlookViewControl.GoToToday();
                 }
                 catch (Exception ex)
                 {
@@ -971,7 +970,7 @@ namespace OutlookDesktop.Forms
 
         private void SetViewXml(string value)
         {
-            axOutlookViewControl.ViewXML = value;
+            OutlookViewControl.ViewXML = value;
             Preferences.ViewXml = value;
         }
 
@@ -997,7 +996,7 @@ namespace OutlookDesktop.Forms
 
         private void TodayButton_Click(object sender, EventArgs e)
         {
-            axOutlookViewControl.GoToToday();
+            OutlookViewControl.GoToToday();
         }
 
         private void ButtonPrevious_Click(object sender, EventArgs e)
@@ -1009,7 +1008,7 @@ namespace OutlookDesktop.Forms
 
             var offset = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
 
-            axOutlookViewControl.GoToDate(axOutlookViewControl.SelectedDate.AddDays(offset * -1).ToString(CultureInfo.InvariantCulture));
+            OutlookViewControl.GoToDate(OutlookViewControl.SelectedDate.AddDays(offset * -1).ToString(CultureInfo.InvariantCulture));
         }
 
         private void ButtonNext_Click(object sender, EventArgs e)
@@ -1021,7 +1020,7 @@ namespace OutlookDesktop.Forms
 
             var offset = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
 
-            axOutlookViewControl.GoToDate(axOutlookViewControl.SelectedDate.AddDays(offset).ToString(CultureInfo.InvariantCulture));
+            OutlookViewControl.GoToDate(OutlookViewControl.SelectedDate.AddDays(offset).ToString(CultureInfo.InvariantCulture));
         }
 
         private static double GetNextPreviousOffsetBasedOnCalendarViewMode(CurrentCalendarView mode)
@@ -1057,7 +1056,7 @@ namespace OutlookDesktop.Forms
             // we can bail if we know the last button clicked was the one on this form.
             if ((Guid)button.Tag == lastButtonGuidClicked) return;
 
-            var currentDate = axOutlookViewControl.SelectedDate;
+            var currentDate = OutlookViewControl.SelectedDate;
             switch (mode)
             {
                 case CurrentCalendarView.Day:
@@ -1074,7 +1073,7 @@ namespace OutlookDesktop.Forms
                     break;
             }
 
-            axOutlookViewControl.GoToDate(currentDate.ToString(CultureInfo.InvariantCulture));
+            OutlookViewControl.GoToDate(currentDate.ToString(CultureInfo.InvariantCulture));
             lastButtonGuidClicked = (Guid)button.Tag;
         }
 
@@ -1082,7 +1081,7 @@ namespace OutlookDesktop.Forms
         {
             var mode = CurrentCalendarView.Day;
 
-            var xElement = XDocument.Parse(axOutlookViewControl.ViewXML).Element("view");
+            var xElement = XDocument.Parse(OutlookViewControl.ViewXML).Element("view");
             if (xElement != null)
             {
                 var element = xElement.Element("mode");
