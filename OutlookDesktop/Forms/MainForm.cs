@@ -10,6 +10,8 @@ using System.Xml.Linq;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using NLog;
+using OutlookDesktop.Enums;
+using OutlookDesktop.Events;
 using OutlookDesktop.Preferences;
 using OutlookDesktop.Properties;
 using OutlookDesktop.Utility;
@@ -19,36 +21,6 @@ using View = Microsoft.Office.Interop.Outlook.View;
 
 namespace OutlookDesktop.Forms
 {
-    /// <summary>
-    /// Standard Outlook folder types. 
-    /// </summary>
-    public enum FolderViewType
-    {
-        Inbox,
-        Calendar,
-        Contacts,
-        Notes,
-        Tasks,
-    }
-
-    public enum CurrentCalendarView
-    {
-        Day = 0,
-        Week = 1,
-        Month = 2,
-        WorkWeek = 4,
-    }
-
-    /// <summary>
-    /// Structure to hold the currently selected custom folder details
-    /// </summary>
-    struct OutlookFolderDefinition
-    {
-        public string OutlookFolderName;
-        public string OutlookFolderStoreId;
-        public string OutlookFolderEntryId;
-    }
-
     /// <summary>
     /// This is the form that hosts the outlook view control. One of these will exist for each instance.
     /// </summary>
@@ -135,6 +107,17 @@ namespace OutlookDesktop.Forms
             }
         }
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x80;             // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
+                cp.ExStyle |= 0x02000000;       // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
+                return cp;
+            }
+        }
+
         #region Events
 
         private EventHandler<InstanceRemovedEventArgs> _instanceRemoved;
@@ -183,18 +166,7 @@ namespace OutlookDesktop.Forms
         }
 
         #endregion
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x80;             // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
-                cp.ExStyle |= 0x02000000;       // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
-                return cp;
-            }
-        }
-
+        
         /// <summary>
         /// Get the location of the Select folder menu in the tray context menu. 
         /// </summary>
@@ -612,19 +584,6 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private void MoveForm()
-        {
-            if (GlobalPreferences.LockPosition)
-                return;
-
-            UnsafeNativeMethods.ReleaseCapture();
-            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)UnsafeNativeMethods.HTCAPTION, IntPtr.Zero);
-
-            // update the values stored in the registry
-            Preferences.Left = Left;
-            Preferences.Top = Top;
-        }
-
         private void ResizeForm(ResizeDirection direction)
         {
             if (GlobalPreferences.LockPosition) return;
@@ -663,6 +622,19 @@ namespace OutlookDesktop.Forms
                 UnsafeNativeMethods.ReleaseCapture();
                 UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)dir, IntPtr.Zero);
             }
+        }
+
+        private void MoveForm()
+        {
+            if (GlobalPreferences.LockPosition)
+                return;
+
+            UnsafeNativeMethods.ReleaseCapture();
+            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)UnsafeNativeMethods.HTCAPTION, IntPtr.Zero);
+
+            // update the values stored in the registry
+            Preferences.Left = Left;
+            Preferences.Top = Top;
         }
 
         #region Event Handlers
@@ -907,7 +879,7 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        #region "Resize Cursor Reset Events"
+        #region Resize Cursor Reset Events
         private void HeaderPanel_MouseMove(object sender, MouseEventArgs e)
         {
             ResizeDir = ResizeDirection.None;
@@ -1157,7 +1129,7 @@ namespace OutlookDesktop.Forms
 
         private ResizeDirection _resizeDir = ResizeDirection.None;
         private List<View> OutlookFolderViews { get; set; }
-        public InstancePreferences Preferences { get; set; }
+        public InstancePreferences Preferences { get; private set; }
         private string InstanceName { get; set; }
 
         private ResizeDirection ResizeDir

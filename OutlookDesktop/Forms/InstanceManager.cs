@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using NetSparkle;
 using NLog;
+using OutlookDesktop.Events;
 using OutlookDesktop.Preferences;
 using OutlookDesktop.Properties;
 using OutlookDesktop.Utility;
@@ -17,13 +18,14 @@ namespace OutlookDesktop.Forms
 {
     public partial class InstanceManager : Form
     {
+        public static Guid LastNextButtonClicked;
+        public static Guid LastPreviousButtonClicked;
+        public static int InstanceCount { get; private set; }
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<string, MainForm> _mainFormInstances = new Dictionary<string, MainForm>();
+        private static Graphics _graphics;
         private static Sparkle _sparkle;
-        public static Guid LastNextButtonClicked = new Guid();
-        public static Guid LastPreviousButtonClicked = new Guid();
-        public static int InstanceCount { get; set; }
-        public static Graphics Graphics;
 
         public InstanceManager()
         {
@@ -36,7 +38,7 @@ namespace OutlookDesktop.Forms
                 Logger.Debug("First Run");
             }
 
-            Graphics = CreateGraphics();
+            _graphics = CreateGraphics();
 
             // setup update checker.
             if (UnsafeNativeMethods.Is64Bit())
@@ -306,7 +308,7 @@ namespace OutlookDesktop.Forms
             var today = DateTime.Now;
 
             // find the icon for the today's day of the month and replace the tray icon with it, compensate for user's DPI settings.
-            if (Graphics.DpiX.Equals(96f))
+            if (_graphics.DpiX.Equals(96f))
             {
                 trayIcon.Icon = new Icon((Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture), new Size(16, 16));
             }

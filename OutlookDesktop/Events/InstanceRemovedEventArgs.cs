@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OutlookDesktop.Forms
+namespace OutlookDesktop.Events
 {
     public class InstanceRemovedEventArgs : EventArgs
     {

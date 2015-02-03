@@ -207,6 +207,9 @@
     <None Include="Resources\Icons\30.ico" />
     <None Include="Resources\Icons\31.ico" />
     <None Include="Resources\Images\paypal.gif" />
+    <Compile Include="Enums\CurrentCalendarView.cs" />
+    <Compile Include="Enums\FolderViewType.cs" />
+    <Compile Include="Utility\OutlookFolderDefinition.cs" />
     <Compile Include="Utility\SynchronizeInvokeExtensions.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
@@ -225,15 +228,15 @@
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\InputBoxResult.cs" />
-    <Compile Include="Forms\InputBoxValidatingEventArgs.cs" />
+    <Compile Include="Events\InputBoxValidatingEventArgs.cs" />
     <Compile Include="Forms\InstanceManager.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\InstanceManager.Designer.cs">
       <DependentUpon>InstanceManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\InstanceRemovedEventArgs.cs" />
-    <Compile Include="Forms\InstanceRenamedEventArgs.cs" />
+    <Compile Include="Events\InstanceRemovedEventArgs.cs" />
+    <Compile Include="Events\InstanceRenamedEventArgs.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
