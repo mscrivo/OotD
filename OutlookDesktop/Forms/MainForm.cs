@@ -1065,7 +1065,7 @@ namespace OutlookDesktop.Forms
             return mode;
         }
 
-        private void TransparencySlider_ValueChanged(object sender, decimal value)
+        private void TransparencySlider_ValueChanged(object sender, EventArgs e, decimal value)
         {
             var opacityVal = (double)(value / 100);
             if (Math.Abs(opacityVal - 1) < double.Epsilon)

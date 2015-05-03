@@ -1,4 +1,5 @@
-﻿using AxOLXLib;
+﻿using System;
+using AxOLXLib;
 using MACTrackBarLib;
 using OutlookDesktop.Properties;
 
@@ -505,7 +506,7 @@ namespace OutlookDesktop.Forms
         private System.Windows.Forms.ToolStripMenuItem DisableEnableEditingMenu;
         internal System.Windows.Forms.Panel HeaderPanel;
         private System.Windows.Forms.Panel ViewControlHostPanel;
-        private AxOLXLib.AxViewCtl OutlookViewControl;
+        private AxViewCtl OutlookViewControl;
         private System.Windows.Forms.Button DayButton;
         private System.Windows.Forms.NotifyIcon NotifyIcon;
         private System.Windows.Forms.Button MonthButton;
@@ -518,6 +519,8 @@ namespace OutlookDesktop.Forms
         private System.Windows.Forms.Button ButtonNext;
         private System.Windows.Forms.Button ButtonPrevious;
         public System.Windows.Forms.Label LabelCurrentDate;
+#pragma warning disable CS3003 // Type is not CLS-compliant
         public MACTrackBar TransparencySlider;
+#pragma warning restore CS3003 // Type is not CLS-compliant
     }
 }
