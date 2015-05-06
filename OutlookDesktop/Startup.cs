@@ -19,6 +19,9 @@ namespace OutlookDesktop
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        public static Guid LastNextButtonClicked;
+        public static Guid LastPreviousButtonClicked;
+
         public static Application OutlookApp;
         public static NameSpace OutlookNameSpace;
         public static MAPIFolder OutlookFolder;
@@ -143,7 +146,7 @@ namespace OutlookDesktop
                 if (!string.IsNullOrEmpty(sExeName))
                 {
                     // ReSharper disable ObjectCreationAsStatement
-                    new Mutex(true, string.Format("Local\\{0}", sExeName), out createdNew);
+                    new Mutex(true, $"Local\\{sExeName}", out createdNew);
                     // ReSharper restore ObjectCreationAsStatement
                 }
 
@@ -173,12 +176,12 @@ namespace OutlookDesktop
 
                     foreach (string subkey in subkeys)
                     {
-                        Logger.Debug(String.Format("Analyzing subkey '{0}'", subkey));
+                        Logger.Debug($"Analyzing subkey '{subkey}'");
                         double versionSubKey;
                         var culture = CultureInfo.CreateSpecificCulture("en-US");
                         if (double.TryParse(subkey, NumberStyles.Float, culture, out versionSubKey))
                         {
-                            Logger.Debug(string.Format("Office Version: {0}", versionSubKey));
+                            Logger.Debug($"Office Version: {versionSubKey}");
                             if (versionSubKey >= 11)
                             {
                                 hasOffice2003OrHigher = true;
@@ -197,10 +200,10 @@ namespace OutlookDesktop
                 using (var key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
                 {
                     if (key != null) outlookPath = (string)key.GetValue("Path");
-                    Logger.Debug(string.Format("Office path reported as: {0}", outlookPath));
+                    Logger.Debug($"Office path reported as: {outlookPath}");
                     if (outlookPath != null)
                     {
-                        Logger.Debug(string.Format("Checking for Outlook exe in: {0}", outlookPath));
+                        Logger.Debug($"Checking for Outlook exe in: {outlookPath}");
                         if (File.Exists(Path.Combine(outlookPath, "Outlook.exe")))
                         {
                             Logger.Debug("Outlook exe found.");
@@ -212,8 +215,7 @@ namespace OutlookDesktop
 
             if (outlookPath != null)
                 Logger.Error(
-                    string.Format("Outlook path was reported as: {0}, but this file could not be found.",
-                                  Path.Combine(outlookPath, "Outlook.exe")));
+                    $"Outlook path was reported as: {Path.Combine(outlookPath, "Outlook.exe")}, but this file could not be found.");
 
             return false;
         }

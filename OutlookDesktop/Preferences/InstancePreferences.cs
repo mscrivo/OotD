@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -56,7 +55,6 @@ namespace OutlookDesktop.Preferences
             set
             {
                 _appReg.SetValue("Left", value);
-                Debug.Print("Left:{0}", value);
             }
         }
 
@@ -69,7 +67,6 @@ namespace OutlookDesktop.Preferences
             set
             {
                 _appReg.SetValue("Top", value);
-                Debug.Print("Top:{0}", value);
             }
         }
 
@@ -82,7 +79,6 @@ namespace OutlookDesktop.Preferences
             set
             {
                 _appReg.SetValue("Width", value);
-                Debug.Print("Width:{0}", value);
             }
         }
 
@@ -95,7 +91,6 @@ namespace OutlookDesktop.Preferences
             set
             {
                 _appReg.SetValue("Height", value);
-                Debug.Print("Height:{0}", value);
             }
         }
 

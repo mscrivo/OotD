@@ -18,8 +18,6 @@ namespace OutlookDesktop.Forms
 {
     public partial class InstanceManager : Form
     {
-        public static Guid LastNextButtonClicked;
-        public static Guid LastPreviousButtonClicked;
         public static int InstanceCount { get; private set; }
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -53,16 +51,8 @@ namespace OutlookDesktop.Forms
             _sparkle.UpdateDetected += OnSparkleOnUpdateDetectedShowWithToast;
             _sparkle.UpdateWindowDismissed += OnSparkleOnUpdateWindowDismissed;
 
-            // check for updates every 20 days
-            if (!GlobalPreferences.IsFirstRun)
-            {
-                _sparkle.StartLoop(true, TimeSpan.FromDays(20));
-            }
-            else
-            {
-                // don't check on first run because we'll have 2 tooltips popup and will likely confuse the user.
-                _sparkle.StartLoop(false, TimeSpan.FromDays(20));
-            }
+            // check for updates every 20 days, but don't check on first run because we'll have 2 tooltips popup and will likely confuse the user.
+            _sparkle.StartLoop(!GlobalPreferences.IsFirstRun, TimeSpan.FromDays(20));
         }
 
         private static void OnSparkleOnUpdateWindowDismissed(object sender, EventArgs args)
@@ -128,7 +118,7 @@ namespace OutlookDesktop.Forms
                             bool newlyAdded = false;
                             if (!_mainFormInstances.ContainsKey(instanceName))
                             {
-                                Logger.Debug(String.Format("Instantiating instance {0}", instanceName));
+                                Logger.Debug($"Instantiating instance {instanceName}");
                                 _mainFormInstances.Add(instanceName, new MainForm(instanceName));
                                 newlyAdded = true;
                             }
@@ -184,7 +174,7 @@ namespace OutlookDesktop.Forms
                             // finally, show the form
                             if (newlyAdded)
                             {
-                                Logger.Debug(string.Format("Showing Instance {0}", instanceName));
+                                Logger.Debug($"Showing Instance {instanceName}");
                                 _mainFormInstances[instanceName].Show();
                                 UnsafeNativeMethods.SendWindowToBack(_mainFormInstances[instanceName]);
                             }

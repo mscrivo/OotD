@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -27,7 +26,7 @@ namespace OutlookDesktop.Forms
     public partial class MainForm : Form
     {
         private const int ResizeBorderWidth = 4;
-        private String _customFolder;
+        private string _customFolder;
         private ToolStripMenuItem _customMenu;
         private MAPIFolder _outlookFolder;
         private DateTime _previousDate;
@@ -690,14 +689,7 @@ namespace OutlookDesktop.Forms
         /// <param name="oFolder"></param>
         private void ShowCalendarButtonsFor(MAPIFolder oFolder)
         {
-            if (oFolder.CurrentView.ViewType == OlViewType.olCalendarView)
-            {
-                ShowCalendarButtons(true);
-            }
-            else
-            {
-                ShowCalendarButtons(false);
-            }
+            ShowCalendarButtons(oFolder.CurrentView.ViewType == OlViewType.olCalendarView);
         }
 
         private void CustomFolderMenu_Click(object sender, EventArgs e)
@@ -976,7 +968,7 @@ namespace OutlookDesktop.Forms
             // get the view mode from the current ViewXML, this will tell us what calendar view we're in
             var mode = GetCurrentCalendarViewMode();
 
-            SetCurrentViewControlAsActiveIfNecessary(mode, ButtonPrevious, ref InstanceManager.LastPreviousButtonClicked);
+            SetCurrentViewControlAsActiveIfNecessary(mode, ButtonPrevious, ref Startup.LastPreviousButtonClicked);
 
             var offset = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
 
@@ -988,7 +980,7 @@ namespace OutlookDesktop.Forms
             // get the view mode from the current ViewXML, this will tell us what calendar view we're in
             var mode = GetCurrentCalendarViewMode();
 
-            SetCurrentViewControlAsActiveIfNecessary(mode, ButtonNext, ref InstanceManager.LastNextButtonClicked);
+            SetCurrentViewControlAsActiveIfNecessary(mode, ButtonNext, ref Startup.LastNextButtonClicked);
 
             var offset = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
 
@@ -1113,8 +1105,7 @@ namespace OutlookDesktop.Forms
                 }
             }
             else if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING && !_outlookContextMenuActivated && !Startup.UpdateDetected)
-            {
-                Debug.WriteLine("Window position changing");
+            {                
                 var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
                 mwp.flags = mwp.flags | UnsafeNativeMethods.SWP_NOZORDER;
                 Marshal.StructureToPtr(mwp, m.LParam, true);
