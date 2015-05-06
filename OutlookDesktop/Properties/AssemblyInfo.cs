@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SMR Computer Services")]
 [assembly: AssemblyProduct("Outlook on the Desktop")]
-[assembly: AssemblyCopyright("© 2006-2014 Michael Scrivo")]
+[assembly: AssemblyCopyright("© 2006-2015 SMR Computer Services")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
