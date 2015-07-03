@@ -89,7 +89,7 @@ namespace OutlookDesktop
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Could not load instances", ex);
+                    Logger.Error(ex, "Could not load instances");
                     return;
                 }
 

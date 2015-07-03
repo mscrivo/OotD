@@ -95,7 +95,7 @@ namespace OutlookDesktop.Utility
             }
             catch (Exception ex)
             {
-                Logger.Error(String.Format("Error pinning window to desktop, OS: {0}.", Environment.OSVersion.Version), ex);
+                Logger.Error(ex, $"Error pinning window to desktop, OS: {Environment.OSVersion.Version}.");
                 MessageBox.Show(form, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message,
                                 Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

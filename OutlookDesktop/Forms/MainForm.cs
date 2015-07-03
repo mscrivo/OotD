@@ -38,7 +38,7 @@ namespace OutlookDesktop.Forms
         /// Sets up the form for the current instance.
         /// </summary>
         /// <param name="instanceName">The name of the instance to display.</param>
-        public MainForm(String instanceName)
+        public MainForm(string instanceName)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace OutlookDesktop.Forms
             }
             catch (COMException loE)
             {
-                Logger.Error("Error initializing main view: ", loE);
+                Logger.Error("Error initializing main view: {0}", loE);
                 if ((uint)loE.ErrorCode == 0x80040154)
                 {
                     MessageBox.Show(this, Resources.Incorrect_bittedness_of_OotD, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -72,7 +72,7 @@ namespace OutlookDesktop.Forms
             }
             catch (Exception ex)
             {
-                Logger.Error("Error initializing window.", ex);
+                Logger.Error(ex, "Error initializing window.");
                 MessageBox.Show(this, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
@@ -86,7 +86,7 @@ namespace OutlookDesktop.Forms
             }
             catch (Exception ex)
             {
-                Logger.Debug("Error setting date in header: ", ex);
+                Logger.Debug(ex, "Error setting date in header: ");
             }
         }
 
@@ -204,7 +204,7 @@ namespace OutlookDesktop.Forms
             {
                 // use default if there was a problem
                 Opacity = InstancePreferences.DefaultOpacity;
-                Logger.Error("Error setting opacity.", ex);
+                Logger.Error(ex, "Error setting opacity.");
                 MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
@@ -226,7 +226,7 @@ namespace OutlookDesktop.Forms
                 Top = InstancePreferences.DefaultLeftPosition;
                 Width = InstancePreferences.DefaultWidth;
                 Height = InstancePreferences.DefaultHeight;
-                Logger.Error("Error setting window position.", ex);
+                Logger.Error(ex, "Error setting window position.");
                 MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
@@ -329,7 +329,7 @@ namespace OutlookDesktop.Forms
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Error setting MAPI folder.", ex);
+                    Logger.Error(ex, "Error setting MAPI folder.");
                 }
             }
             else
@@ -654,16 +654,13 @@ namespace OutlookDesktop.Forms
         private void ViewItem_Click(object sender, EventArgs e)
         {
             var viewItem = sender as ToolStripMenuItem;
-            if (viewItem != null)
+            var view = viewItem?.Tag as View;
+
+            if (view != null)
             {
-                var view = viewItem.Tag as View;
+                OutlookViewControl.View = view.Name;
 
-                if (view != null)
-                {
-                    OutlookViewControl.View = view.Name;
-
-                    Preferences.OutlookFolderView = view.Name;
-                }
+                Preferences.OutlookFolderView = view.Name;
             }
 
             CheckSelectedView(viewItem);
@@ -770,7 +767,7 @@ namespace OutlookDesktop.Forms
                 catch (Exception ex)
                 {
                     // no big deal if we can't set the day, just ignore and go on.
-                    Logger.Warn("Unable to go to today on calendar.", ex);
+                    Logger.Warn(ex, "Unable to go to today on calendar.");
                 }
             }
             _previousDate = DateTime.Now;
