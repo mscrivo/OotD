@@ -153,7 +153,6 @@
     <Content Include="..\ServerStaging\ootdAppcastx86.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="..\ServerStaging\ootdReleaseNotes.html" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

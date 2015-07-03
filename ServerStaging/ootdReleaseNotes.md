@@ -1,5 +1,13 @@
 # Outlook on the Desktop Release Notes
 
+## 3.2.2
+
+* Fixed issue where top control bar would sometimes not be uniform in color.
+* Fixed multiple issues with tray icon context menus showing incorrect items or duplicate items.
+* Performance improvements in resizing/moving windows.
+* Fixed crash when selecting a folder than clicking cancel.
+* Other minor fixes and internal component upgrades.
+
 ## 3.2.1
 
 * Fixed issue where HighDPI improvements in .NET 4.5.2 were not enabled.
