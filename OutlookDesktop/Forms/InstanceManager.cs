@@ -168,6 +168,11 @@ namespace OutlookDesktop.Forms
                             {
                                 _mainFormInstances[instanceName].TrayMenu.Items["LockPositionMenu"].Visible = false;
                             }
+                            if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("CheckForUpdatesMenu"))
+                            {
+                                _mainFormInstances[instanceName].TrayMenu.Items["CheckForUpdatesMenu"].Visible = false;
+                            }
+
                             _mainFormInstances[instanceName].TrayMenu.Items["Separator6"].Visible = false;
                             _mainFormInstances[instanceName].TrayMenu.Items["ExitMenu"].Visible = false;
 
@@ -194,8 +199,8 @@ namespace OutlookDesktop.Forms
 
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click, "CheckForUpdatesMenu"));
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click, "CheckForUpdatesMenu"));
 
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
@@ -243,6 +248,10 @@ namespace OutlookDesktop.Forms
                         {
                             _mainFormInstances[instanceName].TrayMenu.Items["LockPositionMenu"].Visible = true;
                         }
+                        if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("CheckForUpdatesMenu"))
+                        {
+                            _mainFormInstances[instanceName].TrayMenu.Items["CheckForUpdatesMenu"].Visible = true;
+                        }
 
                         // add global menu items that don't apply to the instance.
                         if (!trayIcon.ContextMenuStrip.Items.ContainsKey("AddInstanceMenu"))
@@ -264,14 +273,15 @@ namespace OutlookDesktop.Forms
 
                         if (!trayIcon.ContextMenuStrip.Items.ContainsKey("CheckForUpdatesMenu"))
                         {
-                            trayIcon.ContextMenuStrip.Items.Insert(19, new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click, "CheckForUpdatesMenu"));
+                            trayIcon.ContextMenuStrip.Items.Insert(20, new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click, "CheckForUpdatesMenu"));
                         }
 
                         if (!trayIcon.ContextMenuStrip.Items.ContainsKey("AboutMenu"))
                         {
-                            trayIcon.ContextMenuStrip.Items.Insert(19, new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
+                            trayIcon.ContextMenuStrip.Items.Insert(20, new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
                         }
 
+                        _mainFormInstances[instanceName].TrayMenu.Items["Separator6"].Visible = true;
                         _mainFormInstances[instanceName].TrayMenu.Items["ExitMenu"].Visible = true;
 
                         if (newlyAdded)
@@ -326,7 +336,7 @@ namespace OutlookDesktop.Forms
 
         private void AddInstanceMenu_Click(object sender, EventArgs e)
         {
-            var result = InputBox.Show(this, "", Resources.NewInstanceName, String.Empty, InputBox_Validating);
+            var result = InputBox.Show(this, "", Resources.NewInstanceName, string.Empty, InputBox_Validating);
             if (result.Ok)
             {
                 // trigger the tray icon context menu to show the second instance
