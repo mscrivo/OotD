@@ -677,9 +677,11 @@ namespace OutlookDesktop.Forms
         private void SelectFolderMenu_Click(object sender, EventArgs e)
         {
             MAPIFolder oFolder = Startup.OutlookNameSpace.PickFolder();
-            UpdateCustomFolder(oFolder);
-
-            ShowCalendarButtonsFor(oFolder);
+            if (oFolder != null)
+            {
+                UpdateCustomFolder(oFolder);
+                ShowCalendarButtonsFor(oFolder);
+            }
         }
 
         /// <summary>
