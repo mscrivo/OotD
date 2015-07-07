@@ -18,8 +18,6 @@ namespace OutlookDesktop.Forms
 {
     public partial class InstanceManager : Form
     {
-        public static int InstanceCount { get; private set; }
-
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<string, MainForm> _mainFormInstances = new Dictionary<string, MainForm>();
         private static Graphics _graphics;
@@ -83,6 +81,27 @@ namespace OutlookDesktop.Forms
             }
         }
 
+        public static int InstanceCount
+        {
+            get
+            {
+                int instanceCount = 0;
+
+                using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+                {
+                    if (appReg == null) return instanceCount;
+
+                    foreach (var instanceName in appReg.GetSubKeyNames())
+                    {
+                        if (instanceName == "AutoUpdate") continue;
+                        instanceCount++;
+                    }
+                }
+
+                return instanceCount;
+            }
+        }
+
         public void LoadInstances()
         {
             Logger.Debug("Loading app settings from registry");
@@ -92,25 +111,23 @@ namespace OutlookDesktop.Forms
             using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
             {
                 Logger.Debug("Settings Found.");
+
                 if (appReg != null)
                 {
-                    // check if we have more than 2 subkeys, since the NetSparkle creates one sub key for it's settings.
-                    if (appReg.SubKeyCount > 2)
+                    if (InstanceCount > 1)
                     {
                         Logger.Debug("Multiple instances to load");
-
-                        InstanceCount = appReg.SubKeyCount - 1;
 
                         // There are multiple instances defined, so we build the context menu strip dynamically.
                         trayIcon.ContextMenuStrip = new ContextMenuStrip();
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.AddInstance, null, AddInstanceMenu_Click, "AddInstanceMenu"));
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
-                        var instanceSubmenu = new ToolStripMenuItem[appReg.SubKeyCount];
+                        var instanceSubmenu = new ToolStripMenuItem[InstanceCount];
                         int count = 0;
 
                         // each instance will get it's own submenu in the main context menu.
-                        foreach (string instanceName in appReg.GetSubKeyNames())
+                        foreach (var instanceName in appReg.GetSubKeyNames())
                         {
                             // Skip the key named "AutoUpdate" since it's the settings for the updater component
                             if (instanceName == "AutoUpdate") continue;
@@ -208,10 +225,8 @@ namespace OutlookDesktop.Forms
                     }
                     else
                     {
-                        InstanceCount = 1;
-
                         // this is a first run, or there is only 1 instance defined.
-                        string instanceName = appReg.SubKeyCount == 1 ? appReg.GetSubKeyNames()[0] : "Default Instance";
+                        string instanceName = InstanceCount == 1 ? appReg.GetSubKeyNames()[0] : "Default Instance";
 
                         // create our instance and set the context menu to one defined in the form instance.
                         bool newlyAdded = false;
@@ -357,7 +372,7 @@ namespace OutlookDesktop.Forms
 
         private static void InputBox_Validating(object sender, InputBoxValidatingEventArgs e)
         {
-            if (String.IsNullOrEmpty(e.Text.Trim()))
+            if (string.IsNullOrEmpty(e.Text.Trim()))
             {
                 e.Cancel = true;
                 e.Message = "Required";

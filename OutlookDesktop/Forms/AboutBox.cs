@@ -18,9 +18,9 @@ namespace OutlookDesktop.Forms
             //  Change assembly information settings for your application through either:
             //  - Project->Properties->Application->Assembly Information
             //  - AssemblyInfo.cs
-            Text = String.Format(CultureInfo.CurrentCulture, "About {0}", AssemblyTitle);
+            Text = string.Format(CultureInfo.CurrentCulture, "About {0}", AssemblyTitle);
             labelProductName.Text = AssemblyProduct;
-            labelVersion.Text = String.Format(CultureInfo.CurrentCulture, "Version {0}", AssemblyVersion);
+            labelVersion.Text = string.Format(CultureInfo.CurrentCulture, "Version {0}", AssemblyVersion);
             labelCopyright.Text = AssemblyCopyright;
         }
 
@@ -45,7 +45,7 @@ namespace OutlookDesktop.Forms
                     // Select the first one
                     var titleAttribute = (AssemblyTitleAttribute) attributes[0];
                     // If it is not an empty string, return it
-                    if (!String.IsNullOrEmpty(titleAttribute.Title))
+                    if (!string.IsNullOrEmpty(titleAttribute.Title))
                         return titleAttribute.Title;
                 }
                 // If there was no Title attribute, or if the Title attribute was the empty string, return the .exe name

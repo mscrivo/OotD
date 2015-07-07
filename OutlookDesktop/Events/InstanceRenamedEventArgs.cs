@@ -4,14 +4,14 @@ namespace OutlookDesktop.Events
 {
     public class InstanceRenamedEventArgs : EventArgs
     {
-        public InstanceRenamedEventArgs(String oldInstanceName, String newInstanceName)
+        public InstanceRenamedEventArgs(string oldInstanceName, string newInstanceName)
         {
             OldInstanceName = oldInstanceName;
             NewInstanceName = newInstanceName;
         }
 
-        public String OldInstanceName { get; private set; }
+        public string OldInstanceName { get; private set; }
 
-        public String NewInstanceName { get; private set; }
+        public string NewInstanceName { get; private set; }
     }
 }

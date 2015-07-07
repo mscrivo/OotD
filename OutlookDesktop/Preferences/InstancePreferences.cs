@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -16,7 +17,7 @@ namespace OutlookDesktop.Preferences
 
         private readonly RegistryKey _appReg;
 
-        public InstancePreferences(String instanceName)
+        public InstancePreferences(string instanceName)
         {
             try
             {

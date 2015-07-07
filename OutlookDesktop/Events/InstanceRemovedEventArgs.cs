@@ -4,11 +4,11 @@ namespace OutlookDesktop.Events
 {
     public class InstanceRemovedEventArgs : EventArgs
     {
-        public InstanceRemovedEventArgs(String instanceName)
+        public InstanceRemovedEventArgs(string instanceName)
         {
             InstanceName = instanceName;
         }
 
-        public String InstanceName { get; private set; }
+        public string InstanceName { get; private set; }
     }
 }
