@@ -1,5 +1,10 @@
 # Outlook on the Desktop Release Notes
 
+## 3.2.3
+
+* Made instances sticky to make it easier to line them up and organize.
+* Fixed issue where last instance position was not always remembered when starting up.
+
 ## 3.2.2
 
 * Fixed issue where top control bar would sometimes not be uniform in color.
