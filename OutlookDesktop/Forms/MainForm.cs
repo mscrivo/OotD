@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using Blue.Windows;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using NLog;
@@ -33,6 +36,9 @@ namespace OutlookDesktop.Forms
         private OutlookFolderDefinition _customFolderDefinition;
         private bool _outlookContextMenuActivated;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        // ReSharper disable once NotAccessedField.Local
+        private StickyWindow _stickyWindow;
+        private bool _formMovedOrResized;
 
         /// <summary>
         /// Sets up the form for the current instance.
@@ -67,6 +73,8 @@ namespace OutlookDesktop.Forms
                 ResumeLayout();
                 SendWindowToBack();
 
+                _stickyWindow = new StickyWindow(this);
+
                 // hook up event to keep the date in the header bar up to date
                 OutlookViewControl.SelectionChange += OnAxOutlookViewControlOnSelectionChange;
             }
@@ -86,7 +94,7 @@ namespace OutlookDesktop.Forms
             }
             catch (Exception ex)
             {
-                Logger.Debug(ex, "Error setting date in header: ");
+                Logger.Debug(ex, "Error setting date in header.");
             }
         }
 
@@ -137,10 +145,7 @@ namespace OutlookDesktop.Forms
 
         private void OnInstanceRemoved(object sender, InstanceRemovedEventArgs e)
         {
-            if (_instanceRemoved != null)
-            {
-                _instanceRemoved(sender, e);
-            }
+            _instanceRemoved?.Invoke(sender, e);
         }
 
         public event EventHandler<InstanceRenamedEventArgs> InstanceRenamed
@@ -158,14 +163,11 @@ namespace OutlookDesktop.Forms
 
         private void OnInstanceRenamed(object sender, InstanceRenamedEventArgs e)
         {
-            if (_instanceRenamed != null)
-            {
-                _instanceRenamed(sender, e);
-            }
+            _instanceRenamed?.Invoke(sender, e);
         }
 
         #endregion
-        
+
         /// <summary>
         /// Get the location of the Select folder menu in the tray context menu. 
         /// </summary>
@@ -185,7 +187,7 @@ namespace OutlookDesktop.Forms
 
             // There should ne no reason other than first run as to why the Store and Entry IDs are 
             // empty. 
-            if (String.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
+            if (string.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
             {
                 // Set the Mapi Folder Details and the IDs.
                 Preferences.OutlookFolderName = FolderViewType.Calendar.ToString();
@@ -291,7 +293,7 @@ namespace OutlookDesktop.Forms
             // If the view is a calendar view, use the stored ViewXML to restore their day/week/month view setting.
             if (Preferences.OutlookFolderName == FolderViewType.Calendar.ToString())
             {
-                if (!String.IsNullOrEmpty(Preferences.ViewXml))
+                if (!string.IsNullOrEmpty(Preferences.ViewXml))
                 {
                     OutlookViewControl.ViewXML = Preferences.ViewXml;
                 }
@@ -620,6 +622,7 @@ namespace OutlookDesktop.Forms
             {
                 UnsafeNativeMethods.ReleaseCapture();
                 UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)dir, IntPtr.Zero);
+                _formMovedOrResized = true;
             }
         }
 
@@ -631,20 +634,11 @@ namespace OutlookDesktop.Forms
             UnsafeNativeMethods.ReleaseCapture();
             UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)UnsafeNativeMethods.HTCAPTION, IntPtr.Zero);
 
-            // update the values stored in the registry
-            Preferences.Left = Left;
-            Preferences.Top = Top;
+            _formMovedOrResized = true;
         }
 
         #region Event Handlers
-
-        private void MainForm_Layout(object sender, LayoutEventArgs e)
-        {
-            // Update the settings stored in the registry
-            Preferences.Width = Width;
-            Preferences.Height = Height;
-        }
-
+        
         /// <summary>
         /// When a view is selected this will change the view control view to it, save it in the 
         /// preferences and then check the box next to the view in the drop down list. 
@@ -747,7 +741,7 @@ namespace OutlookDesktop.Forms
             {
                 using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
                 {
-                    if (appReg != null) appReg.DeleteSubKeyTree(InstanceName);
+                    appReg?.DeleteSubKeyTree(InstanceName);
                 }
 
                 OnInstanceRemoved(this, new InstanceRemovedEventArgs(InstanceName));
@@ -771,6 +765,16 @@ namespace OutlookDesktop.Forms
                 }
             }
             _previousDate = DateTime.Now;
+
+            // Update our position in the settings
+            if (_formMovedOrResized)
+            {
+                Preferences.Left = Left;
+                Preferences.Top = Top;
+                Preferences.Width = Width;
+                Preferences.Height = Height;
+                _formMovedOrResized = false;
+            }
         }
 
         private void ExitMenu_Click(object sender, EventArgs e)
@@ -796,7 +800,7 @@ namespace OutlookDesktop.Forms
                 if (parentKey == null) return;
 
                 RegistryHelper.RenameSubKey(parentKey, InstanceName, result.Text);
-                String oldInstanceName = InstanceName;
+                string oldInstanceName = InstanceName;
                 InstanceName = result.Text;
                 Preferences = new InstancePreferences(InstanceName);
 
@@ -806,7 +810,7 @@ namespace OutlookDesktop.Forms
 
         private static void InputBox_Validating(object sender, InputBoxValidatingEventArgs e)
         {
-            if (String.IsNullOrEmpty(e.Text.Trim()))
+            if (string.IsNullOrEmpty(e.Text.Trim()))
             {
                 e.Cancel = true;
                 e.Message = "Required";
@@ -1045,13 +1049,10 @@ namespace OutlookDesktop.Forms
             var mode = CurrentCalendarView.Day;
 
             var xElement = XDocument.Parse(OutlookViewControl.ViewXML).Element("view");
-            if (xElement != null)
+            var element = xElement?.Element("mode");
+            if (element != null)
             {
-                var element = xElement.Element("mode");
-                if (element != null)
-                {
-                    mode = (CurrentCalendarView)Convert.ToInt32(element.Value);
-                }
+                mode = (CurrentCalendarView)Convert.ToInt32(element.Value);
             }
             return mode;
         }
@@ -1104,7 +1105,7 @@ namespace OutlookDesktop.Forms
                 }
             }
             else if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING && !_outlookContextMenuActivated && !Startup.UpdateDetected)
-            {                
+            {
                 var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
                 mwp.flags = mwp.flags | UnsafeNativeMethods.SWP_NOZORDER;
                 Marshal.StructureToPtr(mwp, m.LParam, true);

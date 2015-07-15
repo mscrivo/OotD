@@ -208,6 +208,7 @@
     <Compile Include="Enums\CurrentCalendarView.cs" />
     <Compile Include="Enums\FolderViewType.cs" />
     <Compile Include="Utility\OutlookFolderDefinition.cs" />
+    <Compile Include="Utility\StickyWindow.cs" />
     <Compile Include="Utility\SynchronizeInvokeExtensions.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>

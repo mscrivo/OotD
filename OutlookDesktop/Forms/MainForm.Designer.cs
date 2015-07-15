@@ -170,7 +170,7 @@ namespace OutlookDesktop.Forms
             // DefaultOutlookViewSubMenu
             // 
             this.DefaultOutlookViewSubMenu.Name = "DefaultOutlookViewSubMenu";
-            this.DefaultOutlookViewSubMenu.Size = new System.Drawing.Size(152, 22);
+            this.DefaultOutlookViewSubMenu.Size = new System.Drawing.Size(140, 22);
             this.DefaultOutlookViewSubMenu.Text = "Default View";
             // 
             // Separator3
@@ -471,7 +471,6 @@ namespace OutlookDesktop.Forms
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Outlook on the Desktop";
-            this.Layout += new System.Windows.Forms.LayoutEventHandler(this.MainForm_Layout);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
             this.TrayMenu.ResumeLayout(false);
