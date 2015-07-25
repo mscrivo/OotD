@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
@@ -138,6 +139,9 @@ namespace Blue.Windows
 
         // public properties
         private static int _stickGap = 10; // distance to stick
+
+        public event EventHandler ResizeEnded;
+        public event EventHandler MoveEnded;
 
         #region StickyWindow Constructor
 
@@ -477,6 +481,7 @@ namespace Blue.Windows
         private void EndResize()
         {
             Cancel();
+            OnResizeEnded();
         }
 
         #endregion
@@ -686,6 +691,7 @@ namespace Blue.Windows
         private void EndMove()
         {
             Cancel();
+            OnMoveEnded();
         }
 
         #endregion
@@ -774,12 +780,12 @@ namespace Blue.Windows
             {
                 if (bInsideStick)
                 {
-                    if (Math.Abs(_formRect.Top - toRect.Bottom) <= Math.Abs(_formOffsetPoint.Y) && bInsideStick)
+                    if (Math.Abs(_formRect.Top - toRect.Bottom) <= Math.Abs(_formOffsetPoint.Y))
                     {
                         // Stick Top to Bottom
                         _formOffsetPoint.Y = toRect.Bottom - _formRect.Top;
                     }
-                    if (Math.Abs(_formRect.Top + _formRect.Height - toRect.Top) <= Math.Abs(_formOffsetPoint.Y) && bInsideStick)
+                    if (Math.Abs(_formRect.Top + _formRect.Height - toRect.Top) <= Math.Abs(_formOffsetPoint.Y))
                     {
                         // snap Bottom to Top
                         _formOffsetPoint.Y = toRect.Top - _formRect.Height - _formRect.Top;
@@ -801,5 +807,15 @@ namespace Blue.Windows
         }
 
         #endregion
+
+        protected virtual void OnResizeEnded()
+        {
+            ResizeEnded?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnMoveEnded()
+        {
+            MoveEnded?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -38,7 +37,6 @@ namespace OutlookDesktop.Forms
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         // ReSharper disable once NotAccessedField.Local
         private StickyWindow _stickyWindow;
-        private bool _formMovedOrResized;
 
         /// <summary>
         /// Sets up the form for the current instance.
@@ -73,8 +71,18 @@ namespace OutlookDesktop.Forms
                 ResumeLayout();
                 SendWindowToBack();
 
+                // hook up sticky window instance and events to let us know when resizing/moving
+                // has ended so we can update the form dimensions in the preferences.
                 _stickyWindow = new StickyWindow(this);
-
+                _stickyWindow.MoveEnded += (sender, args) =>
+                {
+                    SaveFormDimensions();
+                };
+                _stickyWindow.ResizeEnded += (sender, args) =>
+                {
+                    SaveFormDimensions();
+                };
+                    
                 // hook up event to keep the date in the header bar up to date
                 OutlookViewControl.SelectionChange += OnAxOutlookViewControlOnSelectionChange;
             }
@@ -120,7 +128,6 @@ namespace OutlookDesktop.Forms
             {
                 CreateParams cp = base.CreateParams;
                 cp.ExStyle |= 0x80;             // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
-                //cp.ExStyle |= 0x02000000;       // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
                 return cp;
             }
         }
@@ -622,7 +629,6 @@ namespace OutlookDesktop.Forms
             {
                 UnsafeNativeMethods.ReleaseCapture();
                 UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)dir, IntPtr.Zero);
-                _formMovedOrResized = true;
             }
         }
 
@@ -633,8 +639,6 @@ namespace OutlookDesktop.Forms
 
             UnsafeNativeMethods.ReleaseCapture();
             UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)UnsafeNativeMethods.HTCAPTION, IntPtr.Zero);
-
-            _formMovedOrResized = true;
         }
 
         #region Event Handlers
@@ -765,16 +769,19 @@ namespace OutlookDesktop.Forms
                 }
             }
             _previousDate = DateTime.Now;
+        }
 
-            // Update our position in the settings
-            if (_formMovedOrResized)
-            {
-                Preferences.Left = Left;
-                Preferences.Top = Top;
-                Preferences.Width = Width;
-                Preferences.Height = Height;
-                _formMovedOrResized = false;
-            }
+        private void SaveFormDimensions()
+        {
+            Debug.WriteLine("Saving window position");
+            Debug.WriteLine("Left: {0}", Left);
+            Debug.WriteLine("Top: {0}", Top);
+            Debug.WriteLine("Width: {0}", Width);
+            Debug.WriteLine("Height: {0}", Height);
+            Preferences.Left = Left;
+            Preferences.Top = Top;
+            Preferences.Width = Width;
+            Preferences.Height = Height;
         }
 
         private void ExitMenu_Click(object sender, EventArgs e)

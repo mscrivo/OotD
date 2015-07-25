@@ -77,6 +77,7 @@ namespace OutlookDesktop.Forms
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.WindowMessageTimer = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             this.TrayMenu.SuspendLayout();
             this.HeaderPanel.SuspendLayout();
             this.ViewControlHostPanel.SuspendLayout();
@@ -237,6 +238,7 @@ namespace OutlookDesktop.Forms
             // HeaderPanel
             // 
             this.HeaderPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.HeaderPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.HeaderPanel.Controls.Add(this.TransparencySlider);
             this.HeaderPanel.Controls.Add(this.LabelCurrentDate);
             this.HeaderPanel.Controls.Add(this.ButtonPrevious);
@@ -246,6 +248,7 @@ namespace OutlookDesktop.Forms
             this.HeaderPanel.Controls.Add(this.MonthButton);
             this.HeaderPanel.Controls.Add(this.WeekButton);
             this.HeaderPanel.Controls.Add(this.DayButton);
+            this.HeaderPanel.Controls.Add(this.label1);
             this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HeaderPanel.Location = new System.Drawing.Point(4, 4);
             this.HeaderPanel.Margin = new System.Windows.Forms.Padding(4);
@@ -290,10 +293,12 @@ namespace OutlookDesktop.Forms
             // 
             // LabelCurrentDate
             // 
-            this.LabelCurrentDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.LabelCurrentDate.Location = new System.Drawing.Point(167, -1);
+            this.LabelCurrentDate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LabelCurrentDate.Location = new System.Drawing.Point(97, -1);
             this.LabelCurrentDate.Name = "LabelCurrentDate";
-            this.LabelCurrentDate.Size = new System.Drawing.Size(178, 20);
+            this.LabelCurrentDate.Size = new System.Drawing.Size(246, 20);
             this.LabelCurrentDate.TabIndex = 9;
             this.LabelCurrentDate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ToolTip.SetToolTip(this.LabelCurrentDate, global::OutlookDesktop.Properties.Resources.Form_Move_Help_Message);
@@ -339,9 +344,9 @@ namespace OutlookDesktop.Forms
             this.TodayButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TodayButton.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.TodayButton.Image = global::OutlookDesktop.Properties.Resources.Today;
-            this.TodayButton.Location = new System.Drawing.Point(349, -1);
+            this.TodayButton.Location = new System.Drawing.Point(349, -2);
             this.TodayButton.Name = "TodayButton";
-            this.TodayButton.Size = new System.Drawing.Size(20, 19);
+            this.TodayButton.Size = new System.Drawing.Size(20, 20);
             this.TodayButton.TabIndex = 1;
             this.ToolTip.SetToolTip(this.TodayButton, global::OutlookDesktop.Properties.Resources.Go_to_Today);
             this.TodayButton.UseVisualStyleBackColor = true;
@@ -452,6 +457,16 @@ namespace OutlookDesktop.Forms
             // 
             this.WindowMessageTimer.Tick += new System.EventHandler(this.WindowMessageTimer_Tick);
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Location = new System.Drawing.Point(340, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(167, 19);
+            this.label1.TabIndex = 11;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -520,6 +535,7 @@ namespace OutlookDesktop.Forms
         public System.Windows.Forms.Label LabelCurrentDate;
 #pragma warning disable CS3003 // Type is not CLS-compliant
         public MACTrackBar TransparencySlider;
+        private System.Windows.Forms.Label label1;
 #pragma warning restore CS3003 // Type is not CLS-compliant
     }
 }
