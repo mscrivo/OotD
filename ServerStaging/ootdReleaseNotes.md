@@ -1,5 +1,12 @@
 # Outlook on the Desktop Release Notes
 
+## 3.2.4
+
+* Fixed issue introduced in 3.2.1 where having OotD running would make Outlook unresponsive after some time.
+* Fixed various usability issues with top header bar.
+* Fixed issue where last instance position was not always remembered when starting up (2nd and final attempt).
+* Fixed issue where download window on HiDPI displays was cut off at the bottom.
+
 ## 3.2.3
 
 * Made instances sticky to make it easier to line them up and organize.

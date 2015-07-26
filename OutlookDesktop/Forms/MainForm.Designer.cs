@@ -72,12 +72,12 @@ namespace OutlookDesktop.Forms
             this.MonthButton = new System.Windows.Forms.Button();
             this.WeekButton = new System.Windows.Forms.Button();
             this.DayButton = new System.Windows.Forms.Button();
+            this.LabelBackground = new System.Windows.Forms.Label();
             this.ViewControlHostPanel = new System.Windows.Forms.Panel();
             this.OutlookViewControl = new AxOLXLib.AxViewCtl();
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.WindowMessageTimer = new System.Windows.Forms.Timer(this.components);
-            this.label1 = new System.Windows.Forms.Label();
             this.TrayMenu.SuspendLayout();
             this.HeaderPanel.SuspendLayout();
             this.ViewControlHostPanel.SuspendLayout();
@@ -248,7 +248,7 @@ namespace OutlookDesktop.Forms
             this.HeaderPanel.Controls.Add(this.MonthButton);
             this.HeaderPanel.Controls.Add(this.WeekButton);
             this.HeaderPanel.Controls.Add(this.DayButton);
-            this.HeaderPanel.Controls.Add(this.label1);
+            this.HeaderPanel.Controls.Add(this.LabelBackground);
             this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HeaderPanel.Location = new System.Drawing.Point(4, 4);
             this.HeaderPanel.Margin = new System.Windows.Forms.Padding(4);
@@ -312,7 +312,7 @@ namespace OutlookDesktop.Forms
             this.ButtonPrevious.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonPrevious.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.ButtonPrevious.Image = global::OutlookDesktop.Properties.Resources.Previous;
-            this.ButtonPrevious.Location = new System.Drawing.Point(461, -1);
+            this.ButtonPrevious.Location = new System.Drawing.Point(459, -1);
             this.ButtonPrevious.Name = "ButtonPrevious";
             this.ButtonPrevious.Size = new System.Drawing.Size(22, 19);
             this.ButtonPrevious.TabIndex = 6;
@@ -344,9 +344,9 @@ namespace OutlookDesktop.Forms
             this.TodayButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TodayButton.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.TodayButton.Image = global::OutlookDesktop.Properties.Resources.Today;
-            this.TodayButton.Location = new System.Drawing.Point(349, -2);
+            this.TodayButton.Location = new System.Drawing.Point(349, -1);
             this.TodayButton.Name = "TodayButton";
-            this.TodayButton.Size = new System.Drawing.Size(20, 20);
+            this.TodayButton.Size = new System.Drawing.Size(22, 19);
             this.TodayButton.TabIndex = 1;
             this.ToolTip.SetToolTip(this.TodayButton, global::OutlookDesktop.Properties.Resources.Go_to_Today);
             this.TodayButton.UseVisualStyleBackColor = true;
@@ -362,7 +362,7 @@ namespace OutlookDesktop.Forms
             this.WorkWeekButton.Image = global::OutlookDesktop.Properties.Resources.FiveDays;
             this.WorkWeekButton.Location = new System.Drawing.Point(393, -1);
             this.WorkWeekButton.Name = "WorkWeekButton";
-            this.WorkWeekButton.Size = new System.Drawing.Size(20, 19);
+            this.WorkWeekButton.Size = new System.Drawing.Size(22, 19);
             this.WorkWeekButton.TabIndex = 3;
             this.ToolTip.SetToolTip(this.WorkWeekButton, global::OutlookDesktop.Properties.Resources.Toggle_Work_Week_View);
             this.WorkWeekButton.UseVisualStyleBackColor = true;
@@ -376,9 +376,9 @@ namespace OutlookDesktop.Forms
             this.MonthButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MonthButton.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.MonthButton.Image = ((System.Drawing.Image)(resources.GetObject("MonthButton.Image")));
-            this.MonthButton.Location = new System.Drawing.Point(438, -1);
+            this.MonthButton.Location = new System.Drawing.Point(437, -1);
             this.MonthButton.Name = "MonthButton";
-            this.MonthButton.Size = new System.Drawing.Size(20, 19);
+            this.MonthButton.Size = new System.Drawing.Size(22, 19);
             this.MonthButton.TabIndex = 5;
             this.ToolTip.SetToolTip(this.MonthButton, global::OutlookDesktop.Properties.Resources.Toggle_Month_View);
             this.MonthButton.UseVisualStyleBackColor = true;
@@ -392,9 +392,9 @@ namespace OutlookDesktop.Forms
             this.WeekButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WeekButton.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.WeekButton.Image = global::OutlookDesktop.Properties.Resources.SevenDays;
-            this.WeekButton.Location = new System.Drawing.Point(416, -1);
+            this.WeekButton.Location = new System.Drawing.Point(415, -1);
             this.WeekButton.Name = "WeekButton";
-            this.WeekButton.Size = new System.Drawing.Size(20, 19);
+            this.WeekButton.Size = new System.Drawing.Size(22, 19);
             this.WeekButton.TabIndex = 4;
             this.ToolTip.SetToolTip(this.WeekButton, global::OutlookDesktop.Properties.Resources.Toggle_Full_Week_View);
             this.WeekButton.UseVisualStyleBackColor = true;
@@ -410,12 +410,22 @@ namespace OutlookDesktop.Forms
             this.DayButton.Image = global::OutlookDesktop.Properties.Resources.OneDay;
             this.DayButton.Location = new System.Drawing.Point(371, -1);
             this.DayButton.Name = "DayButton";
-            this.DayButton.Size = new System.Drawing.Size(20, 19);
+            this.DayButton.Size = new System.Drawing.Size(22, 19);
             this.DayButton.TabIndex = 2;
             this.ToolTip.SetToolTip(this.DayButton, global::OutlookDesktop.Properties.Resources.Toggle_Day_View);
             this.DayButton.UseVisualStyleBackColor = true;
             this.DayButton.Click += new System.EventHandler(this.DayButton_Click);
             this.DayButton.MouseHover += new System.EventHandler(this.DayButton_MouseHover);
+            // 
+            // LabelBackground
+            // 
+            this.LabelBackground.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LabelBackground.Location = new System.Drawing.Point(0, 0);
+            this.LabelBackground.Name = "LabelBackground";
+            this.LabelBackground.Size = new System.Drawing.Size(507, 19);
+            this.LabelBackground.TabIndex = 11;
             // 
             // ViewControlHostPanel
             // 
@@ -456,16 +466,6 @@ namespace OutlookDesktop.Forms
             // WindowMessageTimer
             // 
             this.WindowMessageTimer.Tick += new System.EventHandler(this.WindowMessageTimer_Tick);
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Location = new System.Drawing.Point(340, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(167, 19);
-            this.label1.TabIndex = 11;
             // 
             // MainForm
             // 
@@ -535,7 +535,7 @@ namespace OutlookDesktop.Forms
         public System.Windows.Forms.Label LabelCurrentDate;
 #pragma warning disable CS3003 // Type is not CLS-compliant
         public MACTrackBar TransparencySlider;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label LabelBackground;
 #pragma warning restore CS3003 // Type is not CLS-compliant
     }
 }

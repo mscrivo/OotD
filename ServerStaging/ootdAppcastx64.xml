@@ -6,12 +6,12 @@
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
     <item>
-      <title>Version 3.2.3</title>
+      <title>Version 3.2.4</title>
       <sparkle:releaseNotesLink>
         http://www.outlookonthedesktop.com/ootdReleaseNotes.md
       </sparkle:releaseNotesLink>
-      <pubDate>Thurs, 14 July 2015 22:40:00 +0000</pubDate>
-      <enclosure url="https://github.com/mscrivo/ootd/releases/download/3.2.3/ootd-3.2.3-x64.exe" sparkle:version="3.2.3" length="1933312" type="application/octet-stream" />
+      <pubDate>Thurs, 25 July 2015 21:50:00 +0000</pubDate>
+      <enclosure url="https://github.com/mscrivo/ootd/releases/download/3.2.4/ootd-3.2.4-x64.exe" sparkle:version="3.2.4" length="1933542" type="application/octet-stream" />
     </item>   
   </channel>
 </rss>
