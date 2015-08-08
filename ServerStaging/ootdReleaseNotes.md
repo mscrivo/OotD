@@ -1,5 +1,9 @@
 # Outlook on the Desktop Release Notes
 
+## 3.2.5
+
+* Fixed issue where OotD wouldn't start on systems with older versions of Office (notably 2007 and 2003)
+
 ## 3.2.4
 
 * Fixed issue introduced in 3.2.1 where having OotD running would make Outlook unresponsive after some time.
