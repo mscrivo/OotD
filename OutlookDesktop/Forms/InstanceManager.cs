@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
@@ -91,11 +92,7 @@ namespace OutlookDesktop.Forms
                 {
                     if (appReg == null) return instanceCount;
 
-                    foreach (var instanceName in appReg.GetSubKeyNames())
-                    {
-                        if (instanceName == "AutoUpdate") continue;
-                        instanceCount++;
-                    }
+                    instanceCount += appReg.GetSubKeyNames().Count(instanceName => instanceName != "AutoUpdate");
                 }
 
                 return instanceCount;

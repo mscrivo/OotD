@@ -53,10 +53,7 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private static string AssemblyVersion
-        {
-            get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); }
-        }
+        private static string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         private static string AssemblyProduct
         {

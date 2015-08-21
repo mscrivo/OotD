@@ -23,13 +23,9 @@ namespace OutlookDesktop.Preferences
                 using (
                     var key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run"))
                 {
-                    if (key != null)
-                    {
-                        var val = (string)key.GetValue("OutlookOnDesktop");
-                        return (!string.IsNullOrEmpty(val));
-                    }
+                    var val = (string) key?.GetValue("OutlookOnDesktop");
+                    return !string.IsNullOrEmpty(val);
                 }
-                return false;
             }
             set
             {
@@ -80,10 +76,7 @@ namespace OutlookDesktop.Preferences
             {
                 using (var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
                 {
-                    if (key != null)
-                    {
-                        key.SetValue("LockPosition", value);
-                    }
+                    key?.SetValue("LockPosition", value);
                 }
             }
         }

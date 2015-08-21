@@ -36,7 +36,7 @@ namespace OutlookDesktop.Forms
         private bool _outlookContextMenuActivated;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         // ReSharper disable once NotAccessedField.Local
-        private StickyWindow _stickyWindow;
+        private readonly StickyWindow _stickyWindow;
 
         /// <summary>
         /// Sets up the form for the current instance.
