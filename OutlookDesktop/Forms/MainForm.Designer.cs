@@ -426,6 +426,8 @@ namespace OutlookDesktop.Forms
             this.LabelBackground.Name = "LabelBackground";
             this.LabelBackground.Size = new System.Drawing.Size(507, 19);
             this.LabelBackground.TabIndex = 11;
+            this.LabelBackground.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LabelBackground_MouseDown);
+            this.LabelBackground.MouseHover += new System.EventHandler(this.LabelBackground_MouseHover);
             // 
             // ViewControlHostPanel
             // 

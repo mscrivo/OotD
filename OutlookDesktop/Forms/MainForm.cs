@@ -873,6 +873,14 @@ namespace OutlookDesktop.Forms
             }
         }
 
+        private void LabelBackground_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && WindowState != FormWindowState.Maximized)
+            {
+                MoveForm();
+            }
+        }
+
         private void LabelCurrentDate_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && WindowState != FormWindowState.Maximized)
@@ -937,6 +945,11 @@ namespace OutlookDesktop.Forms
         }
 
         private void LabelCurrentDate_MouseHover(object sender, EventArgs e)
+        {
+            Cursor = Cursors.SizeAll;
+        }
+
+        private void LabelBackground_MouseHover(object sender, EventArgs e)
         {
             Cursor = Cursors.SizeAll;
         }
