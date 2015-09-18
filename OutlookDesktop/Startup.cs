@@ -178,12 +178,12 @@ namespace OutlookDesktop
                     {
                         Logger.Debug($"Analyzing subkey '{subkey}'");
                         double versionSubKey;
-                        var culture = CultureInfo.CreateSpecificCulture("en-US");
-                        if (double.TryParse(subkey, NumberStyles.Float, culture, out versionSubKey))
+                        if (double.TryParse(subkey, NumberStyles.Float, new NumberFormatInfo(), out versionSubKey))
                         {
-                            Logger.Debug($"Office Version: {versionSubKey}");
+                            Logger.Debug($"Office Version: {versionSubKey} Detected");
                             if (versionSubKey >= 11)
                             {
+                                Logger.Debug($"Office Version: {versionSubKey} Detected");
                                 hasOffice2003OrHigher = true;
                                 break;
                             }
@@ -206,16 +206,17 @@ namespace OutlookDesktop
                         Logger.Debug($"Checking for Outlook exe in: {outlookPath}");
                         if (File.Exists(Path.Combine(outlookPath, "Outlook.exe")))
                         {
-                            Logger.Debug("Outlook exe found.");
+                            Logger.Debug("Outlook exe found.  We're all good.");
                             return true;
                         }
                     }
                 }
             }
 
-            if (outlookPath != null)
-                Logger.Error(
-                    $"Outlook path was reported as: {Path.Combine(outlookPath, "Outlook.exe")}, but this file could not be found.");
+            if (!string.IsNullOrEmpty(outlookPath))
+            {
+                Logger.Error($"Outlook path was reported as: {Path.Combine(outlookPath, "Outlook.exe")}, but this file could not be found.");
+            }
 
             return false;
         }
