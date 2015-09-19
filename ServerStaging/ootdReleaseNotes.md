@@ -3,6 +3,7 @@
 ## 3.2.6
 
 * Fixed an issue where OotD would not start up in for particular Office configurations.  Office 365 being one of them.
+* Fixed an issue where an instance window could not be moved if configured to be anything other than the calendar view.
 
 ## 3.2.5
 
