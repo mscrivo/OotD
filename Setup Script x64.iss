@@ -16,6 +16,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
+DefaultGroupName={#MyAppName}
 DefaultDirName={pf}\{#MyAppName}
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoCopyright={#MyAppCopyright}
@@ -39,6 +40,7 @@ DisableDirPage=auto
 AllowRootDirectory=True
 DisableReadyMemo=True
 DisableProgramGroupPage=yes
+UsePreviousGroup=False
 
 [Languages]
 Name: eng; MessagesFile: compiler:Default.isl
