@@ -1087,6 +1087,15 @@ namespace OutlookDesktop.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to set view.  Your version of Outlook may not support it..
+        /// </summary>
+        internal static string ViewTypeNotSupported {
+            get {
+                return ResourceManager.GetString("ViewTypeNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Web Site.
         /// </summary>
         internal static string WebSite {

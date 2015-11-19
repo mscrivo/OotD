@@ -533,17 +533,25 @@ namespace OutlookDesktop.Forms
                 ShowCalendarButtons(true);
             }
 
-            OutlookViewControl.Folder = GetFolderFromViewType(folderViewType).Name;
+            try
+            {
+                OutlookViewControl.Folder = GetFolderFromViewType(folderViewType).Name;
 
-            Preferences.OutlookFolderName =  GetFolderFromViewType(folderViewType).Name;
-            Preferences.OutlookFolderStoreId = GetFolderFromViewType(folderViewType).StoreID;
-            Preferences.OutlookFolderEntryId = GetFolderFromViewType(folderViewType).EntryID;
+                Preferences.OutlookFolderName = GetFolderFromViewType(folderViewType).Name;
+                Preferences.OutlookFolderStoreId = GetFolderFromViewType(folderViewType).StoreID;
+                Preferences.OutlookFolderEntryId = GetFolderFromViewType(folderViewType).EntryID;
 
-            SetMAPIFolder();
+                SetMAPIFolder();
 
-            UpdateOutlookViewsList();
+                UpdateOutlookViewsList();
 
-            CheckSelectedMenuItem(itemToCheck);
+                CheckSelectedMenuItem(itemToCheck);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Resources.ViewTypeNotSupported, Resources.ErrorCaption, MessageBoxButtons.OK);
+                Logger.Error(ex, "Unable to set Outlook folder.");
+            }
         }
 
         private void ShowCalendarButtons(bool show)

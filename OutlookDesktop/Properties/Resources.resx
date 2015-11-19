@@ -464,4 +464,7 @@ If you have 32-bit Office installed, please use the 32-bit Outlook on the Deskto
   <data name="Toggle_Full_Week_View" xml:space="preserve">
     <value>Toggle Full Week View</value>
   </data>
+  <data name="ViewTypeNotSupported" xml:space="preserve">
+    <value>Unable to set view.  Your version of Outlook may not support it.</value>
+  </data>
 </root>
