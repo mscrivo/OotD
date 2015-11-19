@@ -1,5 +1,10 @@
 # Outlook on the Desktop Release Notes
 
+## 3.3.0
+
+* Upgraded to use .NET 4.6 Framework
+* Added ability to view To-Do List
+
 ## 3.2.6
 
 * Fixed an issue where OotD would not start up in for particular Office configurations.  Office 365 being one of them.

@@ -1,8 +1,8 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "3.2.6"
-#define MyAppVerName "Outlook on the Desktop 3.2.6"
+#define MyAppVersion "3.3.0"
+#define MyAppVerName "Outlook on the Desktop 3.3.0"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
@@ -47,7 +47,7 @@ Name: eng; MessagesFile: compiler:Default.isl
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser unchecked; Description: "{cm:LaunchProgram,{#MyAppName}}"
 
 [Tasks]
-Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4.5.2; Check: NeedsDotNetFramework
+Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4.6; Check: NeedsDotNetFramework
 
 [Files]
 Source: "OutlookDesktop\bin\x86\Release\OutlookDesktop.exe"; DestDir: {app}; Flags: ignoreversion
@@ -75,7 +75,7 @@ Name: "{app}\logs"; Permissions: everyone-modify
 
 [Code]
 const
-	dotnetURL = 'http://download.microsoft.com/download/E/2/1/E21644B5-2DF2-47C2-91BD-63C560427900/NDP452-KB2901907-x86-x64-AllOS-ENU.exe';
+	dotnetURL = 'https://download.microsoft.com/download/C/3/A/C3A5200B-D33C-47E9-9D70-2F7C65DAAD94/NDP46-KB3045557-x86-x64-AllOS-ENU.exe';
 
 function NeedsDotNetFramework(): Boolean;
 var
@@ -88,7 +88,7 @@ begin
 	begin
 		if RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', ReleaseVersion) then
 		begin
-      if (ReleaseVersion >= 379893) then
+      if (ReleaseVersion >= 394254) then
       begin
         tempResult := False;
       end;
@@ -113,10 +113,10 @@ begin
 		sTasks := WizardSelectedTasks(false);
 
 		isxdl_ClearFiles;
-		isxdl_SetOption('title', 'Downloading the Microsoft .NET Framework 4.5 Framework');
-		isxdl_SetOption('description', 'Please wait while Setup downloads the Microsoft .NET 4.5 Framework.');
+		isxdl_SetOption('title', 'Downloading the Microsoft .NET Framework 4.6 Framework');
+		isxdl_SetOption('description', 'Please wait while Setup downloads the Microsoft .NET 4.6 Framework.');
 
-		sFileName := ExpandConstant('{tmp}\NDP452-KB2901907-x86-x64-AllOS-ENU.exe');
+		sFileName := ExpandConstant('{tmp}\NDP46-KB3045557-x86-x64-AllOS-ENU.exe');
 
 		if IsTaskSelected('installdotnet') then
 		begin
