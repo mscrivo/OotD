@@ -241,30 +241,35 @@ namespace OutlookDesktop.Forms
             }
 
             // Checks the menuitem of the current folder.
-            if (Preferences.OutlookFolderName == FolderViewType.Calendar.ToString())
+            if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Calendar).Name)
             {
                 CalendarMenu.Checked = true;
                 ShowCalendarButtons(true);
             }
-            else if (Preferences.OutlookFolderName == FolderViewType.Contacts.ToString())
+            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Contacts).Name)
             {
                 ShowCalendarButtons(false);
                 ContactsMenu.Checked = true;
             }
-            else if (Preferences.OutlookFolderName == FolderViewType.Inbox.ToString())
+            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Inbox).Name)
             {
                 ShowCalendarButtons(false);
                 InboxMenu.Checked = true;
             }
-            else if (Preferences.OutlookFolderName == FolderViewType.Notes.ToString())
+            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Notes).Name)
             {
                 ShowCalendarButtons(false);
                 NotesMenu.Checked = true;
             }
-            else if (Preferences.OutlookFolderName == FolderViewType.Tasks.ToString())
+            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Tasks).Name)
             {
                 ShowCalendarButtons(false);
                 TasksMenu.Checked = true;
+            }
+            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Todo).Name)
+            {
+                ShowCalendarButtons(false);
+                TodosMenu.Checked = true;
             }
             else
             {
@@ -276,7 +281,7 @@ namespace OutlookDesktop.Forms
                 _customMenu = (ToolStripMenuItem)TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
 
-                // store the custom folder defintion in case the user wants to switch back to it and we need to reload it.
+                // store the custom folder definition in case the user wants to switch back to it and we need to reload it.
                 _customFolderDefinition.OutlookFolderName = Preferences.OutlookFolderName;
                 _customFolderDefinition.OutlookFolderStoreId = Preferences.OutlookFolderStoreId;
                 _customFolderDefinition.OutlookFolderEntryId = Preferences.OutlookFolderEntryId;
@@ -477,6 +482,8 @@ namespace OutlookDesktop.Forms
                     return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderNotes);
                 case FolderViewType.Tasks:
                     return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderTasks);
+                case FolderViewType.Todo:
+                    return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderToDo);
                 default:
                     return null;
             }
@@ -489,7 +496,7 @@ namespace OutlookDesktop.Forms
         /// <param name="itemToCheck"></param>
         private void CheckSelectedMenuItem(ToolStripMenuItem itemToCheck)
         {
-            var menuItems = new List<ToolStripMenuItem> { CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu };
+            var menuItems = new List<ToolStripMenuItem> { CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu, TodosMenu };
 
             if (_customMenu != null) menuItems.Add(_customMenu);
 
@@ -526,9 +533,9 @@ namespace OutlookDesktop.Forms
                 ShowCalendarButtons(true);
             }
 
-            OutlookViewControl.Folder = folderViewType.ToString();
+            OutlookViewControl.Folder = GetFolderFromViewType(folderViewType).Name;
 
-            Preferences.OutlookFolderName = folderViewType.ToString();
+            Preferences.OutlookFolderName =  GetFolderFromViewType(folderViewType).Name;
             Preferences.OutlookFolderStoreId = GetFolderFromViewType(folderViewType).StoreID;
             Preferences.OutlookFolderEntryId = GetFolderFromViewType(folderViewType).EntryID;
 
@@ -724,6 +731,11 @@ namespace OutlookDesktop.Forms
         private void TasksMenu_Click(object sender, EventArgs e)
         {
             DefaultFolderTypesClicked(FolderViewType.Tasks, TasksMenu);
+        }
+
+        private void TodosMenu_Click(object sender, EventArgs e)
+        {
+            DefaultFolderTypesClicked(FolderViewType.Todo, TodosMenu);
         }
 
         private void HideMenu_Click(object sender, EventArgs e)

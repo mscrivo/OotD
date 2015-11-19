@@ -47,6 +47,7 @@ namespace OutlookDesktop.Forms
             this.InboxMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.NotesMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.TasksMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.TodosMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.SelectFolderMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -92,6 +93,7 @@ namespace OutlookDesktop.Forms
             this.InboxMenu,
             this.NotesMenu,
             this.TasksMenu,
+            this.TodosMenu,
             this.Separator1,
             this.SelectFolderMenu,
             this.Separator2,
@@ -106,7 +108,7 @@ namespace OutlookDesktop.Forms
             this.Separator6,
             this.ExitMenu});
             this.TrayMenu.Name = "trayMenu";
-            this.TrayMenu.Size = new System.Drawing.Size(187, 304);
+            this.TrayMenu.Size = new System.Drawing.Size(187, 348);
             // 
             // CalendarMenu
             // 
@@ -142,6 +144,13 @@ namespace OutlookDesktop.Forms
             this.TasksMenu.Size = new System.Drawing.Size(186, 22);
             this.TasksMenu.Text = "Tasks";
             this.TasksMenu.Click += new System.EventHandler(this.TasksMenu_Click);
+            // 
+            // TodosMenu
+            // 
+            this.TodosMenu.Name = "TodosMenu";
+            this.TodosMenu.Size = new System.Drawing.Size(186, 22);
+            this.TodosMenu.Text = "To-Do List";
+            this.TodosMenu.Click += new System.EventHandler(this.TodosMenu_Click);
             // 
             // Separator1
             // 
@@ -538,6 +547,7 @@ namespace OutlookDesktop.Forms
 #pragma warning disable CS3003 // Type is not CLS-compliant
         public MACTrackBar TransparencySlider;
         private System.Windows.Forms.Label LabelBackground;
+        private System.Windows.Forms.ToolStripMenuItem TodosMenu;
 #pragma warning restore CS3003 // Type is not CLS-compliant
     }
 }

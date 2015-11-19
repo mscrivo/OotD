@@ -10,5 +10,6 @@ namespace OutlookDesktop.Enums
         Contacts,
         Notes,
         Tasks,
+        Todo
     }
 }
