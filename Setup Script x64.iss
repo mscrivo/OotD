@@ -129,7 +129,7 @@ begin
 		begin
 			if FileExists(sFileName) then 
       begin 
-        if Exec(sFileName,'/Passive','',SW_SHOW,ewWaitUntilTerminated,nCode) then        
+        if Exec(sFileName,'/passive /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode) then        
         begin 
           Result := true;
         end 
