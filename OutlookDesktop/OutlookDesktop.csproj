@@ -86,7 +86,7 @@
     <NoWarn>3008</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\x86\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
@@ -155,7 +155,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.2.0\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.2.1\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System">
@@ -186,6 +186,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="Resources\Images\sevenDays.png" />
     <None Include="Resources\Images\oneDay.png" />
     <None Include="Resources\Images\fiveDays.png" />
@@ -196,7 +197,6 @@
     <None Include="..\ServerStaging\ootdReleaseNotes.md" />
     <None Include="..\README.md" />
     <None Include="..\LICENSE" />
-    <None Include="packages.config" />
     <None Include="Resources\Icons\1.ico" />
     <None Include="Resources\Icons\2.ico" />
     <None Include="Resources\Icons\3.ico" />
