@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -19,6 +20,9 @@ namespace OutlookDesktop.Forms
 {
     public partial class InstanceManager : Form
     {
+        const string AppCast64Url = "http://www.outlookonthedesktop.com/ootdAppcastx64.xml";
+        const string AppCast32Url = "http://www.outlookonthedesktop.com/ootdAppcastx86.xml";
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<string, MainForm> _mainFormInstances = new Dictionary<string, MainForm>();
         private static Graphics _graphics;
@@ -38,14 +42,7 @@ namespace OutlookDesktop.Forms
             _graphics = CreateGraphics();
 
             // setup update checker.
-            if (UnsafeNativeMethods.Is64Bit())
-            {
-                _sparkle = new Sparkle("http://www.outlookonthedesktop.com/ootdAppcastx64.xml", Resources.AppIcon);
-            }
-            else
-            {
-                _sparkle = new Sparkle("http://www.outlookonthedesktop.com/ootdAppcastx86.xml", Resources.AppIcon);
-            }
+            _sparkle = UnsafeNativeMethods.Is64Bit() ? new Sparkle(AppCast64Url, Resources.AppIcon) : new Sparkle(AppCast32Url, Resources.AppIcon);
 
             _sparkle.UpdateDetected += OnSparkleOnUpdateDetectedShowWithToast;
             _sparkle.UpdateWindowDismissed += OnSparkleOnUpdateWindowDismissed;
@@ -320,15 +317,11 @@ namespace OutlookDesktop.Forms
             var today = DateTime.Now;
 
             // find the icon for the today's day of the month and replace the tray icon with it, compensate for user's DPI settings.
-            if (_graphics.DpiX.Equals(96f))
-            {
-                trayIcon.Icon = new Icon((Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture), new Size(16, 16));
-            }
-            else
-            {
-                // HiDPI, use higher res icon.
-                trayIcon.Icon = new Icon((Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture), new Size(32, 32));
-            }
+            var dateIcon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture);
+
+            Debug.Assert(dateIcon != null, "dateIcon != null");
+
+            trayIcon.Icon = _graphics.DpiX.Equals(96f) ? new Icon(dateIcon, new Size(16, 16)) : new Icon(dateIcon, new Size(32, 32));
         }
 
         private void UpdateTimer_Tick(object sender, EventArgs e)

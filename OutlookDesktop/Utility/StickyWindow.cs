@@ -74,8 +74,8 @@ namespace Blue.Private.Win32Imports
         /// </summary>
         public class HT
         {
-            public const int HTERROR = (-2);
-            public const int HTTRANSPARENT = (-1);
+            public const int HTERROR = -2;
+            public const int HTTRANSPARENT = -1;
             public const int HTNOWHERE = 0;
             public const int HTCLIENT = 1;
             public const int HTCAPTION = 2;
@@ -109,12 +109,12 @@ namespace Blue.Private.Win32Imports
         {
             public static int HiWord(int iValue)
             {
-                return ((iValue >> 16) & 0xFFFF);
+                return (iValue >> 16) & 0xFFFF;
             }
 
             public static int LoWord(int iValue)
             {
-                return (iValue & 0xFFFF);
+                return iValue & 0xFFFF;
             }
         }
     }
@@ -225,7 +225,7 @@ namespace Blue.Windows
                         if (OnNCLButtonDown((int)m.WParam, _mousePoint))
                         {
                             //m.Result = new IntPtr ( (resizingForm || movingForm) ? 1 : 0 );
-                            m.Result = (IntPtr)((_resizingForm || _movingForm) ? 1 : 0);
+                            m.Result = (IntPtr)(_resizingForm || _movingForm ? 1 : 0);
                             return true;
                         }
                         break;
@@ -497,7 +497,7 @@ namespace Blue.Windows
             var iBottom = _formRect.Bottom;
 
             // no normalize required
-            // first strech the window to the new position
+            // first stretch the window to the new position
             if ((_resizeDirection & ResizeDir.Left) == ResizeDir.Left)
             {
                 _formRect.Width = _formRect.X - p.X + _formRect.Width;
@@ -550,7 +550,7 @@ namespace Blue.Windows
             // compute the new form size
             if ((_resizeDirection & ResizeDir.Left) == ResizeDir.Left)
             {
-                // left resize requires special handling of X & Width acording to MinSize and MinWindowTrackSize
+                // left resize requires special handling of X & Width according to MinSize and MinWindowTrackSize
                 var iNewWidth = _formRect.Width + _formOffsetRect.Width + _formOffsetRect.X;
 
                 if (_originalForm.MaximumSize.Width != 0)
@@ -595,7 +595,7 @@ namespace Blue.Windows
 
         private void Resize_Stick(Rectangle toRect, bool bInsideStick)
         {
-            if (_formRect.Right >= (toRect.Left - _stickGap) && _formRect.Left <= (toRect.Right + _stickGap))
+            if (_formRect.Right >= toRect.Left - _stickGap && _formRect.Left <= toRect.Right + _stickGap)
             {
                 if ((_resizeDirection & ResizeDir.Top) == ResizeDir.Top)
                 {
@@ -614,7 +614,7 @@ namespace Blue.Windows
                 }
             }
 
-            if (_formRect.Bottom >= (toRect.Top - _stickGap) && _formRect.Top <= (toRect.Bottom + _stickGap))
+            if (_formRect.Bottom >= toRect.Top - _stickGap && _formRect.Top <= toRect.Bottom + _stickGap)
             {
                 if ((_resizeDirection & ResizeDir.Right) == ResizeDir.Right)
                 {
@@ -711,7 +711,7 @@ namespace Blue.Windows
             p.Offset(-_offsetPoint.X, -_offsetPoint.Y);
 
             // p is the exact location of the frame - so we can play with it
-            // to detect the new position acording to different bounds
+            // to detect the new position according to different bounds
             _formRect.Location = p; // this is the new positon of the form
 
             _formOffsetPoint.X = _stickGap + 1; // (more than) maximum gaps
@@ -748,16 +748,16 @@ namespace Blue.Windows
         {
             // compare distance from toRect to formRect
             // and then with the found distances, compare the most closed position
-            if (_formRect.Bottom >= (toRect.Top - _stickGap) && _formRect.Top <= (toRect.Bottom + _stickGap))
+            if (_formRect.Bottom >= toRect.Top - _stickGap && _formRect.Top <= toRect.Bottom + _stickGap)
             {
                 if (bInsideStick)
                 {
-                    if ((Math.Abs(_formRect.Left - toRect.Right) <= Math.Abs(_formOffsetPoint.X)))
+                    if (Math.Abs(_formRect.Left - toRect.Right) <= Math.Abs(_formOffsetPoint.X))
                     {
                         // left 2 right
                         _formOffsetPoint.X = toRect.Right - _formRect.Left;
                     }
-                    if ((Math.Abs(_formRect.Left + _formRect.Width - toRect.Left) <= Math.Abs(_formOffsetPoint.X)))
+                    if (Math.Abs(_formRect.Left + _formRect.Width - toRect.Left) <= Math.Abs(_formOffsetPoint.X))
                     {
                         // right 2 left
                         _formOffsetPoint.X = toRect.Left - _formRect.Width - _formRect.Left;
@@ -775,7 +775,7 @@ namespace Blue.Windows
                     _formOffsetPoint.X = toRect.Left + toRect.Width - _formRect.Width - _formRect.Left;
                 }
             }
-            if (_formRect.Right >= (toRect.Left - _stickGap) && _formRect.Left <= (toRect.Right + _stickGap))
+            if (_formRect.Right >= toRect.Left - _stickGap && _formRect.Left <= toRect.Right + _stickGap)
             {
                 if (bInsideStick)
                 {

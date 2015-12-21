@@ -54,9 +54,9 @@ namespace OutlookDesktop.Utility
             //Call myself
             foreach (string sourceSubKeyName in sourceKey.GetSubKeyNames())
             {
-                RegistryKey sourceSubKey = sourceKey.OpenSubKey(sourceSubKeyName);
-                RegistryKey destSubKey = destinationKey.CreateSubKey(sourceSubKeyName);
-                RecursivelyCopyKey(sourceSubKey, destSubKey);
+                var sourceSubKey = sourceKey.OpenSubKey(sourceSubKeyName);
+                var destinationSubKey = destinationKey.CreateSubKey(sourceSubKeyName);
+                RecursivelyCopyKey(sourceSubKey, destinationSubKey);
             }
         }
     }

@@ -24,7 +24,7 @@ namespace OutlookDesktop.Forms
             labelCopyright.Text = AssemblyCopyright;
         }
 
-        public override sealed string Text
+        public sealed override string Text
         {
             get { return base.Text; }
             set { base.Text = value; }

@@ -37,10 +37,9 @@ namespace OutlookDesktop.Forms
         /// <param name="instructions">Instructions to present above the input box.</param>
         /// <param name="caption">The form's caption</param>
         /// <param name="defaultValue">The default value to place in the Inbox Box.</param>
-        /// <param name="validator">A validator method that peforms validation on the user's input.</param>
+        /// <param name="validator">A validator method that performs validation on the user's input.</param>
         /// <returns></returns>
-        public static InputBoxResult Show(Form owner, string instructions, string caption, string defaultValue,
-                                          InputBoxValidatingEventHandler validator)
+        public static InputBoxResult Show(Form owner, string instructions, string caption, string defaultValue, InputBoxValidatingEventHandler validator)
         {
             using (var form = new InputBox())
             {
@@ -52,13 +51,13 @@ namespace OutlookDesktop.Forms
 
                 var result = form.ShowDialog();
 
-                var retval = new InputBoxResult();
+                var inputBoxResult = new InputBoxResult();
                 if (result == DialogResult.OK)
                 {
-                    retval.Text = form.InputTextBox.Text;
-                    retval.Ok = true;
+                    inputBoxResult.Text = form.InputTextBox.Text;
+                    inputBoxResult.Ok = true;
                 }
-                return retval;
+                return inputBoxResult;
             }
         }
 
@@ -71,7 +70,7 @@ namespace OutlookDesktop.Forms
         {
             if (Validator != null)
             {
-                var args = new InputBoxValidatingEventArgs {Text = InputTextBox.Text};
+                var args = new InputBoxValidatingEventArgs { Text = InputTextBox.Text };
                 Validator(this, args);
                 if (args.Cancel)
                 {

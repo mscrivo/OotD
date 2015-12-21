@@ -35,7 +35,7 @@ namespace OutlookDesktop.Forms
         private OutlookFolderDefinition _customFolderDefinition;
         private bool _outlookContextMenuActivated;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        // ReSharper disable once NotAccessedField.Local
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly StickyWindow _stickyWindow;
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace OutlookDesktop.Forms
             {
                 InstanceName = instanceName;
 
-                // Uniquely identify the prev/next buttons for use in an ugly hack below.
+                // Uniquely identify the previous/next buttons for use in an ugly hack below.
                 ButtonNext.Tag = Guid.NewGuid();
                 ButtonPrevious.Tag = Guid.NewGuid();
 
@@ -353,8 +353,8 @@ namespace OutlookDesktop.Forms
         }
 
         /// <summary>
-        /// This will populate a dropdown off the instance context menu with the avaliable
-        /// views in outlook, it will also assoicate the menuitem with the event handler. 
+        /// This will populate a dropdown off the instance context menu with the available
+        /// views in outlook, it will also associate the menuitem with the event handler. 
         /// </summary>
         private void UpdateOutlookViewsList()
         {

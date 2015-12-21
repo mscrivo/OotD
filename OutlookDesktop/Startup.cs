@@ -61,7 +61,7 @@ namespace OutlookDesktop
                     OutlookNameSpace = OutlookApp.GetNamespace("MAPI");
 
                     // Before we do anything else, wait for the RPC server to be available, as the program will crash if it's not.
-                    // This is especially likely when Ootd is set to start with windows.
+                    // This is especially likely when OotD is set to start with windows.
                     if (!IsRPCServerAvailable(OutlookNameSpace)) return;
 
                     OutlookFolder = OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
@@ -159,7 +159,7 @@ namespace OutlookDesktop
         /// <summary>
         /// Returns true if Outlook 2000 (or higher) is installed.
         /// </summary>
-        /// <returns>New version of Office need to be explicily supported in this function.</returns>
+        /// <returns>New version of Office need to be explicitly supported in this function.</returns>
         private static bool IsOutlook2003OrHigherInstalled()
         {
             bool hasOffice2003OrHigher = false;
