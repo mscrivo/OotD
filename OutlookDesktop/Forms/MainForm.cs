@@ -807,12 +807,7 @@ namespace OutlookDesktop.Forms
         private void ExitMenu_Click(object sender, EventArgs e)
         {
             Dispose();
-
-            Startup.OutlookExplorer.Close();
-            Startup.OutlookExplorer = null;
-            Startup.OutlookFolder = null;
-            Startup.OutlookNameSpace = null;
-            Startup.OutlookApp = null;
+            Startup.DisposeOutlookObjects();
 
             Application.Exit();
         }

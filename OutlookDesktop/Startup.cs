@@ -137,13 +137,13 @@ namespace OutlookDesktop
         private static bool IsAlreadyRunning()
         {
             string programPath = Assembly.GetExecutingAssembly().Location;
-            if (!string.IsNullOrEmpty(programPath))
+            if (!String.IsNullOrEmpty(programPath))
             {
                 var fileInfo = new FileInfo(programPath);
                 string sExeName = fileInfo.Name;
                 bool createdNew = false;
 
-                if (!string.IsNullOrEmpty(sExeName))
+                if (!String.IsNullOrEmpty(sExeName))
                 {
                     // ReSharper disable ObjectCreationAsStatement
                     new Mutex(true, $"Local\\{sExeName}", out createdNew);
@@ -163,7 +163,7 @@ namespace OutlookDesktop
         private static bool IsOutlook2003OrHigherInstalled()
         {
             bool hasOffice2003OrHigher = false;
-            string outlookPath = string.Empty;
+            string outlookPath = String.Empty;
 
             // first make sure they have Office/Outlook 2000 (9.0) or higher installed by looking for 
             // the version subkeys in HKLM.
@@ -178,7 +178,7 @@ namespace OutlookDesktop
                     {
                         Logger.Debug($"Analyzing subkey '{subkey}'");
                         double versionSubKey;
-                        if (double.TryParse(subkey, NumberStyles.Float, new NumberFormatInfo(), out versionSubKey))
+                        if (Double.TryParse(subkey, NumberStyles.Float, new NumberFormatInfo(), out versionSubKey))
                         {
                             Logger.Debug($"Office Version: {versionSubKey} Detected");
                             if (versionSubKey >= 11)
@@ -213,12 +213,25 @@ namespace OutlookDesktop
                 }
             }
 
-            if (!string.IsNullOrEmpty(outlookPath))
+            if (!String.IsNullOrEmpty(outlookPath))
             {
                 Logger.Error($"Outlook path was reported as: {Path.Combine(outlookPath, "Outlook.exe")}, but this file could not be found.");
             }
 
             return false;
+        }
+
+        public static void DisposeOutlookObjects()
+        {
+            if (Startup.OutlookExplorer != null)
+            {
+                Startup.OutlookExplorer.Close();
+            }
+
+            Startup.OutlookExplorer = null;
+            Startup.OutlookFolder = null;
+            Startup.OutlookNameSpace = null;
+            Startup.OutlookApp = null;
         }
     }
 }

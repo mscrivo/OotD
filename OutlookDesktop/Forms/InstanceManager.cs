@@ -336,6 +336,7 @@ namespace OutlookDesktop.Forms
             {
                 formInstance.Value.Dispose();
             }
+            Startup.DisposeOutlookObjects();
             Application.Exit();
         }
 
