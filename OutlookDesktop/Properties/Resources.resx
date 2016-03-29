@@ -124,7 +124,7 @@
     <value>Hide</value>
   </data>
   <data name="ErrorCaption" xml:space="preserve">
-    <value>Outlook on the Destkop Error</value>
+    <value>Outlook on the Desktop Error</value>
   </data>
   <data name="Opaque" xml:space="preserve">
     <value>Opaque</value>
@@ -407,7 +407,7 @@
     <value>The Windows RPC Server is not available. Please wait try loading Outlook on the Desktop in a few minutes.  If you still get the same error, you may have a problem with your windows installation.</value>
   </data>
   <data name="Incorrect_bittedness_of_OotD" xml:space="preserve">
-    <value>It appears you are attempting to run the incorrect version of Outlook on the Destkop.
+    <value>It appears you are attempting to run the incorrect version of Outlook on the Desktop.
 
 If you have 64-bit Office installed please use the 64-bit Outlook on the Desktop.
 

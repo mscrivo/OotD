@@ -512,7 +512,7 @@ namespace OutlookDesktop.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Outlook on the Destkop Error.
+        ///   Looks up a localized string similar to Outlook on the Desktop Error.
         /// </summary>
         internal static string ErrorCaption {
             get {
@@ -657,7 +657,7 @@ namespace OutlookDesktop.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to It appears you are attempting to run the incorrect version of Outlook on the Destkop.
+        ///   Looks up a localized string similar to It appears you are attempting to run the incorrect version of Outlook on the Desktop.
         ///
         ///If you have 64-bit Office installed please use the 64-bit Outlook on the Desktop.
         ///

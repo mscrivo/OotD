@@ -223,15 +223,12 @@ namespace OutlookDesktop
 
         public static void DisposeOutlookObjects()
         {
-            if (Startup.OutlookExplorer != null)
-            {
-                Startup.OutlookExplorer.Close();
-            }
+            OutlookExplorer?.Close();
 
-            Startup.OutlookExplorer = null;
-            Startup.OutlookFolder = null;
-            Startup.OutlookNameSpace = null;
-            Startup.OutlookApp = null;
+            OutlookExplorer = null;
+            OutlookFolder = null;
+            OutlookNameSpace = null;
+            OutlookApp = null;
         }
     }
 }
