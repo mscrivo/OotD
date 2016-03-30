@@ -1,5 +1,13 @@
 # Outlook on the Desktop Release Notes
 
+## 3.4.0
+* Added "new email" icon in Inbox view that allows you to compose a new email without having to go into Outlook.
+* Fixed issue where toolbar icons did not appear when using a custom folder view.
+* Fixed issue where Outlook app running in background was not being closed when shutting down OotD and you are using multiple instances.
+* Fixed issue where OotD would crash if you chose a view type that your version of Outlook does not support.
+* Upgraded to use .NET 4.6.1 Framework
+* Misc performance enhancements.
+
 ## 3.3.0
 
 * Upgraded to use .NET 4.6 Framework

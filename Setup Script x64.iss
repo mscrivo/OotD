@@ -1,12 +1,12 @@
 #include "isxdl.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "3.3.0"
-#define MyAppVerName "Outlook on the Desktop 3.3.0"
+#define MyAppVersion "3.4.0"
+#define MyAppVerName "Outlook on the Desktop 3.4.0"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "http://www.outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
-#define MyAppCopyright "©2006-2015 Michael Scrivo"
+#define MyAppCopyright "©2006-2016 Michael Scrivo"
 
 [Setup]
 ArchitecturesInstallIn64BitMode=x64
@@ -49,7 +49,7 @@ Name: eng; MessagesFile: compiler:Default.isl
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser unchecked; Description: "{cm:LaunchProgram,{#MyAppName}}"
 
 [Tasks]
-Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4.6; Check: NeedsDotNetFramework
+Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4.6.1; Check: NeedsDotNetFramework
 
 [Files]
 Source: "OutlookDesktop\bin\x64\Release\OutlookDesktop.exe"; DestDir: "{app}"; Flags: ignoreversion
@@ -77,7 +77,7 @@ Name: "{app}\logs"; Permissions: everyone-modify
 
 [Code]
 const
-	dotnetURL = 'http://download.microsoft.com/download/C/3/A/C3A5200B-D33C-47E9-9D70-2F7C65DAAD94/NDP46-KB3045557-x86-x64-AllOS-ENU.exe';
+	dotnetURL = 'http://download.microsoft.com/download/E/4/1/E4173890-A24A-4936-9FC9-AF930FE3FA40/NDP461-KB3102436-x86-x64-AllOS-ENU.exe';
 
 function NeedsDotNetFramework(): Boolean;
 var
@@ -115,10 +115,10 @@ begin
 		sTasks := WizardSelectedTasks(false);
 
 		isxdl_ClearFiles;
-		isxdl_SetOption('title', 'Downloading the Microsoft .NET Framework 4.6 Framework');
-		isxdl_SetOption('description', 'Please wait while Setup downloads the Microsoft .NET 4.6 Framework.');
+		isxdl_SetOption('title', 'Downloading the Microsoft .NET Framework 4.6.1 Framework');
+		isxdl_SetOption('description', 'Please wait while Setup downloads the Microsoft .NET 4.6.1 Framework.');
 
-		sFileName := ExpandConstant('{tmp}\NDP46-KB3045557-x86-x64-AllOS-ENU.exe');
+		sFileName := ExpandConstant('{tmp}\NDP461-KB3102436-x86-x64-AllOS-ENU.exe');
 
 		if IsTaskSelected('installdotnet') then
 		begin
