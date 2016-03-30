@@ -82,7 +82,7 @@ namespace OutlookDesktop.Forms
                 {
                     SaveFormDimensions();
                 };
-                    
+
                 // hook up event to keep the date in the header bar up to date
                 OutlookViewControl.SelectionChange += OnAxOutlookViewControlOnSelectionChange;
             }
@@ -127,7 +127,7 @@ namespace OutlookDesktop.Forms
             get
             {
                 CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x80;             // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
+                cp.ExStyle |= 0x80;  // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
                 return cp;
             }
         }
@@ -244,31 +244,25 @@ namespace OutlookDesktop.Forms
             if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Calendar).Name)
             {
                 CalendarMenu.Checked = true;
-                ShowCalendarButtons(true);
             }
             else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Contacts).Name)
             {
-                ShowCalendarButtons(false);
                 ContactsMenu.Checked = true;
             }
             else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Inbox).Name)
             {
-                ShowCalendarButtons(false);
                 InboxMenu.Checked = true;
             }
             else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Notes).Name)
             {
-                ShowCalendarButtons(false);
                 NotesMenu.Checked = true;
             }
             else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Tasks).Name)
             {
-                ShowCalendarButtons(false);
                 TasksMenu.Checked = true;
             }
             else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Todo).Name)
             {
-                ShowCalendarButtons(false);
                 TodosMenu.Checked = true;
             }
             else
@@ -276,8 +270,7 @@ namespace OutlookDesktop.Forms
                 // custom folder
                 _customFolder = Preferences.OutlookFolderName;
                 string folderName = GetFolderNameFromFullPath(_customFolder);
-                TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
-                                      new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
+                TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
                 _customMenu = (ToolStripMenuItem)TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
 
@@ -332,14 +325,13 @@ namespace OutlookDesktop.Forms
         private void SetMAPIFolder()
         {
             // Load up the MAPI Folder from Entry / Store IDs 
-            if (Preferences.OutlookFolderEntryId != "" && Preferences.OutlookFolderStoreId != "")
+            if (!string.IsNullOrEmpty(Preferences.OutlookFolderEntryId) && !string.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
             {
                 try
                 {
-                    _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId,
-                        Preferences.OutlookFolderStoreId);
+                    _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId, Preferences.OutlookFolderStoreId);
+                    ShowToolbarButtonsFor(_outlookFolder.Name);
 
-                    ShowCalendarButtonsFor(_outlookFolder);
                 }
                 catch (Exception ex)
                 {
@@ -395,8 +387,7 @@ namespace OutlookDesktop.Forms
         /// <returns></returns>
         private static string GetFolderNameFromFullPath(string fullPath)
         {
-            return fullPath.Substring(fullPath.LastIndexOf("\\", StringComparison.Ordinal) + 1,
-                                      fullPath.Length - fullPath.LastIndexOf("\\", StringComparison.Ordinal) - 1);
+            return fullPath.Substring(fullPath.LastIndexOf("\\", StringComparison.Ordinal) + 1, fullPath.Length - fullPath.LastIndexOf("\\", StringComparison.Ordinal) - 1);
         }
 
         /// <summary>
@@ -526,11 +517,6 @@ namespace OutlookDesktop.Forms
             if (folderViewType != FolderViewType.Calendar)
             {
                 SetViewXml(string.Empty);
-                ShowCalendarButtons(false);
-            }
-            else
-            {
-                ShowCalendarButtons(true);
             }
 
             try
@@ -554,16 +540,58 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        private void ShowCalendarButtons(bool show)
+        /// <summary>
+        /// Given a viewType, show the appropriate buttons in the toolbar for that view.
+        /// </summary>
+        /// <param name="viewType"></param>
+        private void ShowToolbarButtonsFor(string viewType)
         {
-            TodayButton.Visible = show;
-            DayButton.Visible = show;
-            WeekButton.Visible = show;
-            WorkWeekButton.Visible = show;
-            MonthButton.Visible = show;
-            ButtonPrevious.Visible = show;
-            ButtonNext.Visible = show;
-            LabelCurrentDate.Visible = show;
+            switch (viewType)
+            {
+                case "Calendar":
+                    {
+                        TodayButton.Visible = true;
+                        DayButton.Visible = true;
+                        WeekButton.Visible = true;
+                        WorkWeekButton.Visible = true;
+                        MonthButton.Visible = true;
+                        ButtonPrevious.Visible = true;
+                        ButtonNext.Visible = true;
+                        LabelCurrentDate.Visible = true;
+
+                        NewEmailButton.Visible = false;
+                        break;
+                    }
+                case "Inbox":
+                    {
+                        TodayButton.Visible = false;
+                        DayButton.Visible = false;
+                        WeekButton.Visible = false;
+                        WorkWeekButton.Visible = false;
+                        MonthButton.Visible = false;
+                        ButtonPrevious.Visible = false;
+                        ButtonNext.Visible = false;
+                        LabelCurrentDate.Visible = false;
+
+                        NewEmailButton.Left = ButtonNext.Left;
+                        NewEmailButton.Visible = true;
+                        break;
+                    }
+                default:
+                    {
+                        TodayButton.Visible = false;
+                        DayButton.Visible = false;
+                        WeekButton.Visible = false;
+                        WorkWeekButton.Visible = false;
+                        MonthButton.Visible = false;
+                        ButtonPrevious.Visible = false;
+                        ButtonNext.Visible = false;
+                        LabelCurrentDate.Visible = false;
+
+                        NewEmailButton.Visible = false;
+                        break;
+                    }
+            }
         }
 
         private void UpdateCustomFolder(MAPIFolder oFolder)
@@ -657,7 +685,7 @@ namespace OutlookDesktop.Forms
         }
 
         #region Event Handlers
-        
+
         /// <summary>
         /// When a view is selected this will change the view control view to it, save it in the 
         /// preferences and then check the box next to the view in the drop down list. 
@@ -690,18 +718,7 @@ namespace OutlookDesktop.Forms
             if (oFolder != null)
             {
                 UpdateCustomFolder(oFolder);
-                ShowCalendarButtonsFor(oFolder);
             }
-        }
-
-        /// <summary>
-        /// Checks to see if the specified folder contains an appointment object, is so, we assume its a calendar
-        /// so we should show the calendar buttons.
-        /// </summary>
-        /// <param name="oFolder"></param>
-        private void ShowCalendarButtonsFor(MAPIFolder oFolder)
-        {
-            ShowCalendarButtons(oFolder.CurrentView.ViewType == OlViewType.olCalendarView);
         }
 
         private void CustomFolderMenu_Click(object sender, EventArgs e)
@@ -959,6 +976,13 @@ namespace OutlookDesktop.Forms
             Cursor = Cursors.Default;
         }
 
+
+        private void NewEmailButton_MouseHover(object sender, EventArgs e)
+        {
+            ResizeDir = ResizeDirection.None;
+            Cursor = Cursors.Default;
+        }
+
         private void LabelCurrentDate_MouseHover(object sender, EventArgs e)
         {
             Cursor = Cursors.SizeAll;
@@ -999,6 +1023,11 @@ namespace OutlookDesktop.Forms
         private void TodayButton_Click(object sender, EventArgs e)
         {
             OutlookViewControl.GoToToday();
+        }
+
+        private void NewEmailButton_Click(object sender, EventArgs e)
+        {
+            OutlookViewControl.NewMessage();
         }
 
         private void ButtonPrevious_Click(object sender, EventArgs e)

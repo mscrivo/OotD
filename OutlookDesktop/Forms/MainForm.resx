@@ -123,10 +123,20 @@
   <metadata name="UpdateTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>121, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="NewEmailButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAACxMAAAsTAQCanBgAAADZSURBVDhP3ZJNCsIwFISz0cO4LU1ciC+uk6y0K3+Wosfw
+        B7yEC1F7DXcKnkKP4puYSkuL1aUOBDKTzsdLqPgDKe0usTY3RXb3zYq77i7JngWMJLduazMMzFrJnplI
+        7VboeoAPP4Q8y3aJfQEA1UF45LEitwi2DIB4tE0VhIsjjB2sVwnQSpImf5giy0NQRsYPvo+iaSPERQAO
+        +ApH9h14XCcmO+PyHHtkOMtDXgBf1vaQlTNJMgOlbT9YrzwkAFxaVX6nDIIu/0j2xCNeFZntN8t3uBuY
+        vyshHj6qeMvq8NLvAAAAAElFTkSuQmCC
+</value>
+  </data>
   <metadata name="ToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>355, 17</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="MonthButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAB

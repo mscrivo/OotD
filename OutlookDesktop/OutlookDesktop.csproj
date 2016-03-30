@@ -180,6 +180,7 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\NewEmail.png" />
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>

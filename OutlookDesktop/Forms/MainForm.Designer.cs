@@ -64,6 +64,7 @@ namespace OutlookDesktop.Forms
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.HeaderPanel = new System.Windows.Forms.Panel();
+            this.NewEmailButton = new System.Windows.Forms.Button();
             this.TransparencySlider = new MACTrackBarLib.MACTrackBar();
             this.LabelCurrentDate = new System.Windows.Forms.Label();
             this.ButtonPrevious = new System.Windows.Forms.Button();
@@ -108,7 +109,7 @@ namespace OutlookDesktop.Forms
             this.Separator6,
             this.ExitMenu});
             this.TrayMenu.Name = "trayMenu";
-            this.TrayMenu.Size = new System.Drawing.Size(187, 348);
+            this.TrayMenu.Size = new System.Drawing.Size(187, 326);
             // 
             // CalendarMenu
             // 
@@ -248,6 +249,7 @@ namespace OutlookDesktop.Forms
             // 
             this.HeaderPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.HeaderPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.HeaderPanel.Controls.Add(this.NewEmailButton);
             this.HeaderPanel.Controls.Add(this.TransparencySlider);
             this.HeaderPanel.Controls.Add(this.LabelCurrentDate);
             this.HeaderPanel.Controls.Add(this.ButtonPrevious);
@@ -268,6 +270,22 @@ namespace OutlookDesktop.Forms
             this.ToolTip.SetToolTip(this.HeaderPanel, global::OutlookDesktop.Properties.Resources.Form_Move_Help_Message);
             this.HeaderPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HeaderPanel_MouseDown);
             this.HeaderPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HeaderPanel_MouseMove);
+            // 
+            // NewEmailButton
+            // 
+            this.NewEmailButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.NewEmailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.NewEmailButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NewEmailButton.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.NewEmailButton.Image = ((System.Drawing.Image)(resources.GetObject("NewEmailButton.Image")));
+            this.NewEmailButton.Location = new System.Drawing.Point(324, -1);
+            this.NewEmailButton.Name = "NewEmailButton";
+            this.NewEmailButton.Size = new System.Drawing.Size(22, 19);
+            this.NewEmailButton.TabIndex = 12;
+            this.ToolTip.SetToolTip(this.NewEmailButton, "New Email");
+            this.NewEmailButton.UseVisualStyleBackColor = true;
+            this.NewEmailButton.Click += new System.EventHandler(this.NewEmailButton_Click);
+            this.NewEmailButton.MouseHover += new System.EventHandler(this.NewEmailButton_MouseHover);
             // 
             // TransparencySlider
             // 
@@ -548,6 +566,7 @@ namespace OutlookDesktop.Forms
         public MACTrackBar TransparencySlider;
         private System.Windows.Forms.Label LabelBackground;
         private System.Windows.Forms.ToolStripMenuItem TodosMenu;
+        private System.Windows.Forms.Button NewEmailButton;
 #pragma warning restore CS3003 // Type is not CLS-compliant
     }
 }

@@ -748,6 +748,16 @@ namespace OutlookDesktop.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NewEmail {
+            get {
+                object obj = ResourceManager.GetObject("NewEmail", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Instance Name.
         /// </summary>
         internal static string NewInstanceName {
