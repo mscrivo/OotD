@@ -31,7 +31,7 @@ namespace OutlookDesktop
 
         /// <summary>
         /// The main entry point for the application.
-        /// We only only one instance of the application to be running.
+        /// We only want one instance of the application to be running.
         /// </summary>
         [STAThread]
         private static void Main()
@@ -48,7 +48,7 @@ namespace OutlookDesktop
             {
                 if (!IsOutlook2003OrHigherInstalled())
                 {
-                    Logger.Debug("Outlook is not avaliable or installed.");
+                    Logger.Debug("Outlook is not available or installed.");
                     MessageBox.Show(
                         Resources.Office2000Requirement + Environment.NewLine +
                         Resources.InstallOutlookMsg, Resources.MissingRequirementsCapation, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -66,7 +66,7 @@ namespace OutlookDesktop
 
                     OutlookFolder = OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
 
-                    // WORKAROUND: Beginning wih Outlook 2007 SP2, Microsoft decided to kill all outlook instances 
+                    // WORKAROUND: Beginning with Outlook 2007 SP2, Microsoft decided to kill all outlook instances 
                     // when opening and closing an item from the view control, even though the view control was still running.
                     // The only way I've found to work around it and keep the view control from crashing after opening an item,
                     // is to get this global instance of the active explorer and keep it going until the user closes the app.
