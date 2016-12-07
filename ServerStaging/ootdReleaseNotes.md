@@ -1,5 +1,11 @@
 # Outlook on the Desktop Release Notes
 
+## 3.5.0
+* Updated to use .NET 4.6.2 for even better HiDPI support
+* Fixed laggy resizing of windows
+* Fixed flickering when moving/resizing of windows
+* Misc fixes and performance enhancements to installer.
+
 ## 3.4.0
 * Added "new email" icon in Inbox view that allows you to compose a new email without having to go into Outlook.
 * Fixed issue where toolbar icons did not appear when using a custom folder view.
