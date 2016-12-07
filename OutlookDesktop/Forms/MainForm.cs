@@ -2,10 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -39,6 +37,11 @@ namespace OutlookDesktop.Forms
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly StickyWindow _stickyWindow;
+
+        // To avoid flicker when moving or resizing, this variable is set when a move or resize is started
+        // and then reset when the move or resize is done.  SetWindowPos inside of WndProc will not fire
+        // when this is true.
+        private bool _movingOrResizing;
 
         /// <summary>
         /// Sets up the form for the current instance.
@@ -78,10 +81,12 @@ namespace OutlookDesktop.Forms
                 _stickyWindow = new StickyWindow(this);
                 _stickyWindow.MoveEnded += (sender, args) =>
                 {
+                    _movingOrResizing = false;
                     SaveFormDimensions();
                 };
                 _stickyWindow.ResizeEnded += (sender, args) =>
                 {
+                    _movingOrResizing = false;
                     SaveFormDimensions();
                 };
 
@@ -641,6 +646,8 @@ namespace OutlookDesktop.Forms
         {
             if (GlobalPreferences.LockPosition) return;
 
+            _movingOrResizing = true;
+        
             int dir = -1;
             switch (direction)
             {
@@ -682,6 +689,8 @@ namespace OutlookDesktop.Forms
             if (GlobalPreferences.LockPosition)
                 return;
 
+            _movingOrResizing = true;
+                 
             UnsafeNativeMethods.ReleaseCapture();
             UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)UnsafeNativeMethods.HTCAPTION, IntPtr.Zero);
         }
@@ -1178,7 +1187,7 @@ namespace OutlookDesktop.Forms
                     m.Result = IntPtr.Zero;
                 }
             }
-            else if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING && !_outlookContextMenuActivated && !Startup.UpdateDetected)
+            else if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING && !_outlookContextMenuActivated && !Startup.UpdateDetected && !_movingOrResizing)
             {
                 var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
                 mwp.flags = mwp.flags | UnsafeNativeMethods.SWP_NOZORDER;
@@ -1245,6 +1254,6 @@ namespace OutlookDesktop.Forms
             Bottom = 7,
             BottomLeft = 8
         }
-        #endregion
+        #endregion        
     }
 }
