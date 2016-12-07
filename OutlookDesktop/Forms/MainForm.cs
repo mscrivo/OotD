@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -860,8 +862,16 @@ namespace OutlookDesktop.Forms
         {
             if (e.Button == MouseButtons.Left && WindowState != FormWindowState.Maximized)
             {
+                // temporarily hide Outlook View Control because it makes resizing really slow
+                ViewControlHostPanel.Visible = false;
                 ResizeForm(ResizeDir);
             }
+        }
+
+        private void MainForm_MouseUp(object sender, MouseEventArgs e)
+        {
+            // restore Outlook View Control visibily
+            ViewControlHostPanel.Visible = true;
         }
 
         private void MainForm_MouseMove(object sender, MouseEventArgs e)

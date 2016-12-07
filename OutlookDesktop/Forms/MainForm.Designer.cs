@@ -517,6 +517,7 @@ namespace OutlookDesktop.Forms
             this.Text = "Outlook on the Desktop";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseUp);
             this.TrayMenu.ResumeLayout(false);
             this.HeaderPanel.ResumeLayout(false);
             this.ViewControlHostPanel.ResumeLayout(false);

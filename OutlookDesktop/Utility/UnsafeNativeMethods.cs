@@ -31,6 +31,8 @@ namespace OutlookDesktop.Utility
         public const int WM_NCACTIVATE = 0x86;
         public const int WM_RBUTTONDOWN = 0x0204;
         public const int WM_WINDOWPOSCHANGING = 70;
+        public const int WM_NCHITTEST = 0x84;
+
 
         public const int HTBOTTOM = 15;
         public const int HTBOTTOMLEFT = 16;
@@ -117,12 +119,12 @@ namespace OutlookDesktop.Utility
         /// <summary>
         /// This will send the specified window to the top of the z-order, so that it's effectively on top of every other window.
         /// </summary>
-        /// <param name="windowToSendBack">the form to work with</param>
-        public static void SendWindowToTop(Form windowToSendBack)
+        /// <param name="windowToSendToTop">the form to work with</param>
+        public static void SendWindowToTop(Form windowToSendToTop)
         {
             if (Environment.OSVersion.Version.Major >= 6 && DwmIsCompositionEnabled())
             {
-                SetWindowPos(windowToSendBack.Handle, HWND_TOP, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
+                SetWindowPos(windowToSendToTop.Handle, HWND_TOP, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
             }
         }
 

@@ -22,6 +22,7 @@ namespace OutlookDesktop.Forms
     {
         const string AppCast64Url = "http://www.outlookonthedesktop.com/ootdAppcastx64.xml";
         const string AppCast32Url = "http://www.outlookonthedesktop.com/ootdAppcastx86.xml";
+        const string AutoUpdateInstanceName = "AutoUpdate";
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<string, MainForm> _mainFormInstances = new Dictionary<string, MainForm>();
@@ -89,7 +90,7 @@ namespace OutlookDesktop.Forms
                 {
                     if (appReg == null) return instanceCount;
 
-                    instanceCount += appReg.GetSubKeyNames().Count(instanceName => instanceName != "AutoUpdate");
+                    instanceCount += appReg.GetSubKeyNames().Count(instanceName => instanceName != AutoUpdateInstanceName);
                 }
 
                 return instanceCount;
@@ -124,7 +125,7 @@ namespace OutlookDesktop.Forms
                         foreach (var instanceName in appReg.GetSubKeyNames())
                         {
                             // Skip the key named "AutoUpdate" since it's the settings for the updater component
-                            if (instanceName == "AutoUpdate") continue;
+                            if (instanceName == AutoUpdateInstanceName) continue;
 
                             bool newlyAdded = false;
                             if (!_mainFormInstances.ContainsKey(instanceName))
@@ -220,7 +221,14 @@ namespace OutlookDesktop.Forms
                     else
                     {
                         // this is a first run, or there is only 1 instance defined.
-                        string instanceName = InstanceCount == 1 ? appReg.GetSubKeyNames()[0] : "Default Instance";
+                        const string defaultInstanceName = "Default Instance";
+
+                        string instanceName = InstanceCount == 1 ? appReg.GetSubKeyNames()[0] : defaultInstanceName;
+
+                        if (instanceName == AutoUpdateInstanceName)
+                        {
+                            instanceName = defaultInstanceName;
+                        }
 
                         // create our instance and set the context menu to one defined in the form instance.
                         bool newlyAdded = false;
@@ -352,8 +360,11 @@ namespace OutlookDesktop.Forms
                 LoadInstances();
 
                 // reposition the newly added instance so that it's not directly on top of the previous one
-                _mainFormInstances[result.Text].Left = _mainFormInstances[result.Text].Left + 400;
-                _mainFormInstances[result.Text].Top = _mainFormInstances[result.Text].Top + 200;
+                var rnd = new Random();
+                var xLoc = rnd.Next(0, Screen.FromHandle(this.Handle).WorkingArea.Width - _mainFormInstances[result.Text].Width);
+                var yLoc = rnd.Next(0, Screen.FromHandle(this.Handle).WorkingArea.Height - _mainFormInstances[result.Text].Height);
+                _mainFormInstances[result.Text].Left = xLoc;
+                _mainFormInstances[result.Text].Top = yLoc;
 
                 // Save the new position so that it's correctly loaded on next run
                 _mainFormInstances[result.Text].Preferences.Left = _mainFormInstances[result.Text].Left;
@@ -546,7 +557,7 @@ namespace OutlookDesktop.Forms
                 ShowHideAllInstances();
         }
 
-        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var item = (ToolStripDropDownItem)e.Argument;
             FlashForm(item);
