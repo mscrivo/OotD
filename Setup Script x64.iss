@@ -1,10 +1,10 @@
-#include "isxdl.iss"
+#include <idp.iss>
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "3.4.0"
-#define MyAppVerName "Outlook on the Desktop 3.4.0"
+#define MyAppVersion "3.5.0"
+#define MyAppVerName "Outlook on the Desktop 3.5.0"
 #define MyAppPublisher "Michael Scrivo"
-#define MyAppURL "http://www.outlookonthedesktop.com"
+#define MyAppURL "https://outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
 #define MyAppCopyright "©2006-2016 Michael Scrivo"
 
@@ -49,7 +49,7 @@ Name: eng; MessagesFile: compiler:Default.isl
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser unchecked; Description: "{cm:LaunchProgram,{#MyAppName}}"
 
 [Tasks]
-Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4.6.1; Check: NeedsDotNetFramework
+Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4.6.2; Check: NeedsDotNetFramework
 
 [Files]
 Source: "OutlookDesktop\bin\x64\Release\OutlookDesktop.exe"; DestDir: "{app}"; Flags: ignoreversion
@@ -77,7 +77,9 @@ Name: "{app}\logs"; Permissions: everyone-modify
 
 [Code]
 const
-	dotnetURL = 'http://download.microsoft.com/download/E/4/1/E4173890-A24A-4936-9FC9-AF930FE3FA40/NDP461-KB3102436-x86-x64-AllOS-ENU.exe';
+	dotnetURL = 'https://download.microsoft.com/download/D/5/C/D5C98AB0-35CC-45D9-9BA5-B18256BA2AE6/NDP462-KB3151802-Web.exe';
+const
+  sFileName = 'D5C98AB0-35CC-45D9-9BA5-B18256BA2AE6/NDP462-KB3151802-Web.exe';
 
 function NeedsDotNetFramework(): Boolean;
 var
@@ -90,7 +92,7 @@ begin
 	begin
 		if RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', ReleaseVersion) then
 		begin
-      if (ReleaseVersion >= 394254) then
+      if (ReleaseVersion >= 394802) then
       begin
         tempResult := False;
       end;
@@ -103,45 +105,34 @@ end;
 function NextButtonClick(CurPage: Integer): Boolean;
 var
 	hWnd: Integer;
-	sFileName: String;
 	sTasks: String;
 	nCode: Integer;
 begin
 	Result := true;
 
-	if CurPage = wpReady then begin
+	if CurPage = wpSelectTasks then 
+  begin
 		hWnd := StrToInt(ExpandConstant('{wizardhwnd}'));
 
 		sTasks := WizardSelectedTasks(false);
 
-		isxdl_ClearFiles;
-		isxdl_SetOption('title', 'Downloading the Microsoft .NET Framework 4.6.1 Framework');
-		isxdl_SetOption('description', 'Please wait while Setup downloads the Microsoft .NET 4.6.1 Framework.');
-
-		sFileName := ExpandConstant('{tmp}\NDP461-KB3102436-x86-x64-AllOS-ENU.exe');
+    idpClearFiles;
 
 		if IsTaskSelected('installdotnet') then
 		begin
-			isxdl_AddFile(dotnetURL, sFileName);
+      idpAddFile(dotnetURL, ExpandConstant('{tmp}\$sFileName'));
 		end;
 
-		if isxdl_DownloadFiles(hWnd) <> 0 then
-		begin
-			if FileExists(sFileName) then 
-      begin 
-        if Exec(sFileName,'/passive /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode) then        
-        begin 
-          Result := true;
-        end 
-        else begin
-          Result := false;
-        end
-      end 
-		end 
-    else begin
-			Result := false;
-    end
+    idpDownloadAfter(wpSelectTasks);
 	end;
+
+  if CurPage = wpReady then 
+  begin
+      if FileExists(ExpandConstant('{tmp}\$sFileName')) then 
+      begin 
+        Exec(ExpandConstant('{tmp}\$sFileName'),'/passive /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
+      end  
+  end;
 end;
 
 [UninstallDelete]
