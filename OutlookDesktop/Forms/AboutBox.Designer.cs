@@ -1,4 +1,5 @@
-using OutlookDesktop.Properties;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace OutlookDesktop.Forms
 {
@@ -7,7 +8,7 @@ namespace OutlookDesktop.Forms
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -135,12 +136,12 @@ namespace OutlookDesktop.Forms
 
         #endregion
 
-        private System.Windows.Forms.Label labelProductName;
-        private System.Windows.Forms.Label labelVersion;
-        private System.Windows.Forms.Label labelCopyright;
-        private System.Windows.Forms.Button okButton;
-        private System.Windows.Forms.LinkLabel linkWebsite;
-        private System.Windows.Forms.PictureBox picDonate;
+        private Label labelProductName;
+        private Label labelVersion;
+        private Label labelCopyright;
+        private Button okButton;
+        private LinkLabel linkWebsite;
+        private PictureBox picDonate;
 
     }
 }

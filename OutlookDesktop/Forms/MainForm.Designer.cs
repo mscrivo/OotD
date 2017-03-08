@@ -1,7 +1,7 @@
-﻿using System;
+﻿using System.ComponentModel;
+using System.Windows.Forms;
 using AxOLXLib;
 using MACTrackBarLib;
-using OutlookDesktop.Properties;
 
 namespace OutlookDesktop.Forms
 {
@@ -10,7 +10,7 @@ namespace OutlookDesktop.Forms
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -528,46 +528,46 @@ namespace OutlookDesktop.Forms
 
         #endregion
        
-        internal System.Windows.Forms.ContextMenuStrip TrayMenu;
-        private System.Windows.Forms.Timer UpdateTimer;
-        private System.Windows.Forms.ToolStripMenuItem SelectFolderMenu;
-        private System.Windows.Forms.ToolStripMenuItem CalendarMenu;
-        private System.Windows.Forms.ToolStripMenuItem ContactsMenu;
-        private System.Windows.Forms.ToolStripMenuItem InboxMenu;
-        private System.Windows.Forms.ToolStripMenuItem NotesMenu;
-        private System.Windows.Forms.ToolStripMenuItem TasksMenu;
-        private System.Windows.Forms.ToolStripSeparator Separator1;
-        private System.Windows.Forms.ToolStripSeparator Separator4;
-        private System.Windows.Forms.ToolStripMenuItem HideShowMenu;
-        private System.Windows.Forms.ToolStripMenuItem RemoveInstanceMenu;
-        private System.Windows.Forms.ToolStripSeparator Separator5;
-        private System.Windows.Forms.ToolStripMenuItem RenameInstanceMenu;
-        private System.Windows.Forms.ToolStripMenuItem ExitMenu;
-        private System.Windows.Forms.ToolStripMenuItem OutlookViewsMenu;
-        private System.Windows.Forms.ToolStripMenuItem DefaultOutlookViewSubMenu;
-        private System.Windows.Forms.ToolStripSeparator Separator3;
-        private System.Windows.Forms.ToolStripSeparator Separator2;
-        private System.Windows.Forms.ToolStripMenuItem DisableEnableEditingMenu;
-        internal System.Windows.Forms.Panel HeaderPanel;
-        private System.Windows.Forms.Panel ViewControlHostPanel;
+        internal ContextMenuStrip TrayMenu;
+        private Timer UpdateTimer;
+        private ToolStripMenuItem SelectFolderMenu;
+        private ToolStripMenuItem CalendarMenu;
+        private ToolStripMenuItem ContactsMenu;
+        private ToolStripMenuItem InboxMenu;
+        private ToolStripMenuItem NotesMenu;
+        private ToolStripMenuItem TasksMenu;
+        private ToolStripSeparator Separator1;
+        private ToolStripSeparator Separator4;
+        private ToolStripMenuItem HideShowMenu;
+        private ToolStripMenuItem RemoveInstanceMenu;
+        private ToolStripSeparator Separator5;
+        private ToolStripMenuItem RenameInstanceMenu;
+        private ToolStripMenuItem ExitMenu;
+        private ToolStripMenuItem OutlookViewsMenu;
+        private ToolStripMenuItem DefaultOutlookViewSubMenu;
+        private ToolStripSeparator Separator3;
+        private ToolStripSeparator Separator2;
+        private ToolStripMenuItem DisableEnableEditingMenu;
+        internal Panel HeaderPanel;
+        private Panel ViewControlHostPanel;
         private AxViewCtl OutlookViewControl;
-        private System.Windows.Forms.Button DayButton;
-        private System.Windows.Forms.NotifyIcon NotifyIcon;
-        private System.Windows.Forms.Button MonthButton;
-        private System.Windows.Forms.Button WeekButton;
-        private System.Windows.Forms.Button WorkWeekButton;
-        public System.Windows.Forms.ToolTip ToolTip;
-        private System.Windows.Forms.Timer WindowMessageTimer;
-        private System.Windows.Forms.ToolStripSeparator Separator6;
-        private System.Windows.Forms.Button TodayButton;
-        private System.Windows.Forms.Button ButtonNext;
-        private System.Windows.Forms.Button ButtonPrevious;
-        public System.Windows.Forms.Label LabelCurrentDate;
+        private Button DayButton;
+        private NotifyIcon NotifyIcon;
+        private Button MonthButton;
+        private Button WeekButton;
+        private Button WorkWeekButton;
+        public ToolTip ToolTip;
+        private Timer WindowMessageTimer;
+        private ToolStripSeparator Separator6;
+        private Button TodayButton;
+        private Button ButtonNext;
+        private Button ButtonPrevious;
+        public Label LabelCurrentDate;
 #pragma warning disable CS3003 // Type is not CLS-compliant
         public MACTrackBar TransparencySlider;
-        private System.Windows.Forms.Label LabelBackground;
-        private System.Windows.Forms.ToolStripMenuItem TodosMenu;
-        private System.Windows.Forms.Button NewEmailButton;
+        private Label LabelBackground;
+        private ToolStripMenuItem TodosMenu;
+        private Button NewEmailButton;
 #pragma warning restore CS3003 // Type is not CLS-compliant
     }
 }

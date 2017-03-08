@@ -1,11 +1,14 @@
-﻿namespace OutlookDesktop.Forms
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace OutlookDesktop.Forms
 {
     partial class InputBox
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -108,10 +111,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Label PromptLabel;
-        private System.Windows.Forms.TextBox InputTextBox;
-        private System.Windows.Forms.Button ButtonCancel;
-        private System.Windows.Forms.Button OKButton;
-        private System.Windows.Forms.ErrorProvider _errorProviderText;
+        private Label PromptLabel;
+        private TextBox InputTextBox;
+        private Button ButtonCancel;
+        private Button OKButton;
+        private ErrorProvider _errorProviderText;
     }
 }

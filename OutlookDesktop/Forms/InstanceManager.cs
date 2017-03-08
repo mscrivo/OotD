@@ -361,8 +361,8 @@ namespace OutlookDesktop.Forms
 
                 // reposition the newly added instance so that it's not directly on top of the previous one
                 var rnd = new Random();
-                var xLoc = rnd.Next(0, Screen.FromHandle(this.Handle).WorkingArea.Width - _mainFormInstances[result.Text].Width);
-                var yLoc = rnd.Next(0, Screen.FromHandle(this.Handle).WorkingArea.Height - _mainFormInstances[result.Text].Height);
+                var xLoc = rnd.Next(0, Screen.FromHandle(Handle).WorkingArea.Width - _mainFormInstances[result.Text].Width);
+                var yLoc = rnd.Next(0, Screen.FromHandle(Handle).WorkingArea.Height - _mainFormInstances[result.Text].Height);
                 _mainFormInstances[result.Text].Left = xLoc;
                 _mainFormInstances[result.Text].Top = yLoc;
 

@@ -322,7 +322,7 @@ namespace Blue.Windows
             Bottom = 4,
             Left = 8,
             Right = 16
-        };
+        }
 
         #endregion
 

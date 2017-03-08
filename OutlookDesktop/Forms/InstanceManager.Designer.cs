@@ -1,11 +1,14 @@
-﻿namespace OutlookDesktop.Forms
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace OutlookDesktop.Forms
 {
     partial class InstanceManager
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -76,8 +79,8 @@
 
         #endregion
 
-        private System.Windows.Forms.NotifyIcon trayIcon;
-        private System.Windows.Forms.Timer updateTimer;
-        private System.ComponentModel.BackgroundWorker backgroundWorker;
+        private NotifyIcon trayIcon;
+        private Timer updateTimer;
+        private BackgroundWorker backgroundWorker;
     }
 }

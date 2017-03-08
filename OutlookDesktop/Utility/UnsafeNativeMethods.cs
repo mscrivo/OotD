@@ -54,7 +54,7 @@ namespace OutlookDesktop.Utility
             public int cx;
             public int cy;
             public int flags;
-        };
+        }
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern bool DwmIsCompositionEnabled();
