@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -133,7 +132,7 @@ namespace OutlookDesktop.Forms
         {
             get
             {
-                CreateParams cp = base.CreateParams;
+                var cp = base.CreateParams;
                 cp.ExStyle |= 0x80;  // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
                 return cp;
             }
@@ -141,43 +140,17 @@ namespace OutlookDesktop.Forms
 
         #region Events
 
-        private EventHandler<InstanceRemovedEventArgs> _instanceRemoved;
-        private EventHandler<InstanceRenamedEventArgs> _instanceRenamed;
-
-        public event EventHandler<InstanceRemovedEventArgs> InstanceRemoved
-        {
-            // The following ensures that the event can only be subscribed too at most once
-            add
-            {
-                if (_instanceRemoved == null || !_instanceRemoved.GetInvocationList().Contains(value))
-                {
-                    _instanceRemoved += value;
-                }
-            }
-            remove { if (_instanceRemoved != null) _instanceRemoved -= value; }
-        }
+        public EventHandler<InstanceRemovedEventArgs> InstanceRemoved;
+        public EventHandler<InstanceRenamedEventArgs> InstanceRenamed;
 
         private void OnInstanceRemoved(object sender, InstanceRemovedEventArgs e)
         {
-            _instanceRemoved?.Invoke(sender, e);
-        }
-
-        public event EventHandler<InstanceRenamedEventArgs> InstanceRenamed
-        {
-            // The following ensures that the event can only be subscribed too at most once
-            add
-            {
-                if (_instanceRenamed == null || !_instanceRenamed.GetInvocationList().Contains(value))
-                {
-                    _instanceRenamed += value;
-                }
-            }
-            remove { if (_instanceRenamed != null) _instanceRenamed -= value; }
+            InstanceRemoved?.Invoke(sender, e);
         }
 
         private void OnInstanceRenamed(object sender, InstanceRenamedEventArgs e)
         {
-            _instanceRenamed?.Invoke(sender, e);
+            InstanceRenamed?.Invoke(sender, e);
         }
 
         #endregion
@@ -199,11 +172,11 @@ namespace OutlookDesktop.Forms
             // create a new instance of the preferences class
             Preferences = new InstancePreferences(InstanceName);
 
-            // There should ne no reason other than first run as to why the Store and Entry IDs are 
+            // There should be no reason other than first run as to why the Store and Entry IDs are 
             // empty. 
             if (string.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
             {
-                // Set the Mapi Folder Details and the IDs.
+                // Set the MAPI Folder Details and the IDs.
                 Preferences.OutlookFolderName = FolderViewType.Calendar.ToString();
                 Preferences.OutlookFolderStoreId = GetFolderFromViewType(FolderViewType.Calendar).StoreID;
                 Preferences.OutlookFolderEntryId = GetFolderFromViewType(FolderViewType.Calendar).EntryID;
@@ -407,9 +380,9 @@ namespace OutlookDesktop.Forms
             string fullFolderPath = "\\\\";
             var subfolders = new List<string> { oFolder.Name };
 
-            while (oFolder != null && oFolder.Parent != null)
+            while (oFolder?.Parent != null)
             {
-                oFolder = oFolder?.Parent as MAPIFolder;
+                oFolder = oFolder.Parent as MAPIFolder;
                 if (oFolder != null) subfolders.Add(oFolder.Name);
             }
 
@@ -1075,7 +1048,7 @@ namespace OutlookDesktop.Forms
 
         private static double GetNextPreviousOffsetBasedOnCalendarViewMode(CurrentCalendarView mode)
         {
-            double offset = 0;
+            double offset;
 
             switch (mode)
             {
@@ -1089,7 +1062,10 @@ namespace OutlookDesktop.Forms
                 case CurrentCalendarView.Month:
                     offset = 31;
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
             }
+
             return offset;
         }
 
@@ -1107,6 +1083,7 @@ namespace OutlookDesktop.Forms
             if ((Guid)button.Tag == lastButtonGuidClicked) return;
 
             var currentDate = OutlookViewControl.SelectedDate;
+
             switch (mode)
             {
                 case CurrentCalendarView.Day:
@@ -1121,6 +1098,8 @@ namespace OutlookDesktop.Forms
                 case CurrentCalendarView.Month:
                     SetViewXml(Resources.MonthXML);
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
             }
 
             OutlookViewControl.GoToDate(currentDate.ToString(CultureInfo.InvariantCulture));
