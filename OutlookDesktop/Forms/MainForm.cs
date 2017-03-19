@@ -310,7 +310,7 @@ namespace OutlookDesktop.Forms
                 try
                 {
                     _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId, Preferences.OutlookFolderStoreId);
-                    ShowToolbarButtonsFor(_outlookFolder.Name);
+                    ShowToolbarButtonsFor(_outlookFolder.FolderPath);
 
                 }
                 catch (Exception ex)
@@ -521,14 +521,14 @@ namespace OutlookDesktop.Forms
         }
 
         /// <summary>
-        /// Given a viewType, show the appropriate buttons in the toolbar for that view.
+        /// Given a folderPath, show the appropriate buttons in the toolbar for that view.
         /// </summary>
-        /// <param name="viewType"></param>
-        private void ShowToolbarButtonsFor(string viewType)
+        /// <param name="folderPath"></param>
+        private void ShowToolbarButtonsFor(string folderPath)
         {
-            switch (viewType)
+            switch (folderPath)
             {
-                case "Calendar":
+                case string c when c.Contains("\\Calendar"):
                     {
                         TodayButton.Visible = true;
                         DayButton.Visible = true;
@@ -542,7 +542,7 @@ namespace OutlookDesktop.Forms
                         NewEmailButton.Visible = false;
                         break;
                     }
-                case "Inbox":
+                case string s when s.Contains("\\Inbox"):
                     {
                         TodayButton.Visible = false;
                         DayButton.Visible = false;
