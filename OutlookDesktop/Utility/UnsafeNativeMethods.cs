@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using NLog;
 using OutlookDesktop.Properties;
+// ReSharper disable UnusedMember.Local
 
 namespace OutlookDesktop.Utility
 {

@@ -368,8 +368,8 @@ namespace Blue.Windows
         /// </summary>
         public int StickGap
         {
-            get { return _stickGap; }
-            set { _stickGap = value; }
+            get => _stickGap;
+            set => _stickGap = value;
         }
 
         /// <summary>

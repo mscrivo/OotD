@@ -528,6 +528,7 @@ namespace OutlookDesktop.Forms
         {
             switch (folderPath)
             {
+                // ReSharper disable once PatternAlwaysOfType
                 case string c when c.Contains("\\Calendar"):
                     {
                         TodayButton.Visible = true;
@@ -1187,7 +1188,7 @@ namespace OutlookDesktop.Forms
 
         private ResizeDirection ResizeDir
         {
-            get { return _resizeDir; }
+            get => _resizeDir;
             set
             {
                 _resizeDir = value;

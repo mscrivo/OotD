@@ -9,6 +9,6 @@ namespace OutlookDesktop.Events
             InstanceName = instanceName;
         }
 
-        public string InstanceName { get; private set; }
+        public string InstanceName { get; }
     }
 }

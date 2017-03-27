@@ -43,7 +43,7 @@ namespace OutlookDesktop.Preferences
 
                 return DefaultOpacity;
             }
-            set { _appReg.SetValue("Opacity", value); }
+            set => _appReg.SetValue("Opacity", value);
         }
 
         /// <summary>
@@ -51,11 +51,8 @@ namespace OutlookDesktop.Preferences
         /// </summary>
         public int Left
         {
-            get { return (int)_appReg.GetValue("Left", DefaultLeftPosition); }
-            set
-            {
-                _appReg.SetValue("Left", value);
-            }
+            get => (int)_appReg.GetValue("Left", DefaultLeftPosition);
+            set => _appReg.SetValue("Left", value);
         }
 
         /// <summary>
@@ -63,11 +60,8 @@ namespace OutlookDesktop.Preferences
         /// </summary>
         public int Top
         {
-            get { return (int)_appReg.GetValue("Top", DefaultTopPosition); }
-            set
-            {
-                _appReg.SetValue("Top", value);
-            }
+            get => (int)_appReg.GetValue("Top", DefaultTopPosition);
+            set => _appReg.SetValue("Top", value);
         }
 
         /// <summary>
@@ -75,11 +69,8 @@ namespace OutlookDesktop.Preferences
         /// </summary>
         public int Width
         {
-            get { return (int)_appReg.GetValue("Width", DefaultWidth); }
-            set
-            {
-                _appReg.SetValue("Width", value);
-            }
+            get => (int)_appReg.GetValue("Width", DefaultWidth);
+            set => _appReg.SetValue("Width", value);
         }
 
         /// <summary>
@@ -87,16 +78,13 @@ namespace OutlookDesktop.Preferences
         /// </summary>
         public int Height
         {
-            get { return (int)_appReg.GetValue("Height", DefaultHeight); }
-            set
-            {
-                _appReg.SetValue("Height", value);
-            }
+            get => (int)_appReg.GetValue("Height", DefaultHeight);
+            set => _appReg.SetValue("Height", value);
         }
 
         public string OutlookFolderName
         {
-            get { return (string)_appReg.GetValue("CurrentViewType", "Calendar"); }
+            get => (string)_appReg.GetValue("CurrentViewType", "Calendar");
             set
             {
                 _appReg.SetValue("CurrentViewType", value);
@@ -106,22 +94,22 @@ namespace OutlookDesktop.Preferences
 
         public string OutlookFolderView
         {
-            get { return (string)_appReg.GetValue("OutlookView", "Day/Week/Month"); }
-            set { _appReg.SetValue("OutlookView", value); }
+            get => (string)_appReg.GetValue("OutlookView", "Day/Week/Month");
+            set => _appReg.SetValue("OutlookView", value);
         }
 
 
         public string OutlookFolderEntryId
         {
-            get { return (string)_appReg.GetValue("FolderEntryId", ""); }
-            set { _appReg.SetValue("FolderEntryId", value); }
+            get => (string)_appReg.GetValue("FolderEntryId", "");
+            set => _appReg.SetValue("FolderEntryId", value);
         }
 
 
         public string OutlookFolderStoreId
         {
-            get { return (string)_appReg.GetValue("FolderStoreId", ""); }
-            set { _appReg.SetValue("FolderStoreId", value); }
+            get => (string)_appReg.GetValue("FolderStoreId", "");
+            set => _appReg.SetValue("FolderStoreId", value);
         }
 
         public bool DisableEditing
@@ -132,13 +120,13 @@ namespace OutlookDesktop.Preferences
                 bool.TryParse(_appReg.GetValue("DisableEditing", "False").ToString(), out retVal);
                 return retVal;
             }
-            set { _appReg.SetValue("DisableEditing", value); }
+            set => _appReg.SetValue("DisableEditing", value);
         }
 
         public string ViewXml
         {
-            get { return (string)_appReg.GetValue("ViewXML", ""); }
-            set { _appReg.SetValue("ViewXML", value); }
+            get => (string)_appReg.GetValue("ViewXML", "");
+            set => _appReg.SetValue("ViewXML", value);
         }
 
         ~InstancePreferences()
