@@ -1,12 +1,12 @@
 #include <idp.iss>
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "3.5.0"
-#define MyAppVerName "Outlook on the Desktop 3.5.0"
+#define MyAppVersion "3.5.1"
+#define MyAppVerName "Outlook on the Desktop 3.5.1"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "https://outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
-#define MyAppCopyright "©2006-2016 Michael Scrivo"
+#define MyAppCopyright "©2006-2017 Michael Scrivo"
 
 [Setup]
 AppName={#MyAppName}
