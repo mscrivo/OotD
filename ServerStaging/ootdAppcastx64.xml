@@ -10,7 +10,7 @@
       <sparkle:releaseNotesLink>
         http://www.outlookonthedesktop.com/ootdReleaseNotes.md
       </sparkle:releaseNotesLink>
-      <pubDate>Mon, 18 Aug 2017 21:00:00 +0000</pubDate>
+      <pubDate>Fri, 18 Aug 2017 21:00:00 +0000</pubDate>
       <enclosure url="https://github.com/mscrivo/ootd/releases/download/3.5.2/ootd-3.5.2-x64.exe" sparkle:version="3.5.2" length="2015528" type="application/octet-stream" />
     </item>   
   </channel>
