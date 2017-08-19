@@ -1,5 +1,10 @@
 # Outlook on the Desktop Release Notes
 
+## 3.5.2
+* Fixed additional HiDPI scaling issues (courtesy of .NET 4.7 Framework).
+* Fixed an issue where update release notes did not render properly.
+* Added additional logging
+
 ## 3.5.1
 * Fixed issue where instances would not show up on monitors that had difference scaling factor than main monitor.
 * Fixed issue where calendar buttons were not showing up on custom calendars.

@@ -1,8 +1,8 @@
 #include <idp.iss>
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "3.5.1"
-#define MyAppVerName "Outlook on the Desktop 3.5.1"
+#define MyAppVersion "3.5.2"
+#define MyAppVerName "Outlook on the Desktop 3.5.2"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "https://outlookonthedesktop.com"
 #define MyAppExeName "OutlookDesktop.exe"
@@ -47,7 +47,7 @@ Name: eng; MessagesFile: compiler:Default.isl
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser unchecked; Description: "{cm:LaunchProgram,{#MyAppName}}"
 
 [Tasks]
-Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4.6.2; Check: NeedsDotNetFramework
+Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4.7; Check: NeedsDotNetFramework
 
 [Files]
 Source: "OutlookDesktop\bin\x86\Release\OutlookDesktop.exe"; DestDir: {app}; Flags: ignoreversion
@@ -75,9 +75,9 @@ Name: "{app}\logs"; Permissions: everyone-modify
 
 [Code]
 const
-	dotnetURL = 'https://download.microsoft.com/download/D/5/C/D5C98AB0-35CC-45D9-9BA5-B18256BA2AE6/NDP462-KB3151802-Web.exe';
+	dotnetURL = 'https://download.microsoft.com/download/A/E/A/AEAE0F3F-96E9-4711-AADA-5E35EF902306/NDP47-KB3186500-Web.exe';
 const
-  sFileName = 'D5C98AB0-35CC-45D9-9BA5-B18256BA2AE6/NDP462-KB3151802-Web.exe';
+  sFileName = 'AEAE0F3F-96E9-4711-AADA-5E35EF902306/NDP47-KB3186500-Web.exe';
 
 function NeedsDotNetFramework(): Boolean;
 var
@@ -90,7 +90,7 @@ begin
 	begin
 		if RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', ReleaseVersion) then
 		begin
-      if (ReleaseVersion >= 394802) then
+      if (ReleaseVersion >= 460798) then
       begin
         tempResult := False;
       end;

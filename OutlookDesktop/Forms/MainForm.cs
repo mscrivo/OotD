@@ -526,6 +526,7 @@ namespace OutlookDesktop.Forms
         /// <param name="folderPath"></param>
         private void ShowToolbarButtonsFor(string folderPath)
         {
+            Logger.Info($"Outlook folder path: {folderPath}");
             switch (folderPath)
             {
                 // ReSharper disable once PatternAlwaysOfType
