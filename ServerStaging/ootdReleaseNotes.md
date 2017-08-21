@@ -1,4 +1,8 @@
-# Outlook on the Desktop Release Notes
+# OotD Release Notes
+
+## 3.5.3
+
+* Fixed issue that prevented Calendar/Inbox icons from showing up when using non-English language settings.
 
 ## 3.5.2
 * Fixed additional HiDPI scaling issues (courtesy of .NET 4.7 Framework).
