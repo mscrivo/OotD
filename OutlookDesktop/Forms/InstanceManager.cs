@@ -20,8 +20,8 @@ namespace OutlookDesktop.Forms
 {
     public partial class InstanceManager : Form
     {
-        const string AppCast64Url = "http://www.outlookonthedesktop.com/ootdAppcastx64.xml";
-        const string AppCast32Url = "http://www.outlookonthedesktop.com/ootdAppcastx86.xml";
+        const string AppCast64Url = "https://outlookonthedesktop.com/ootdAppcastx64.xml";
+        const string AppCast32Url = "https://outlookonthedesktop.com/ootdAppcastx86.xml";
         const string AutoUpdateInstanceName = "AutoUpdate";
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

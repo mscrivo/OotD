@@ -8,7 +8,7 @@
     <item>
       <title>Version 3.5.3</title>
       <sparkle:releaseNotesLink>
-        http://www.outlookonthedesktop.com/ootdReleaseNotes.md
+        https://outlookonthedesktop.com/ootdReleaseNotes.md
       </sparkle:releaseNotesLink>
       <pubDate>Sun, 20 Aug 2017 21:40:00 +0000</pubDate>
       <enclosure url="https://github.com/mscrivo/ootd/releases/download/3.5.3/ootd-3.5.3-x64.exe" sparkle:version="3.5.3" length="2015528" type="application/octet-stream" />
