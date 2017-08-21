@@ -310,7 +310,7 @@ namespace OutlookDesktop.Forms
                 try
                 {
                     _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId, Preferences.OutlookFolderStoreId);
-                    ShowToolbarButtonsFor(_outlookFolder.FolderPath);
+                    ShowToolbarButtonsFor(_outlookFolder.DefaultMessageClass);
 
                 }
                 catch (Exception ex)
@@ -521,16 +521,15 @@ namespace OutlookDesktop.Forms
         }
 
         /// <summary>
-        /// Given a folderPath, show the appropriate buttons in the toolbar for that view.
+        /// Given a defaultMessagePath, show the appropriate buttons in the toolbar for that view.
         /// </summary>
-        /// <param name="folderPath"></param>
-        private void ShowToolbarButtonsFor(string folderPath)
+        /// <param name="defaultMessagePath"></param>
+        private void ShowToolbarButtonsFor(string defaultMessagePath)
         {
-            Logger.Info($"Outlook folder path: {folderPath}");
-            switch (folderPath)
+            Logger.Info($"Outlook folder path: {defaultMessagePath}");
+            switch (defaultMessagePath)
             {
-                // ReSharper disable once PatternAlwaysOfType
-                case string c when c.Contains("\\Calendar"):
+                case "IPM.Appointment":
                     {
                         TodayButton.Visible = true;
                         DayButton.Visible = true;
@@ -544,7 +543,7 @@ namespace OutlookDesktop.Forms
                         NewEmailButton.Visible = false;
                         break;
                     }
-                case string s when s.Contains("\\Inbox"):
+                case "IPM.Note":
                     {
                         TodayButton.Visible = false;
                         DayButton.Visible = false;
