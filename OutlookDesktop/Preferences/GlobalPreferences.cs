@@ -62,8 +62,7 @@ namespace OutlookDesktop.Preferences
                 {
                     if (key != null)
                     {
-                        bool lockPositions;
-                        if (bool.TryParse((string)key.GetValue("LockPosition", "false"), out lockPositions) &&
+                        if (bool.TryParse((string)key.GetValue("LockPosition", "false"), out var lockPositions) &&
                             lockPositions)
                         {
                             return true;
@@ -91,8 +90,7 @@ namespace OutlookDesktop.Preferences
                 {
                     if (key != null)
                     {
-                        bool isFirstRun;
-                        if (bool.TryParse((string)key.GetValue("FirstRun", "true"), out isFirstRun))
+                        if (bool.TryParse((string)key.GetValue("FirstRun", "true"), out var isFirstRun))
                         {
                             if (isFirstRun)
                             {

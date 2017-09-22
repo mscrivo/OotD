@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using NLog;
 using OutlookDesktop.Properties;
 // ReSharper disable UnusedMember.Local
+// ReSharper disable InconsistentNaming
 
 namespace OutlookDesktop.Utility
 {

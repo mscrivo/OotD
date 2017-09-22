@@ -177,8 +177,7 @@ namespace OutlookDesktop
                     foreach (string subkey in subkeys)
                     {
                         Logger.Debug($"Analyzing subkey '{subkey}'");
-                        double versionSubKey;
-                        if (Double.TryParse(subkey, NumberStyles.Float, new NumberFormatInfo(), out versionSubKey))
+                        if (Double.TryParse(subkey, NumberStyles.Float, new NumberFormatInfo(), out var versionSubKey))
                         {
                             Logger.Debug($"Office Version: {versionSubKey} Detected");
                             if (versionSubKey >= 11)

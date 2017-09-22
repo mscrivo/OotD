@@ -22,6 +22,7 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using Blue.Private.Win32Imports;
+// ReSharper disable InconsistentNaming
 
 #region Blue.Win32Imports
 

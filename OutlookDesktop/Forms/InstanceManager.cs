@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -327,9 +326,10 @@ namespace OutlookDesktop.Forms
             // find the icon for the today's day of the month and replace the tray icon with it, compensate for user's DPI settings.
             var dateIcon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture);
 
-            Debug.Assert(dateIcon != null, "dateIcon != null");
-
-            trayIcon.Icon = _graphics.DpiX.Equals(96f) ? new Icon(dateIcon, new Size(16, 16)) : new Icon(dateIcon, new Size(32, 32));
+            if (dateIcon != null)
+                trayIcon.Icon = _graphics.DpiX.Equals(96f)
+                    ? new Icon(dateIcon, new Size(16, 16))
+                    : new Icon(dateIcon, new Size(32, 32));
         }
 
         private void UpdateTimer_Tick(object sender, EventArgs e)

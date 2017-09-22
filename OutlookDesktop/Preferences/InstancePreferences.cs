@@ -116,8 +116,7 @@ namespace OutlookDesktop.Preferences
         {
             get
             {
-                bool retVal;
-                bool.TryParse(_appReg.GetValue("DisableEditing", "False").ToString(), out retVal);
+                bool.TryParse(_appReg.GetValue("DisableEditing", "False").ToString(), out var retVal);
                 return retVal;
             }
             set => _appReg.SetValue("DisableEditing", value);

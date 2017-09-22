@@ -680,9 +680,8 @@ namespace OutlookDesktop.Forms
         private void ViewItem_Click(object sender, EventArgs e)
         {
             var viewItem = sender as ToolStripMenuItem;
-            var view = viewItem?.Tag as View;
 
-            if (view != null)
+            if (viewItem?.Tag is View view)
             {
                 OutlookViewControl.View = view.Name;
 
