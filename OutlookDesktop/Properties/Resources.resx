@@ -308,7 +308,7 @@
     <value>..\Resources\Icons\18.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MonthXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\month.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>..\Resources\month.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="MissingRequirementsCapation" xml:space="preserve">
     <value>Missing Requirements</value>
@@ -320,7 +320,7 @@
     <value>About</value>
   </data>
   <data name="WeekXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\week.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>..\Resources\week.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
@@ -359,7 +359,7 @@
     <value>..\Resources\Icons\9.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DayXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\day.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>..\Resources\day.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="StartWithWindows" xml:space="preserve">
     <value>Start With Windows</value>
@@ -368,7 +368,7 @@
     <value>Outlook on the Desktop is running</value>
   </data>
   <data name="WorkWeekXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\WorkWeek.xml;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>..\Resources\WorkWeek.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="_26" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\26.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
