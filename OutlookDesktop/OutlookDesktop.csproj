@@ -303,7 +303,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\gitignore_global.txt" />
     <Content Include="Resources\Icons\AppIcon.ico" />
     <Content Include="Resources\Icons\notifyIcon.ico" />
     <None Include="Resources\workweek.xml" />
