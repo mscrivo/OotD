@@ -29,3 +29,6 @@ _ReSharper*/
 packages/*
 README.html
 /.vs
+/OotD.Package/_pkginfo.txt
+/OotD.Package/AppPackages/*
+/OotD.Package/*.pfx

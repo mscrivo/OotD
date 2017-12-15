@@ -1,0 +1,6 @@
+MainPackage=C:\Users\Michael\Documents\GitHub\OotD\OotD.Package\bin\x64\Release\OotD.Package_3.5.3.0_x64.appx
+SymbolPackage=C:\Users\Michael\Documents\GitHub\OotD\OotD.Package\AppPackages\OotD.Package_3.5.3.0_Test\OotD.Package_3.5.3.0_x64.appxsym
+ResourcePack=C:\Users\Michael\Documents\GitHub\OotD\OotD.Package\bin\x64\Release\OotD.Package_3.5.3.0_scale-100.appx
+ResourcePack=C:\Users\Michael\Documents\GitHub\OotD\OotD.Package\bin\x64\Release\OotD.Package_3.5.3.0_scale-125.appx
+ResourcePack=C:\Users\Michael\Documents\GitHub\OotD\OotD.Package\bin\x64\Release\OotD.Package_3.5.3.0_scale-150.appx
+ResourcePack=C:\Users\Michael\Documents\GitHub\OotD\OotD.Package\bin\x64\Release\OotD.Package_3.5.3.0_scale-400.appx
