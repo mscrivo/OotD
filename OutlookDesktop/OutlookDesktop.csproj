@@ -144,9 +144,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.4.12" />
-    <PackageReference Include="NLog.Config" Version="4.4.12" />
-    <PackageReference Include="NLog.Schema" Version="4.4.12" />
+    <PackageReference Include="NLog" Version="4.4.13" />
+    <PackageReference Include="NLog.Config" Version="4.4.13" />
+    <PackageReference Include="NLog.Schema" Version="4.4.13" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AxInterop.Microsoft.Office.Interop.OutlookViewCtl, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
