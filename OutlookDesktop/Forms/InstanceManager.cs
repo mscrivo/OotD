@@ -19,14 +19,20 @@ namespace OutlookDesktop.Forms
 {
     public partial class InstanceManager : Form
     {
+#if !WINDOWS_UWP
         const string AppCast64Url = "https://outlookonthedesktop.com/ootdAppcastx64.xml";
         const string AppCast32Url = "https://outlookonthedesktop.com/ootdAppcastx86.xml";
+#endif
+
         const string AutoUpdateInstanceName = "AutoUpdate";
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<string, MainForm> _mainFormInstances = new Dictionary<string, MainForm>();
         private static Graphics _graphics;
+
+#if !WINDOWS_UWP
         private static Sparkle _sparkle;
+#endif
 
         public InstanceManager()
         {
@@ -41,7 +47,8 @@ namespace OutlookDesktop.Forms
 
             _graphics = CreateGraphics();
 
-            // setup update checker.
+            // setup update checker on non UWP platforms
+#if !WINDOWS_UWP
             _sparkle = UnsafeNativeMethods.Is64Bit() ? new Sparkle(AppCast64Url, Resources.AppIcon) : new Sparkle(AppCast32Url, Resources.AppIcon);
 
             _sparkle.UpdateDetected += OnSparkleOnUpdateDetectedShowWithToast;
@@ -49,8 +56,11 @@ namespace OutlookDesktop.Forms
 
             // check for updates every 20 days, but don't check on first run because we'll have 2 tooltips popup and will likely confuse the user.
             _sparkle.StartLoop(!GlobalPreferences.IsFirstRun, TimeSpan.FromDays(20));
+           
+#endif
         }
 
+#if !WINDOWS_UWP
         private static void OnSparkleOnUpdateWindowDismissed(object sender, EventArgs args)
         {
             Startup.UpdateDetected = false;
@@ -67,6 +77,7 @@ namespace OutlookDesktop.Forms
             Startup.UpdateDetected = true;
             _sparkle.ShowUpdateNeededUI(args.LatestVersion, false);
         }
+#endif
 
         protected override CreateParams CreateParams
         {
@@ -211,7 +222,10 @@ namespace OutlookDesktop.Forms
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
+
+#if !WINDOWS_UWP
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click, "CheckForUpdatesMenu"));
+#endif
 
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
@@ -287,10 +301,12 @@ namespace OutlookDesktop.Forms
                             trayIcon.ContextMenuStrip.Items.Insert(15, new ToolStripMenuItem(Resources.LockPosition, null, LockPositionMenu_Click, "LockPositionMenu"));
                         }
 
+#if !WINDOWS_UWP
                         if (!trayIcon.ContextMenuStrip.Items.ContainsKey("CheckForUpdatesMenu"))
                         {
                             trayIcon.ContextMenuStrip.Items.Insert(20, new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click, "CheckForUpdatesMenu"));
                         }
+#endif
 
                         if (!trayIcon.ContextMenuStrip.Items.ContainsKey("AboutMenu"))
                         {
@@ -387,6 +403,7 @@ namespace OutlookDesktop.Forms
             aboutForm.ShowDialog();
         }
 
+#if !WINDOWS_UWP
         private static void CheckForUpdates_Click(object sender, EventArgs e)
         {
             _sparkle.UpdateDetected -= OnSparkleOnUpdateDetectedShowWithToast;
@@ -394,6 +411,7 @@ namespace OutlookDesktop.Forms
 
             _sparkle.CheckForUpdatesAtUserRequest();
         }
+#endif
 
         private void StartWithWindowsMenu_Click(object sender, EventArgs e)
         {

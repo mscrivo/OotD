@@ -27,7 +27,9 @@ namespace OutlookDesktop
         public static MAPIFolder OutlookFolder;
         public static Explorer OutlookExplorer;
 
+#if !WINDOWS_UWP
         public static bool UpdateDetected;
+#endif
 
         /// <summary>
         /// The main entry point for the application.

@@ -16,7 +16,9 @@ namespace OutlookDesktop.Forms
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
+#if !WINDOWS_UWP
             _sparkle.StopLoop();
+#endif
             _graphics.Dispose();
 
             if (disposing && (components != null))
@@ -26,7 +28,7 @@ namespace OutlookDesktop.Forms
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+#region Windows Form Designer generated code
 
         /// <summary>
         /// Required method for Designer support - do not modify
@@ -77,7 +79,7 @@ namespace OutlookDesktop.Forms
 
         }
 
-        #endregion
+#endregion
 
         private NotifyIcon trayIcon;
         private Timer updateTimer;

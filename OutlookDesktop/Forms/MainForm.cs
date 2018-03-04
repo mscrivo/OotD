@@ -1166,7 +1166,11 @@ namespace OutlookDesktop.Forms
                     m.Result = IntPtr.Zero;
                 }
             }
+#if !WINDOWS_UWP
             else if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING && !_outlookContextMenuActivated && !Startup.UpdateDetected && !_movingOrResizing)
+#else
+            else if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING && !_outlookContextMenuActivated && !_movingOrResizing)
+#endif
             {
                 var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
                 mwp.flags = mwp.flags | UnsafeNativeMethods.SWP_NOZORDER;
@@ -1178,7 +1182,7 @@ namespace OutlookDesktop.Forms
             base.WndProc(ref m);
         }
 
-        #region Properties
+#region Properties
 
         private ResizeDirection _resizeDir = ResizeDirection.None;
         private List<View> OutlookFolderViews { get; set; }
@@ -1217,9 +1221,9 @@ namespace OutlookDesktop.Forms
             }
         }
 
-        #endregion
+#endregion
 
-        #region Nested type: ResizeDirection
+#region Nested type: ResizeDirection
 
         private enum ResizeDirection
         {
@@ -1233,6 +1237,6 @@ namespace OutlookDesktop.Forms
             Bottom = 7,
             BottomLeft = 8
         }
-        #endregion        
+#endregion
     }
 }
