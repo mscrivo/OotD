@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{38490DB9-CF42-4280-BE5B-01CDB8797EDD}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>OutlookDesktop</RootNamespace>
+    <AssemblyName>OotD.x86</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AxInterop.Microsoft.Office.Interop.OutlookViewCtl">
+      <HintPath>..\ReferencedDLLs\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Outlook, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.Office.Interop.Outlook\15.0.0.0__71e9bce111e9429c\Microsoft.Office.Interop.Outlook.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\OutlookDesktop\Enums\CurrentCalendarView.cs">
+      <Link>Enums\CurrentCalendarView.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Enums\FolderViewType.cs">
+      <Link>Enums\FolderViewType.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Events\InputBoxValidatingEventArgs.cs">
+      <Link>Events\InputBoxValidatingEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Events\InstanceRemovedEventArgs.cs">
+      <Link>Events\InstanceRemovedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Events\InstanceRenamedEventArgs.cs">
+      <Link>Events\InstanceRenamedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Forms\AboutBox.cs">
+      <Link>Forms\AboutBox.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Forms\AboutBox.Designer.cs">
+      <Link>Forms\AboutBox.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Forms\InputBox.cs">
+      <Link>Forms\InputBox.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Forms\InputBox.Designer.cs">
+      <Link>Forms\InputBox.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Forms\InputBoxResult.cs">
+      <Link>Forms\InputBoxResult.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Forms\InstanceManager.cs">
+      <Link>Forms\InstanceManager.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Forms\InstanceManager.Designer.cs">
+      <Link>Forms\InstanceManager.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Forms\MainForm.cs">
+      <Link>Forms\MainForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Forms\MainForm.Designer.cs">
+      <Link>Forms\MainForm.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Preferences\GlobalPreferences.cs">
+      <Link>Preferences\GlobalPreferences.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Preferences\InstancePreferences.cs">
+      <Link>Preferences\InstancePreferences.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Properties\Resources.Designer.cs">
+      <Link>Properties\Resources.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Startup.cs">
+      <Link>Startup.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Utility\OutlookFolderDefinition.cs">
+      <Link>Utility\OutlookFolderDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Utility\RegistryHelper.cs">
+      <Link>Utility\RegistryHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Utility\StickyWindow.cs">
+      <Link>Utility\StickyWindow.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Utility\SynchronizeInvokeExtensions.cs">
+      <Link>Utility\SynchronizeInvokeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\OutlookDesktop\Utility\UnsafeNativeMethods.cs">
+      <Link>Utility\UnsafeNativeMethods.cs</Link>
+    </Compile>
+    <None Include="..\OutlookDesktop\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="..\OutlookDesktop\NLog.config">
+      <Link>NLog.config</Link>
+    </None>
+    <None Include="..\OutlookDesktop\NLog.xsd">
+      <Link>NLog.xsd</Link>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MACTrackBarLib\MACTrackBarLib\MACTrackBarLib.csproj">
+      <Project>{77a112b1-5440-440b-a0f6-2edcc5b093cb}</Project>
+      <Name>MACTrackBarLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NetSparkle\NetSparkle\NetSparkle.csproj">
+      <Project>{74635a21-2bad-4522-ab95-e3e5703cd301}</Project>
+      <Name>NetSparkle</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\OutlookDesktop\Forms\AboutBox.resx">
+      <Link>Forms\AboutBox.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\OutlookDesktop\Forms\InputBox.resx">
+      <Link>Forms\InputBox.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\OutlookDesktop\Forms\InstanceManager.resx">
+      <Link>Forms\InstanceManager.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\OutlookDesktop\Forms\MainForm.resx">
+      <Link>Forms\MainForm.resx</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\OutlookDesktop\Properties\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\OutlookDesktop\Resources\day.xml">
+      <Link>Resources\day.xml</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\!base %28256 only%29.ico">
+      <Link>Resources\Icons\!base %28256 only%29.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\!base.ico">
+      <Link>Resources\Icons\!base.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\1.ico">
+      <Link>Resources\Icons\1.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\10.ico">
+      <Link>Resources\Icons\10.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\11.ico">
+      <Link>Resources\Icons\11.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\12.ico">
+      <Link>Resources\Icons\12.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\13.ico">
+      <Link>Resources\Icons\13.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\14.ico">
+      <Link>Resources\Icons\14.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\15.ico">
+      <Link>Resources\Icons\15.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\16.ico">
+      <Link>Resources\Icons\16.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\17.ico">
+      <Link>Resources\Icons\17.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\18.ico">
+      <Link>Resources\Icons\18.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\19.ico">
+      <Link>Resources\Icons\19.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\2.ico">
+      <Link>Resources\Icons\2.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\20.ico">
+      <Link>Resources\Icons\20.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\21.ico">
+      <Link>Resources\Icons\21.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\22.ico">
+      <Link>Resources\Icons\22.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\23.ico">
+      <Link>Resources\Icons\23.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\24.ico">
+      <Link>Resources\Icons\24.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\25.ico">
+      <Link>Resources\Icons\25.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\26.ico">
+      <Link>Resources\Icons\26.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\27.ico">
+      <Link>Resources\Icons\27.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\28.ico">
+      <Link>Resources\Icons\28.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\29.ico">
+      <Link>Resources\Icons\29.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\3.ico">
+      <Link>Resources\Icons\3.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\30.ico">
+      <Link>Resources\Icons\30.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\31.ico">
+      <Link>Resources\Icons\31.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\4.ico">
+      <Link>Resources\Icons\4.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\5.ico">
+      <Link>Resources\Icons\5.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\6.ico">
+      <Link>Resources\Icons\6.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\7.ico">
+      <Link>Resources\Icons\7.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\8.ico">
+      <Link>Resources\Icons\8.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\9.ico">
+      <Link>Resources\Icons\9.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\AppIcon.ico">
+      <Link>Resources\Icons\AppIcon.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Icons\notifyIcon.ico">
+      <Link>Resources\Icons\notifyIcon.ico</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Images\fiveDays.png">
+      <Link>Resources\Images\fiveDays.png</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Images\month.png">
+      <Link>Resources\Images\month.png</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Images\next.png">
+      <Link>Resources\Images\next.png</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Images\oneDay.png">
+      <Link>Resources\Images\oneDay.png</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Images\paypal.gif">
+      <Link>Resources\Images\paypal.gif</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Images\prev.png">
+      <Link>Resources\Images\prev.png</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Images\sevenDays.png">
+      <Link>Resources\Images\sevenDays.png</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\Images\today.png">
+      <Link>Resources\Images\today.png</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\month.xml">
+      <Link>Resources\month.xml</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\NewEmail.png">
+      <Link>Resources\NewEmail.png</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\week.xml">
+      <Link>Resources\week.xml</Link>
+    </Content>
+    <Content Include="..\OutlookDesktop\Resources\WorkWeek.xml">
+      <Link>Resources\WorkWeek.xml</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NLog">
+      <Version>4.4.13</Version>
+    </PackageReference>
+    <PackageReference Include="NLog.Config">
+      <Version>4.4.13</Version>
+    </PackageReference>
+    <PackageReference Include="NLog.Schema">
+      <Version>4.4.13</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
