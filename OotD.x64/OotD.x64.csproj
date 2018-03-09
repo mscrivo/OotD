@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{93AB22DD-EE7C-4B26-8776-76EE613EC40C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>OutlookDesktop</RootNamespace>
+    <RootNamespace>OotD</RootNamespace>
     <AssemblyName>OotD.x64</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -60,89 +60,89 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\OutlookDesktop\Enums\CurrentCalendarView.cs">
+    <Compile Include="..\OotD.Core\Enums\CurrentCalendarView.cs">
       <Link>Enums\CurrentCalendarView.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Enums\FolderViewType.cs">
+    <Compile Include="..\OotD.Core\Enums\FolderViewType.cs">
       <Link>Enums\FolderViewType.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Events\InputBoxValidatingEventArgs.cs">
+    <Compile Include="..\OotD.Core\Events\InputBoxValidatingEventArgs.cs">
       <Link>Events\InputBoxValidatingEventArgs.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Events\InstanceRemovedEventArgs.cs">
+    <Compile Include="..\OotD.Core\Events\InstanceRemovedEventArgs.cs">
       <Link>Events\InstanceRemovedEventArgs.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Events\InstanceRenamedEventArgs.cs">
+    <Compile Include="..\OotD.Core\Events\InstanceRenamedEventArgs.cs">
       <Link>Events\InstanceRenamedEventArgs.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Forms\AboutBox.cs">
+    <Compile Include="..\OotD.Core\Forms\AboutBox.cs">
       <Link>Forms\AboutBox.cs</Link>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Forms\AboutBox.Designer.cs">
+    <Compile Include="..\OotD.Core\Forms\AboutBox.Designer.cs">
       <Link>Forms\AboutBox.Designer.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Forms\InputBox.cs">
+    <Compile Include="..\OotD.Core\Forms\InputBox.cs">
       <Link>Forms\InputBox.cs</Link>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Forms\InputBox.Designer.cs">
+    <Compile Include="..\OotD.Core\Forms\InputBox.Designer.cs">
       <Link>Forms\InputBox.Designer.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Forms\InputBoxResult.cs">
+    <Compile Include="..\OotD.Core\Forms\InputBoxResult.cs">
       <Link>Forms\InputBoxResult.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Forms\InstanceManager.cs">
+    <Compile Include="..\OotD.Core\Forms\InstanceManager.cs">
       <Link>Forms\InstanceManager.cs</Link>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Forms\InstanceManager.Designer.cs">
+    <Compile Include="..\OotD.Core\Forms\InstanceManager.Designer.cs">
       <Link>Forms\InstanceManager.Designer.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Forms\MainForm.cs">
+    <Compile Include="..\OotD.Core\Forms\MainForm.cs">
       <Link>Forms\MainForm.cs</Link>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Forms\MainForm.Designer.cs">
+    <Compile Include="..\OotD.Core\Forms\MainForm.Designer.cs">
       <Link>Forms\MainForm.Designer.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Preferences\GlobalPreferences.cs">
+    <Compile Include="..\OotD.Core\Preferences\GlobalPreferences.cs">
       <Link>Preferences\GlobalPreferences.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Preferences\InstancePreferences.cs">
+    <Compile Include="..\OotD.Core\Preferences\InstancePreferences.cs">
       <Link>Preferences\InstancePreferences.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Properties\AssemblyInfo.cs">
+    <Compile Include="..\OotD.Core\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Properties\Resources.Designer.cs">
+    <Compile Include="..\OotD.Core\Properties\Resources.Designer.cs">
       <Link>Properties\Resources.Designer.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Startup.cs">
+    <Compile Include="..\OotD.Core\Startup.cs">
       <Link>Startup.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Utility\OutlookFolderDefinition.cs">
+    <Compile Include="..\OotD.Core\Utility\OutlookFolderDefinition.cs">
       <Link>Utility\OutlookFolderDefinition.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Utility\RegistryHelper.cs">
+    <Compile Include="..\OotD.Core\Utility\RegistryHelper.cs">
       <Link>Utility\RegistryHelper.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Utility\StickyWindow.cs">
+    <Compile Include="..\OotD.Core\Utility\StickyWindow.cs">
       <Link>Utility\StickyWindow.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Utility\SynchronizeInvokeExtensions.cs">
+    <Compile Include="..\OotD.Core\Utility\SynchronizeInvokeExtensions.cs">
       <Link>Utility\SynchronizeInvokeExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\OutlookDesktop\Utility\UnsafeNativeMethods.cs">
+    <Compile Include="..\OotD.Core\Utility\UnsafeNativeMethods.cs">
       <Link>Utility\UnsafeNativeMethods.cs</Link>
     </Compile>
-    <None Include="..\OutlookDesktop\App.config">
+    <None Include="..\OotD.Core\App.config">
       <Link>App.config</Link>
     </None>
-    <None Include="..\OutlookDesktop\NLog.config">
+    <None Include="..\OotD.Core\NLog.config">
       <Link>NLog.config</Link>
     </None>
-    <None Include="..\OutlookDesktop\NLog.xsd">
+    <None Include="..\OotD.Core\NLog.xsd">
       <Link>NLog.xsd</Link>
       <SubType>Designer</SubType>
     </None>
@@ -159,165 +159,165 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\OutlookDesktop\Forms\AboutBox.resx">
+    <EmbeddedResource Include="..\OotD.Core\Forms\AboutBox.resx">
       <Link>Forms\AboutBox.resx</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\OutlookDesktop\Forms\InputBox.resx">
+    <EmbeddedResource Include="..\OotD.Core\Forms\InputBox.resx">
       <Link>Forms\InputBox.resx</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\OutlookDesktop\Forms\InstanceManager.resx">
+    <EmbeddedResource Include="..\OotD.Core\Forms\InstanceManager.resx">
       <Link>Forms\InstanceManager.resx</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\OutlookDesktop\Forms\MainForm.resx">
+    <EmbeddedResource Include="..\OotD.Core\Forms\MainForm.resx">
       <Link>Forms\MainForm.resx</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\OutlookDesktop\Properties\Resources.resx">
+    <EmbeddedResource Include="..\OotD.Core\Properties\Resources.resx">
       <Link>Properties\Resources.resx</Link>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\OutlookDesktop\Resources\day.xml">
+    <Content Include="..\OotD.Core\Resources\day.xml">
       <Link>Resources\day.xml</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\!base %28256 only%29.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\!base %28256 only%29.ico">
       <Link>Resources\Icons\!base %28256 only%29.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\!base.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\!base.ico">
       <Link>Resources\Icons\!base.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\1.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\1.ico">
       <Link>Resources\Icons\1.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\10.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\10.ico">
       <Link>Resources\Icons\10.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\11.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\11.ico">
       <Link>Resources\Icons\11.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\12.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\12.ico">
       <Link>Resources\Icons\12.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\13.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\13.ico">
       <Link>Resources\Icons\13.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\14.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\14.ico">
       <Link>Resources\Icons\14.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\15.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\15.ico">
       <Link>Resources\Icons\15.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\16.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\16.ico">
       <Link>Resources\Icons\16.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\17.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\17.ico">
       <Link>Resources\Icons\17.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\18.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\18.ico">
       <Link>Resources\Icons\18.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\19.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\19.ico">
       <Link>Resources\Icons\19.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\2.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\2.ico">
       <Link>Resources\Icons\2.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\20.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\20.ico">
       <Link>Resources\Icons\20.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\21.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\21.ico">
       <Link>Resources\Icons\21.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\22.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\22.ico">
       <Link>Resources\Icons\22.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\23.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\23.ico">
       <Link>Resources\Icons\23.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\24.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\24.ico">
       <Link>Resources\Icons\24.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\25.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\25.ico">
       <Link>Resources\Icons\25.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\26.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\26.ico">
       <Link>Resources\Icons\26.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\27.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\27.ico">
       <Link>Resources\Icons\27.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\28.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\28.ico">
       <Link>Resources\Icons\28.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\29.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\29.ico">
       <Link>Resources\Icons\29.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\3.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\3.ico">
       <Link>Resources\Icons\3.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\30.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\30.ico">
       <Link>Resources\Icons\30.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\31.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\31.ico">
       <Link>Resources\Icons\31.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\4.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\4.ico">
       <Link>Resources\Icons\4.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\5.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\5.ico">
       <Link>Resources\Icons\5.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\6.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\6.ico">
       <Link>Resources\Icons\6.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\7.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\7.ico">
       <Link>Resources\Icons\7.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\8.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\8.ico">
       <Link>Resources\Icons\8.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\9.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\9.ico">
       <Link>Resources\Icons\9.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\AppIcon.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\AppIcon.ico">
       <Link>Resources\Icons\AppIcon.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Icons\notifyIcon.ico">
+    <Content Include="..\OotD.Core\Resources\Icons\notifyIcon.ico">
       <Link>Resources\Icons\notifyIcon.ico</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Images\fiveDays.png">
+    <Content Include="..\OotD.Core\Resources\Images\fiveDays.png">
       <Link>Resources\Images\fiveDays.png</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Images\month.png">
+    <Content Include="..\OotD.Core\Resources\Images\month.png">
       <Link>Resources\Images\month.png</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Images\next.png">
+    <Content Include="..\OotD.Core\Resources\Images\next.png">
       <Link>Resources\Images\next.png</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Images\oneDay.png">
+    <Content Include="..\OotD.Core\Resources\Images\oneDay.png">
       <Link>Resources\Images\oneDay.png</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Images\paypal.gif">
+    <Content Include="..\OotD.Core\Resources\Images\paypal.gif">
       <Link>Resources\Images\paypal.gif</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Images\prev.png">
+    <Content Include="..\OotD.Core\Resources\Images\prev.png">
       <Link>Resources\Images\prev.png</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Images\sevenDays.png">
+    <Content Include="..\OotD.Core\Resources\Images\sevenDays.png">
       <Link>Resources\Images\sevenDays.png</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\Images\today.png">
+    <Content Include="..\OotD.Core\Resources\Images\today.png">
       <Link>Resources\Images\today.png</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\month.xml">
+    <Content Include="..\OotD.Core\Resources\month.xml">
       <Link>Resources\month.xml</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\NewEmail.png">
+    <Content Include="..\OotD.Core\Resources\NewEmail.png">
       <Link>Resources\NewEmail.png</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\week.xml">
+    <Content Include="..\OotD.Core\Resources\week.xml">
       <Link>Resources\week.xml</Link>
     </Content>
-    <Content Include="..\OutlookDesktop\Resources\WorkWeek.xml">
+    <Content Include="..\OotD.Core\Resources\WorkWeek.xml">
       <Link>Resources\WorkWeek.xml</Link>
     </Content>
   </ItemGroup>

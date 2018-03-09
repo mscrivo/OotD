@@ -49,10 +49,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\OotD.Core\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\OotD.Core\NLog.config">
+      <Link>NLog.config</Link>
+    </None>
+    <None Include="..\OotD.Core\NLog.xsd">
+      <Link>NLog.xsd</Link>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +73,17 @@
       <Project>{38490db9-cf42-4280-be5b-01cdb8797edd}</Project>
       <Name>OotD.x86</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NLog">
+      <Version>4.4.13</Version>
+    </PackageReference>
+    <PackageReference Include="NLog.Config">
+      <Version>4.4.13</Version>
+    </PackageReference>
+    <PackageReference Include="NLog.Schema">
+      <Version>4.4.13</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
