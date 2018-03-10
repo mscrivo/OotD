@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<view type="calendar">
-	<viewname>Calendar</viewname>
-	<mode>1</mode>
-	<showfullweek>1</showfullweek>
-	<showworkweek>0</showworkweek>
-</view>

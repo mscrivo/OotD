@@ -1,12 +1,12 @@
 #include <idp.iss>
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "3.5.3"
-#define MyAppVerName "Outlook on the Desktop 3.5.3"
+#define MyAppVersion "3.6.0"
+#define MyAppVerName "Outlook on the Desktop 3.6.0"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "https://outlookonthedesktop.com"
-#define MyAppExeName "OutlookDesktop.exe"
-#define MyAppCopyright "©2006-2017 Michael Scrivo"
+#define MyAppExeName "OotD.Launcher.exe"
+#define MyAppCopyright "©2006-2018 Michael Scrivo"
 
 [Setup]
 AppName={#MyAppName}
@@ -33,7 +33,7 @@ OutputDir=ServerStaging
 MinVersion=0,6.0.6001sp2
 AllowUNCPath=false
 UninstallLogMode=append
-UninstallDisplayIcon={app}\OutlookDesktop.exe
+UninstallDisplayIcon={app}\OotD.Launcher.exe
 PrivilegesRequired=none
 DisableDirPage=auto
 DisableReadyMemo=True
@@ -47,17 +47,24 @@ Name: eng; MessagesFile: compiler:Default.isl
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser unchecked; Description: "{cm:LaunchProgram,{#MyAppName}}"
 
 [Tasks]
-Name: installdotnet; Description: Download and Install Microsoft .NET Framework 4.7; Check: NeedsDotNetFramework
+Name: "installdotnet"; Description: "Download and Install Microsoft .NET Framework 4.7.1"; Check: NeedsDotNetFramework
 
 [Files]
-Source: "OutlookDesktop\bin\x86\Release\OutlookDesktop.exe"; DestDir: {app}; Flags: ignoreversion
-Source: "OutlookDesktop\bin\x86\Release\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: {app}; Flags: ignoreversion
-Source: "OutlookDesktop\bin\x86\Release\OLXLib.dll"; DestDir: {app}; Flags: ignoreversion
-Source: "OutlookDesktop\bin\x86\Release\OutlookDesktop.exe.config"; DestDir: {app}; Flags: ignoreversion
-Source: "OutlookDesktop\bin\x86\Release\NetSparkle.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OutlookDesktop\bin\x86\Release\NLog.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OutlookDesktop\bin\x86\Release\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OutlookDesktop\bin\x86\Release\MACTrackBarLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\HtmlRenderer.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\HtmlRenderer.WinForms.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\MACTrackBarLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\MarkdownSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\NetSparkle.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\NLog.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\OLXLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\OotD.Launcher.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\OotD.Launcher.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\OotD.x64.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\OotD.x64.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\OotD.x86.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\OotD.x86.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
@@ -73,11 +80,15 @@ Root: "HKCU"; Subkey: "Software\SMR Computer Services\Outlook On The Desktop\Aut
 [Dirs]
 Name: "{app}\logs"; Permissions: everyone-modify
 
+[UninstallRun]
+Filename: "taskkill"; Parameters: "/f /im OotD.x86.exe"; Flags: waituntilterminated
+Filename: "taskkill"; Parameters: "/f /im OotD.x64.exe"; Flags: waituntilterminated
+
 [Code]
 const
-	dotnetURL = 'https://download.microsoft.com/download/A/E/A/AEAE0F3F-96E9-4711-AADA-5E35EF902306/NDP47-KB3186500-Web.exe';
+	dotnetURL = 'https://download.microsoft.com/download/8/E/2/8E2BDDE7-F06E-44CC-A145-56C6B9BBE5DD/NDP471-KB4033344-Web.exe';
 const
-  sFileName = 'AEAE0F3F-96E9-4711-AADA-5E35EF902306/NDP47-KB3186500-Web.exe';
+  sFileName = 'AEAE0F3F-96E9-4711-AADA-5E35EF902306/NDP471-KB4033344-Web.exe';
 
 function NeedsDotNetFramework(): Boolean;
 var
@@ -90,7 +101,7 @@ begin
 	begin
 		if RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', ReleaseVersion) then
 		begin
-      if (ReleaseVersion >= 460798) then
+      if (ReleaseVersion >= 461308) then
       begin
         tempResult := False;
       end;
@@ -131,6 +142,14 @@ begin
         Exec(ExpandConstant('{tmp}\$sFileName'),'/passive /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
       end  
   end;
+end;
+
+procedure TaskKill(FileName: String);
+var
+  ResultCode: Integer;
+begin
+    Exec(ExpandConstant('taskkill.exe'), '/f /im ' + '"' + FileName + '"', '', SW_HIDE,
+     ewWaitUntilTerminated, ResultCode);
 end;
 
 [UninstallDelete]
