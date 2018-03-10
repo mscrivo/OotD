@@ -100,7 +100,7 @@ namespace OotD
             {
                 Logger.Info("Could not find Office key.");
 
-                MessageBox.Show(Resources.OutlookKeyNotFoundError, Resources.ErrorCaption, MessageBoxButtons.OK);
+                MessageBox.Show(Resources.OutlookKeyNotFoundError, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 return string.Empty;
             }
@@ -128,7 +128,8 @@ namespace OotD
                     if (!File.Exists(fullPath))
                     {
                         Logger.Error($"Outlook executable not found at {fullPath}");
-                        MessageBox.Show(Resources.OutlookExeNotFoundError, Resources.ErrorCaption, MessageBoxButtons.OK);
+                        MessageBox.Show(Resources.OutlookExeNotFoundError, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return string.Empty;
                     }
                 }
             }
@@ -138,7 +139,8 @@ namespace OotD
             if (string.IsNullOrEmpty(outlookFolder))
             {
                 Logger.Error("Unable to find Outlook exe location in registry");
-                MessageBox.Show(Resources.OutlookLocationKeyNotFoundError, Resources.ErrorCaption, MessageBoxButtons.OK);
+                MessageBox.Show(Resources.OutlookLocationKeyNotFoundError, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return string.Empty;
             }
 
             // now check for bitness
