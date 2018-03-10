@@ -39,7 +39,7 @@
     <StartupObject>OotD.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationManifest>..\OotD.Core\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>..\OotD.Core\Resources\Icons\AppIcon.ico</ApplicationIcon>
@@ -67,6 +67,9 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\OotD.Core\app.manifest">
+      <Link>app.manifest</Link>
+    </None>
     <None Include="..\OotD.Core\NLog.config">
       <Link>NLog.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -77,7 +80,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="App.config" />
-    <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OotD.x64\OotD.x64.csproj">

@@ -36,7 +36,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationManifest>..\OotD.Core\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>..\OotD.Core\Resources\Icons\AppIcon.ico</ApplicationIcon>
@@ -145,6 +145,9 @@
     <None Include="..\OotD.Core\App.config">
       <Link>App.config</Link>
     </None>
+    <None Include="..\OotD.Core\app.manifest">
+      <Link>app.manifest</Link>
+    </None>
     <None Include="..\OotD.Core\NLog.config">
       <Link>NLog.config</Link>
     </None>
@@ -152,7 +155,6 @@
       <Link>NLog.xsd</Link>
       <SubType>Designer</SubType>
     </None>
-    <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MACTrackBarLib\MACTrackBarLib\MACTrackBarLib.csproj">
