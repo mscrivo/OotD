@@ -117,6 +117,9 @@
     </Compile>
     <Compile Include="..\OotD.Core\Properties\Resources.Designer.cs">
       <Link>Properties\Resources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="..\OotD.Core\Startup.cs">
       <Link>Startup.cs</Link>
@@ -173,6 +176,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="..\OotD.Core\Properties\Resources.resx">
       <Link>Properties\Resources.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

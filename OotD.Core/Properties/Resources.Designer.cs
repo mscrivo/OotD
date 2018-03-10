@@ -444,6 +444,15 @@ namespace OotD.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was an unknown error trying to run OotD.  Please submit a bug at https://github.com/mscrivo/OotD/issues and attach your log file, located in: {0}.
+        /// </summary>
+        internal static string ChildProcessErrorMessage {
+            get {
+                return ResourceManager.GetString("ChildProcessErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         internal static string Close {
@@ -786,11 +795,11 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This program requires Microsoft Outlook 2003 or higher..
+        ///   Looks up a localized string similar to This program requires Microsoft Outlook 2010 or higher..
         /// </summary>
-        internal static string Office2000Requirement {
+        internal static string Office2010Requirement {
             get {
-                return ResourceManager.GetString("Office2000Requirement", resourceCulture);
+                return ResourceManager.GetString("Office2010Requirement", resourceCulture);
             }
         }
         
@@ -837,6 +846,34 @@ namespace OotD.Properties {
         internal static string Opaque {
             get {
                 return ResourceManager.GetString("Opaque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to find Outlook on your system at the reported location of:
+        ///{0}.
+        /// </summary>
+        internal static string OutlookExeNotFoundError {
+            get {
+                return ResourceManager.GetString("OutlookExeNotFoundError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to find details of Office installation.  Are you sure Office is installed?.
+        /// </summary>
+        internal static string OutlookKeyNotFoundError {
+            get {
+                return ResourceManager.GetString("OutlookKeyNotFoundError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to locate Outlook executable on your system.
+        /// </summary>
+        internal static string OutlookLocationKeyNotFoundError {
+            get {
+                return ResourceManager.GetString("OutlookLocationKeyNotFoundError", resourceCulture);
             }
         }
         

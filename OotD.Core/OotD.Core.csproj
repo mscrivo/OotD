@@ -58,11 +58,6 @@
     <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.4.13" />
-    <PackageReference Include="NLog.Config" Version="4.4.13" />
-    <PackageReference Include="NLog.Schema" Version="4.4.13" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="AxInterop.Microsoft.Office.Interop.OutlookViewCtl, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ReferencedDLLs\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll</HintPath>
@@ -246,6 +241,17 @@
       <Project>{74635a21-2bad-4522-ab95-e3e5703cd301}</Project>
       <Name>NetSparkle</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NLog">
+      <Version>4.4.13</Version>
+    </PackageReference>
+    <PackageReference Include="NLog.Config">
+      <Version>4.4.13</Version>
+    </PackageReference>
+    <PackageReference Include="NLog.Schema">
+      <Version>4.4.13</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
