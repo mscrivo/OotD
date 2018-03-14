@@ -81,8 +81,8 @@ Root: "HKCU"; Subkey: "Software\SMR Computer Services\Outlook On The Desktop\Aut
 Name: "{app}\logs"; Permissions: everyone-modify
 
 [UninstallRun]
-Filename: "taskkill"; Parameters: "/f /im OotD.x86.exe"; Flags: waituntilterminated
-Filename: "taskkill"; Parameters: "/f /im OotD.x64.exe"; Flags: waituntilterminated
+Filename: "taskkill"; Parameters: "/f /im OotD.x86.exe"; Flags: waituntilterminated runhidden
+Filename: "taskkill"; Parameters: "/f /im OotD.x64.exe"; Flags: waituntilterminated runhidden
 
 [Code]
 const
@@ -150,6 +150,42 @@ var
 begin
     Exec(ExpandConstant('taskkill.exe'), '/f /im ' + '"' + FileName + '"', '', SW_HIDE,
      ewWaitUntilTerminated, ResultCode);
+end;
+
+function HasOldx64Version(): Boolean;
+begin
+  Result := FileExists('C:\Program Files\Outlook on the Desktop\unins000.exe');
+end;
+
+function UnInstallOldVersion(): Integer;
+var
+  sUnInstallString: String;
+  iResultCode: Integer;
+begin
+  // Return Values:
+  // 2 - error executing the UnInstallString
+  // 3 - successfully executed the UnInstallString
+
+  // default return value
+  Result := 0;
+
+  Exec('taskkill', '/f /im OutlookDesktop.exe', '', SW_HIDE,  ewWaitUntilTerminated, iResultCode);
+
+  if Exec('C:\Program Files\Outlook on the Desktop\unins000.exe', '/SILENT /NORESTART /SUPPRESSMSGBOXES','', SW_HIDE, ewWaitUntilTerminated, iResultCode) then
+    Result := 3
+  else
+    Result := 2;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if (CurStep=ssInstall) then
+  begin
+    if (HasOldx64Version()) then
+    begin
+      UnInstallOldVersion();
+    end;
+  end;
 end;
 
 [UninstallDelete]
