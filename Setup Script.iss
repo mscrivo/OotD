@@ -45,6 +45,9 @@ Name: eng; MessagesFile: compiler:Default.isl
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser unchecked; Description: "{cm:LaunchProgram,{#MyAppName}}"
+Filename: "schtasks"; \
+    Parameters: "/F /Create /XML ""{app}\Outlook on the Desktop.xml"" /TN ""Outlook on the Desktop"""; \
+    Flags: runhidden
 
 [Tasks]
 Name: "installdotnet"; Description: "Download and Install Microsoft .NET Framework 4.7.1"; Check: NeedsDotNetFramework
@@ -65,6 +68,7 @@ Source: "OotD.Launcher\bin\Release\OotD.x64.exe"; DestDir: "{app}"; Flags: ignor
 Source: "OotD.Launcher\bin\Release\OotD.x64.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\OotD.x86.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\OotD.x86.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Outlook on the Desktop.xml"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
@@ -72,17 +76,18 @@ Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {#MyAppURL}
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
 
 [Registry]
-Root: "HKCU"; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: OutlookOnDesktop; ValueData: {app}\OutlookDesktop.exe; Flags: uninsdeletevalue
+Root: "HKCU"; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueName: "OutlookOnDesktop"; ValueType: string; Flags: deletevalue;
 Root: "HKCU"; Subkey: "Software\SMR Computer Services\Outlook On The Desktop"; Flags: createvalueifdoesntexist uninsdeletekey
-Root: "HKCU"; Subkey: "Software\SMR Computer Services\Outlook On The Desktop\"; ValueType: string; ValueName: First Run; ValueData: True
+Root: "HKCU"; Subkey: "Software\SMR Computer Services\Outlook On The Desktop\"; ValueType: string; ValueName: "First Run"; ValueData: "True"
 Root: "HKCU"; Subkey: "Software\SMR Computer Services\Outlook On The Desktop\AutoUpdate"; Flags: createvalueifdoesntexist uninsdeletekey
 
 [Dirs]
 Name: "{app}\logs"; Permissions: everyone-modify
 
 [UninstallRun]
-Filename: "taskkill"; Parameters: "/f /im OotD.x86.exe"; Flags: waituntilterminated runhidden
-Filename: "taskkill"; Parameters: "/f /im OotD.x64.exe"; Flags: waituntilterminated runhidden
+Filename: "taskkill"; Parameters: "/f /im OotD.x86.exe"; Flags: runhidden
+Filename: "taskkill"; Parameters: "/f /im OotD.x64.exe"; Flags: runhidden
+Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; Flags: runhidden
 
 [Code]
 const

@@ -30,6 +30,8 @@ namespace OotD
                             {
                                 CreateNoWindow = true,
                                 WindowStyle = ProcessWindowStyle.Hidden,
+                                UseShellExecute = true,
+                                WorkingDirectory = Directory.GetCurrentDirectory(),
 #if DEBUG
                                 Arguments = debugArg
 #endif
@@ -44,6 +46,8 @@ namespace OotD
                             {
                                 CreateNoWindow = true,
                                 WindowStyle = ProcessWindowStyle.Hidden,
+                                UseShellExecute = true,
+                                WorkingDirectory = Directory.GetCurrentDirectory(),
 #if DEBUG
                                 Arguments = debugArg
 #endif
