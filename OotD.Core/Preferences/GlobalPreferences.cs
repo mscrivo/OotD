@@ -18,38 +18,16 @@ namespace OotD.Preferences
         /// </summary>
         public static bool StartWithWindows
         {
-            get
-            {
-                using (
-                    var key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run"))
-                {
-                    var val = (string) key?.GetValue("OutlookOnDesktop");
-                    return !string.IsNullOrEmpty(val);
-                }
-            }
+            get => TaskScheduling.OotDScheduledTaskExists();
             set
             {
-                using (var key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true))
+                if (value)
                 {
-                    if (key != null)
-                    {
-                        try
-                        {
-                            if (value)
-                            {
-                                key.SetValue("OutlookOnDesktop", Application.ExecutablePath);
-                            }
-                            else
-                            {
-                                if (key.GetValue("OutlookOnDesktop") != null)
-                                    key.DeleteValue("OutlookOnDesktop");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex, "Exception caught setting Start with Windows Key");
-                        }
-                    }
+                    TaskScheduling.CreateOotDStartupTask(Logger);
+                }
+                else
+                {
+                    TaskScheduling.RemoveOotDStartupTask(Logger);
                 }
             }
         }
@@ -104,7 +82,7 @@ namespace OotD.Preferences
                 _isFirstRun = false;
 
                 return _isFirstRun.Value;
-            }            
+            }
         }
         private static bool? _isFirstRun;
     }

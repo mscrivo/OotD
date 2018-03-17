@@ -3,9 +3,11 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using CommandLine;
 using Microsoft.Office.Interop.Outlook;
 using NLog;
 using OotD.Forms;
+using OotD.Preferences;
 using OotD.Properties;
 using Application = Microsoft.Office.Interop.Outlook.Application;
 using Exception = System.Exception;
@@ -33,9 +35,10 @@ namespace OotD
         [STAThread]
         private static void Main(string[] args)
         {
-            if (args.Length == 1 && args[0] == "--debug" && Debugger.IsAttached == false) Debugger.Launch();
+            Parser.Default.ParseArguments<Options>(args).WithParsed(ProcessCommandLineArgs);
 
             Logger.Debug("Checking to see if there is an instance running.");
+
             using (new Mutex(true, AppDomain.CurrentDomain.FriendlyName, out var createdNew))
             {
                 if (createdNew)
@@ -87,9 +90,27 @@ namespace OotD
                     MessageBox.Show(Resources.ProgramIsAlreadyRunning, Resources.ProgramIsAlreadyRunningCaption,
                         MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                 }
+            }            
+        }
+
+        private static void ProcessCommandLineArgs(Options opts)
+        {
+            if (opts.StartDebugger)
+            {
+                if (!Debugger.IsAttached) Debugger.Launch();
             }
 
+            if (opts.CreateStartupEntry)
+            {               
+                TaskScheduling.CreateOotDStartupTask(Logger);
+                Environment.Exit(0);
+            }
 
+            if (opts.RemoveStartupEntry)
+            {
+                TaskScheduling.RemoveOotDStartupTask(Logger);
+                Environment.Exit(0);
+            }
         }
 
         /// <summary>

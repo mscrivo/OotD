@@ -13,10 +13,21 @@ namespace OotD
     public class Program
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private const string debugArg = "--debug";
 
-        static void Main()
+        // ReSharper disable once UnusedMember.Local
+        private const string debugArg = " -d";
+
+        // ReSharper disable once ConvertToConstant.Local
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        private static bool IsDebug = false;
+
+        public static void Main(string[] args)
         {
+            Logger.Info($"Command Line Args: {string.Join(" ", args)}");
+
+#if DEBUG
+            IsDebug = true;
+#endif
 
             var bitness = ValidateOutlookInstallation();
 
@@ -26,33 +37,15 @@ namespace OotD
                 {
                     case "x64":
                         {
-                            var processStartInfo = new ProcessStartInfo("OotD.x64.exe")
-                            {
-                                CreateNoWindow = true,
-                                WindowStyle = ProcessWindowStyle.Hidden,
-                                UseShellExecute = true,
-                                WorkingDirectory = Directory.GetCurrentDirectory(),
-#if DEBUG
-                                Arguments = debugArg
-#endif
-                            };
-
+                            var processStartInfo = new ProcessStartInfo("OotD.x64.exe");
+                            processStartInfo = SetupRunCommand(processStartInfo, args);
                             Process.Start(processStartInfo);
                             break;
                         }
                     case "x86":
                         {
-                            var processStartInfo = new ProcessStartInfo("OotD.x86.exe")
-                            {
-                                CreateNoWindow = true,
-                                WindowStyle = ProcessWindowStyle.Hidden,
-                                UseShellExecute = true,
-                                WorkingDirectory = Directory.GetCurrentDirectory(),
-#if DEBUG
-                                Arguments = debugArg
-#endif
-                            };
-
+                            var processStartInfo = new ProcessStartInfo("OotD.x86.exe");
+                            processStartInfo = SetupRunCommand(processStartInfo, args);
                             Process.Start(processStartInfo);
                             break;
                         }
@@ -67,6 +60,23 @@ namespace OotD
             }
 
         }
+
+        private static ProcessStartInfo SetupRunCommand(ProcessStartInfo startinfo, string[] args)
+        {
+            startinfo.CreateNoWindow = true;
+            startinfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startinfo.UseShellExecute = true;
+            startinfo.WorkingDirectory = Directory.GetCurrentDirectory();
+            startinfo.Arguments = string.Join(" ", args);
+
+            if (IsDebug)
+            {
+                startinfo.Arguments += debugArg;
+            }
+
+            return startinfo;
+        }
+
 
         /// <summary>
         /// Validates that the minimum supported version of Outlook is installed and returns the bitness of the installed version.

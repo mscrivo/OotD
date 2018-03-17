@@ -84,6 +84,9 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\OotDScheduledTaskDefinition.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="app.manifest" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
@@ -130,6 +133,8 @@
     <None Include="Resources\Images\paypal.gif" />
     <Compile Include="Enums\CurrentCalendarView.cs" />
     <Compile Include="Enums\FolderViewType.cs" />
+    <Compile Include="Options.cs" />
+    <Compile Include="Preferences\TaskScheduling.cs" />
     <Compile Include="Utility\OutlookFolderDefinition.cs" />
     <Compile Include="Utility\StickyWindow.cs" />
     <Compile Include="Utility\SynchronizeInvokeExtensions.cs" />
@@ -247,6 +252,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CommandLineParser">
+      <Version>2.2.1</Version>
+    </PackageReference>
     <PackageReference Include="NLog">
       <Version>4.4.13</Version>
     </PackageReference>
@@ -255,6 +263,9 @@
     </PackageReference>
     <PackageReference Include="NLog.Schema">
       <Version>4.4.13</Version>
+    </PackageReference>
+    <PackageReference Include="TaskScheduler">
+      <Version>2.8.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -44,20 +44,20 @@ UsePreviousGroup=False
 Name: eng; MessagesFile: compiler:Default.isl
 
 [Run]
+Filename: "{app}\{#MyAppExeName}"; Parameters: "-s"; WorkingDir: "{app}"; Flags: postinstall waituntilterminated runasoriginaluser runhidden; Description: "Run on Startup"
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser; Description: "{cm:LaunchProgram,{#MyAppName}}"
-Filename: "schtasks"; \
-    Parameters: "/F /Create /XML ""{app}\Outlook on the Desktop.xml"" /TN ""Outlook on the Desktop"""; \
-    Flags: runhidden
 
 [Tasks]
 Name: "installdotnet"; Description: "Download and Install Microsoft .NET Framework 4.7.1"; Check: NeedsDotNetFramework
 
 [Files]
 Source: "OotD.Launcher\bin\Release\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\HtmlRenderer.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\HtmlRenderer.WinForms.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\MACTrackBarLib.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\MarkdownSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\Microsoft.Win32.TaskScheduler.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\NetSparkle.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\NLog.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -68,7 +68,8 @@ Source: "OotD.Launcher\bin\Release\OotD.x64.exe"; DestDir: "{app}"; Flags: ignor
 Source: "OotD.Launcher\bin\Release\OotD.x64.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\OotD.x86.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\OotD.x86.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Outlook on the Desktop.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\OotDScheduledTaskDefinition.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\System.Reflection.TypeExtensions.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}

@@ -109,11 +109,17 @@
     <Compile Include="..\OotD.Core\Forms\MainForm.Designer.cs">
       <Link>Forms\MainForm.Designer.cs</Link>
     </Compile>
+    <Compile Include="..\OotD.Core\Options.cs">
+      <Link>Options.cs</Link>
+    </Compile>
     <Compile Include="..\OotD.Core\Preferences\GlobalPreferences.cs">
       <Link>Preferences\GlobalPreferences.cs</Link>
     </Compile>
     <Compile Include="..\OotD.Core\Preferences\InstancePreferences.cs">
       <Link>Preferences\InstancePreferences.cs</Link>
+    </Compile>
+    <Compile Include="..\OotD.Core\Preferences\TaskScheduling.cs">
+      <Link>Preferences\TaskScheduling.cs</Link>
     </Compile>
     <Compile Include="..\OotD.Core\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
@@ -324,6 +330,9 @@
     <Content Include="..\OotD.Core\Resources\NewEmail.png">
       <Link>Resources\NewEmail.png</Link>
     </Content>
+    <Content Include="..\OotD.Core\Resources\OotDScheduledTaskDefinition.xml">
+      <Link>Resources\OotDScheduledTaskDefinition.xml</Link>
+    </Content>
     <Content Include="..\OotD.Core\Resources\week.xml">
       <Link>Resources\week.xml</Link>
     </Content>
@@ -332,6 +341,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CommandLineParser">
+      <Version>2.2.1</Version>
+    </PackageReference>
     <PackageReference Include="NLog">
       <Version>4.4.13</Version>
     </PackageReference>
@@ -340,6 +352,9 @@
     </PackageReference>
     <PackageReference Include="NLog.Schema">
       <Version>4.4.13</Version>
+    </PackageReference>
+    <PackageReference Include="TaskScheduler">
+      <Version>2.8.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
