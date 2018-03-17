@@ -44,7 +44,7 @@ UsePreviousGroup=False
 Name: eng; MessagesFile: compiler:Default.isl
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser unchecked; Description: "{cm:LaunchProgram,{#MyAppName}}"
+Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser; Description: "{cm:LaunchProgram,{#MyAppName}}"
 Filename: "schtasks"; \
     Parameters: "/F /Create /XML ""{app}\Outlook on the Desktop.xml"" /TN ""Outlook on the Desktop"""; \
     Flags: runhidden
@@ -153,8 +153,7 @@ procedure TaskKill(FileName: String);
 var
   ResultCode: Integer;
 begin
-    Exec(ExpandConstant('taskkill.exe'), '/f /im ' + '"' + FileName + '"', '', SW_HIDE,
-     ewWaitUntilTerminated, ResultCode);
+  Exec(ExpandConstant('taskkill.exe'), '/f /im ' + '"' + FileName + '"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
 end;
 
 function HasOldx64Version(): Boolean;
