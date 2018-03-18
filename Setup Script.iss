@@ -1,7 +1,7 @@
 #include <idp.iss>
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion GetFileVersion('OotD.Launcher\bin\Release\OotD.Launcher.exe')
 #define MyAppVerName "Outlook on the Desktop {#MyAppVersion}"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "https://outlookonthedesktop.com"
