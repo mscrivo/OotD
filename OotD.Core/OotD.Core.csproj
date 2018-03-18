@@ -10,7 +10,7 @@
     <ApplicationIcon>Resources\Icons\AppIcon.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>OutlookDesktop</AssemblyName>
+    <AssemblyName>OotD.Core</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
