@@ -19,9 +19,8 @@ namespace OotD.Forms
 {
     public partial class InstanceManager : Form
     {
-        const string AppCast64Url = "https://outlookonthedesktop.com/ootdAppcastx64.xml";
-        const string AppCast32Url = "https://outlookonthedesktop.com/ootdAppcastx86.xml";
-        const string AutoUpdateInstanceName = "AutoUpdate";
+        private const string AppCastUrl = "https://outlookonthedesktop.com/ootdAppcast.xml";
+        private const string AutoUpdateInstanceName = "AutoUpdate";
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<string, MainForm> _mainFormInstances = new Dictionary<string, MainForm>();
@@ -42,10 +41,11 @@ namespace OotD.Forms
             _graphics = CreateGraphics();
 
             // setup update checker.
-            _sparkle = UnsafeNativeMethods.Is64Bit() ? new Sparkle(AppCast64Url, Resources.AppIcon) : new Sparkle(AppCast32Url, Resources.AppIcon);
+            _sparkle = new Sparkle(AppCastUrl, Resources.AppIcon);
 
             _sparkle.UpdateDetected += OnSparkleOnUpdateDetectedShowWithToast;
             _sparkle.UpdateWindowDismissed += OnSparkleOnUpdateWindowDismissed;
+            _sparkle.CustomInstallerArguments = "/silent";
 
             // check for updates every 20 days, but don't check on first run because we'll have 2 tooltips popup and will likely confuse the user.
             _sparkle.StartLoop(!GlobalPreferences.IsFirstRun, TimeSpan.FromDays(20));

@@ -7,11 +7,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{07B2D199-0589-433B-8C1F-A8B3BF22D4E0}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
-		ServerStaging\ootdAppcastx64.xml = ServerStaging\ootdAppcastx64.xml
-		ServerStaging\ootdAppcastx86.xml = ServerStaging\ootdAppcastx86.xml
+		ServerStaging\ootdAppcast.xml = ServerStaging\ootdAppcast.xml
 		ServerStaging\ootdReleaseNotes.md = ServerStaging\ootdReleaseNotes.md
-		README.html = README.html
 		README.md = README.md
+		Setup Script.iss = Setup Script.iss
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OotD.x86", "OotD.x86\OotD.x86.csproj", "{38490DB9-CF42-4280-BE5B-01CDB8797EDD}"

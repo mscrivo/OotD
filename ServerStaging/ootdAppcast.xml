@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Outlook on the Desktop</title>
+    <link>http://www.outlookonthedesktop.com/ootdAppcast.xml</link>
+    <description>Most recent changes with links to updates.</description>
+    <language>en</language>
+    <item>
+      <title>Version 3.6.0</title>
+      <sparkle:releaseNotesLink>
+        https://outlookonthedesktop.com/ootdReleaseNotes.md
+      </sparkle:releaseNotesLink>
+      <pubDate>Sun, 18 Mar 2018 14:00:00 +0000</pubDate>
+      <enclosure url="https://github.com/mscrivo/ootd/releases/download/3.6.0/ootd-3.6.0.0.exe" sparkle:version="3.6.0" length="2500052" type="application/octet-stream" />
+    </item>
+  </channel>
+</rss>
