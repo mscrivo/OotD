@@ -2,10 +2,13 @@
 
 ## 3.6.0
 * Now has a single installer for both 32-bit and 64-bit office, which should reduce confusion quite a bit.
-  * Note: If you had the 64-bit version installed, when upgrading, it will reset your OotD settings to the defaults.
+  * **Important Notes**: 
+    1. If you had the 64-bit version installed, when upgrading, it will reset your OotD settings to the defaults.
+    2. To get a single installer to work, and in particular, to detect the bitness of Office, the minimum supported version had to be bumped to Office 2010 (from 2003).
 * Uses .NET Framework 4.7.1 for additional performance and HiDPI improvements.
 * Uses a delayed scheduled task for running OotD on startup, which should reduce startup errors when trying to load Outlook prematurely.
-
+* Updater now shows release notes properly formatted.
+ 
 ## 3.5.3
 
 * Fixed issue that prevented Calendar/Inbox icons from showing up when using non-English language settings.
