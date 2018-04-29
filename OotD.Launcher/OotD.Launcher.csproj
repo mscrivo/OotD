@@ -11,7 +11,7 @@
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-      <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
         None
     </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
   </PropertyGroup>
@@ -98,13 +98,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NLog">
-      <Version>4.4.13</Version>
+      <Version>4.5.3</Version>
     </PackageReference>
     <PackageReference Include="NLog.Config">
-      <Version>4.4.13</Version>
+      <Version>4.5.3</Version>
     </PackageReference>
     <PackageReference Include="NLog.Schema">
-      <Version>4.4.13</Version>
+      <Version>4.5.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
