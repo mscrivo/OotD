@@ -347,13 +347,13 @@
       <Version>2.2.1</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.5.4</Version>
+      <Version>4.5.7</Version>
     </PackageReference>
     <PackageReference Include="NLog.Config">
-      <Version>4.5.4</Version>
+      <Version>4.5.7</Version>
     </PackageReference>
     <PackageReference Include="NLog.Schema">
-      <Version>4.5.4</Version>
+      <Version>4.5.7</Version>
     </PackageReference>
     <PackageReference Include="TaskScheduler">
       <Version>2.8.1</Version>
