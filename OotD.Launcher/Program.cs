@@ -19,7 +19,8 @@ namespace OotD
 
         // ReSharper disable once ConvertToConstant.Local
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        private static bool IsDebug;
+        // ReSharper disable once RedundantDefaultMemberInitializer
+        private static bool IsDebug = false;
 
         public static void Main(string[] args)
         {
