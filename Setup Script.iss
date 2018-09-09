@@ -48,7 +48,7 @@ Filename: "{app}\{#MyAppExeName}"; Parameters: "-s"; WorkingDir: "{app}"; Flags:
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser; Description: "{cm:LaunchProgram,{#MyAppName}}"
 
 [Tasks]
-Name: "installdotnet"; Description: "Download and Install Microsoft .NET Framework 4.7.1"; Check: NeedsDotNetFramework
+Name: "installdotnet"; Description: "Download and Install Microsoft .NET Framework 4.7.2"; Check: NeedsDotNetFramework
 
 [Files]
 Source: "OotD.Launcher\bin\Release\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -92,9 +92,9 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-	dotnetURL = 'https://download.microsoft.com/download/8/E/2/8E2BDDE7-F06E-44CC-A145-56C6B9BBE5DD/NDP471-KB4033344-Web.exe';
+	dotnetURL = 'https://download.microsoft.com/download/0/5/C/05C1EC0E-D5EE-463B-BFE3-9311376A6809/NDP472-KB4054531-Web.exe';
 const
-  sFileName = 'AEAE0F3F-96E9-4711-AADA-5E35EF902306/NDP471-KB4033344-Web.exe';
+  sFileName = '05C1EC0E-D5EE-463B-BFE3-9311376A6809/NDP472-KB4054531-Web.exe';
 
 function NeedsDotNetFramework(): Boolean;
 var
@@ -107,7 +107,7 @@ begin
 	begin
 		if RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', ReleaseVersion) then
 		begin
-      if (ReleaseVersion >= 461308) then
+      if (ReleaseVersion >= 461808) then
       begin
         tempResult := False;
       end;
