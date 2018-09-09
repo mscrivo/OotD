@@ -1,5 +1,9 @@
 # OotD Release Notes
 
+## 3.7.0
+* Uses .NET 4.7.2 Framework for additional performance and HiDPI improvements
+* Other miscellaneous fixes and polish. 
+
 ## 3.6.0
 * Now has a single installer for both 32-bit and 64-bit office, which should reduce confusion quite a bit.
   * **Important Notes**: 
