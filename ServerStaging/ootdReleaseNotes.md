@@ -1,5 +1,8 @@
 # OotD Release Notes
 
+## 3.7.1
+* Fix issue where Outlook was using 100% CPU when OotD was running.  This was due to a workaround put in a long time ago for a crash with Outlook 2007 SP2 that is no longer necessary.
+
 ## 3.7.0
 * Uses .NET 4.7.2 Framework for additional performance and HiDPI improvements
 * Other miscellaneous fixes and polish. 
