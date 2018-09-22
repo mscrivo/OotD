@@ -20,6 +20,7 @@ using View = Microsoft.Office.Interop.Outlook.View;
 
 namespace OotD.Forms
 {
+    /// <inheritdoc />
     /// <summary>
     /// This is the form that hosts the outlook view control. One of these will exist for each instance.
     /// </summary>

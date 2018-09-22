@@ -68,6 +68,7 @@ namespace OotD
             startinfo.WindowStyle = ProcessWindowStyle.Hidden;
             startinfo.UseShellExecute = true;
             startinfo.WorkingDirectory = Directory.GetCurrentDirectory();
+            startinfo.LoadUserProfile = true;
             startinfo.Arguments = string.Join(" ", args);
 
             if (IsDebug)
