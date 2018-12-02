@@ -249,7 +249,7 @@ namespace OotD.Forms
             {
                 // custom folder
                 _customFolder = Preferences.OutlookFolderName;
-                string folderName = GetFolderNameFromFullPath(_customFolder);
+                var folderName = GetFolderNameFromFullPath(_customFolder);
                 TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
                 _customMenu = (ToolStripMenuItem)TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
@@ -260,7 +260,7 @@ namespace OotD.Forms
                 _customFolderDefinition.OutlookFolderEntryId = Preferences.OutlookFolderEntryId;
             }
 
-            // Sets the viewcontrol folder from preferences. 
+            // Sets the view control folder from preferences. 
             OutlookViewControl.Folder = Preferences.OutlookFolderName;
 
             // Sets the selected view from preferences. 
@@ -479,7 +479,7 @@ namespace OotD.Forms
         /// </summary>
         /// <param name="itemToCheck">Item to check in the list</param>
         /// <param name="menuItems">IList of the menuitems to check</param>
-        private static void CheckSelectedMenuItemInCollection(ToolStripMenuItem itemToCheck, IList menuItems)
+        private static void CheckSelectedMenuItemInCollection(ToolStripMenuItem itemToCheck, IEnumerable menuItems)
         {
             foreach (ToolStripMenuItem menuItem in menuItems)
             {
@@ -587,7 +587,7 @@ namespace OotD.Forms
                     TrayMenu.Items.Remove(_customMenu);
                 }
 
-                string folderPath = GetFolderPath(GenerateFolderPathFromObject(oFolder));
+                var folderPath = GetFolderPath(GenerateFolderPathFromObject(oFolder));
                 OutlookViewControl.Folder = folderPath;
 
                 // Save the EntryId and the StoreId for this folder in the preferences. 
