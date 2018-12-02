@@ -1,5 +1,9 @@
 # OotD Release Notes
 
+## 3.7.5
+* Fix issue where opening and closing Outlook while OotD was running, would cause OotD to stop working. 
+* Potentially fix issue for some where OotD would refuse to start, citing that it could not find Outlook installed on the machine.
+
 ## 3.7.1
 * Fix issue where Outlook was using 100% CPU when OotD was running.  This was due to a workaround put in a long time ago for a crash with Outlook 2007 SP2 that is no longer necessary.
 
