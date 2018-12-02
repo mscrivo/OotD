@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using NLog;
+using NLog.Fluent;
 using NLog.Targets;
 using OotD.Properties;
 
@@ -95,13 +96,13 @@ namespace OotD
             {
                 if (key != null)
                 {
-                    string[] subkeys = key.GetSubKeyNames();
+                    string[] subKeys = key.GetSubKeyNames();
 
-                    foreach (string subkey in subkeys)
+                    foreach (string subKey in subKeys)
                     {
-                        Logger.Info($"Found {subkey} key");
+                        Logger.Info($"Found {subKey} key");
 
-                        if (double.TryParse(subkey, NumberStyles.Float, new NumberFormatInfo(), out var version))
+                        if (double.TryParse(subKey, NumberStyles.Float, new NumberFormatInfo(), out var version))
                         {
                             if (version >= 11 || version > versionSubKey)
                             {
@@ -177,6 +178,11 @@ namespace OotD
                 if (outlookKey != null)
                 {
                     bitness = (string)outlookKey.GetValue("Bitness");
+                }
+                else
+                {
+                    Logger.Info("Could not find bitness key, defaulting to x86");
+                    bitness = "x86";
                 }
             }
 
