@@ -5,7 +5,6 @@ using System.IO;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using NLog;
-using NLog.Fluent;
 using NLog.Targets;
 using OotD.Properties;
 
@@ -63,21 +62,21 @@ namespace OotD
 
         }
 
-        private static ProcessStartInfo SetupRunCommand(ProcessStartInfo startinfo, string[] args)
+        private static ProcessStartInfo SetupRunCommand(ProcessStartInfo startInfo, string[] args)
         {
-            startinfo.CreateNoWindow = true;
-            startinfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startinfo.UseShellExecute = true;
-            startinfo.WorkingDirectory = Directory.GetCurrentDirectory();
-            startinfo.LoadUserProfile = true;
-            startinfo.Arguments = string.Join(" ", args);
+            startInfo.CreateNoWindow = true;
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.UseShellExecute = true;
+            startInfo.WorkingDirectory = Directory.GetCurrentDirectory();
+            startInfo.LoadUserProfile = true;
+            startInfo.Arguments = string.Join(" ", args);
 
             if (IsDebug)
             {
-                startinfo.Arguments += debugArg;
+                startInfo.Arguments += debugArg;
             }
 
-            return startinfo;
+            return startInfo;
         }
 
 
@@ -162,7 +161,7 @@ namespace OotD
 
             // now check for bitness
             var outlookKey = Registry.LocalMachine.OpenSubKey($"SOFTWARE\\Microsoft\\Office\\{versionSubKey}.0\\Outlook");
-            string bitness = null;
+            string bitness;
 
             if (outlookKey != null)
             {

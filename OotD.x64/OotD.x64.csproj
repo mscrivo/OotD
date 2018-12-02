@@ -347,16 +347,16 @@
       <Version>2.3.0</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.5.9</Version>
+      <Version>4.5.11</Version>
     </PackageReference>
     <PackageReference Include="NLog.Config">
-      <Version>4.5.9</Version>
+      <Version>4.5.11</Version>
     </PackageReference>
     <PackageReference Include="NLog.Schema">
-      <Version>4.5.9</Version>
+      <Version>4.5.11</Version>
     </PackageReference>
     <PackageReference Include="TaskScheduler">
-      <Version>2.8.4</Version>
+      <Version>2.8.6</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
