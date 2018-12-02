@@ -24,6 +24,7 @@ namespace OotD
         public static Application OutlookApp;
         public static NameSpace OutlookNameSpace;
         public static MAPIFolder OutlookFolder;
+        public static Explorer OutlookExplorer;
 
         public static bool UpdateDetected;
 
@@ -52,6 +53,12 @@ namespace OotD
                         if (!IsRPCServerAvailable(OutlookNameSpace)) return;
 
                         OutlookFolder = OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
+
+                        // WORKAROUND: Beginning with Outlook 2007 SP2, Microsoft decided to kill all outlook instances 
+                        // when opening and closing an item from the view control, even though the view control was still running.
+                        // The only way I've found to work around it and keep the view control from crashing after opening an item,
+                        // is to get this global instance of the active explorer and keep it going until the user closes the app.
+                        OutlookExplorer = OutlookFolder.GetExplorer();
                     }
                     catch (Exception ex)
                     {
@@ -141,6 +148,9 @@ namespace OotD
 
         public static void DisposeOutlookObjects()
         {
+            OutlookExplorer?.Close();
+
+            OutlookExplorer = null;
             OutlookFolder = null;
             OutlookNameSpace = null;
             OutlookApp = null;
