@@ -1,38 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38490DB9-CF42-4280-BE5B-01CDB8797EDD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>OotD</RootNamespace>
-    <AssemblyName>OotD.x86</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net472</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <AssemblyTitle>Outlook on the Desktop</AssemblyTitle>
+    <Company>SMR Computer Services</Company>
+    <Product>Outlook on the Desktop</Product>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Description>Places Microsoft Outlook Components on your Windows Desktop.</Description>
+    <Copyright>Copyright 2006-2018 Michael Scrivo</Copyright>
     <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -43,120 +21,63 @@
     <ApplicationIcon>..\OotD.Core\Resources\Icons\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
+    <PackageReference Include="System.Net.Http" Version="4.*" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="AxInterop.Microsoft.Office.Interop.OutlookViewCtl">
       <HintPath>..\ReferencedDLLs\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.Office.Interop.Outlook\15.0.0.0__71e9bce111e9429c\Microsoft.Office.Interop.Outlook.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.Office.Interop.Outlook\15.0.0.0__71e9bce111e9429c\Microsoft.Office.Interop.Outlook.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\OotD.Core\Enums\CurrentCalendarView.cs">
-      <Link>Enums\CurrentCalendarView.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Enums\FolderViewType.cs">
-      <Link>Enums\FolderViewType.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Events\InputBoxValidatingEventArgs.cs">
-      <Link>Events\InputBoxValidatingEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Events\InstanceRemovedEventArgs.cs">
-      <Link>Events\InstanceRemovedEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Events\InstanceRenamedEventArgs.cs">
-      <Link>Events\InstanceRenamedEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Forms\AboutBox.cs">
-      <Link>Forms\AboutBox.cs</Link>
+    <Compile Include="..\OotD.Core\Enums\CurrentCalendarView.cs" Link="Enums\CurrentCalendarView.cs" />
+    <Compile Include="..\OotD.Core\Enums\FolderViewType.cs" Link="Enums\FolderViewType.cs" />
+    <Compile Include="..\OotD.Core\Events\InputBoxValidatingEventArgs.cs" Link="Events\InputBoxValidatingEventArgs.cs" />
+    <Compile Include="..\OotD.Core\Events\InstanceRemovedEventArgs.cs" Link="Events\InstanceRemovedEventArgs.cs" />
+    <Compile Include="..\OotD.Core\Events\InstanceRenamedEventArgs.cs" Link="Events\InstanceRenamedEventArgs.cs" />
+    <Compile Include="..\OotD.Core\Forms\AboutBox.cs" Link="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OotD.Core\Forms\AboutBox.Designer.cs">
-      <Link>Forms\AboutBox.Designer.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Forms\InputBox.cs">
-      <Link>Forms\InputBox.cs</Link>
+    <Compile Include="..\OotD.Core\Forms\AboutBox.Designer.cs" Link="Forms\AboutBox.Designer.cs" />
+    <Compile Include="..\OotD.Core\Forms\InputBox.cs" Link="Forms\InputBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OotD.Core\Forms\InputBox.Designer.cs">
-      <Link>Forms\InputBox.Designer.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Forms\InputBoxResult.cs">
-      <Link>Forms\InputBoxResult.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Forms\InstanceManager.cs">
-      <Link>Forms\InstanceManager.cs</Link>
+    <Compile Include="..\OotD.Core\Forms\InputBox.Designer.cs" Link="Forms\InputBox.Designer.cs" />
+    <Compile Include="..\OotD.Core\Forms\InputBoxResult.cs" Link="Forms\InputBoxResult.cs" />
+    <Compile Include="..\OotD.Core\Forms\InstanceManager.cs" Link="Forms\InstanceManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OotD.Core\Forms\InstanceManager.Designer.cs">
-      <Link>Forms\InstanceManager.Designer.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Forms\MainForm.cs">
-      <Link>Forms\MainForm.cs</Link>
+    <Compile Include="..\OotD.Core\Forms\InstanceManager.Designer.cs" Link="Forms\InstanceManager.Designer.cs" />
+    <Compile Include="..\OotD.Core\Forms\MainForm.cs" Link="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OotD.Core\Forms\MainForm.Designer.cs">
-      <Link>Forms\MainForm.Designer.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Options.cs">
-      <Link>Options.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Preferences\GlobalPreferences.cs">
-      <Link>Preferences\GlobalPreferences.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Preferences\InstancePreferences.cs">
-      <Link>Preferences\InstancePreferences.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Preferences\TaskScheduling.cs">
-      <Link>Preferences\TaskScheduling.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Properties\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Properties\Resources.Designer.cs">
-      <Link>Properties\Resources1.Designer.cs</Link>
+    <Compile Include="..\OotD.Core\Forms\MainForm.Designer.cs" Link="Forms\MainForm.Designer.cs" />
+    <Compile Include="..\OotD.Core\Options.cs" Link="Options.cs" />
+    <Compile Include="..\OotD.Core\Preferences\GlobalPreferences.cs" Link="Preferences\GlobalPreferences.cs" />
+    <Compile Include="..\OotD.Core\Preferences\InstancePreferences.cs" Link="Preferences\InstancePreferences.cs" />
+    <Compile Include="..\OotD.Core\Preferences\TaskScheduling.cs" Link="Preferences\TaskScheduling.cs" />
+    <Compile Include="..\OotD.Core\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\OotD.Core\Properties\Resources.Designer.cs" Link="Properties\Resources1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="..\OotD.Core\Startup.cs">
-      <Link>Startup.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Utility\OutlookFolderDefinition.cs">
-      <Link>Utility\OutlookFolderDefinition.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Utility\RegistryHelper.cs">
-      <Link>Utility\RegistryHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Utility\StickyWindow.cs">
-      <Link>Utility\StickyWindow.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Utility\SynchronizeInvokeExtensions.cs">
-      <Link>Utility\SynchronizeInvokeExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\OotD.Core\Utility\UnsafeNativeMethods.cs">
-      <Link>Utility\UnsafeNativeMethods.cs</Link>
-    </Compile>
-    <None Include="..\OotD.Core\App.config">
-      <Link>App.config</Link>
-    </None>
+    <Compile Include="..\OotD.Core\Startup.cs" Link="Startup.cs" />
+    <Compile Include="..\OotD.Core\Utility\OutlookFolderDefinition.cs" Link="Utility\OutlookFolderDefinition.cs" />
+    <Compile Include="..\OotD.Core\Utility\RegistryHelper.cs" Link="Utility\RegistryHelper.cs" />
+    <Compile Include="..\OotD.Core\Utility\StickyWindow.cs" Link="Utility\StickyWindow.cs" />
+    <Compile Include="..\OotD.Core\Utility\SynchronizeInvokeExtensions.cs" Link="Utility\SynchronizeInvokeExtensions.cs" />
+    <Compile Include="..\OotD.Core\Utility\UnsafeNativeMethods.cs" Link="Utility\UnsafeNativeMethods.cs" />
     <None Include="..\OotD.Core\app.manifest">
       <Link>app.manifest</Link>
-    </None>
-    <None Include="..\OotD.Core\NLog.config">
-      <Link>NLog.config</Link>
     </None>
     <None Include="..\OotD.Core\NLog.xsd">
       <Link>NLog.xsd</Link>
@@ -164,30 +85,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MACTrackBarLib\MACTrackBarLib\MACTrackBarLib.csproj">
-      <Project>{77a112b1-5440-440b-a0f6-2edcc5b093cb}</Project>
-      <Name>MACTrackBarLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetSparkle\NetSparkle\NetSparkle.csproj">
-      <Project>{74635a21-2bad-4522-ab95-e3e5703cd301}</Project>
-      <Name>NetSparkle</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\MACTrackBarLib\MACTrackBarLib\MACTrackBarLib.csproj" />
+    <ProjectReference Include="..\NetSparkle\NetSparkle\NetSparkle.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\OotD.Core\Forms\AboutBox.resx">
-      <Link>Forms\AboutBox.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\OotD.Core\Forms\InputBox.resx">
-      <Link>Forms\InputBox.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\OotD.Core\Forms\InstanceManager.resx">
-      <Link>Forms\InstanceManager.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\OotD.Core\Forms\MainForm.resx">
-      <Link>Forms\MainForm.resx</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\OotD.Core\Properties\Resources.resx">
-      <Link>Properties\Resources.resx</Link>
+    <EmbeddedResource Include="..\OotD.Core\Forms\AboutBox.resx" Link="Forms\AboutBox.resx" />
+    <EmbeddedResource Include="..\OotD.Core\Forms\InputBox.resx" Link="Forms\InputBox.resx" />
+    <EmbeddedResource Include="..\OotD.Core\Forms\InstanceManager.resx" Link="Forms\InstanceManager.resx" />
+    <EmbeddedResource Include="..\OotD.Core\Forms\MainForm.resx" Link="Forms\MainForm.resx" />
+    <EmbeddedResource Include="..\OotD.Core\Properties\Resources.resx" Link="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -342,21 +248,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommandLineParser">
-      <Version>2.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="NLog">
-      <Version>4.5.11</Version>
-    </PackageReference>
-    <PackageReference Include="NLog.Config">
-      <Version>4.5.11</Version>
-    </PackageReference>
-    <PackageReference Include="NLog.Schema">
-      <Version>4.5.11</Version>
-    </PackageReference>
-    <PackageReference Include="TaskScheduler">
-      <Version>2.8.6</Version>
-    </PackageReference>
+    <PackageReference Include="CommandLineParser" Version="2.3.0" />
+    <PackageReference Include="NLog" Version="4.5.11" />
+    <PackageReference Include="NLog.Config" Version="4.5.11" />
+    <PackageReference Include="NLog.Schema" Version="4.5.11" />
+    <PackageReference Include="TaskScheduler" Version="2.8.6" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

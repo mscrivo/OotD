@@ -16,7 +16,7 @@ namespace OotD
 {
     internal static class Startup
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public static Guid LastNextButtonClicked;
         public static Guid LastPreviousButtonClicked;
@@ -37,7 +37,7 @@ namespace OotD
         {
             Parser.Default.ParseArguments<Options>(args).WithParsed(ProcessCommandLineArgs);
 
-            Logger.Debug("Checking to see if there is an instance running.");
+            _logger.Debug("Checking to see if there is an instance running.");
 
             using (new Mutex(true, AppDomain.CurrentDomain.FriendlyName, out var createdNew))
             {
@@ -68,7 +68,7 @@ namespace OotD
 
                     System.Windows.Forms.Application.EnableVisualStyles();
 
-                    Logger.Info("Starting the instance manager and loading instances.");
+                    _logger.Info("Starting the instance manager and loading instances.");
                     var instanceManager = new InstanceManager();
 
                     try
@@ -77,7 +77,7 @@ namespace OotD
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex, "Could not load instances");
+                        _logger.Error(ex, "Could not load instances");
                         return;
                     }
 
@@ -86,7 +86,7 @@ namespace OotD
                 else
                 {
                     // let the user know the program is already running.
-                    Logger.Warn("Instance is already running, exiting.");
+                    _logger.Warn("Instance is already running, exiting.");
                     MessageBox.Show(Resources.ProgramIsAlreadyRunning, Resources.ProgramIsAlreadyRunningCaption,
                         MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                 }
@@ -102,13 +102,13 @@ namespace OotD
 
             if (opts.CreateStartupEntry)
             {               
-                TaskScheduling.CreateOotDStartupTask(Logger);
+                TaskScheduling.CreateOotDStartupTask(_logger);
                 Environment.Exit(0);
             }
 
             if (opts.RemoveStartupEntry)
             {
-                TaskScheduling.RemoveOotDStartupTask(Logger);
+                TaskScheduling.RemoveOotDStartupTask(_logger);
                 Environment.Exit(0);
             }
         }
