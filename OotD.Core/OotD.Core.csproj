@@ -33,7 +33,9 @@
       <HintPath>..\ReferencedDLLs\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Outlook">
-      <HintPath>..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.Office.Interop.Outlook\15.0.0.0__71e9bce111e9429c\Microsoft.Office.Interop.Outlook.dll</HintPath>
+      <HintPath>..\ReferencedDLLs\Microsoft.Office.Interop.Outlook.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.OutlookViewCtl">
       <HintPath>..\ReferencedDLLs\Microsoft.Office.Interop.OutlookViewCtl.dll</HintPath>
