@@ -22,6 +22,7 @@ namespace OotD
         // ReSharper disable once RedundantDefaultMemberInitializer
         private static bool IsDebug = false;
 
+        [STAThread]
         public static void Main(string[] args)
         {
             Logger.Info($"Command Line Args: {string.Join(" ", args)}");

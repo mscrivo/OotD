@@ -1,36 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>Resources\Icons\AppIcon.ico</ApplicationIcon>
-    <AssemblyKeyContainerName />
-    <AssemblyOriginatorKeyFile />
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <OutputType>WinExe</OutputType>
     <RootNamespace>OotD</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>OotD.Startup</StartupObject>
-    <FileUpgradeFlags />
-    <UpgradeBackupLocation />
-    <SignManifests>false</SignManifests>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFramework>net472</TargetFramework>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <AssemblyTitle>Outlook on the Desktop</AssemblyTitle>
@@ -38,23 +14,20 @@
     <Product>Outlook on the Desktop</Product>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Description>Places Microsoft Outlook Components on your Windows Desktop.</Description>
-    <Copyright>Copyright 2006-2018 Michael Scrivo</Copyright>
-    <PreBuildEvent />
-    <PostBuildEvent>IF EXIST "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\SDK\ScopeCppSDK\VC\bin\editbin.exe" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\SDK\ScopeCppSDK\VC\bin\editbin.exe" /NXCOMPAT:NO "$(TargetPath)"
-
-IF EXIST "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\SDK\ScopeCppSDK\VC\bin\editbin.exe" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\SDK\ScopeCppSDK\VC\bin\editbin.exe" /NXCOMPAT:NO "$(TargetPath)"
-
-IF EXIST "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\SDK\ScopeCppSDK\VC\bin\editbin.exe" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\SDK\ScopeCppSDK\VC\bin\editbin.exe" /NXCOMPAT:NO "$(TargetPath)"</PostBuildEvent>
-    </PropertyGroup>
+    <Copyright>Copyright 2006-2019 Michael Scrivo</Copyright>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AxInterop.Microsoft.Office.Interop.OutlookViewCtl">
       <HintPath>..\ReferencedDLLs\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll</HintPath>
@@ -65,7 +38,6 @@ IF EXIST "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\SDK\Scop
     <Reference Include="Microsoft.Office.Interop.OutlookViewCtl">
       <HintPath>..\ReferencedDLLs\Microsoft.Office.Interop.OutlookViewCtl.dll</HintPath>
     </Reference>
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLog.config">
@@ -182,10 +154,10 @@ IF EXIST "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\SDK\Scop
     <ProjectReference Include="..\NetSparkle\NetSparkle\NetSparkle.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.3.0" />
-    <PackageReference Include="NLog" Version="4.5.11" />
-    <PackageReference Include="NLog.Config" Version="4.5.11" />
-    <PackageReference Include="NLog.Schema" Version="4.5.11" />
-    <PackageReference Include="TaskScheduler" Version="2.8.6" />
+    <PackageReference Include="CommandLineParser" Version="2.4.3" />
+    <PackageReference Include="NLog" Version="4.6.0" />
+    <PackageReference Include="NLog.Config" Version="4.6.0" />
+    <PackageReference Include="NLog.Schema" Version="4.6.0" />
+    <PackageReference Include="TaskScheduler" Version="2.8.8" />
   </ItemGroup>
 </Project>

@@ -1,25 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <RootNamespace>OotD</RootNamespace>
-    <TargetFramework>net472</TargetFramework>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-        None
-    </ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
     <AssemblyTitle>Outlook on the Desktop</AssemblyTitle>
     <Company>SMR Computer Services</Company>
     <Product>Outlook on the Desktop</Product>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Description>Places Microsoft Outlook Components on your Windows Desktop.</Description>
-    <Copyright>Copyright 2006-2018 Michael Scrivo</Copyright>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Copyright>Copyright 2006-2019 Michael Scrivo</Copyright>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <LangVersion>latest</LangVersion>
+    <Prefer32Bit>true</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <NoWarn />
+    <LangVersion>latest</LangVersion>
+    <Prefer32Bit>true</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>OotD.Program</StartupObject>
@@ -30,11 +32,6 @@
   <PropertyGroup>
     <ApplicationIcon>..\OotD.Core\Resources\Icons\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
-    <PackageReference Include="System.Net.Http" Version="4.*" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\OotD.Core\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
     <Compile Include="..\OotD.Core\Properties\Resources.Designer.cs" Link="Properties\Resources.Designer.cs">
@@ -57,9 +54,9 @@
     <ProjectReference Include="..\OotD.x86\OotD.x86.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.11" />
-    <PackageReference Include="NLog.Config" Version="4.5.11" />
-    <PackageReference Include="NLog.Schema" Version="4.5.11" />
+    <PackageReference Include="NLog" Version="4.6.0" />
+    <PackageReference Include="NLog.Config" Version="4.6.0" />
+    <PackageReference Include="NLog.Schema" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\OotD.Core\Properties\Resources.resx" Link="Properties\Resources.resx">
@@ -74,4 +71,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /y $(SolutionDir)\OotD.x86\$(OutDir) $(OutDir)&#xD;&#xA;copy /y $(SolutionDir)\OotD.x64\$(OutDir) $(OutDir)" />
+  </Target>
 </Project>

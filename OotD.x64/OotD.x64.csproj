@@ -1,15 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <RootNamespace>OotD</RootNamespace>
-    <TargetFramework>net472</TargetFramework>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
     <AssemblyTitle>Outlook on the Desktop</AssemblyTitle>
     <Company>SMR Computer Services</Company>
     <Product>Outlook on the Desktop</Product>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Description>Places Microsoft Outlook Components on your Windows Desktop.</Description>
-    <Copyright>Copyright 2006-2018 Michael Scrivo</Copyright>
+    <Copyright>Copyright 2006-2019 Michael Scrivo</Copyright>
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -21,11 +21,6 @@
     <ApplicationIcon>..\OotD.Core\Resources\Icons\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
-    <PackageReference Include="System.Net.Http" Version="4.*" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="AxInterop.Microsoft.Office.Interop.OutlookViewCtl">
       <HintPath>..\ReferencedDLLs\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll</HintPath>
     </Reference>
@@ -34,8 +29,6 @@
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\OotD.Core\Enums\CurrentCalendarView.cs" Link="Enums\CurrentCalendarView.cs" />
@@ -248,10 +241,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.3.0" />
-    <PackageReference Include="NLog" Version="4.5.11" />
-    <PackageReference Include="NLog.Config" Version="4.5.11" />
-    <PackageReference Include="NLog.Schema" Version="4.5.11" />
-    <PackageReference Include="TaskScheduler" Version="2.8.6" />
+    <PackageReference Include="CommandLineParser" Version="2.4.3" />
+    <PackageReference Include="NLog" Version="4.6.0" />
+    <PackageReference Include="NLog.Config" Version="4.6.0" />
+    <PackageReference Include="NLog.Schema" Version="4.6.0" />
+    <PackageReference Include="TaskScheduler" Version="2.8.8" />
   </ItemGroup>
 </Project>
