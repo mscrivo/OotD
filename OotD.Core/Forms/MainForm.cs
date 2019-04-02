@@ -26,14 +26,14 @@ namespace OotD.Forms
     /// </summary>
     public partial class MainForm : Form
     {
-        private const int ResizeBorderWidth = 4;
+        private const int _resizeBorderWidth = 4;
         private string _customFolder;
         private ToolStripMenuItem _customMenu;
         private MAPIFolder _outlookFolder;
         private DateTime _previousDate;
         private OutlookFolderDefinition _customFolderDefinition;
         private bool _outlookContextMenuActivated;
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly StickyWindow _stickyWindow;
 
@@ -54,7 +54,7 @@ namespace OotD.Forms
             }
             catch (COMException loE)
             {
-                Logger.Error("Error initializing main view: {0}", loE);
+                _logger.Error("Error initializing main view: {0}", loE);
                 if ((uint)loE.ErrorCode == 0x80040154)
                 {
                     MessageBox.Show(this, Resources.Incorrect_bittedness_of_OotD, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -94,7 +94,7 @@ namespace OotD.Forms
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error initializing window.");
+                _logger.Error(ex, "Error initializing window.");
                 MessageBox.Show(this, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
@@ -108,7 +108,7 @@ namespace OotD.Forms
             }
             catch (Exception ex)
             {
-                Logger.Debug(ex, "Error setting date in header.");
+                _logger.Debug(ex, "Error setting date in header.");
             }
         }
 
@@ -193,7 +193,7 @@ namespace OotD.Forms
             {
                 // use default if there was a problem
                 Opacity = InstancePreferences.DefaultOpacity;
-                Logger.Error(ex, "Error setting opacity.");
+                _logger.Error(ex, "Error setting opacity.");
                 MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
@@ -215,7 +215,7 @@ namespace OotD.Forms
                 Top = InstancePreferences.DefaultLeftPosition;
                 Width = InstancePreferences.DefaultWidth;
                 Height = InstancePreferences.DefaultHeight;
-                Logger.Error(ex, "Error setting window position.");
+                _logger.Error(ex, "Error setting window position.");
                 MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
@@ -315,7 +315,7 @@ namespace OotD.Forms
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex, "Error setting MAPI folder.");
+                    _logger.Error(ex, "Error setting MAPI folder.");
                 }
             }
             else
@@ -516,7 +516,7 @@ namespace OotD.Forms
             catch (Exception ex)
             {
                 MessageBox.Show(Resources.ViewTypeNotSupported, Resources.ErrorCaption, MessageBoxButtons.OK);
-                Logger.Error(ex, "Unable to set Outlook folder.");
+                _logger.Error(ex, "Unable to set Outlook folder.");
             }
         }
 
@@ -526,7 +526,7 @@ namespace OotD.Forms
         /// <param name="defaultMessagePath"></param>
         private void ShowToolbarButtonsFor(string defaultMessagePath)
         {
-            Logger.Info($"Outlook folder path: {defaultMessagePath}");
+            _logger.Info($"Outlook folder path: {defaultMessagePath}");
             switch (defaultMessagePath)
             {
                 case "IPM.Appointment":
@@ -786,7 +786,7 @@ namespace OotD.Forms
                 catch (Exception ex)
                 {
                     // no big deal if we can't set the day, just ignore and go on.
-                    Logger.Warn(ex, "Unable to go to today on calendar.");
+                    _logger.Warn(ex, "Unable to go to today on calendar.");
                 }
             }
             _previousDate = DateTime.Now;
@@ -852,7 +852,7 @@ namespace OotD.Forms
 
         private void MainForm_MouseUp(object sender, MouseEventArgs e)
         {
-            // restore Outlook View Control visibily
+            // restore Outlook View Control visibly
             ViewControlHostPanel.Visible = true;
         }
 
@@ -861,28 +861,28 @@ namespace OotD.Forms
             if (GlobalPreferences.LockPosition)
                 return;
 
-            if (e.Location.X < ResizeBorderWidth && e.Location.Y < ResizeBorderWidth)
+            if (e.Location.X < _resizeBorderWidth && e.Location.Y < _resizeBorderWidth)
                 ResizeDir = ResizeDirection.TopLeft;
 
-            else if (e.Location.X < ResizeBorderWidth && e.Location.Y > Height - ResizeBorderWidth)
+            else if (e.Location.X < _resizeBorderWidth && e.Location.Y > Height - _resizeBorderWidth)
                 ResizeDir = ResizeDirection.BottomLeft;
 
-            else if (e.Location.X > Width - ResizeBorderWidth && e.Location.Y > Height - ResizeBorderWidth)
+            else if (e.Location.X > Width - _resizeBorderWidth && e.Location.Y > Height - _resizeBorderWidth)
                 ResizeDir = ResizeDirection.BottomRight;
 
-            else if (e.Location.X > Width - ResizeBorderWidth && e.Location.Y < ResizeBorderWidth)
+            else if (e.Location.X > Width - _resizeBorderWidth && e.Location.Y < _resizeBorderWidth)
                 ResizeDir = ResizeDirection.TopRight;
 
-            else if (e.Location.X < ResizeBorderWidth)
+            else if (e.Location.X < _resizeBorderWidth)
                 ResizeDir = ResizeDirection.Left;
 
-            else if (e.Location.X > Width - ResizeBorderWidth)
+            else if (e.Location.X > Width - _resizeBorderWidth)
                 ResizeDir = ResizeDirection.Right;
 
-            else if (e.Location.Y < ResizeBorderWidth)
+            else if (e.Location.Y < _resizeBorderWidth)
                 ResizeDir = ResizeDirection.Top;
 
-            else if (e.Location.Y > Height - ResizeBorderWidth)
+            else if (e.Location.Y > Height - _resizeBorderWidth)
                 ResizeDir = ResizeDirection.Bottom;
 
             else
