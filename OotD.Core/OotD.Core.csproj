@@ -97,24 +97,28 @@
     </Compile>
     <Compile Update="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\InputBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\InstanceManager.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\InstanceManager.Designer.cs">
       <DependentUpon>InstanceManager.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

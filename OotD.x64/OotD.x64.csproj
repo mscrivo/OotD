@@ -45,20 +45,28 @@
     <Compile Include="..\OotD.Core\Forms\AboutBox.cs" Link="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OotD.Core\Forms\AboutBox.Designer.cs" Link="Forms\AboutBox.Designer.cs" />
+    <Compile Include="..\OotD.Core\Forms\AboutBox.Designer.cs" Link="Forms\AboutBox.Designer.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="..\OotD.Core\Forms\InputBox.cs" Link="Forms\InputBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OotD.Core\Forms\InputBox.Designer.cs" Link="Forms\InputBox.Designer.cs" />
+    <Compile Include="..\OotD.Core\Forms\InputBox.Designer.cs" Link="Forms\InputBox.Designer.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="..\OotD.Core\Forms\InputBoxResult.cs" Link="Forms\InputBoxResult.cs" />
     <Compile Include="..\OotD.Core\Forms\InstanceManager.cs" Link="Forms\InstanceManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OotD.Core\Forms\InstanceManager.Designer.cs" Link="Forms\InstanceManager.Designer.cs" />
+    <Compile Include="..\OotD.Core\Forms\InstanceManager.Designer.cs" Link="Forms\InstanceManager.Designer.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="..\OotD.Core\Forms\MainForm.cs" Link="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OotD.Core\Forms\MainForm.Designer.cs" Link="Forms\MainForm.Designer.cs" />
+    <Compile Include="..\OotD.Core\Forms\MainForm.Designer.cs" Link="Forms\MainForm.Designer.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="..\OotD.Core\Options.cs" Link="Options.cs" />
     <Compile Include="..\OotD.Core\Preferences\GlobalPreferences.cs" Link="Preferences\GlobalPreferences.cs" />
     <Compile Include="..\OotD.Core\Preferences\InstancePreferences.cs" Link="Preferences\InstancePreferences.cs" />

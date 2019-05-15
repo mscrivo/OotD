@@ -88,7 +88,7 @@ namespace OotD
         private static string ValidateOutlookInstallation()
         {
             var outlookFolder = string.Empty;
-            double versionSubKey = 0;
+            double version = 0;
 
             // first make sure they have Office/Outlook 2000 (9.0) or higher installed by looking for 
             // the version subkeys in HKLM.
@@ -102,18 +102,18 @@ namespace OotD
                     {
                         Logger.Info($"Found {subKey} key");
 
-                        if (double.TryParse(subKey, NumberStyles.Float, new NumberFormatInfo(), out var version))
+                        if (double.TryParse(subKey, NumberStyles.Float, new NumberFormatInfo(), out var versionKey))
                         {
-                            if (version >= 11 || version > versionSubKey)
+                            if (version >= 11 || versionKey > version)
                             {
-                                versionSubKey = version;
+                                version = versionKey;
                             }
                         }
                     }
                 }
             }
 
-            if (versionSubKey <= 0)
+            if (version <= 0)
             {
                 Logger.Info("Could not find Office key.");
 
@@ -122,7 +122,7 @@ namespace OotD
                 return string.Empty;
             }
 
-            if (versionSubKey < 14)
+            if (version < 14)
             {
                 Logger.Debug("Outlook is not available or installed.");
                 MessageBox.Show(
@@ -132,7 +132,7 @@ namespace OotD
                 return string.Empty;
             }
 
-            Logger.Info($"Office version {versionSubKey} detected");
+            Logger.Info($"Office version {version} detected");
 
             // now check for the existence of the actual Outlook.exe.
             using (var key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
@@ -160,13 +160,35 @@ namespace OotD
                 return string.Empty;
             }
 
-            // now check for bitness
+            // now check for bitness, if we can't find it with the latest version, try finding it under the previous 
+            // version numbers.
+            string bitness = null;
+                
+            while (string.IsNullOrWhiteSpace(bitness) && version - 1 >= 14)
+            {
+                bitness = GetBitness(version);
+                if (string.IsNullOrWhiteSpace(bitness))
+                {
+                    Logger.Info($"Could not find bitness key for Outlook under subkey {version}.0, trying {version-1}.0");
+                    version--;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return bitness ?? "x86";
+        }
+
+        private static string GetBitness(double versionSubKey)
+        {
             var outlookKey = Registry.LocalMachine.OpenSubKey($"SOFTWARE\\Microsoft\\Office\\{versionSubKey}.0\\Outlook");
-            string bitness;
+            string bitness = null;
 
             if (outlookKey != null)
             {
-                bitness = (string)outlookKey.GetValue("Bitness");
+                bitness = (string) outlookKey.GetValue("Bitness");
             }
             else
             {
@@ -177,12 +199,7 @@ namespace OotD
 
                 if (outlookKey != null)
                 {
-                    bitness = (string)outlookKey.GetValue("Bitness");
-                }
-                else
-                {
-                    Logger.Info("Could not find bitness key, defaulting to x86");
-                    bitness = "x86";
+                    bitness = (string) outlookKey.GetValue("Bitness");
                 }
             }
 
@@ -190,7 +207,8 @@ namespace OotD
             {
                 Logger.Info($"Unable to find key SOFTWARE\\Wow6432Node\\Microsoft\\Office\\{versionSubKey}.0\\Outlook");
             }
-            else if (!string.IsNullOrWhiteSpace(bitness))
+
+            if (!string.IsNullOrWhiteSpace(bitness))
             {
                 Logger.Info($"Outlook Bitness is: {bitness}");
             }
