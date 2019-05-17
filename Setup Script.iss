@@ -48,10 +48,11 @@ Filename: "{app}\{#MyAppExeName}"; Parameters: "-s"; WorkingDir: "{app}"; Flags:
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser; Description: "{cm:LaunchProgram,{#MyAppName}}"
 
 [Tasks]
-Name: "installdotnet"; Description: "Download and Install Microsoft .NET Framework 4.7.2"; Check: NeedsDotNetFramework
+Name: "installdotnet"; Description: "Download and Install Microsoft .NET Core 3.0 SDK Preview 5"; Check: NeedsDoNetCore
 
 [Files]
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\netcoreapp3.0\Microsoft.Office.Interop.Outlook.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\MACTrackBarLib.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\MarkdownSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -61,18 +62,18 @@ Source: "OotD.Launcher\bin\Release\netcoreapp3.0\NLog.config"; DestDir: "{app}";
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OLXLib.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotD.Launcher.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotD.Launcher.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotD.Launcher.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotD.Launcher.deps.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotD.x64.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotD.x64.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotD.x64.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotD.x64.deps.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotD.x86.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotD.x86.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotD.x86.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotD.x86.deps.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\OotDScheduledTaskDefinition.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.0\System.Configuration.ConfigurationManager.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.0\System.Security.Cryptography.ProtectedData.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.0\System.Security.Permissions.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
@@ -95,28 +96,22 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-	dotnetURL = 'https://download.microsoft.com/download/0/5/C/05C1EC0E-D5EE-463B-BFE3-9311376A6809/NDP472-KB4054531-Web.exe';
+	dotnetURL = 'https://download.visualstudio.microsoft.com/download/pr/c2521385-1648-415f-8503-b1860b80d57b/5d571a80ed7ba1cb5a085d28c8a018bf/dotnet-sdk-3.0.100-preview5-011568-win-x64.exe';
 const
-  sFileName = '05C1EC0E-D5EE-463B-BFE3-9311376A6809/NDP472-KB4054531-Web.exe';
+  sFileName = 'dotnet-sdk-3.0.100-preview5-011568-win-x64.exe';
 
-function NeedsDotNetFramework(): Boolean;
+function NeedsDoNetCore(): Boolean;
 var
 	ReleaseVersion: Cardinal;
 	tempResult: Boolean;
 begin
 	tempResult:= True;
 
-	if RegKeyExists(HKLM,'Software\Microsoft\NET Framework Setup\NDP\v4\Full') then
-	begin
-		if RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', ReleaseVersion) then
-		begin
-      if (ReleaseVersion >= 461808) then
-      begin
-        tempResult := False;
-      end;
-		end;
-	end;
-
+  if DirExists(ExpandConstant('{userpf}\dotnet\shared\Microsoft.NETCore.App\3.0.0-preview5-27626-15')) then
+  begin
+    tempResult := False;
+  end;
+	
 	Result := tempResult;
 end;
 
@@ -148,7 +143,7 @@ begin
   begin
       if FileExists(ExpandConstant('{tmp}\$sFileName')) then 
       begin 
-        Exec(ExpandConstant('{tmp}\$sFileName'),'/passive /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
+        Exec(ExpandConstant('{tmp}\$sFileName'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
       end  
   end;
 end;
