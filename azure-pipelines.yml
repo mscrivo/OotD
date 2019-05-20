@@ -4,7 +4,7 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-name: 4.0.$(BuildID).$(Rev:.r)
+name: 4.0.$(BuildID)$(Rev:.r)
 
 variables:
   buildConfiguration: 'Release'
