@@ -36,7 +36,7 @@ steps:
   inputs:
     command: 'build'
     feedsToUse: 'select'
-    versioningScheme: 'off'
+    versioningScheme: 'byBuildNumber'
 
 - task: CmdLine@2
   inputs:
