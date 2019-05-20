@@ -11,8 +11,9 @@
     <Description>Places Microsoft Outlook Components on your Windows Desktop.</Description>
     <Copyright>Copyright 2006-2019 Michael Scrivo</Copyright>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>latest</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.0</Version>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>..\OotD.Core\app.manifest</ApplicationManifest>
@@ -21,9 +22,13 @@
     <ApplicationIcon>..\OotD.Core\Resources\Icons\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>

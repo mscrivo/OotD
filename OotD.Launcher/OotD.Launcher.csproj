@@ -10,6 +10,10 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <Description>Places Microsoft Outlook Components on your Windows Desktop.</Description>
     <Copyright>Copyright 2006-2019 Michael Scrivo</Copyright>
+    <ApplicationIcon>..\OotD.Core\Resources\Icons\AppIcon.ico</ApplicationIcon>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.0</Version>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <LangVersion>latest</LangVersion>
@@ -28,9 +32,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>..\OotD.Core\app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>..\OotD.Core\Resources\Icons\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\OotD.Core\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
