@@ -4,7 +4,12 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-name: 4.0.$(BuildID)
+variables:
+  Major: 3
+  Minor: 99
+  BuildConfiguration: 'Release'
+
+name: $(Major).$(Minor).$(BuildID)
 
 steps:
 - checkout: self
@@ -28,7 +33,7 @@ steps:
     command: 'build'
     feedsToUse: 'select'
     versioningScheme: byBuildNumber
-    arguments: '--configuration Release /p:AssemblyVersion:4.0.$(Build.BuildID).0'
+    arguments: '--configuration $(BuildConfiguration) /p:version:$(Build.BuildNumber)'
     
 - task: CmdLine@2
   inputs:
