@@ -18,12 +18,14 @@ variables:
 steps:
 - checkout: self
   submodules: true
-- task: NuGetToolInstaller@0
 
-- task: NuGetCommand@2
+- task: PowerShell@2
   inputs:
-    restoreSolution: '$(solution)'
-
+    targetType: 'inline'
+    script: '$installerPath = "$($env:USERPROFILE)\\InnoDownloader.exe;"
+      (New-Object Net.WebClient).DownloadFile(''https://drive.google.com/uc?export=download&id=0Bzw1xBVt0mokWHlicktGUVNXeTA'', $installerPath)
+      cmd /c start /wait $installerPath /verysilent'
+      
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
@@ -36,13 +38,6 @@ steps:
     feedsToUse: 'select'
     versioningScheme: 'off'
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: '$installerPath = "$($env:USERPROFILE)\\InnoDownloader.exe"
-      (New-Object Net.WebClient).DownloadFile(''https://drive.google.com/uc?export=download&id=0Bzw1xBVt0mokWHlicktGUVNXeTA'', $installerPath)
-      cmd /c start /wait $installerPath /verysilent'
-      
 - task: CmdLine@2
   inputs:
     script: 'iscc /Q "Setup Script.iss"'
