@@ -23,7 +23,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: '$installerPath = "$($env:USERPROFILE)\\InnoDownloader.exe;"
-      (New-Object Net.WebClient).DownloadFile(''https://drive.google.com/uc?export=download&id=0Bzw1xBVt0mokWHlicktGUVNXeTA'', $installerPath)
+      (New-Object Net.WebClient).DownloadFile(''https://drive.google.com/uc?export=download&id=0Bzw1xBVt0mokWHlicktGUVNXeTA'', $installerPath);
       cmd /c start /wait $installerPath /verysilent'
       
 - task: UseDotNet@2
