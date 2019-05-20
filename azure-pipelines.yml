@@ -22,7 +22,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '{dotNetCoreSDKVersion}'
+    version: '${dotNetCoreSDKVersion}'
     includePreviewVersions: true
     
 - task: DotNetCoreCLI@2
@@ -30,7 +30,7 @@ steps:
     command: 'build'
     feedsToUse: 'select'
     versioningScheme: 'byBuildNumber'
-    arguments: '--configuration {buildConfiguration}'
+    arguments: '--configuration ${buildConfiguration}'
     
 - task: CmdLine@2
   inputs:
