@@ -32,10 +32,11 @@ steps:
     feedsToUse: 'select'
     versioningScheme: 'byBuildNumber'
 
-- task: DownloadPipelineArtifact@1
+- task: PublishBuildArtifacts@1
   inputs:
-    buildType: 'current'
-    targetPath: '$(System.ArtifactsDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'artifact'
+    publishLocation: 'Container'
     
 - task: CmdLine@2
   inputs:
