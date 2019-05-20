@@ -33,7 +33,7 @@ steps:
     command: 'build'
     feedsToUse: 'select'
     versioningScheme: byBuildNumber
-    arguments: '--configuration $(BuildConfiguration) /p:version:$(Build.BuildNumber)'
+    arguments: '--configuration $(BuildConfiguration) /p:Version=$(Build.BuildNumber)'
     
 - task: CmdLine@2
   inputs:
