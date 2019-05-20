@@ -29,7 +29,7 @@ steps:
   inputs:
     command: 'build'
     feedsToUse: 'select'
-    versioningScheme: 'byBuildNumber'
+    versioningScheme: byBuildNumber
     arguments: '--configuration ${buildConfiguration}'
     
 - task: CmdLine@2
