@@ -5,9 +5,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  dotNetCoreSDKVersion: '3.0.100-preview5-011568'
 
 steps:
 - checkout: self
@@ -23,7 +22,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '3.0.100-preview5-011568'
+    version: '{dotNetCoreSDKVersion}'
     includePreviewVersions: true
     
 - task: DotNetCoreCLI@2
@@ -31,7 +30,7 @@ steps:
     command: 'build'
     feedsToUse: 'select'
     versioningScheme: 'byBuildNumber'
-    arguments: '--configuration Release'
+    arguments: '--configuration {buildConfiguration}'
     
 - task: CmdLine@2
   inputs:
