@@ -28,7 +28,7 @@ steps:
     command: 'build'
     feedsToUse: 'select'
     versioningScheme: byBuildNumber
-    arguments: '--configuration Release /p:AssemblyVersion:4.0.$(Build.BuildID)'
+    arguments: '--configuration Release /p:AssemblyVersion:4.0.$(Build.BuildID).0'
     
 - task: CmdLine@2
   inputs:
