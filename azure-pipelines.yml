@@ -4,6 +4,8 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+name: 4.0.$(BuildID).$(Rev:.r)
+
 variables:
   buildConfiguration: 'Release'
   dotNetCoreSDKVersion: '3.0.100-preview5-011568'
