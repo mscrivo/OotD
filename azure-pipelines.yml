@@ -6,10 +6,6 @@ pool:
 
 name: 4.0.$(BuildID)$(Rev:.r)
 
-variables:
-  buildConfiguration: 'Release'
-  dotNetCoreSDKVersion: '3.0.100-preview5-011568'
-
 steps:
 - checkout: self
   submodules: true
@@ -24,7 +20,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '${dotNetCoreSDKVersion}'
+    version: '3.0.100-preview5-011568'
     includePreviewVersions: true
     
 - task: DotNetCoreCLI@2
@@ -32,7 +28,7 @@ steps:
     command: 'build'
     feedsToUse: 'select'
     versioningScheme: byBuildNumber
-    arguments: '--configuration ${buildConfiguration}'
+    arguments: '--configuration Release'
     
 - task: CmdLine@2
   inputs:
