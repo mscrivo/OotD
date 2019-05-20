@@ -31,6 +31,7 @@ steps:
     command: 'build'
     feedsToUse: 'select'
     versioningScheme: 'byBuildNumber'
+    arguments: '--configuration Release'
 
 - task: PublishBuildArtifacts@1
   inputs:
