@@ -32,13 +32,13 @@ steps:
     feedsToUse: 'select'
     versioningScheme: 'byBuildNumber'
     arguments: '--configuration Release'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'artifact'
-    publishLocation: 'Container'
     
 - task: CmdLine@2
   inputs:
     script: 'iscc /Q "Setup Script.iss"'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'ServerStaging'
+    ArtifactName: 'artifact'
+    publishLocation: 'Container'    
