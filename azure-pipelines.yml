@@ -15,6 +15,8 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- checkout: self
+  submodules: true
 - task: NuGetToolInstaller@0
 
 - task: NuGetCommand@2
