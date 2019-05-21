@@ -32,15 +32,15 @@ steps:
   inputs:
      solution: '**\*.sln'
      vsVersion: '16.0'
-     platform: 'AnyCPU'
+     platform: 'Any CPU'
      configuration: 'Release'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    feedsToUse: 'select'
-    versioningScheme: byBuildNumber
-    arguments: '--configuration $(BuildConfiguration) /p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber)'
+#- task: DotNetCoreCLI@2
+#  inputs:
+#    command: 'build'
+#    feedsToUse: 'select'
+#    versioningScheme: byBuildNumber
+#    arguments: '--configuration $(BuildConfiguration) /p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber)'
 
 - task: CmdLine@2
   inputs:
