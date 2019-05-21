@@ -25,23 +25,15 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '3.0.100-preview5-011568'    
+    version: '3.0.100-preview5-011568'
     includePreviewVersions: true
     
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
   inputs:
-     solution: '**\*.sln'
-     vsVersion: '16.0'
-     platform: 'Any CPU'
-     configuration: 'Release'
-     msbuildArchitecture: 'x64'
-
-#- task: DotNetCoreCLI@2
-#  inputs:
-#    command: 'build'
-#    feedsToUse: 'select'
-#    versioningScheme: byBuildNumber
-#    arguments: '--configuration $(BuildConfiguration) /p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber)'
+    command: 'build'
+    feedsToUse: 'select'
+    versioningScheme: byBuildNumber
+    arguments: '--configuration $(BuildConfiguration) /p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber)'
 
 - task: CmdLine@2
   inputs:
