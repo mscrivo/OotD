@@ -28,19 +28,19 @@ steps:
     version: '3.0.100-preview5-011568'
     includePreviewVersions: true
     
+- task: VSBuild@1
+  inputs:
+     solution: '**\*.sln'
+     vsVersion: '16.0'
+     platform: 'AnyCPU'
+     configuration: 'Release'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     feedsToUse: 'select'
     versioningScheme: byBuildNumber
     arguments: '--configuration $(BuildConfiguration) /p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber)'
-
-- task: VSBuild@1
-   inputs:
-     solution: '**\*.sln'
-     vsVersion: '16.0'
-     platform: 'AnyCPU'
-     configuration: 'Release'
 
 - task: CmdLine@2
   inputs:
