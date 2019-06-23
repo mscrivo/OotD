@@ -28,18 +28,18 @@ steps:
     version: '3.0.100-preview6-012264'
     includePreviewVersions: true
     
-- task: VSBuild@1
-  inputs:
-    solution: '**\*.sln'
-    msbuildArgs: '-restore'
-    configuration: 'Release'
-    
-# - task: DotNetCoreCLI@2
+# - task: VSBuild@1
 #   inputs:
-#     command: 'build'
-#     feedsToUse: 'select'
-#     versioningScheme: byBuildNumber
-#     arguments: '--configuration $(BuildConfiguration) /p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber)'
+#     solution: '**\*.sln'
+#     msbuildArgs: '-restore'
+#     configuration: 'Release'
+    
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    feedsToUse: 'select'
+    versioningScheme: byBuildNumber
+    arguments: '--configuration $(BuildConfiguration) /p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber)'
 
 - task: CmdLine@2
   inputs:
