@@ -32,7 +32,7 @@ steps:
   inputs:
     solution: '**/*.sln'
     configuration: '$(BuildConfiguration)'
-    msbuildArguments: '/p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber)'
+    msbuildArguments: '-restore /p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber)'
     restoreNugetPackages: true
     
 # - task: DotNetCoreCLI@2
