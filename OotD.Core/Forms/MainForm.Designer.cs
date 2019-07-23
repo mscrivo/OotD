@@ -458,9 +458,7 @@ namespace OotD.Forms
             // 
             // ViewControlHostPanel
             // 
-            this.ViewControlHostPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ViewControlHostPanel.Dock = DockStyle.Fill;
             this.ViewControlHostPanel.Controls.Add(this.OutlookViewControl);
             this.ViewControlHostPanel.Location = new System.Drawing.Point(4, 28);
             this.ViewControlHostPanel.Margin = new System.Windows.Forms.Padding(0);
