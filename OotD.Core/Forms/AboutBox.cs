@@ -18,10 +18,10 @@ namespace OotD.Forms
             //  Change assembly information settings for your application through either:
             //  - Project->Properties->Application->Assembly Information
             //  - AssemblyInfo.cs
-            Text = string.Format(CultureInfo.CurrentCulture, "About {0}", AssemblyTitle);
-            labelProductName.Text = AssemblyProduct;
-            labelVersion.Text = string.Format(CultureInfo.CurrentCulture, "Version {0}", AssemblyVersion);
-            labelCopyright.Text = AssemblyCopyright;
+            Text = string.Format(CultureInfo.CurrentCulture, "About {0}", Title);
+            labelProductName.Text = Product;
+            labelVersion.Text = string.Format(CultureInfo.CurrentCulture, "Version {0}", Version);
+            labelCopyright.Text = CopyRight;
         }
 
         public sealed override string Text
@@ -32,18 +32,18 @@ namespace OotD.Forms
 
         #region Assembly Attribute Accessors
 
-        private static string AssemblyTitle
+        private static string Title
         {
             get
             {
                 // Get all Title attributes on this assembly
-                object[] attributes =
-                    Assembly.GetExecutingAssembly().GetCustomAttributes(typeof (AssemblyTitleAttribute), false);
+                var attributes =
+                    Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
                 // If there is at least one Title attribute
                 if (attributes.Length > 0)
                 {
                     // Select the first one
-                    var titleAttribute = (AssemblyTitleAttribute) attributes[0];
+                    var titleAttribute = (AssemblyTitleAttribute)attributes[0];
                     // If it is not an empty string, return it
                     if (!string.IsNullOrEmpty(titleAttribute.Title))
                         return titleAttribute.Title;
@@ -53,35 +53,43 @@ namespace OotD.Forms
             }
         }
 
-        private static string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        private static string Version
+        {
+            get
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+                return fileVersionInfo.ProductVersion;
+            }
+        }
 
-        private static string AssemblyProduct
+        private static string Product
         {
             get
             {
                 // Get all Product attributes on this assembly
-                object[] attributes =
-                    Assembly.GetExecutingAssembly().GetCustomAttributes(typeof (AssemblyProductAttribute), false);
+                var attributes =
+                    Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
                 // If there aren't any Product attributes, return an empty string
                 if (attributes.Length == 0)
                     return "";
                 // If there is a Product attribute, return its value
-                return ((AssemblyProductAttribute) attributes[0]).Product;
+                return ((AssemblyProductAttribute)attributes[0]).Product;
             }
         }
 
-        private static string AssemblyCopyright
+        private static string CopyRight
         {
             get
             {
                 // Get all Copyright attributes on this assembly
-                object[] attributes =
-                    Assembly.GetExecutingAssembly().GetCustomAttributes(typeof (AssemblyCopyrightAttribute), false);
+                var attributes =
+                    Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
                 // If there aren't any Copyright attributes, return an empty string
                 if (attributes.Length == 0)
                     return "";
                 // If there is a Copyright attribute, return its value
-                return ((AssemblyCopyrightAttribute) attributes[0]).Copyright;
+                return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
             }
         }
 
