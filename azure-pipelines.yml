@@ -32,7 +32,7 @@ steps:
     command: 'build'
     feedsToUse: 'select'
     versioningScheme: byBuildNumber
-    arguments: '--configuration $(BuildConfiguration) -p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber);AssemblyVersion==$(Build.BuildNumber);'
+    arguments: '--configuration $(BuildConfiguration) -p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber);AssemblyVersion=$(Build.BuildNumber);'
 
 - task: CmdLine@2
   inputs:
