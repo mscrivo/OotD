@@ -1,4 +1,4 @@
-#include <idp.iss>
+#include "Inno Plugins\idp.iss"
 
 #define MyAppName "Outlook on the Desktop"
 #define MyAppVersion GetFileVersion('OotD.Launcher\bin\Release\netcoreapp3.0\OotD.Launcher.exe')
@@ -48,7 +48,7 @@ Filename: "{app}\{#MyAppExeName}"; Parameters: "-s"; WorkingDir: "{app}"; Flags:
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser; Description: "{cm:LaunchProgram,{#MyAppName}}"
 
 [Tasks]
-Name: "installdotnet"; Description: "Download and Install Microsoft .NET Core 3.0 SDK Preview 5"; Check: NeedsDoNetCore
+Name: "installdotnet"; Description: "Download and Install Microsoft .NET Core 3.0 SDK Preview 7"; Check: NeedsDoNetCore
 
 [Files]
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -96,9 +96,9 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-	dotnetURL = 'https://download.visualstudio.microsoft.com/download/pr/c2521385-1648-415f-8503-b1860b80d57b/5d571a80ed7ba1cb5a085d28c8a018bf/dotnet-sdk-3.0.100-preview5-011568-win-x64.exe';
+	dotnetURL = 'https://download.visualstudio.microsoft.com/download/pr/a65e3536-ad76-4808-9920-83702aeed082/3c6ab9eaa0bc99df442be91e7b7950ff/dotnet-sdk-3.0.100-preview7-012821-win-x64.exe';
 const
-  sFileName = 'dotnet-sdk-3.0.100-preview5-011568-win-x64.exe';
+  sFileName = 'dotnet-sdk-3.0.100-preview7-012821-win-x64.exe';
 
 function NeedsDoNetCore(): Boolean;
 var
@@ -107,7 +107,7 @@ var
 begin
 	tempResult:= True;
 
-  if DirExists(ExpandConstant('{userpf}\dotnet\shared\Microsoft.NETCore.App\3.0.0-preview5-27626-15')) then
+  if DirExists(ExpandConstant('{userpf}\dotnet\shared\Microsoft.NETCore.App\3.0.0-preview7-27912-14')) then
   begin
     tempResult := False;
   end;
