@@ -1,0 +1,45 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  Major: 3
+  Minor: 99
+  BuildConfiguration: 'Release'
+
+name: $(Major).$(Minor).$(BuildID)
+
+steps:
+- checkout: self
+  submodules: true
+      
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.0.100-preview7-012821'
+    includePreviewVersions: true
+    
+# - task: VSBuild@1
+#   inputs:
+#     solution: '**\*.sln'
+#     msbuildArgs: '-restore'
+#     configuration: 'Release'
+    
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    feedsToUse: 'select'
+    versioningScheme: byBuildNumber
+    arguments: '--configuration $(BuildConfiguration) -p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber)'
+
+- task: CmdLine@2
+  inputs:
+    script: 'iscc /Q "Setup Script.iss"'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'ServerStaging'
+    ArtifactName: 'artifact'
+    publishLocation: 'Container'    
