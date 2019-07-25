@@ -47,9 +47,6 @@ Name: eng; MessagesFile: compiler:Default.isl
 Filename: "{app}\{#MyAppExeName}"; Parameters: "-s"; WorkingDir: "{app}"; Flags: postinstall waituntilterminated runasoriginaluser runhidden; Description: "Run on Startup"
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser; Description: "{cm:LaunchProgram,{#MyAppName}}"
 
-[Tasks]
-Name: "installdotnet"; Description: "Download and Install Microsoft .NET Core 3.0 SDK Preview 7"; Check: NeedsDoNetCore
-
 [Files]
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\netcoreapp3.0\Microsoft.Office.Interop.Outlook.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -96,24 +93,9 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-	dotnetURL = 'https://download.visualstudio.microsoft.com/download/pr/a65e3536-ad76-4808-9920-83702aeed082/3c6ab9eaa0bc99df442be91e7b7950ff/dotnet-sdk-3.0.100-preview7-012821-win-x64.exe';
+	dotnetURL = 'https://download.visualstudio.microsoft.com/download/pr/bf79e503-defd-4034-a5d4-a5c055f5d589/7383e4dac92dc0cc7f1075321d6394c6/dotnet-hosting-3.0.0-preview7.19365.7-win.exe';
 const
-  sFileName = 'dotnet-sdk-3.0.100-preview7-012821-win-x64.exe';
-
-function NeedsDoNetCore(): Boolean;
-var
-	ReleaseVersion: Cardinal;
-	tempResult: Boolean;
-begin
-	tempResult:= True;
-
-  if DirExists(ExpandConstant('{userpf}\dotnet\shared\Microsoft.NETCore.App\3.0.0-preview7-27912-14')) then
-  begin
-    tempResult := False;
-  end;
-	
-	Result := tempResult;
-end;
+  sFileName = 'dotnet-hosting-3.0.0-preview7.19365.7-win.exe';
 
 function NextButtonClick(CurPage: Integer): Boolean;
 var
@@ -131,10 +113,7 @@ begin
 
     idpClearFiles;
 
-		if IsTaskSelected('installdotnet') then
-		begin
-      idpAddFile(dotnetURL, ExpandConstant('{tmp}\$sFileName'));
-		end;
+    idpAddFile(dotnetURL, ExpandConstant('{tmp}\$sFileName'));
 
     idpDownloadAfter(wpSelectTasks);
 	end;
