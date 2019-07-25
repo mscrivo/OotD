@@ -93,9 +93,9 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-	dotnetURL = 'https://download.visualstudio.microsoft.com/download/pr/bf79e503-defd-4034-a5d4-a5c055f5d589/7383e4dac92dc0cc7f1075321d6394c6/dotnet-hosting-3.0.0-preview7.19365.7-win.exe';
+	dotnetCore3HostingBundleUrl = 'https://download.visualstudio.microsoft.com/download/pr/bf79e503-defd-4034-a5d4-a5c055f5d589/7383e4dac92dc0cc7f1075321d6394c6/dotnet-hosting-3.0.0-preview7.19365.7-win.exe';
 const
-  sFileName = 'dotnet-hosting-3.0.0-preview7.19365.7-win.exe';
+  dotnetCore3HostingBundleFilename = 'dotnet-hosting-3.0.0-preview7.19365.7-win.exe';
 
 function NextButtonClick(CurPage: Integer): Boolean;
 var
@@ -108,23 +108,22 @@ begin
 	if CurPage = wpSelectTasks then 
   begin
 		hWnd := StrToInt(ExpandConstant('{wizardhwnd}'));
-
-		sTasks := WizardSelectedTasks(false);
-
-    idpClearFiles;
-
-    idpAddFile(dotnetURL, ExpandConstant('{tmp}\$sFileName'));
-
-    idpDownloadAfter(wpSelectTasks);
 	end;
 
   if CurPage = wpReady then 
   begin
-      if FileExists(ExpandConstant('{tmp}\$sFileName')) then 
+      if FileExists(ExpandConstant('{tmp}\$dotnetCore3HostingBundleFilename')) then 
       begin 
-        Exec(ExpandConstant('{tmp}\$sFileName'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
+        Exec(ExpandConstant('{tmp}\$dotnetCore3HostingBundleFilename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
       end  
   end;
+end;
+
+procedure InitializeWizard;
+begin
+  idpAddFile(dotnetCore3HostingBundleUrl, ExpandConstant('{tmp}\$dotnetCore3HostingBundleFilename'));
+
+  idpDownloadAfter(wpReady);
 end;
 
 procedure TaskKill(FileName: String);
