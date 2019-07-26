@@ -97,33 +97,21 @@ const
 const
   dotnetCore3HostingBundleFilename = 'dotnet-hosting-3.0.0-preview7.19365.7-win.exe';
 
-function NextButtonClick(CurPage: Integer): Boolean;
-var
-	hWnd: Integer;
-	sTasks: String;
-	nCode: Integer;
-begin
-	Result := true;
-
-	if CurPage = wpSelectTasks then 
-  begin
-		hWnd := StrToInt(ExpandConstant('{wizardhwnd}'));
-	end;
-
-  if CurPage = wpReady then 
-  begin
-      if FileExists(ExpandConstant('{tmp}\$dotnetCore3HostingBundleFilename')) then 
-      begin 
-        Exec(ExpandConstant('{tmp}\$dotnetCore3HostingBundleFilename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
-      end  
-  end;
-end;
-
 procedure InitializeWizard;
 begin
   idpAddFile(dotnetCore3HostingBundleUrl, ExpandConstant('{tmp}\$dotnetCore3HostingBundleFilename'));
 
   idpDownloadAfter(wpReady);
+end;
+
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+  nCode: Integer;
+begin
+    if FileExists(ExpandConstant('{tmp}\$dotnetCore3HostingBundleFilename')) then 
+    begin 
+      Exec(ExpandConstant('{tmp}\$dotnetCore3HostingBundleFilename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
+    end  
 end;
 
 procedure TaskKill(FileName: String);
