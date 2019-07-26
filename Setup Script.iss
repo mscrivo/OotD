@@ -109,14 +109,8 @@ function PrepareToInstall(var NeedsRestart: Boolean): String;
 var
   nCode: Integer;
 begin
-    if FileExists(ExpandConstant('{tmp}\$dotnetCore3x64Filename')) then 
-    begin 
-      Exec(ExpandConstant('{tmp}\$dotnetCore3x64Filename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
-    end  
-    if FileExists(ExpandConstant('{tmp}\$dotnetCore3x86Filename')) then 
-    begin 
-      Exec(ExpandConstant('{tmp}\$dotnetCore3x86Filename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
-    end  
+  Exec(ExpandConstant('{tmp}\$dotnetCore3x64Filename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode);
+  Exec(ExpandConstant('{tmp}\$dotnetCore3x86Filename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode);
 end;
 
 procedure TaskKill(FileName: String);
