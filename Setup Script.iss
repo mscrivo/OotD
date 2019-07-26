@@ -93,14 +93,15 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-	dotnetCore3HostingBundleUrl = 'https://download.visualstudio.microsoft.com/download/pr/bf79e503-defd-4034-a5d4-a5c055f5d589/7383e4dac92dc0cc7f1075321d6394c6/dotnet-hosting-3.0.0-preview7.19365.7-win.exe';
-const
-  dotnetCore3HostingBundleFilename = 'dotnet-hosting-3.0.0-preview7.19365.7-win.exe';
+	dotnetCore3x64Url = 'https://download.visualstudio.microsoft.com/download/pr/9ef148e5-e1e2-46a5-a0bf-c556cc999204/d0e0882b1fb57b7fcf850e80ada3df4f/dotnet-runtime-3.0.0-preview7-27912-14-win-x64.exe';
+  dotnetCore3x64Filename = 'dotnet-runtime-3.0.0-preview7-27912-14-win-x64.exe';
+	dotnetCore3x86Url = 'https://download.visualstudio.microsoft.com/download/pr/5dd5f4db-81b6-42d0-9a9d-b6457ef231b8/68800a8d75cc2dc92b0816b4acdeee33/dotnet-runtime-3.0.0-preview7-27912-14-win-x86.exe';
+  dotnetCore3x86Filename = 'dotnet-runtime-3.0.0-preview7-27912-14-win-x86.exe';
 
 procedure InitializeWizard;
 begin
-  idpAddFile(dotnetCore3HostingBundleUrl, ExpandConstant('{tmp}\$dotnetCore3HostingBundleFilename'));
-
+  idpAddFile(dotnetCore3x64Url, ExpandConstant('{tmp}\$dotnetCore3x64Filename'));
+  idpAddFile(dotnetCore3x86Url, ExpandConstant('{tmp}\$dotnetCore3x86Filename'));
   idpDownloadAfter(wpReady);
 end;
 
@@ -108,9 +109,13 @@ function PrepareToInstall(var NeedsRestart: Boolean): String;
 var
   nCode: Integer;
 begin
-    if FileExists(ExpandConstant('{tmp}\$dotnetCore3HostingBundleFilename')) then 
+    if FileExists(ExpandConstant('{tmp}\$dotnetCore3x64Filename')) then 
     begin 
-      Exec(ExpandConstant('{tmp}\$dotnetCore3HostingBundleFilename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
+      Exec(ExpandConstant('{tmp}\$dotnetCore3x64Filename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
+    end  
+    if FileExists(ExpandConstant('{tmp}\$dotnetCore3x86Filename')) then 
+    begin 
+      Exec(ExpandConstant('{tmp}\$dotnetCore3x86Filename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode)
     end  
 end;
 
