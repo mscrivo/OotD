@@ -50,10 +50,8 @@ namespace OotD.Preferences
             }
             set
             {
-                using (var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
-                {
-                    key?.SetValue("LockPosition", value);
-                }
+                using var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
+                key?.SetValue("LockPosition", value);
             }
         }
 

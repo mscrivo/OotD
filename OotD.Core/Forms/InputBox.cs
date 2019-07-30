@@ -41,24 +41,24 @@ namespace OotD.Forms
         /// <returns></returns>
         public static InputBoxResult Show(Form owner, string instructions, string caption, string defaultValue, InputBoxValidatingEventHandler validator)
         {
-            using (var form = new InputBox())
+            using var form = new InputBox
             {
-                form.Owner = owner;
-                form.PromptLabel.Text = instructions;
-                form.Text = caption;
-                form.InputTextBox.Text = defaultValue;
-                form.Validator = validator;
+                Owner = owner
+            };
+            form.PromptLabel.Text = instructions;
+            form.Text = caption;
+            form.InputTextBox.Text = defaultValue;
+            form.Validator = validator;
 
-                var result = form.ShowDialog();
+            var result = form.ShowDialog();
 
-                var inputBoxResult = new InputBoxResult();
-                if (result == DialogResult.OK)
-                {
-                    inputBoxResult.Text = form.InputTextBox.Text;
-                    inputBoxResult.Ok = true;
-                }
-                return inputBoxResult;
+            var inputBoxResult = new InputBoxResult();
+            if (result == DialogResult.OK)
+            {
+                inputBoxResult.Text = form.InputTextBox.Text;
+                inputBoxResult.Ok = true;
             }
+            return inputBoxResult;
         }
 
         private void InputTextBox_TextChanged(object sender, EventArgs e)

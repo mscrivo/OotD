@@ -1,4 +1,4 @@
-namespace OotD.Enums
+namespace OotD
 {
     public enum CurrentCalendarView
     {

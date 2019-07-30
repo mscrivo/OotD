@@ -9,7 +9,6 @@ using System.Xml.Linq;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using NLog;
-using OotD.Enums;
 using OotD.Events;
 using OotD.Preferences;
 using OotD.Properties;
@@ -818,17 +817,15 @@ namespace OotD.Forms
             var result = InputBox.Show(this, "", "Rename Instance", InstanceName, InputBox_Validating);
             if (!result.Ok) return;
 
-            using (var parentKey = Registry.CurrentUser.OpenSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName, true))
-            {
-                if (parentKey == null) return;
+            using var parentKey = Registry.CurrentUser.OpenSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName, true);
+            if (parentKey == null) return;
 
-                RegistryHelper.RenameSubKey(parentKey, InstanceName, result.Text);
-                string oldInstanceName = InstanceName;
-                InstanceName = result.Text;
-                Preferences = new InstancePreferences(InstanceName);
+            RegistryHelper.RenameSubKey(parentKey, InstanceName, result.Text);
+            string oldInstanceName = InstanceName;
+            InstanceName = result.Text;
+            Preferences = new InstancePreferences(InstanceName);
 
-                OnInstanceRenamed(this, new InstanceRenamedEventArgs(oldInstanceName, InstanceName));
-            }
+            OnInstanceRenamed(this, new InstanceRenamedEventArgs(oldInstanceName, InstanceName));
         }
 
         private static void InputBox_Validating(object sender, InputBoxValidatingEventArgs e)

@@ -18,14 +18,12 @@ namespace OotD.Preferences
         {
             try
             {
-                using (var ts = new TaskService())
-                {
-                    logger.Info($"Creating {OotDSchedTaskDefinitionName} Scheduled Task");
-                    var td = ts.NewTaskFromFile(OotDSchedTaskDefinitionXMLPath);
-                    var logonTrigger = (LogonTrigger)td.Triggers[0];
-                    logonTrigger.UserId = Environment.UserName;
-                    ts.RootFolder.RegisterTaskDefinition(OotDSchedTaskDefinitionName, td);
-                }
+                using var ts = new TaskService();
+                logger.Info($"Creating {OotDSchedTaskDefinitionName} Scheduled Task");
+                var td = ts.NewTaskFromFile(OotDSchedTaskDefinitionXMLPath);
+                var logonTrigger = (LogonTrigger)td.Triggers[0];
+                logonTrigger.UserId = Environment.UserName;
+                ts.RootFolder.RegisterTaskDefinition(OotDSchedTaskDefinitionName, td);
             }
             catch (Exception e)
             {
