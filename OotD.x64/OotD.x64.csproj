@@ -259,10 +259,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.5.0" />
-    <PackageReference Include="NLog" Version="4.6.5" />
-    <PackageReference Include="NLog.Config" Version="4.6.5" />
-    <PackageReference Include="NLog.Schema" Version="4.6.5" />
-    <PackageReference Include="TaskScheduler" Version="2.8.12" />
+    <PackageReference Include="CommandLineParser" Version="2.6.0" />
+    <PackageReference Include="NLog" Version="4.6.6" />
+    <PackageReference Include="NLog.Config" Version="4.6.6" />
+    <PackageReference Include="NLog.Schema" Version="4.6.6" />
+    <PackageReference Include="TaskScheduler" Version="2.8.15" />
   </ItemGroup>
 </Project>
