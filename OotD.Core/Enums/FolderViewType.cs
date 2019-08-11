@@ -1,4 +1,4 @@
-namespace OotD
+namespace OotD.Enums
 {
     /// <summary>
     /// Standard Outlook folder types. 

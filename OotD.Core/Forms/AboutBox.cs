@@ -18,9 +18,9 @@ namespace OotD.Forms
             //  Change assembly information settings for your application through either:
             //  - Project->Properties->Application->Assembly Information
             //  - AssemblyInfo.cs
-            Text = string.Format(CultureInfo.CurrentCulture, "About {0}", Title);
+            Text = $"About {Title}";
             labelProductName.Text = Product;
-            labelVersion.Text = string.Format(CultureInfo.CurrentCulture, "Version {0}", Version);
+            labelVersion.Text = $"Version {Version}";
             labelCopyright.Text = CopyRight;
         }
 

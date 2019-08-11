@@ -43,12 +43,12 @@ namespace OotD.Forms
         {
             using var form = new InputBox
             {
-                Owner = owner
+                Owner = owner,
+                PromptLabel = {Text = instructions},
+                Text = caption,
+                InputTextBox = {Text = defaultValue},
+                Validator = validator
             };
-            form.PromptLabel.Text = instructions;
-            form.Text = caption;
-            form.InputTextBox.Text = defaultValue;
-            form.Validator = validator;
 
             var result = form.ShowDialog();
 

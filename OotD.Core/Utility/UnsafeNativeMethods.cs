@@ -161,7 +161,7 @@ namespace OotD.Utility
             Last
         }
 
-        public static Boolean Is64Bit()
+        public static bool Is64Bit()
         {
             return Marshal.SizeOf(typeof(IntPtr)) == 8;
         }

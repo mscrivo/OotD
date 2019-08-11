@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using NLog;
+using OotD.Enums;
 using OotD.Events;
 using OotD.Preferences;
 using OotD.Properties;
@@ -1144,35 +1145,46 @@ namespace OotD.Forms
         /// <param name="m"></param>
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == UnsafeNativeMethods.WM_PARENTNOTIFY)
+            switch (m.Msg)
             {
-                if (m.WParam.ToInt32() == UnsafeNativeMethods.WM_RBUTTONDOWN)
+                case UnsafeNativeMethods.WM_PARENTNOTIFY:
                 {
-                    _outlookContextMenuActivated = true;
-                    UnsafeNativeMethods.SendWindowToTop(this);
-                    WindowMessageTimer.Start();
-                    m.Result = IntPtr.Zero;
+                    if (m.WParam.ToInt32() == UnsafeNativeMethods.WM_RBUTTONDOWN)
+                    {
+                        _outlookContextMenuActivated = true;
+                        UnsafeNativeMethods.SendWindowToTop(this);
+                        WindowMessageTimer.Start();
+                        m.Result = IntPtr.Zero;
+                    }
+
+                    break;
                 }
-            }
-            else if (m.Msg == UnsafeNativeMethods.WM_NCACTIVATE)
-            {
-                if (m.WParam.ToInt32() == 1 && _outlookContextMenuActivated && !WindowMessageTimer.Enabled)
+                case UnsafeNativeMethods.WM_NCACTIVATE:
                 {
-                    _outlookContextMenuActivated = false;
+                    if (m.WParam.ToInt32() == 1 && _outlookContextMenuActivated && !WindowMessageTimer.Enabled)
+                    {
+                        _outlookContextMenuActivated = false;
+                        UnsafeNativeMethods.SendWindowToBack(this);
+                        m.Result = IntPtr.Zero;
+                    }
+
+                    break;
+                }
+                case UnsafeNativeMethods.WM_WINDOWPOSCHANGING when !_outlookContextMenuActivated && !Startup.UpdateDetected && !_movingOrResizing:
+                {
+                    var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
+                    mwp.flags = mwp.flags | UnsafeNativeMethods.SWP_NOZORDER;
+                    Marshal.StructureToPtr(mwp, m.LParam, true);
                     UnsafeNativeMethods.SendWindowToBack(this);
                     m.Result = IntPtr.Zero;
+                    break;
+                }
+                default:
+                {
+                    base.WndProc(ref m);
                 }
             }
-            else if (m.Msg == UnsafeNativeMethods.WM_WINDOWPOSCHANGING && !_outlookContextMenuActivated && !Startup.UpdateDetected && !_movingOrResizing)
-            {
-                var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
-                mwp.flags = mwp.flags | UnsafeNativeMethods.SWP_NOZORDER;
-                Marshal.StructureToPtr(mwp, m.LParam, true);
-                UnsafeNativeMethods.SendWindowToBack(this);
-                m.Result = IntPtr.Zero;
-            }
 
-            base.WndProc(ref m);
         }
 
         #region Properties
