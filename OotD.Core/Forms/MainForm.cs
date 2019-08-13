@@ -621,7 +621,7 @@ namespace OotD.Forms
             if (GlobalPreferences.LockPosition) return;
 
             _movingOrResizing = true;
-        
+
             int dir = -1;
             switch (direction)
             {
@@ -664,7 +664,7 @@ namespace OotD.Forms
                 return;
 
             _movingOrResizing = true;
-                 
+
             UnsafeNativeMethods.ReleaseCapture();
             UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)UnsafeNativeMethods.HTCAPTION, IntPtr.Zero);
         }
@@ -1148,7 +1148,7 @@ namespace OotD.Forms
             switch (m.Msg)
             {
                 case UnsafeNativeMethods.WM_PARENTNOTIFY:
-                {
+
                     if (m.WParam.ToInt32() == UnsafeNativeMethods.WM_RBUTTONDOWN)
                     {
                         _outlookContextMenuActivated = true;
@@ -1158,9 +1158,9 @@ namespace OotD.Forms
                     }
 
                     break;
-                }
+
                 case UnsafeNativeMethods.WM_NCACTIVATE:
-                {
+
                     if (m.WParam.ToInt32() == 1 && _outlookContextMenuActivated && !WindowMessageTimer.Enabled)
                     {
                         _outlookContextMenuActivated = false;
@@ -1169,22 +1169,20 @@ namespace OotD.Forms
                     }
 
                     break;
-                }
+
                 case UnsafeNativeMethods.WM_WINDOWPOSCHANGING when !_outlookContextMenuActivated && !Startup.UpdateDetected && !_movingOrResizing:
-                {
+
                     var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
                     mwp.flags = mwp.flags | UnsafeNativeMethods.SWP_NOZORDER;
                     Marshal.StructureToPtr(mwp, m.LParam, true);
                     UnsafeNativeMethods.SendWindowToBack(this);
                     m.Result = IntPtr.Zero;
                     break;
-                }
-                default:
-                {
-                    base.WndProc(ref m);
-                }
-            }
 
+                default:
+                    base.WndProc(ref m);
+                    break;
+            }
         }
 
         #region Properties
