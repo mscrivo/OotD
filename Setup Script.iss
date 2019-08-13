@@ -93,15 +93,15 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-	dotnetCore3x64Url = 'https://download.visualstudio.microsoft.com/download/pr/a65e3536-ad76-4808-9920-83702aeed082/3c6ab9eaa0bc99df442be91e7b7950ff/dotnet-sdk-3.0.100-preview7-012821-win-x64.exe';
-  dotnetCore3x64Filename = 'dotnet-sdk-3.0.100-preview7-012821-win-x64.exe';
-	dotnetCore3x86Url = 'https://download.visualstudio.microsoft.com/download/pr/5dd5f4db-81b6-42d0-9a9d-b6457ef231b8/68800a8d75cc2dc92b0816b4acdeee33/dotnet-runtime-3.0.0-preview7-27912-14-win-x86.exe';
-  dotnetCore3x86Filename = 'dotnet-runtime-3.0.0-preview7-27912-14-win-x86.exe';
+	dotnetCore3x64Url = 'https://download.visualstudio.microsoft.com/download/pr/b1bc1733-f98d-4a46-ac6c-0183b16344f7/2c46d765b3d2295f575c116b25e5f0b1/dotnet-hosting-3.0.0-preview8.19405.7-win.exe';
+  dotnetCore3x64Filename = 'dotnet-hosting-3.0.0-preview8.19405.7-win';
+	//dotnetCore3x86Url = 'https://download.visualstudio.microsoft.com/download/pr/5dd5f4db-81b6-42d0-9a9d-b6457ef231b8/68800a8d75cc2dc92b0816b4acdeee33/dotnet-runtime-3.0.0-preview7-27912-14-win-x86.exe';
+  //dotnetCore3x86Filename = 'dotnet-runtime-3.0.0-preview7-27912-14-win-x86.exe';
 
 procedure InitializeWizard;
 begin
   idpAddFile(dotnetCore3x64Url, ExpandConstant('{tmp}\$dotnetCore3x64Filename'));
-  idpAddFile(dotnetCore3x86Url, ExpandConstant('{tmp}\$dotnetCore3x86Filename'));
+  //idpAddFile(dotnetCore3x86Url, ExpandConstant('{tmp}\$dotnetCore3x86Filename'));
   idpDownloadAfter(wpReady);
 end;
 
@@ -110,7 +110,7 @@ var
   nCode: Integer;
 begin
   Exec(ExpandConstant('{tmp}\$dotnetCore3x64Filename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode);
-  Exec(ExpandConstant('{tmp}\$dotnetCore3x86Filename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode);
+  //Exec(ExpandConstant('{tmp}\$dotnetCore3x86Filename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode);
 end;
 
 procedure TaskKill(FileName: String);
