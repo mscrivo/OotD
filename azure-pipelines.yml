@@ -14,19 +14,13 @@ name: $(Major).$(Minor).$(BuildID)
 steps:
 - checkout: self
   submodules: true
-      
+
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
     version: '3.0.100-preview8-013656'
     includePreviewVersions: true
-    
-# - task: VSBuild@1
-#   inputs:
-#     solution: '**\*.sln'
-#     msbuildArgs: '-restore'
-#     configuration: 'Release'
-    
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
