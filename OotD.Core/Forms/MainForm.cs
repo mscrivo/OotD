@@ -1173,16 +1173,14 @@ namespace OotD.Forms
                 case UnsafeNativeMethods.WM_WINDOWPOSCHANGING when !_outlookContextMenuActivated && !Startup.UpdateDetected && !_movingOrResizing:
 
                     var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
-                    mwp.flags = mwp.flags | UnsafeNativeMethods.SWP_NOZORDER;
+                    mwp.flags |= UnsafeNativeMethods.SWP_NOZORDER;
                     Marshal.StructureToPtr(mwp, m.LParam, true);
                     UnsafeNativeMethods.SendWindowToBack(this);
                     m.Result = IntPtr.Zero;
                     break;
-
-                default:
-                    base.WndProc(ref m);
-                    break;
             }
+
+            base.WndProc(ref m);
         }
 
         #region Properties
