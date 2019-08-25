@@ -93,10 +93,17 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-	dotnetCore3x64Url = 'https://dotnetcli.blob.core.windows.net/dotnet/Runtime/release/3.0/windowsdesktop-runtime-latest-win-x64.exe';
-  dotnetCore3x64Filename = 'windowsdesktop-runtime-latest-win-x64.exe';
-	dotnetCore3x86Url = 'https://dotnetcli.blob.core.windows.net/dotnet/Runtime/release/3.0/windowsdesktop-runtime-latest-win-x86.exe';
-  dotnetCore3x86Filename = 'windowsdesktop-runtime-latest-win-x86.exe';
+  //switch to these on final release.  At the moment they don't work
+	//dotnetCore3x64Url = 'https://dotnetcli.blob.core.windows.net/dotnet/Runtime/release/3.0/windowsdesktop-runtime-latest-win-x64.exe';
+	//dotnetCore3x86Url = 'https://dotnetcli.blob.core.windows.net/dotnet/Runtime/release/3.0/windowsdesktop-runtime-latest-win-x86.exe';
+  //dotnetCore3x64Filename = 'windowsdesktop-runtime-latest-win-x64.exe';
+  //dotnetCore3x86Filename = 'windowsdesktop-runtime-latest-win-x86.exe';
+
+  // .net core 3 sdks
+  dotnetCore3x64Url = 'https://download.visualstudio.microsoft.com/download/pr/a46fa009-033b-430d-89a8-c9a107f73d87/d25f962e8212aafb3b0c426eb8cb4dc6/dotnet-sdk-3.0.100-preview8-013656-win-x64.exe';
+	dotnetCore3x86Url = 'https://download.visualstudio.microsoft.com/download/pr/20950cfc-c203-45ae-ba74-2d1c66178285/8426d962b1c4a2b3f8ae785d0d7aab2a/dotnet-sdk-3.0.100-preview8-013656-win-x86.exe';
+  dotnetCore3x64Filename = 'dotnet-sdk-3.0.100-preview8-013656-win-x64.exe';
+  dotnetCore3x86Filename = 'dotnet-sdk-3.0.100-preview8-013656-win-x86.exe';
 
 procedure InitializeWizard;
 begin
