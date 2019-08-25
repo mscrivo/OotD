@@ -21,6 +21,8 @@ namespace OotD.Utility
         private const int SWP_NOSIZE = 0x0001;
         public const int SWP_NOZORDER = 0x0004;
         public const int SWP_SHOWWINDOW = 0x00040;
+        public const int SWP_NOOWNERZORDER = 0x0200;
+        public const int SWP_NOSENDCHANGING = 0x0400;
 
         private const int DWMWA_EXCLUDED_FROM_PEEK = 12;
 
@@ -119,10 +121,7 @@ namespace OotD.Utility
         /// <param name="windowToSendBack">the form to work with</param>
         public static void SendWindowToBack(Form windowToSendBack)
         {
-            if (Environment.OSVersion.Version.Major >= 6 && DwmIsCompositionEnabled())
-            {
-                SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
-            }
+            SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING);
         }
 
         /// <summary>
@@ -131,10 +130,7 @@ namespace OotD.Utility
         /// <param name="windowToSendToTop">the form to work with</param>
         public static void SendWindowToTop(Form windowToSendToTop)
         {
-            if (Environment.OSVersion.Version.Major >= 6 && DwmIsCompositionEnabled())
-            {
-                SetWindowPos(windowToSendToTop.Handle, HWND_TOP, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
-            }
+            SetWindowPos(windowToSendToTop.Handle, HWND_TOP, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING);
         }
 
         /// <summary>
@@ -144,13 +140,9 @@ namespace OotD.Utility
         /// <param name="window"></param>
         public static void RemoveWindowFromAeroPeek(Form window)
         {
-            if (Environment.OSVersion.Version.Major >= 6 && Environment.OSVersion.Version.Minor >= 1 &&
-                DwmIsCompositionEnabled())
-            {
-                var renderPolicy = (int)DwmNCRenderingPolicy.Enabled;
+            var renderPolicy = (int)DwmNCRenderingPolicy.Enabled;
 
-                DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof(int));
-            }
+            DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof(int));
         }
 
         private enum DwmNCRenderingPolicy
