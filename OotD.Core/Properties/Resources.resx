@@ -483,4 +483,10 @@ If you have 32-bit Office installed, please use the 32-bit Outlook on the Deskto
   <data name="OutlookLocationKeyNotFoundError" xml:space="preserve">
     <value>Unable to locate Outlook executable on your system</value>
   </data>
+  <data name="AboutOotD" xml:space="preserve">
+    <value>About {0}</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
 </root>

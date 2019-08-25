@@ -10,7 +10,7 @@ using OotD.Properties;
 
 namespace OotD
 {
-    public class Program
+    public static class Program
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

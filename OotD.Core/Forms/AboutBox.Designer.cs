@@ -78,12 +78,13 @@ namespace OotD.Forms
             // okButton
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okButton.Location = new System.Drawing.Point(105, 170);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 22);
             this.okButton.TabIndex = 28;
             this.okButton.Text = global::OotD.Properties.Resources.OKButton;
+            this.okButton.Click += OKButton_Click;
             // 
             // linkWebsite
             // 

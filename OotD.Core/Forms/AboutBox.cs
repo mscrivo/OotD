@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using OotD.Properties;
 
@@ -18,9 +18,9 @@ namespace OotD.Forms
             //  Change assembly information settings for your application through either:
             //  - Project->Properties->Application->Assembly Information
             //  - AssemblyInfo.cs
-            Text = $"About {Title}";
+            Text = string.Format(Resources.AboutOotD, Title);
             labelProductName.Text = Product;
-            labelVersion.Text = $"Version {Version}";
+            labelVersion.Text = string.Format(Resources.AboutVersion, Version);
             labelCopyright.Text = CopyRight;
         }
 
@@ -95,11 +95,45 @@ namespace OotD.Forms
 
         #endregion
 
+        private void OKButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void OpenUrl(string url)
+        {
+            try
+            {
+                Process.Start(url);
+            }
+            catch
+            {
+                // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    url = url.Replace("&", "^&");
+                    Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Process.Start("xdg-open", url);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", url);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
         private void LinkWebsite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
-                Process.Start("http://www.outlookonthedesktop.com");
+                OpenUrl("https://outlookonthedesktop.com");
             }
             catch
             {
@@ -112,7 +146,7 @@ namespace OotD.Forms
         {
             try
             {
-                Process.Start(
+                OpenUrl(
                     "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=mscrivo%40tfnet%2eca&item_name=Outlook%20on%20the%20Desktop%20Donation&amount=5%2e00&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=CA&bn=PP%2dDonationsBF&charset=UTF%2d8");
             }
             catch
