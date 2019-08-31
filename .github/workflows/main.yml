@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - uses: srt32/git-actions@v0.0.3
-      args: "git submodule update --init --recursive"
+    - args: "git submodule update --init --recursive"
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.0.100-preview8-013656' # SDK Version to use.
