@@ -162,7 +162,7 @@ namespace OotD
 
             // now check for bitness, if we can't find it with the latest version, try finding it under the previous 
             // version numbers.
-            string bitness = null;
+            string? bitness = null;
                 
             while (string.IsNullOrWhiteSpace(bitness) && version - 1 >= 14)
             {
@@ -181,10 +181,10 @@ namespace OotD
             return bitness ?? "x86";
         }
 
-        private static string GetBitness(double versionSubKey)
+        private static string? GetBitness(double versionSubKey)
         {
             var outlookKey = Registry.LocalMachine.OpenSubKey($"SOFTWARE\\Microsoft\\Office\\{versionSubKey}.0\\Outlook");
-            string bitness = null;
+            string? bitness = null;
 
             if (outlookKey != null)
             {
