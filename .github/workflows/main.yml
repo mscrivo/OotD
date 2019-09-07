@@ -14,5 +14,5 @@ jobs:
         submodules: true
     - uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.0.100-19424.4' # SDK Version to use.
+        dotnet-version: '3.0.100-014004' # SDK Version to use.
     - run: dotnet build OutlookDesktop.sln
