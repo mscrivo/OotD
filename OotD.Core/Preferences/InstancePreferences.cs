@@ -1,8 +1,6 @@
-using System;
 using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.Win32;
-using OotD.Properties;
 
 namespace OotD.Preferences
 {
@@ -18,14 +16,7 @@ namespace OotD.Preferences
 
         public InstancePreferences(string instanceName)
         {
-            try
-            {
-                _appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName + "\\" + instanceName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-            }
+            _appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName + "\\" + instanceName);
         }
 
         /// <summary>
@@ -82,7 +73,7 @@ namespace OotD.Preferences
             set => _appReg.SetValue("Height", value);
         }
 
-        public string OutlookFolderName
+        public string? OutlookFolderName
         {
             get => (string)_appReg.GetValue("CurrentViewType", "Calendar");
             set
@@ -92,21 +83,21 @@ namespace OotD.Preferences
             }
         }
 
-        public string OutlookFolderView
+        public string? OutlookFolderView
         {
             get => (string)_appReg.GetValue("OutlookView", "Day/Week/Month");
             set => _appReg.SetValue("OutlookView", value);
         }
 
 
-        public string OutlookFolderEntryId
+        public string? OutlookFolderEntryId
         {
             get => (string)_appReg.GetValue("FolderEntryId", "");
             set => _appReg.SetValue("FolderEntryId", value);
         }
 
 
-        public string OutlookFolderStoreId
+        public string? OutlookFolderStoreId
         {
             get => (string)_appReg.GetValue("FolderStoreId", "");
             set => _appReg.SetValue("FolderStoreId", value);

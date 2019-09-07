@@ -17,7 +17,7 @@ namespace OotD.Forms
             InitializeComponent();
         }
 
-        private InputBoxValidatingEventHandler Validator { get; set; }
+        private InputBoxValidatingEventHandler? Validator { get; set; }
 
         private void ButtonCancel_Click(object sender, EventArgs e)
         {

@@ -24,8 +24,8 @@ namespace OotD.Forms
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<string, MainForm> _mainFormInstances = new Dictionary<string, MainForm>();
-        private static Graphics _graphics;
-        private static Sparkle _sparkle;
+        private readonly Graphics _graphics;
+        private readonly Sparkle _sparkle;
 
         public InstanceManager()
         {
@@ -51,18 +51,18 @@ namespace OotD.Forms
             _sparkle.StartLoop(!GlobalPreferences.IsFirstRun, TimeSpan.FromDays(20));
         }
 
-        private static void OnSparkleOnUpdateWindowDismissed(object sender, EventArgs args)
+        private static void OnSparkleOnUpdateWindowDismissed(object? sender, EventArgs args)
         {
             Startup.UpdateDetected = false;
         }
 
-        private static void OnSparkleOnUpdateDetectedShowWithToast(object sender, UpdateDetectedEventArgs args)
+        private void OnSparkleOnUpdateDetectedShowWithToast(object sender, UpdateDetectedEventArgs args)
         {
             Startup.UpdateDetected = true;
             _sparkle.ShowUpdateNeededUI(args.LatestVersion, true);
         }
 
-        private static void OnSparkleOnUpdateDetectedShowWithoutToast(object sender, UpdateDetectedEventArgs args)
+        private void OnSparkleOnUpdateDetectedShowWithoutToast(object sender, UpdateDetectedEventArgs args)
         {
             Startup.UpdateDetected = true;
             _sparkle.ShowUpdateNeededUI(args.LatestVersion, false);
@@ -72,7 +72,7 @@ namespace OotD.Forms
         {
             get
             {
-                CreateParams cp = base.CreateParams;
+                var cp = base.CreateParams;
                 cp.ExStyle |= 0x80;             // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
                 cp.ExStyle |= 0x02000000;       // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
                 return cp;
@@ -83,7 +83,7 @@ namespace OotD.Forms
         {
             get
             {
-                int instanceCount = 0;
+                var instanceCount = 0;
 
                 using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
                 {
@@ -118,7 +118,7 @@ namespace OotD.Forms
                         trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
                         var instanceSubmenu = new ToolStripMenuItem[InstanceCount];
-                        int count = 0;
+                        var count = 0;
 
                         // each instance will get it's own submenu in the main context menu.
                         foreach (var instanceName in appReg.GetSubKeyNames())
@@ -126,7 +126,7 @@ namespace OotD.Forms
                             // Skip the key named "AutoUpdate" since it's the settings for the updater component
                             if (instanceName == AutoUpdateInstanceName) continue;
 
-                            bool newlyAdded = false;
+                            var newlyAdded = false;
                             if (!_mainFormInstances.ContainsKey(instanceName))
                             {
                                 Logger.Debug($"Instantiating instance {instanceName}");
@@ -222,7 +222,7 @@ namespace OotD.Forms
                         // this is a first run, or there is only 1 instance defined.
                         const string defaultInstanceName = "Default Instance";
 
-                        string instanceName = InstanceCount == 1 ? appReg.GetSubKeyNames()[0] : defaultInstanceName;
+                        var instanceName = InstanceCount == 1 ? appReg.GetSubKeyNames()[0] : defaultInstanceName;
 
                         if (instanceName == AutoUpdateInstanceName)
                         {
@@ -230,7 +230,7 @@ namespace OotD.Forms
                         }
 
                         // create our instance and set the context menu to one defined in the form instance.
-                        bool newlyAdded = false;
+                        var newlyAdded = false;
                         if (!_mainFormInstances.ContainsKey(instanceName))
                         {
                             _mainFormInstances.Add(instanceName, new MainForm(instanceName));
@@ -324,7 +324,7 @@ namespace OotD.Forms
             var today = DateTime.Now;
 
             // find the icon for the today's day of the month and replace the tray icon with it, compensate for user's DPI settings.
-            var dateIcon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture);
+            var dateIcon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture)!;
 
             if (dateIcon != null)
                 trayIcon.Icon = _graphics.DpiX.Equals(96f)
@@ -338,7 +338,7 @@ namespace OotD.Forms
             ChangeTrayIconDate();
         }
 
-        private void ExitMenu_Click(object sender, EventArgs e)
+        private void ExitMenu_Click(object? sender, EventArgs e)
         {
             foreach (var formInstance in _mainFormInstances)
             {
@@ -348,7 +348,7 @@ namespace OotD.Forms
             Application.Exit();
         }
 
-        private void AddInstanceMenu_Click(object sender, EventArgs e)
+        private void AddInstanceMenu_Click(object? sender, EventArgs e)
         {
             var result = InputBox.Show(this, "", Resources.NewInstanceName, string.Empty, InputBox_Validating);
             if (result.Ok)
@@ -367,27 +367,27 @@ namespace OotD.Forms
                 _mainFormInstances[result.Text].Top = yLoc;
 
                 // Save the new position so that it's correctly loaded on next run
-                _mainFormInstances[result.Text].Preferences.Left = _mainFormInstances[result.Text].Left;
-                _mainFormInstances[result.Text].Preferences.Top = _mainFormInstances[result.Text].Top;
+                _mainFormInstances[result.Text].Preferences!.Left = _mainFormInstances[result.Text].Left;
+                _mainFormInstances[result.Text].Preferences!.Top = _mainFormInstances[result.Text].Top;
             }
         }
 
-        private static void InputBox_Validating(object sender, InputBoxValidatingEventArgs e)
+        private static void InputBox_Validating(object? sender, InputBoxValidatingEventArgs e)
         {
-            if (string.IsNullOrEmpty(e.Text.Trim()))
+            if (string.IsNullOrWhiteSpace(e.Text))
             {
                 e.Cancel = true;
                 e.Message = "Required";
             }
         }
 
-        private static void AboutMenu_Click(object sender, EventArgs e)
+        private static void AboutMenu_Click(object? sender, EventArgs e)
         {
             var aboutForm = new AboutBox();
             aboutForm.ShowDialog();
         }
 
-        private static void CheckForUpdates_Click(object sender, EventArgs e)
+        private void CheckForUpdates_Click(object? sender, EventArgs e)
         {
             _sparkle.UpdateDetected -= OnSparkleOnUpdateDetectedShowWithToast;
             _sparkle.UpdateDetected += OnSparkleOnUpdateDetectedShowWithoutToast;
@@ -395,7 +395,7 @@ namespace OotD.Forms
             _sparkle.CheckForUpdatesAtUserRequest();
         }
 
-        private void StartWithWindowsMenu_Click(object sender, EventArgs e)
+        private void StartWithWindowsMenu_Click(object? sender, EventArgs e)
         {
             var startWithWindowsMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["StartWithWindows"];
             if (startWithWindowsMenu.Checked)
@@ -410,14 +410,14 @@ namespace OotD.Forms
             }
         }
 
-        private void HideShowAllMenu_Click(object sender, EventArgs e)
+        private void HideShowAllMenu_Click(object? sender, EventArgs e)
         {
             ShowHideAllInstances();
         }
 
         private void ShowHideAllInstances()
         {
-            string hideShowMenuText = trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text;
+            var hideShowMenuText = trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text;
 
             if (hideShowMenuText == Resources.HideAll || hideShowMenuText == Resources.Hide)
             {
@@ -441,7 +441,7 @@ namespace OotD.Forms
             }
         }
 
-        private void LockPositionMenu_Click(object sender, EventArgs e)
+        private void LockPositionMenu_Click(object? sender, EventArgs e)
         {
             var lockPositionMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["LockPositionMenu"];
             if (lockPositionMenu.Checked)
@@ -449,11 +449,11 @@ namespace OotD.Forms
                 GlobalPreferences.LockPosition = false;
                 lockPositionMenu.Checked = false;
 
-                foreach (var formInstance in _mainFormInstances)
+                foreach (var (_, formInstance) in _mainFormInstances)
                 {
-                    formInstance.Value.TransparencySlider.Enabled = true;
-                    formInstance.Value.ToolTip.SetToolTip(formInstance.Value.TransparencySlider, Resources.Transparency_Slider_Help_Message);
-                    formInstance.Value.ToolTip.SetToolTip(formInstance.Value.LabelCurrentDate, Resources.Form_Move_Help_Message);
+                    formInstance.TransparencySlider.Enabled = true;
+                    formInstance.ToolTip.SetToolTip(formInstance.TransparencySlider, Resources.Transparency_Slider_Help_Message);
+                    formInstance.ToolTip.SetToolTip(formInstance.LabelCurrentDate, Resources.Form_Move_Help_Message);
                 }
             }
             else
@@ -471,7 +471,7 @@ namespace OotD.Forms
             }
         }
 
-        private void DisableEnableEditingMenu_Click(object sender, EventArgs e)
+        private void DisableEnableEditingMenu_Click(object? sender, EventArgs e)
         {
             DisableEnableAllInstances();
         }
@@ -504,7 +504,7 @@ namespace OotD.Forms
             }
         }
 
-        private void InstanceRemovedEventHandler(Object sender, InstanceRemovedEventArgs e)
+        private void InstanceRemovedEventHandler(object? sender, InstanceRemovedEventArgs e)
         {
             // remove the menu item for the removed instance.
             trayIcon.ContextMenuStrip.Items.RemoveByKey(e.InstanceName);
@@ -516,14 +516,14 @@ namespace OotD.Forms
                 LoadInstances();
         }
 
-        private void InstanceRenamedEventHandler(Object sender, InstanceRenamedEventArgs e)
+        private void InstanceRenamedEventHandler(object? sender, InstanceRenamedEventArgs e)
         {
             // remove the menu item for the removed instance.
             trayIcon.ContextMenuStrip.Items[e.OldInstanceName].Text = e.NewInstanceName;
             trayIcon.ContextMenuStrip.Items[e.OldInstanceName].Name = e.NewInstanceName;
         }
 
-        private void InstanceContextMenu_DropDownOpened(object sender, EventArgs e)
+        private void InstanceContextMenu_DropDownOpened(object? sender, EventArgs e)
         {
             var item = sender as ToolStripDropDownItem;
 
@@ -538,11 +538,11 @@ namespace OotD.Forms
         {
             if (dropDownItem != null)
             {
-                for (int i = 0; i < 2; i++)
+                for (var i = 0; i < 2; i++)
                 {
-                    MainForm formInstance = _mainFormInstances[dropDownItem.DropDownItems[0].Text];
+                    var formInstance = _mainFormInstances[dropDownItem.DropDownItems[0].Text];
 
-                    double currentOpacity = formInstance.Opacity;
+                    var currentOpacity = formInstance.Opacity;
                     formInstance.InvokeEx(f => formInstance.Opacity = .3);
                     Thread.Sleep(250);
                     formInstance.InvokeEx(f => formInstance.Opacity = currentOpacity);

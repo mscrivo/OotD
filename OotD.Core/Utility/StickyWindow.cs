@@ -38,8 +38,8 @@ namespace OotD.Utility
         // public properties
         private static int _stickGap = 10; // distance to stick
 
-        public event EventHandler ResizeEnded;
-        public event EventHandler MoveEnded;
+        public event EventHandler? ResizeEnded;
+        public event EventHandler? MoveEnded;
 
         #region StickyWindow Constructor
 
@@ -429,10 +429,12 @@ namespace OotD.Utility
             if (StickToOther)
             {
                 // now try to stick to other forms
-                foreach (Form sw in GlobalStickyWindows)
+                foreach (var sw in GlobalStickyWindows)
                 {
-                    if (sw != _originalForm)
-                        Resize_Stick(sw.Bounds, true);
+                    var form = sw as Form;
+                    if (form != _originalForm)
+                        if (form != null)
+                            Resize_Stick(form.Bounds, true);
                 }
             }
 
@@ -622,10 +624,12 @@ namespace OotD.Utility
             // Now try to snap to other windows
             if (StickToOther)
             {
-                foreach (Form sw in GlobalStickyWindows)
+                foreach (var sw in GlobalStickyWindows)
                 {
-                    if (sw != _originalForm)
-                        Move_Stick(sw.Bounds, true);
+                    var form = sw as Form;
+                    if (form != _originalForm)
+                        if (form != null)
+                            Move_Stick(form.Bounds, true);
                 }
             }
 

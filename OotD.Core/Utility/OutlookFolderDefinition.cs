@@ -5,8 +5,8 @@ namespace OotD.Utility
     /// </summary>
     internal struct OutlookFolderDefinition
     {
-        public string OutlookFolderName;
-        public string OutlookFolderStoreId;
-        public string OutlookFolderEntryId;
+        public string? OutlookFolderName;
+        public string? OutlookFolderStoreId;
+        public string? OutlookFolderEntryId;
     }
 }

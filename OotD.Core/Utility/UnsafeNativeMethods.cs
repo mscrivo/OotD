@@ -103,7 +103,7 @@ namespace OotD.Utility
             try
             {
                 form.SendToBack();
-                IntPtr pWnd = FindWindow("Progman", null);
+                IntPtr pWnd = FindWindow("Progman", null!);
                 SetParent(form.Handle, pWnd);
             }
             catch (Exception ex)

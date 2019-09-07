@@ -21,10 +21,10 @@ namespace OotD
         public static Guid LastNextButtonClicked;
         public static Guid LastPreviousButtonClicked;
 
-        private static Application OutlookApp;
-        public static NameSpace OutlookNameSpace;
-        private static MAPIFolder OutlookFolder;
-        private static Explorer OutlookExplorer;
+        private static Application? OutlookApp;
+        public static NameSpace? OutlookNameSpace;
+        private static MAPIFolder? OutlookFolder;
+        private static Explorer? OutlookExplorer;
 
         public static bool UpdateDetected;
 

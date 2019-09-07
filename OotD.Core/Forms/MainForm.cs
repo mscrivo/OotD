@@ -27,9 +27,9 @@ namespace OotD.Forms
     public partial class MainForm : Form
     {
         private const int _resizeBorderWidth = 4;
-        private string _customFolder;
-        private ToolStripMenuItem _customMenu;
-        private MAPIFolder _outlookFolder;
+        private string? _customFolder;
+        private ToolStripMenuItem? _customMenu;
+        private MAPIFolder? _outlookFolder;
         private DateTime _previousDate;
         private OutlookFolderDefinition _customFolderDefinition;
         private bool _outlookContextMenuActivated;
@@ -100,7 +100,7 @@ namespace OotD.Forms
             }
         }
 
-        private void OnAxOutlookViewControlOnSelectionChange(object sender, EventArgs args)
+        private void OnAxOutlookViewControlOnSelectionChange(object? sender, EventArgs args)
         {
             try
             {
@@ -140,8 +140,8 @@ namespace OotD.Forms
 
         #region Events
 
-        public EventHandler<InstanceRemovedEventArgs> InstanceRemoved;
-        public EventHandler<InstanceRenamedEventArgs> InstanceRenamed;
+        public EventHandler<InstanceRemovedEventArgs>? InstanceRemoved;
+        public EventHandler<InstanceRenamedEventArgs>? InstanceRenamed;
 
         private void OnInstanceRemoved(object sender, InstanceRemovedEventArgs e)
         {
@@ -178,8 +178,8 @@ namespace OotD.Forms
             {
                 // Set the MAPI Folder Details and the IDs.
                 Preferences.OutlookFolderName = FolderViewType.Calendar.ToString();
-                Preferences.OutlookFolderStoreId = GetFolderFromViewType(FolderViewType.Calendar).StoreID;
-                Preferences.OutlookFolderEntryId = GetFolderFromViewType(FolderViewType.Calendar).EntryID;
+                Preferences.OutlookFolderStoreId = GetFolderFromViewType(FolderViewType.Calendar)?.StoreID;
+                Preferences.OutlookFolderEntryId = GetFolderFromViewType(FolderViewType.Calendar)?.EntryID;
             }
 
             SetMAPIFolder();
@@ -221,27 +221,27 @@ namespace OotD.Forms
             }
 
             // Checks the menuitem of the current folder.
-            if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Calendar).Name)
+            if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Calendar)?.Name)
             {
                 CalendarMenu.Checked = true;
             }
-            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Contacts).Name)
+            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Contacts)?.Name)
             {
                 ContactsMenu.Checked = true;
             }
-            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Inbox).Name)
+            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Inbox)?.Name)
             {
                 InboxMenu.Checked = true;
             }
-            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Notes).Name)
+            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Notes)?.Name)
             {
                 NotesMenu.Checked = true;
             }
-            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Tasks).Name)
+            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Tasks)?.Name)
             {
                 TasksMenu.Checked = true;
             }
-            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Todo).Name)
+            else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Todo)?.Name)
             {
                 TodosMenu.Checked = true;
             }
@@ -305,13 +305,12 @@ namespace OotD.Forms
         private void SetMAPIFolder()
         {
             // Load up the MAPI Folder from Entry / Store IDs 
-            if (!string.IsNullOrEmpty(Preferences.OutlookFolderEntryId) && !string.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
+            if (!string.IsNullOrEmpty(Preferences?.OutlookFolderEntryId) && !string.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
             {
                 try
                 {
-                    _outlookFolder = Startup.OutlookNameSpace.GetFolderFromID(Preferences.OutlookFolderEntryId, Preferences.OutlookFolderStoreId);
-                    ShowToolbarButtonsFor(_outlookFolder.DefaultMessageClass);
-
+                    _outlookFolder = Startup.OutlookNameSpace?.GetFolderFromID(Preferences.OutlookFolderEntryId, Preferences.OutlookFolderStoreId);
+                    if (_outlookFolder != null) ShowToolbarButtonsFor(_outlookFolder.DefaultMessageClass);
                 }
                 catch (Exception ex)
                 {
@@ -335,18 +334,19 @@ namespace OotD.Forms
 
             if (_outlookFolder != null)
             {
-                foreach (View view in _outlookFolder.Views)
+                foreach (var view in _outlookFolder.Views)
                 {
-                    var viewItem = new ToolStripMenuItem(view.Name) { Tag = view };
+                    var typedView = (View) view!;
+                    var viewItem = new ToolStripMenuItem(typedView.Name) { Tag = view };
 
                     viewItem.Click += ViewItem_Click;
 
-                    if (view.Name == Preferences.OutlookFolderView)
+                    if (typedView.Name == Preferences?.OutlookFolderView)
                         viewItem.Checked = true;
 
                     OutlookViewsMenu.DropDownItems.Add(viewItem);
 
-                    OutlookFolderViews.Add(view);
+                    OutlookFolderViews.Add(typedView);
                 }
             }
         }
@@ -365,9 +365,13 @@ namespace OotD.Forms
         /// </summary>
         /// <param name="fullPath"></param>
         /// <returns></returns>
-        private static string GetFolderNameFromFullPath(string fullPath)
+        private static string GetFolderNameFromFullPath(string? fullPath)
         {
-            return fullPath.Substring(fullPath.LastIndexOf("\\", StringComparison.Ordinal) + 1, fullPath.Length - fullPath.LastIndexOf("\\", StringComparison.Ordinal) - 1);
+            if (fullPath != null)
+                return fullPath.Substring(fullPath.LastIndexOf("\\", StringComparison.Ordinal) + 1,
+                    fullPath.Length - fullPath.LastIndexOf("\\", StringComparison.Ordinal) - 1);
+
+            return string.Empty;
         }
 
         /// <summary>
@@ -375,25 +379,28 @@ namespace OotD.Forms
         /// </summary>
         /// <param name="oFolder"></param>
         /// <returns></returns>
-        private static string GenerateFolderPathFromObject(MAPIFolder oFolder)
+        private static string GenerateFolderPathFromObject(MAPIFolder? oFolder)
         {
-            string fullFolderPath = "\\\\";
-            var subfolders = new List<string> { oFolder.Name };
-
-            while (oFolder?.Parent != null)
+            var fullFolderPath = "\\\\";
+            if (oFolder != null)
             {
-                oFolder = oFolder.Parent as MAPIFolder;
-                if (oFolder != null) subfolders.Add(oFolder.Name);
-            }
+                var subfolders = new List<string> { oFolder.Name };
 
-            for (int i = subfolders.Count - 1; i >= 0; i--)
-            {
-                fullFolderPath += subfolders[i] + "\\";
+                while (oFolder?.Parent != null)
+                {
+                    oFolder = oFolder.Parent as MAPIFolder;
+                    if (oFolder != null) subfolders.Add(oFolder.Name);
+                }
+
+                for (var i = subfolders.Count - 1; i >= 0; i--)
+                {
+                    fullFolderPath += subfolders[i] + "\\";
+                }
             }
 
             if (fullFolderPath.EndsWith("\\"))
             {
-                fullFolderPath = fullFolderPath.Substring(0, fullFolderPath.Length - 1);
+                fullFolderPath = fullFolderPath[..^1];
             }
 
             return fullFolderPath;
@@ -423,13 +430,13 @@ namespace OotD.Forms
             if (Enabled)
             {
                 DisableEnableEditingMenu.Checked = true;
-                Preferences.DisableEditing = true;
+                Preferences!.DisableEditing = true;
                 Enabled = false;
             }
             else
             {
                 DisableEnableEditingMenu.Checked = false;
-                Preferences.DisableEditing = false;
+                Preferences!.DisableEditing = false;
                 Enabled = true;
             }
         }
@@ -439,25 +446,18 @@ namespace OotD.Forms
         /// </summary>
         /// <param name="folderViewType"></param>
         /// <returns></returns>
-        private static MAPIFolder GetFolderFromViewType(FolderViewType folderViewType)
+        private static MAPIFolder? GetFolderFromViewType(FolderViewType folderViewType)
         {
-            switch (folderViewType)
+            return folderViewType switch
             {
-                case FolderViewType.Inbox:
-                    return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderInbox);
-                case FolderViewType.Calendar:
-                    return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
-                case FolderViewType.Contacts:
-                    return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderContacts);
-                case FolderViewType.Notes:
-                    return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderNotes);
-                case FolderViewType.Tasks:
-                    return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderTasks);
-                case FolderViewType.Todo:
-                    return Startup.OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderToDo);
-                default:
-                    return null;
-            }
+                FolderViewType.Inbox => Startup.OutlookNameSpace?.GetDefaultFolder(OlDefaultFolders.olFolderInbox),
+                FolderViewType.Calendar => Startup.OutlookNameSpace?.GetDefaultFolder(OlDefaultFolders.olFolderCalendar),
+                FolderViewType.Contacts => Startup.OutlookNameSpace?.GetDefaultFolder(OlDefaultFolders.olFolderContacts),
+                FolderViewType.Notes => Startup.OutlookNameSpace?.GetDefaultFolder(OlDefaultFolders.olFolderNotes),
+                FolderViewType.Tasks => Startup.OutlookNameSpace?.GetDefaultFolder(OlDefaultFolders.olFolderTasks),
+                FolderViewType.Todo => Startup.OutlookNameSpace?.GetDefaultFolder(OlDefaultFolders.olFolderToDo),
+                _ => null
+            };
         }
 
         /// <summary>
@@ -465,7 +465,7 @@ namespace OotD.Forms
         /// This is used only for the folder types menu. 
         /// </summary>
         /// <param name="itemToCheck"></param>
-        private void CheckSelectedMenuItem(ToolStripMenuItem itemToCheck)
+        private void CheckSelectedMenuItem(ToolStripMenuItem? itemToCheck)
         {
             var menuItems = new List<ToolStripMenuItem> { CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu, TodosMenu };
 
@@ -479,11 +479,11 @@ namespace OotD.Forms
         /// </summary>
         /// <param name="itemToCheck">Item to check in the list</param>
         /// <param name="menuItems">IList of the menuitems to check</param>
-        private static void CheckSelectedMenuItemInCollection(ToolStripMenuItem itemToCheck, IEnumerable menuItems)
+        private static void CheckSelectedMenuItemInCollection(ToolStripMenuItem? itemToCheck, IEnumerable menuItems)
         {
-            foreach (ToolStripMenuItem menuItem in menuItems)
+            foreach (var menuItem in menuItems)
             {
-                menuItem.Checked = menuItem == itemToCheck;
+                if (menuItem != null) ((ToolStripMenuItem) menuItem).Checked = menuItem == itemToCheck;
             }
         }
 
@@ -501,11 +501,11 @@ namespace OotD.Forms
 
             try
             {
-                OutlookViewControl.Folder = GetFolderFromViewType(folderViewType).Name;
+                OutlookViewControl.Folder = GetFolderFromViewType(folderViewType)?.Name;
 
-                Preferences.OutlookFolderName = GetFolderFromViewType(folderViewType).Name;
-                Preferences.OutlookFolderStoreId = GetFolderFromViewType(folderViewType).StoreID;
-                Preferences.OutlookFolderEntryId = GetFolderFromViewType(folderViewType).EntryID;
+                Preferences!.OutlookFolderName = GetFolderFromViewType(folderViewType)?.Name;
+                Preferences.OutlookFolderStoreId = GetFolderFromViewType(folderViewType)?.StoreID;
+                Preferences.OutlookFolderEntryId = GetFolderFromViewType(folderViewType)?.EntryID;
 
                 SetMAPIFolder();
 
@@ -591,7 +591,7 @@ namespace OotD.Forms
                 OutlookViewControl.Folder = folderPath;
 
                 // Save the EntryId and the StoreId for this folder in the preferences. 
-                Preferences.OutlookFolderEntryId = oFolder.EntryID;
+                Preferences!.OutlookFolderEntryId = oFolder.EntryID;
                 Preferences.OutlookFolderStoreId = oFolder.StoreID;
                 Preferences.OutlookFolderName = folderPath;
 
@@ -622,7 +622,7 @@ namespace OotD.Forms
 
             _movingOrResizing = true;
 
-            int dir = -1;
+            var dir = -1;
             switch (direction)
             {
                 case ResizeDirection.Left:
@@ -677,7 +677,7 @@ namespace OotD.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ViewItem_Click(object sender, EventArgs e)
+        private void ViewItem_Click(object? sender, EventArgs e)
         {
             var viewItem = sender as ToolStripMenuItem;
 
@@ -685,10 +685,10 @@ namespace OotD.Forms
             {
                 OutlookViewControl.View = view.Name;
 
-                Preferences.OutlookFolderView = view.Name;
+                Preferences!.OutlookFolderView = view.Name;
             }
 
-            CheckSelectedView(viewItem);
+            if (viewItem != null) CheckSelectedView(viewItem);
         }
 
         /// <summary>
@@ -696,38 +696,38 @@ namespace OotD.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SelectFolderMenu_Click(object sender, EventArgs e)
+        private void SelectFolderMenu_Click(object? sender, EventArgs e)
         {
-            MAPIFolder oFolder = Startup.OutlookNameSpace.PickFolder();
+            var oFolder = Startup.OutlookNameSpace?.PickFolder();
             if (oFolder != null)
             {
                 UpdateCustomFolder(oFolder);
             }
         }
 
-        private void CustomFolderMenu_Click(object sender, EventArgs e)
+        private void CustomFolderMenu_Click(object? sender, EventArgs e)
         {
             OutlookViewControl.Folder = _customFolder;
             CheckSelectedMenuItem(_customMenu);
 
-            Preferences.OutlookFolderName = _customFolderDefinition.OutlookFolderName;
+            Preferences!.OutlookFolderName = _customFolderDefinition.OutlookFolderName;
             Preferences.OutlookFolderStoreId = _customFolderDefinition.OutlookFolderStoreId;
             Preferences.OutlookFolderEntryId = _customFolderDefinition.OutlookFolderEntryId;
 
             SetMAPIFolder();
         }
 
-        private void CalendarMenu_Click(object sender, EventArgs e)
+        private void CalendarMenu_Click(object? sender, EventArgs e)
         {
             DefaultFolderTypesClicked(FolderViewType.Calendar, CalendarMenu);
         }
 
-        private void ContactsMenu_Click(object sender, EventArgs e)
+        private void ContactsMenu_Click(object? sender, EventArgs e)
         {
             DefaultFolderTypesClicked(FolderViewType.Contacts, ContactsMenu);
         }
 
-        private void InboxMenu_Click(object sender, EventArgs e)
+        private void InboxMenu_Click(object? sender, EventArgs e)
         {
             DefaultFolderTypesClicked(FolderViewType.Inbox, InboxMenu);
         }
@@ -747,17 +747,17 @@ namespace OotD.Forms
             DefaultFolderTypesClicked(FolderViewType.Todo, TodosMenu);
         }
 
-        private void HideMenu_Click(object sender, EventArgs e)
+        private void HideMenu_Click(object? sender, EventArgs e)
         {
             ShowHideDesktopComponent();
         }
 
-        private void DisableEnableEditingMenu_Click(object sender, EventArgs e)
+        private void DisableEnableEditingMenu_Click(object? sender, EventArgs e)
         {
             DisableEnableEditing();
         }
 
-        private void RemoveInstanceMenu_Click(object sender, EventArgs e)
+        private void RemoveInstanceMenu_Click(object? sender, EventArgs e)
         {
             var result = MessageBox.Show(Parent, Resources.RemoveInstanceConfirmation,
                                                Resources.ConfirmationCaption, MessageBoxButtons.YesNo,
@@ -774,7 +774,7 @@ namespace OotD.Forms
             }
         }
 
-        private void UpdateTimer_Tick(object sender, EventArgs e)
+        private void UpdateTimer_Tick(object? sender, EventArgs e)
         {
             // increment day in outlook's calendar if we've crossed over into a new day
             if (DateTime.Now.Day != _previousDate.Day)
@@ -799,7 +799,7 @@ namespace OotD.Forms
             Debug.WriteLine("Top: {0}", Top);
             Debug.WriteLine("Width: {0}", Width);
             Debug.WriteLine("Height: {0}", Height);
-            Preferences.Left = Left;
+            Preferences!.Left = Left;
             Preferences.Top = Top;
             Preferences.Width = Width;
             Preferences.Height = Height;
@@ -822,7 +822,7 @@ namespace OotD.Forms
             if (parentKey == null) return;
 
             RegistryHelper.RenameSubKey(parentKey, InstanceName, result.Text);
-            string oldInstanceName = InstanceName;
+            var oldInstanceName = InstanceName;
             InstanceName = result.Text;
             Preferences = new InstancePreferences(InstanceName);
 
@@ -831,7 +831,7 @@ namespace OotD.Forms
 
         private static void InputBox_Validating(object sender, InputBoxValidatingEventArgs e)
         {
-            if (string.IsNullOrEmpty(e.Text.Trim()))
+            if (string.IsNullOrWhiteSpace(e.Text))
             {
                 e.Cancel = true;
                 e.Message = "Required";
@@ -987,7 +987,7 @@ namespace OotD.Forms
         private void SetViewXml(string value)
         {
             OutlookViewControl.ViewXML = value;
-            Preferences.ViewXml = value;
+            Preferences!.ViewXml = value;
         }
 
         private void DayButton_Click(object sender, EventArgs e)
@@ -1125,7 +1125,7 @@ namespace OotD.Forms
                 opacityVal = 0.99;
             }
             Opacity = opacityVal;
-            Preferences.Opacity = opacityVal;
+            Preferences!.Opacity = opacityVal;
         }
 
         private void WindowMessageTimer_Tick(object sender, EventArgs e)
@@ -1172,7 +1172,7 @@ namespace OotD.Forms
 
                 case UnsafeNativeMethods.WM_WINDOWPOSCHANGING when !_outlookContextMenuActivated && !Startup.UpdateDetected && !_movingOrResizing:
 
-                    var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS));
+                    var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS))!;
                     mwp.flags |= UnsafeNativeMethods.SWP_NOZORDER;
                     Marshal.StructureToPtr(mwp, m.LParam, true);
                     UnsafeNativeMethods.SendWindowToBack(this);
@@ -1186,8 +1186,8 @@ namespace OotD.Forms
         #region Properties
 
         private ResizeDirection _resizeDir = ResizeDirection.None;
-        private List<View> OutlookFolderViews { get; set; }
-        public InstancePreferences Preferences { get; private set; }
+        private List<View>? OutlookFolderViews { get; set; }
+        public InstancePreferences? Preferences { get; private set; }
         private string InstanceName { get; set; }
 
         private ResizeDirection ResizeDir
@@ -1197,28 +1197,18 @@ namespace OotD.Forms
             {
                 _resizeDir = value;
 
-                switch (value)
+                Cursor = value switch
                 {
-                    case ResizeDirection.Left:
-                    case ResizeDirection.Right:
-                        Cursor = Cursors.SizeWE;
-                        break;
-                    case ResizeDirection.Top:
-                    case ResizeDirection.Bottom:
-                        Cursor = Cursors.SizeNS;
-                        break;
-                    case ResizeDirection.BottomLeft:
-                    case ResizeDirection.TopRight:
-                        Cursor = Cursors.SizeNESW;
-                        break;
-                    case ResizeDirection.BottomRight:
-                    case ResizeDirection.TopLeft:
-                        Cursor = Cursors.SizeNWSE;
-                        break;
-                    default:
-                        Cursor = Cursors.Default;
-                        break;
-                }
+                    ResizeDirection.Left => Cursors.SizeWE,
+                    ResizeDirection.Right => Cursors.SizeWE,
+                    ResizeDirection.Top => Cursors.SizeNS,
+                    ResizeDirection.Bottom => Cursors.SizeNS,
+                    ResizeDirection.BottomLeft => Cursors.SizeNESW,
+                    ResizeDirection.TopRight => Cursors.SizeNESW,
+                    ResizeDirection.BottomRight => Cursors.SizeNWSE,
+                    ResizeDirection.TopLeft => Cursors.SizeNWSE,
+                    _ => Cursors.Default
+                };
             }
         }
 
