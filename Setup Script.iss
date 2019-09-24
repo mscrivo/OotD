@@ -94,10 +94,10 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 [Code]
 const
   //switch to these on final release.  At the moment they don't work
-	dotnetCore3x64Url = 'https://dotnetcli.blob.core.windows.net/dotnet/Runtime/release/3.0/windowsdesktop-runtime-latest-win-x64.exe';
-	dotnetCore3x86Url = 'https://dotnetcli.blob.core.windows.net/dotnet/Runtime/release/3.0/windowsdesktop-runtime-latest-win-x86.exe';
-  dotnetCore3x64Filename = 'windowsdesktop-runtime-latest-win-x64.exe';
-  dotnetCore3x86Filename = 'windowsdesktop-runtime-latest-win-x86.exe';
+	dotnetCore3x64Url = 'https://download.visualstudio.microsoft.com/download/pr/fe9d105b-5d40-4f12-b238-6b6e1af9f812/341fc13950347d95fef8522cb3d77009/windowsdesktop-runtime-3.0.0-win-x64.exe';
+	dotnetCore3x86Url = 'https://download.visualstudio.microsoft.com/download/pr/03f6f2e1-bc0f-4185-b5c2-8399d5b3aac4/96f0664754609069159b7acd19772c77/windowsdesktop-runtime-3.0.0-win-x86.exe';
+  dotnetCore3x64Filename = 'windowsdesktop-runtime-3.0.0-win-x64.exe';
+  dotnetCore3x86Filename = 'windowsdesktop-runtime-3.0.0-win-x86.exe';
 
 procedure InitializeWizard;
 begin
