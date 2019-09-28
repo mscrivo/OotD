@@ -94,15 +94,21 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 [Code]
 const
   //switch to these on final release.  At the moment they don't work
-	dotnetCore3x64Url = 'https://download.visualstudio.microsoft.com/download/pr/fe9d105b-5d40-4f12-b238-6b6e1af9f812/341fc13950347d95fef8522cb3d77009/windowsdesktop-runtime-3.0.0-win-x64.exe';
-	dotnetCore3x86Url = 'https://download.visualstudio.microsoft.com/download/pr/03f6f2e1-bc0f-4185-b5c2-8399d5b3aac4/96f0664754609069159b7acd19772c77/windowsdesktop-runtime-3.0.0-win-x86.exe';
-  dotnetCore3x64Filename = 'windowsdesktop-runtime-3.0.0-win-x64.exe';
-  dotnetCore3x86Filename = 'windowsdesktop-runtime-3.0.0-win-x86.exe';
+	dotnetCore3x64DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/fe9d105b-5d40-4f12-b238-6b6e1af9f812/341fc13950347d95fef8522cb3d77009/windowsdesktop-runtime-3.0.0-win-x64.exe';
+	dotnetCore3x86DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/03f6f2e1-bc0f-4185-b5c2-8399d5b3aac4/96f0664754609069159b7acd19772c77/windowsdesktop-runtime-3.0.0-win-x86.exe';
+  dotnetCore3x64Url = 'https://download.visualstudio.microsoft.com/download/pr/b3b81103-619a-48d8-ac1b-e03bbe153b7c/566b0f50872164abd1478a5b3ec38ffa/dotnet-runtime-3.0.0-win-x64.exe';
+  dotnetCore3x86Url = 'https://download.visualstudio.microsoft.com/download/pr/ffc76eb1-6293-46e9-8d31-ad804995f870/ccf2eeafb0bdf336a092bfdd52a0dfca/dotnet-runtime-3.0.0-win-x86.exe';
+  dotnetCore3x64DesktopFilename = 'windowsdesktop-runtime-3.0.0-win-x64.exe';
+  dotnetCore3x86DesktopFilename = 'windowsdesktop-runtime-3.0.0-win-x86.exe';
+  dotnetCore3x64Filename = 'dotnet-runtime-3.0.0-win-x64.exe';
+  dotnetCore3x86Filename = 'dotnet-runtime-3.0.0-win-x86.exe';
 
 procedure InitializeWizard;
 begin
   idpAddFile(dotnetCore3x64Url, ExpandConstant('{tmp}\$dotnetCore3x64Filename'));
   idpAddFile(dotnetCore3x86Url, ExpandConstant('{tmp}\$dotnetCore3x86Filename'));
+  idpAddFile(dotnetCore3x64DesktopUrl, ExpandConstant('{tmp}\$dotnetCore3x64DesktopFilename'));
+  idpAddFile(dotnetCore3x86DesktopUrl, ExpandConstant('{tmp}\$dotnetCore3x86DesktopFilename'));
   idpDownloadAfter(wpReady);
 end;
 
@@ -112,6 +118,8 @@ var
 begin
   Exec(ExpandConstant('{tmp}\$dotnetCore3x64Filename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode);
   Exec(ExpandConstant('{tmp}\$dotnetCore3x86Filename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode);
+  Exec(ExpandConstant('{tmp}\$dotnetCore3x64DesktopFilename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode);
+  Exec(ExpandConstant('{tmp}\$dotnetCore3x86DesktopFilename'),'/install /passive /quiet /norestart','',SW_SHOW,ewWaitUntilTerminated,nCode);
 end;
 
 procedure TaskKill(FileName: String);
