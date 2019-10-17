@@ -1,5 +1,10 @@
 # OotD Release Notes
 
+## 4.0.136
+* Fixed issue where calendar could not be interacted with
+* Fixed open links in About box
+* Runs on .net core 3 instead of .net framework
+
 ## 3.7.5
 * Fix issue where opening and closing Outlook while OotD was running, would cause OotD to stop working. 
 * Potentially fix issue for some where OotD would refuse to start, citing that it could not find Outlook installed on the machine.

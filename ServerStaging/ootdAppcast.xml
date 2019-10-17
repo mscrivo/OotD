@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>Outlook on the Desktop</title>
-    <link>http://www.outlookonthedesktop.com/ootdAppcast.xml</link>
+    <link>https://outlookonthedesktop.com/ootdAppcast.xml</link>
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
     <item>
-      <title>Version 3.7.5</title>
+      <title>Version 4.0.136</title>
       <sparkle:releaseNotesLink>
         https://outlookonthedesktop.com/ootdReleaseNotes.md
       </sparkle:releaseNotesLink>
-      <pubDate>Sun, 2 Dec 2018 14:30:00 +0000</pubDate>
-      <enclosure url="https://github.com/mscrivo/ootd/releases/download/3.7.5/ootd-3.7.5.0.exe" sparkle:version="3.7.5" length="2535976" type="application/octet-stream" />
+      <pubDate>Sat, 12 Oct 2019 13:20:00 +0000</pubDate>
+      <enclosure url="https://github.com/mscrivo/OotD/releases/download/4.0.136/ootd-4.0.136.0.exe" sparkle:version="4.0.136" length="3624929" type="application/octet-stream" />
     </item>
   </channel>
 </rss>
