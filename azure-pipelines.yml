@@ -5,8 +5,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  Major: 3
-  Minor: 99
+  Major: 4
+  Minor: 0
   BuildConfiguration: 'Release'
 
 name: $(Major).$(Minor).$(BuildID)
