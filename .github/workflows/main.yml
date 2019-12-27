@@ -7,8 +7,8 @@ jobs:
     runs-on: windows-2019  
     steps:
     - uses: actions/checkout@master
-    - name: Checkout submodules
-      uses: textbook/git-checkout-submodule-action@2.0.0
+    - name: Git Submodules Init
+      uses: chris-short/github-action-git-submodules@v0.1.0
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.100' # SDK Version to use.
