@@ -94,10 +94,10 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 [Code]
 const
   //switch to these on final release.  At the moment they don't work
-	dotnetCore3x64DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/a1510e74-b31a-4434-b8a0-8074ff31fb3f/b7de8ecba4a14d8312551cfdc745dea1/windowsdesktop-runtime-3.1.0-win-x64.exe';
-	dotnetCore3x86DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/e93147bb-7654-46d6-954a-bbd54da63b9b/cbdba4605fd04dc3886ca772d3953c53/windowsdesktop-runtime-3.1.0-win-x86.exe';
-  dotnetCore3x64DesktopFilename = 'windowsdesktop-runtime-3.1.0-win-x64.exe';
-  dotnetCore3x86DesktopFilename = 'windowsdesktop-runtime-3.1.0-win-x86.exe';
+	dotnetCore3x64DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/a1d41522-4da0-42bc-b3f2-e4b7d842974d/03101425368c87c55c1fe7cafbb4e0fb/windowsdesktop-runtime-3.1.1-win-x64.exe';
+	dotnetCore3x86DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/662153d9-58c5-4630-a326-ed9e4e342787/1deb6ba6a2a5f5f694b784a6859b446e/windowsdesktop-runtime-3.1.1-win-x86.exe';
+  dotnetCore3x64DesktopFilename = 'windowsdesktop-runtime-3.1.1-win-x64.exe';
+  dotnetCore3x86DesktopFilename = 'windowsdesktop-runtime-3.1.1-win-x86.exe';
 
 procedure InitializeWizard;
 begin
