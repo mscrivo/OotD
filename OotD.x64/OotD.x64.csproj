@@ -87,6 +87,10 @@
       <Link>NLog.xsd</Link>
       <SubType>Designer</SubType>
     </None>
+    <None Include="..\OotD.Core\NLog.config">
+      <Link>NLog.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MACTrackBarLib\MACTrackBarLib\MACTrackBarLib.csproj" />
@@ -266,7 +270,6 @@
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.7.82" />
     <PackageReference Include="NLog" Version="4.6.8" />
-    <PackageReference Include="NLog.Config" Version="4.6.8" />
     <PackageReference Include="NLog.Schema" Version="4.6.8" />
     <PackageReference Include="TaskScheduler" Version="2.8.18" />
   </ItemGroup>

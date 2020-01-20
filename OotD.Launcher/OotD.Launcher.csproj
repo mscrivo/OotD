@@ -50,6 +50,10 @@
       <Link>NLog.xsd</Link>
       <SubType>Designer</SubType>
     </None>
+    <None Include="..\OotD.Core\NLog.config">
+      <Link>NLog.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OotD.x64\OotD.x64.csproj" />
@@ -57,7 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.6.8" />
-    <PackageReference Include="NLog.Config" Version="4.6.8" />
     <PackageReference Include="NLog.Schema" Version="4.6.8" />
   </ItemGroup>
   <ItemGroup>
