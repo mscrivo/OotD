@@ -96,9 +96,9 @@ namespace OotD
             {
                 if (key != null)
                 {
-                    string[] subKeys = key.GetSubKeyNames();
+                    var subKeys = key.GetSubKeyNames();
 
-                    foreach (string subKey in subKeys)
+                    foreach (var subKey in subKeys)
                     {
                         Logger.Info($"Found {subKey} key");
 
