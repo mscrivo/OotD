@@ -1,5 +1,9 @@
 # OotD Release Notes
 
+## 4.0.152
+* Update to use .net core 3.1.1
+* Fix Logging
+
 ## 4.0.136
 * Fixed issue where calendar could not be interacted with
 * Fixed open links in About box
