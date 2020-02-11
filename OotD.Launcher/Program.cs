@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using NLog;
+using NLog.Targets;
+using OotD.Properties;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
-using Microsoft.Win32;
-using NLog;
-using NLog.Targets;
-using OotD.Properties;
 
 namespace OotD
 {
@@ -163,13 +163,13 @@ namespace OotD
             // now check for bitness, if we can't find it with the latest version, try finding it under the previous 
             // version numbers.
             string? bitness = null;
-                
+
             while (string.IsNullOrWhiteSpace(bitness) && version - 1 >= 14)
             {
                 bitness = GetBitness(version);
                 if (string.IsNullOrWhiteSpace(bitness))
                 {
-                    Logger.Info($"Could not find bitness key for Outlook under subkey {version}.0, trying {version-1}.0");
+                    Logger.Info($"Could not find bitness key for Outlook under subkey {version}.0, trying {version - 1}.0");
                     version--;
                 }
                 else
@@ -188,7 +188,7 @@ namespace OotD
 
             if (outlookKey != null)
             {
-                bitness = (string) outlookKey.GetValue("Bitness");
+                bitness = (string)outlookKey.GetValue("Bitness");
             }
             else
             {
@@ -199,7 +199,7 @@ namespace OotD
 
                 if (outlookKey != null)
                 {
-                    bitness = (string) outlookKey.GetValue("Bitness");
+                    bitness = (string)outlookKey.GetValue("Bitness");
                 }
             }
 

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using System.Xml.Linq;
-using Microsoft.Office.Interop.Outlook;
+﻿using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using NLog;
 using OotD.Enums;
@@ -14,6 +6,14 @@ using OotD.Events;
 using OotD.Preferences;
 using OotD.Properties;
 using OotD.Utility;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using System.Xml.Linq;
 using Application = System.Windows.Forms.Application;
 using Exception = System.Exception;
 using View = Microsoft.Office.Interop.Outlook.View;
@@ -336,7 +336,7 @@ namespace OotD.Forms
             {
                 foreach (var view in _outlookFolder.Views)
                 {
-                    var typedView = (View) view!;
+                    var typedView = (View)view!;
                     var viewItem = new ToolStripMenuItem(typedView.Name) { Tag = view };
 
                     viewItem.Click += ViewItem_Click;
@@ -483,7 +483,7 @@ namespace OotD.Forms
         {
             foreach (var menuItem in menuItems)
             {
-                if (menuItem != null) ((ToolStripMenuItem) menuItem).Checked = menuItem == itemToCheck;
+                if (menuItem != null) ((ToolStripMenuItem)menuItem).Checked = menuItem == itemToCheck;
             }
         }
 

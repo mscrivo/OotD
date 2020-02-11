@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using NetSparkle;
+using NLog;
+using OotD.Events;
+using OotD.Preferences;
+using OotD.Properties;
+using OotD.Utility;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -7,13 +14,6 @@ using System.Linq;
 using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
-using Microsoft.Win32;
-using NetSparkle;
-using NLog;
-using OotD.Events;
-using OotD.Preferences;
-using OotD.Properties;
-using OotD.Utility;
 
 namespace OotD.Forms
 {

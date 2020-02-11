@@ -1,14 +1,14 @@
-﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Windows.Forms;
-using CommandLine;
+﻿using CommandLine;
 using Microsoft.Office.Interop.Outlook;
 using NLog;
 using OotD.Forms;
 using OotD.Preferences;
 using OotD.Properties;
+using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows.Forms;
 using Application = Microsoft.Office.Interop.Outlook.Application;
 using Exception = System.Exception;
 
@@ -90,7 +90,7 @@ namespace OotD
                     MessageBox.Show(Resources.ProgramIsAlreadyRunning, Resources.ProgramIsAlreadyRunningCaption,
                         MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                 }
-            }            
+            }
         }
 
         private static void ProcessCommandLineArgs(Options opts)
@@ -101,7 +101,7 @@ namespace OotD
             }
 
             if (opts.CreateStartupEntry)
-            {               
+            {
                 TaskScheduling.CreateOotDStartupTask(_logger);
                 Environment.Exit(0);
             }

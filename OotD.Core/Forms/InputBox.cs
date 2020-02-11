@@ -1,7 +1,7 @@
-﻿using System;
+﻿using OotD.Events;
+using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using OotD.Events;
 
 namespace OotD.Forms
 {
@@ -44,9 +44,9 @@ namespace OotD.Forms
             using var form = new InputBox
             {
                 Owner = owner,
-                PromptLabel = {Text = instructions},
+                PromptLabel = { Text = instructions },
                 Text = caption,
-                InputTextBox = {Text = defaultValue},
+                InputTextBox = { Text = defaultValue },
                 Validator = validator
             };
 

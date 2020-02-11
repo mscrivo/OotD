@@ -1,8 +1,8 @@
+using NLog;
+using OotD.Properties;
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using NLog;
-using OotD.Properties;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming

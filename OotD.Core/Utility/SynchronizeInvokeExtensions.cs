@@ -13,7 +13,7 @@ namespace OotD.Utility
         {
             if (@this.InvokeRequired)
             {
-                @this.Invoke(action, new object[] {@this});
+                @this.Invoke(action, new object[] { @this });
             }
             else
             {

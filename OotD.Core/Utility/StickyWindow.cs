@@ -116,19 +116,19 @@ namespace OotD.Utility
             switch (m.Msg)
             {
                 case UnsafeNativeMethods.WM.WM_NCLBUTTONDOWN:
-                {
-                    _originalForm.Activate();
-                    _mousePoint.X = (short)UnsafeNativeMethods.Bit.LoWord((int)m.LParam);
-                    _mousePoint.Y = (short)UnsafeNativeMethods.Bit.HiWord((int)m.LParam);
-
-                    if (OnNCLButtonDown((int)m.WParam, _mousePoint))
                     {
-                        //m.Result = new IntPtr ( (resizingForm || movingForm) ? 1 : 0 );
-                        m.Result = (IntPtr)(_resizingForm || _movingForm ? 1 : 0);
-                        return true;
+                        _originalForm.Activate();
+                        _mousePoint.X = (short)UnsafeNativeMethods.Bit.LoWord((int)m.LParam);
+                        _mousePoint.Y = (short)UnsafeNativeMethods.Bit.HiWord((int)m.LParam);
+
+                        if (OnNCLButtonDown((int)m.WParam, _mousePoint))
+                        {
+                            //m.Result = new IntPtr ( (resizingForm || movingForm) ? 1 : 0 );
+                            m.Result = (IntPtr)(_resizingForm || _movingForm ? 1 : 0);
+                            return true;
+                        }
+                        break;
                     }
-                    break;
-                }
             }
 
             return false;
@@ -151,17 +151,17 @@ namespace OotD.Utility
             switch (iHitTest)
             {
                 case UnsafeNativeMethods.HT.HTCAPTION:
-                {
-                    // request for move
-                    if (StickOnMove)
                     {
-                        var pointInApp = _originalForm.PointToClient(Cursor.Position);
-                        _offsetPoint.Offset(pointInApp.X, pointInApp.Y);
-                        StartMove();
-                        return true;
+                        // request for move
+                        if (StickOnMove)
+                        {
+                            var pointInApp = _originalForm.PointToClient(Cursor.Position);
+                            _offsetPoint.Offset(pointInApp.X, pointInApp.Y);
+                            StartMove();
+                            return true;
+                        }
+                        return false; // leave default processing
                     }
-                    return false; // leave default processing
-                }
 
                 // requests for resize
                 case UnsafeNativeMethods.HT.HTTOPLEFT:
@@ -350,27 +350,27 @@ namespace OotD.Utility
             switch (m.Msg)
             {
                 case UnsafeNativeMethods.WM.WM_LBUTTONUP:
-                {
-                    // ok, resize finished !!!
-                    EndResize();
-                    break;
-                }
-                case UnsafeNativeMethods.WM.WM_MOUSEMOVE:
-                {
-                    _mousePoint.X = (short)UnsafeNativeMethods.Bit.LoWord((int)m.LParam);
-                    _mousePoint.Y = (short)UnsafeNativeMethods.Bit.HiWord((int)m.LParam);
-                    Resize(_mousePoint);
-                    break;
-                }
-                case UnsafeNativeMethods.WM.WM_KEYDOWN:
-                {
-                    if ((int)m.WParam == UnsafeNativeMethods.VK.VK_ESCAPE)
                     {
-                        _originalForm.Bounds = _formOriginalRect; // set back old size
-                        Cancel();
+                        // ok, resize finished !!!
+                        EndResize();
+                        break;
                     }
-                    break;
-                }
+                case UnsafeNativeMethods.WM.WM_MOUSEMOVE:
+                    {
+                        _mousePoint.X = (short)UnsafeNativeMethods.Bit.LoWord((int)m.LParam);
+                        _mousePoint.Y = (short)UnsafeNativeMethods.Bit.HiWord((int)m.LParam);
+                        Resize(_mousePoint);
+                        break;
+                    }
+                case UnsafeNativeMethods.WM.WM_KEYDOWN:
+                    {
+                        if ((int)m.WParam == UnsafeNativeMethods.VK.VK_ESCAPE)
+                        {
+                            _originalForm.Bounds = _formOriginalRect; // set back old size
+                            Cancel();
+                        }
+                        break;
+                    }
             }
 
             return false;
@@ -562,27 +562,27 @@ namespace OotD.Utility
             switch (m.Msg)
             {
                 case UnsafeNativeMethods.WM.WM_LBUTTONUP:
-                {
-                    // ok, move finished !!!
-                    EndMove();
-                    break;
-                }
-                case UnsafeNativeMethods.WM.WM_MOUSEMOVE:
-                {
-                    _mousePoint.X = (short)UnsafeNativeMethods.Bit.LoWord((int)m.LParam);
-                    _mousePoint.Y = (short)UnsafeNativeMethods.Bit.HiWord((int)m.LParam);
-                    Move(_mousePoint);
-                    break;
-                }
-                case UnsafeNativeMethods.WM.WM_KEYDOWN:
-                {
-                    if ((int)m.WParam == UnsafeNativeMethods.VK.VK_ESCAPE)
                     {
-                        _originalForm.Bounds = _formOriginalRect; // set back old size
-                        Cancel();
+                        // ok, move finished !!!
+                        EndMove();
+                        break;
                     }
-                    break;
-                }
+                case UnsafeNativeMethods.WM.WM_MOUSEMOVE:
+                    {
+                        _mousePoint.X = (short)UnsafeNativeMethods.Bit.LoWord((int)m.LParam);
+                        _mousePoint.Y = (short)UnsafeNativeMethods.Bit.HiWord((int)m.LParam);
+                        Move(_mousePoint);
+                        break;
+                    }
+                case UnsafeNativeMethods.WM.WM_KEYDOWN:
+                    {
+                        if ((int)m.WParam == UnsafeNativeMethods.VK.VK_ESCAPE)
+                        {
+                            _originalForm.Bounds = _formOriginalRect; // set back old size
+                            Cancel();
+                        }
+                        break;
+                    }
             }
 
             return false;

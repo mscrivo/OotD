@@ -1,6 +1,6 @@
+using Microsoft.Win32;
 using System.Globalization;
 using System.Windows.Forms;
-using Microsoft.Win32;
 
 namespace OotD.Preferences
 {
