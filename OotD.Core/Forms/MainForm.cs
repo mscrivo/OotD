@@ -65,6 +65,7 @@ namespace OotD.Forms
             try
             {
                 InstanceName = instanceName;
+                Preferences = new InstancePreferences(InstanceName);
 
                 // Uniquely identify the previous/next buttons for use in an ugly hack below.
                 ButtonNext.Tag = Guid.NewGuid();
@@ -169,9 +170,6 @@ namespace OotD.Forms
         /// </summary>
         private void LoadSettings()
         {
-            // create a new instance of the preferences class
-            Preferences = new InstancePreferences(InstanceName);
-
             // There should be no reason other than first run as to why the Store and Entry IDs are 
             // empty. 
             if (string.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
@@ -184,43 +182,57 @@ namespace OotD.Forms
 
             SetMAPIFolder();
 
-            // Sets the opacity of the instance. 
+            SetWindowOpacity();
+
+            SetInitialPosition();
+
+            SetSelectedMenuItem();
+
+            InitializeViewsFromPreferences();
+
+            // Get a copy of the possible outlook views for the selected folder and populate the context menu for this instance. 
+            UpdateOutlookViewsList();
+
+            // Sets whether the instance is allowed to be edited or not
+            if (Preferences.DisableEditing)
+            {
+                DisableEnableEditing();
+            }
+        }
+
+        private void InitializeViewsFromPreferences()
+        {
+            // Sets the view control folder from preferences. 
+            OutlookViewControl.Folder = Preferences.OutlookFolderName;
+
+            // Sets the selected view from preferences. 
             try
             {
-                Opacity = Preferences.Opacity;
+                OutlookViewControl.View = Preferences.OutlookFolderView;
             }
-            catch (Exception ex)
+            catch
             {
-                // use default if there was a problem
-                Opacity = InstancePreferences.DefaultOpacity;
-                _logger.Error(ex, "Error setting opacity.");
-                MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK,
-                                MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                // if we get an exception here, it means the view stored doesn't apply to the current folder view,
+                // so just reset it.
+                Preferences.OutlookFolderView = string.Empty;
             }
 
-            TransparencySlider.Value = (int)(Preferences.Opacity * 100);
-
-            // Sets the position of the instance. 
-            try
+            // If the view is a calendar view, use the stored ViewXML to restore their day/week/month view setting.
+            if (Preferences.OutlookFolderName == FolderViewType.Calendar.ToString())
             {
-                Left = Preferences.Left;
-                Top = Preferences.Top;
-                Width = Preferences.Width;
-                Height = Preferences.Height;
+                if (!string.IsNullOrEmpty(Preferences.ViewXml))
+                {
+                    OutlookViewControl.ViewXML = Preferences.ViewXml;
+                }
+                else
+                {
+                    SetViewXml(Resources.MonthXML);
+                }
             }
-            catch (Exception ex)
-            {
-                // use defaults if there was a problem
-                Left = InstancePreferences.DefaultTopPosition;
-                Top = InstancePreferences.DefaultLeftPosition;
-                Width = InstancePreferences.DefaultWidth;
-                Height = InstancePreferences.DefaultHeight;
-                _logger.Error(ex, "Error setting window position.");
-                MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK,
-                                MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-            }
+        }
 
-            // Checks the menuitem of the current folder.
+        private void SetSelectedMenuItem()
+        {
             if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Calendar)?.Name)
             {
                 CalendarMenu.Checked = true;
@@ -250,8 +262,9 @@ namespace OotD.Forms
                 // custom folder
                 _customFolder = Preferences.OutlookFolderName;
                 var folderName = GetFolderNameFromFullPath(_customFolder);
-                TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
-                _customMenu = (ToolStripMenuItem)TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
+                TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
+                    new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
+                _customMenu = (ToolStripMenuItem) TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 _customMenu.Checked = true;
 
                 // store the custom folder definition in case the user wants to switch back to it and we need to reload it.
@@ -259,43 +272,46 @@ namespace OotD.Forms
                 _customFolderDefinition.OutlookFolderStoreId = Preferences.OutlookFolderStoreId;
                 _customFolderDefinition.OutlookFolderEntryId = Preferences.OutlookFolderEntryId;
             }
+        }
 
-            // Sets the view control folder from preferences. 
-            OutlookViewControl.Folder = Preferences.OutlookFolderName;
-
-            // Sets the selected view from preferences. 
+        private void SetInitialPosition()
+        {
             try
             {
-                OutlookViewControl.View = Preferences.OutlookFolderView;
+                Left = Preferences.Left;
+                Top = Preferences.Top;
+                Width = Preferences.Width;
+                Height = Preferences.Height;
             }
-            catch
+            catch (Exception ex)
             {
-                // if we get an exception here, it means the view stored doesn't apply to the current folder view,
-                // so just reset it.
-                Preferences.OutlookFolderView = string.Empty;
+                // use defaults if there was a problem
+                Left = InstancePreferences.DefaultTopPosition;
+                Top = InstancePreferences.DefaultLeftPosition;
+                Width = InstancePreferences.DefaultWidth;
+                Height = InstancePreferences.DefaultHeight;
+                _logger.Error(ex, "Error setting window position.");
+                MessageBox.Show(this, Resources.ErrorSettingDimensions, Resources.ErrorCaption, MessageBoxButtons.OK,
+                    MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            }
+        }
+
+        private void SetWindowOpacity()
+        {
+            try
+            {
+                Opacity = Preferences.Opacity;
+            }
+            catch (Exception ex)
+            {
+                // use default if there was a problem
+                Opacity = InstancePreferences.DefaultOpacity;
+                _logger.Error(ex, "Error setting opacity.");
+                MessageBox.Show(this, Resources.ErrorSettingOpacity, Resources.ErrorCaption, MessageBoxButtons.OK,
+                    MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
-            // If the view is a calendar view, use the stored ViewXML to restore their day/week/month view setting.
-            if (Preferences.OutlookFolderName == FolderViewType.Calendar.ToString())
-            {
-                if (!string.IsNullOrEmpty(Preferences.ViewXml))
-                {
-                    OutlookViewControl.ViewXML = Preferences.ViewXml;
-                }
-                else
-                {
-                    SetViewXml(Resources.MonthXML);
-                }
-            }
-
-            // Get a copy of the possible outlook views for the selected folder and populate the context menu for this instance. 
-            UpdateOutlookViewsList();
-
-            // Sets whether the instance is allowed to be edited or not
-            if (Preferences.DisableEditing)
-            {
-                DisableEnableEditing();
-            }
+            TransparencySlider.Value = (int) (Preferences.Opacity * 100);
         }
 
         /// <summary>
@@ -461,7 +477,7 @@ namespace OotD.Forms
         }
 
         /// <summary>
-        /// Checks the passed menu item and unchecks the rest.
+        /// Checks the passed in menu item and deselects the rest.
         /// This is used only for the folder types menu. 
         /// </summary>
         /// <param name="itemToCheck"></param>
@@ -478,7 +494,7 @@ namespace OotD.Forms
         /// For a given collection of MenuItems this function will iterate through them and then check the passed item. 
         /// </summary>
         /// <param name="itemToCheck">Item to check in the list</param>
-        /// <param name="menuItems">IList of the menuitems to check</param>
+        /// <param name="menuItems">List of the menuItems to check</param>
         private static void CheckSelectedMenuItemInCollection(ToolStripMenuItem? itemToCheck, IEnumerable menuItems)
         {
             foreach (var menuItem in menuItems)
@@ -742,7 +758,7 @@ namespace OotD.Forms
             DefaultFolderTypesClicked(FolderViewType.Tasks, TasksMenu);
         }
 
-        private void TodosMenu_Click(object sender, EventArgs e)
+        private void ToDosMenu_Click(object sender, EventArgs e)
         {
             DefaultFolderTypesClicked(FolderViewType.Todo, TodosMenu);
         }
@@ -1046,23 +1062,14 @@ namespace OotD.Forms
 
         private static double GetNextPreviousOffsetBasedOnCalendarViewMode(CurrentCalendarView mode)
         {
-            double offset;
-
-            switch (mode)
+            var offset = mode switch
             {
-                case CurrentCalendarView.Day:
-                    offset = 1;
-                    break;
-                case CurrentCalendarView.Week:
-                case CurrentCalendarView.WorkWeek:
-                    offset = 7;
-                    break;
-                case CurrentCalendarView.Month:
-                    offset = 31;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
-            }
+                CurrentCalendarView.Day => 1,
+                CurrentCalendarView.Week => 7,
+                CurrentCalendarView.WorkWeek => 7,
+                CurrentCalendarView.Month => 31,
+                _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+            };
 
             return offset;
         }
@@ -1187,7 +1194,7 @@ namespace OotD.Forms
 
         private ResizeDirection _resizeDir = ResizeDirection.None;
         private List<View>? OutlookFolderViews { get; set; }
-        public InstancePreferences? Preferences { get; private set; }
+        public InstancePreferences Preferences { get; private set; }
         private string InstanceName { get; set; }
 
         private ResizeDirection ResizeDir

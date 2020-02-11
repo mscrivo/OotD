@@ -151,7 +151,7 @@ namespace OotD.Forms
             this.TodosMenu.Name = "TodosMenu";
             this.TodosMenu.Size = new System.Drawing.Size(186, 22);
             this.TodosMenu.Text = "To-Do List";
-            this.TodosMenu.Click += new System.EventHandler(this.TodosMenu_Click);
+            this.TodosMenu.Click += new System.EventHandler(this.ToDosMenu_Click);
             // 
             // Separator1
             // 
