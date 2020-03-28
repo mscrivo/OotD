@@ -357,7 +357,7 @@ namespace OotD.Forms
 
                     viewItem.Click += ViewItem_Click;
 
-                    if (typedView.Name == Preferences?.OutlookFolderView)
+                    if (typedView.Name == Preferences.OutlookFolderView)
                         viewItem.Checked = true;
 
                     OutlookViewsMenu.DropDownItems.Add(viewItem);
