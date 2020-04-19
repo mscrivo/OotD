@@ -35,17 +35,16 @@ namespace OotD.Preferences
         {
             get
             {
-                using (var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+                using var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
+                if (key != null)
                 {
-                    if (key != null)
+                    if (bool.TryParse((string)key.GetValue("LockPosition", "false"), out var lockPositions) &&
+                        lockPositions)
                     {
-                        if (bool.TryParse((string)key.GetValue("LockPosition", "false"), out var lockPositions) &&
-                            lockPositions)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
+
                 return false;
             }
             set

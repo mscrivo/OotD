@@ -85,12 +85,10 @@ namespace OotD.Forms
             {
                 var instanceCount = 0;
 
-                using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
-                {
-                    if (appReg == null) return instanceCount;
+                using var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
+                if (appReg == null) return instanceCount;
 
-                    instanceCount += appReg.GetSubKeyNames().Count(instanceName => instanceName != AutoUpdateInstanceName);
-                }
+                instanceCount += appReg.GetSubKeyNames().Count(instanceName => instanceName != AutoUpdateInstanceName);
 
                 return instanceCount;
             }
