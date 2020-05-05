@@ -47,15 +47,11 @@
     <Compile Include="..\OotD.Core\Events\InputBoxValidatingEventArgs.cs" Link="Events\InputBoxValidatingEventArgs.cs" />
     <Compile Include="..\OotD.Core\Events\InstanceRemovedEventArgs.cs" Link="Events\InstanceRemovedEventArgs.cs" />
     <Compile Include="..\OotD.Core\Events\InstanceRenamedEventArgs.cs" Link="Events\InstanceRenamedEventArgs.cs" />
-    <Compile Include="..\OotD.Core\Forms\AboutBox.cs" Link="Forms\AboutBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="..\OotD.Core\Forms\AboutBox.cs" Link="Forms\AboutBox.cs" />
     <Compile Include="..\OotD.Core\Forms\AboutBox.Designer.cs" Link="Forms\AboutBox.designer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\OotD.Core\Forms\InputBox.cs" Link="Forms\InputBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="..\OotD.Core\Forms\InputBox.cs" Link="Forms\InputBox.cs" />
     <Compile Include="..\OotD.Core\Forms\InputBox.Designer.cs" Link="Forms\InputBox.Designer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -268,7 +264,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.7.82" />
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
     <PackageReference Include="NLog" Version="4.7.0" />
     <PackageReference Include="NLog.Schema" Version="4.7.0" />
     <PackageReference Include="TaskScheduler" Version="2.8.18" />

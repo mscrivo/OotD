@@ -96,30 +96,22 @@
     <None Include="Resources\Icons\30.ico" />
     <None Include="Resources\Icons\31.ico" />
     <None Include="Resources\Images\paypal.gif" />
-    <Compile Update="Forms\AboutBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Forms\AboutBox.cs" />
     <Compile Update="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\InputBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Forms\InputBox.cs" />
     <Compile Update="Forms\InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\InstanceManager.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Forms\InstanceManager.cs" />
     <Compile Update="Forms\InstanceManager.Designer.cs">
       <DependentUpon>InstanceManager.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Forms\MainForm.cs" />
     <Compile Update="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Form</SubType>
@@ -164,7 +156,7 @@
     <ProjectReference Include="..\NetSparkle\NetSparkle\NetSparkle.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.7.82" />
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
     <PackageReference Include="NLog" Version="4.7.0" />
     <PackageReference Include="NLog.Schema" Version="4.7.0" />
     <PackageReference Include="TaskScheduler" Version="2.8.18" />
