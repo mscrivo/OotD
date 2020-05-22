@@ -96,52 +96,6 @@
     <None Include="Resources\Icons\30.ico" />
     <None Include="Resources\Icons\31.ico" />
     <None Include="Resources\Images\paypal.gif" />
-    <Compile Update="Forms\AboutBox.cs" />
-    <Compile Update="Forms\AboutBox.Designer.cs">
-      <DependentUpon>AboutBox.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\InputBox.cs" />
-    <Compile Update="Forms\InputBox.Designer.cs">
-      <DependentUpon>InputBox.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\InstanceManager.cs" />
-    <Compile Update="Forms\InstanceManager.Designer.cs">
-      <DependentUpon>InstanceManager.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\MainForm.cs" />
-    <Compile Update="Forms\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Update="Forms\InstanceManager.resx">
-      <DependentUpon>InstanceManager.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Forms\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Forms\AboutBox.resx">
-      <DependentUpon>AboutBox.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Forms\InputBox.resx">
-      <DependentUpon>InputBox.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Icons\AppIcon.ico" />

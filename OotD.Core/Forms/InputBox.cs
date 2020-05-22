@@ -12,7 +12,7 @@ namespace OotD.Forms
 
     public partial class InputBox : Form
     {
-        private InputBox()
+        public InputBox()
         {
             InitializeComponent();
         }

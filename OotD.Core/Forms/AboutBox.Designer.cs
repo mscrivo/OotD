@@ -1,4 +1,4 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace OotD.Forms
@@ -8,11 +8,12 @@ namespace OotD.Forms
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private IContainer components = null;
+        private System.ComponentModel.IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))

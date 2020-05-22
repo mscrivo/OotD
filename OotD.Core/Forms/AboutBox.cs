@@ -1,4 +1,4 @@
-using OotD.Properties;
+﻿using OotD.Properties;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace OotD.Forms
 {
-    internal partial class AboutBox : Form
+    public partial class AboutBox : Form
     {
         public AboutBox()
         {
