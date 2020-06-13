@@ -58,7 +58,10 @@ namespace OotD.Preferences
         {
             get
             {
-                if (_isFirstRun.HasValue) return _isFirstRun.Value;
+                if (_isFirstRun.HasValue)
+                {
+                    return _isFirstRun.Value;
+                }
 
                 using (var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
                 {

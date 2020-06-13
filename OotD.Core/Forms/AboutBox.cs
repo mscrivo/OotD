@@ -24,7 +24,7 @@ namespace OotD.Forms
             labelCopyright.Text = CopyRight;
         }
 
-        public sealed override string Text
+        public override sealed string Text
         {
             get => base.Text;
             set => base.Text = value;
@@ -46,7 +46,9 @@ namespace OotD.Forms
                     var titleAttribute = (AssemblyTitleAttribute)attributes[0];
                     // If it is not an empty string, return it
                     if (!string.IsNullOrEmpty(titleAttribute.Title))
+                    {
                         return titleAttribute.Title;
+                    }
                 }
                 // If there was no Title attribute, or if the Title attribute was the empty string, return the .exe name
                 return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
@@ -72,7 +74,10 @@ namespace OotD.Forms
                     Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
                 // If there aren't any Product attributes, return an empty string
                 if (attributes.Length == 0)
+                {
                     return "";
+                }
+
                 // If there is a Product attribute, return its value
                 return ((AssemblyProductAttribute)attributes[0]).Product;
             }
@@ -87,7 +92,10 @@ namespace OotD.Forms
                     Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
                 // If there aren't any Copyright attributes, return an empty string
                 if (attributes.Length == 0)
+                {
                     return "";
+                }
+
                 // If there is a Copyright attribute, return its value
                 return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
             }

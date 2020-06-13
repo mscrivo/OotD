@@ -1,8 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.36
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OotD.x64", "OotD.x64\OotD.x64.csproj", "{93AB22DD-EE7C-4B26-8776-76EE613EC40C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OotD.x64", "OotD.x64\OotD.x64.csproj", "{93AB22DD-EE7C-4B26-8776-76EE613EC40C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{07B2D199-0589-433B-8C1F-A8B3BF22D4E0}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,17 +13,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{07B2D1
 		Setup Script.iss = Setup Script.iss
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OotD.x86", "OotD.x86\OotD.x86.csproj", "{38490DB9-CF42-4280-BE5B-01CDB8797EDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OotD.x86", "OotD.x86\OotD.x86.csproj", "{38490DB9-CF42-4280-BE5B-01CDB8797EDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OotD.Launcher", "OotD.Launcher\OotD.Launcher.csproj", "{1CE51416-D856-44D8-969E-AB9FEE70E27F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OotD.Launcher", "OotD.Launcher\OotD.Launcher.csproj", "{1CE51416-D856-44D8-969E-AB9FEE70E27F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{F8364F13-324D-47E9-A732-EE2875F55BF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OotD.Core", "OotD.Core\OotD.Core.csproj", "{C38D62CC-0544-4D90-83B9-B222CB5A8EF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OotD.Core", "OotD.Core\OotD.Core.csproj", "{C38D62CC-0544-4D90-83B9-B222CB5A8EF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MACTrackBarLib", "MACTrackBarLib\MACTrackBarLib\MACTrackBarLib.csproj", "{77A112B1-5440-440B-A0F6-2EDCC5B093CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MACTrackBarLib", "MACTrackBarLib\MACTrackBarLib\MACTrackBarLib.csproj", "{77A112B1-5440-440B-A0F6-2EDCC5B093CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetSparkle", "NetSparkle\NetSparkle\NetSparkle.csproj", "{74635A21-2BAD-4522-AB95-E3E5703CD301}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetSparkle", "NetSparkle\NetSparkle\NetSparkle.csproj", "{74635A21-2BAD-4522-AB95-E3E5703CD301}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{19CE5627-1B2C-44BE-86A4-CED5B029D570}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

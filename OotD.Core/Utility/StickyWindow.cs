@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Security.Permissions;
 using System.Windows.Forms;
@@ -28,7 +29,8 @@ namespace OotD.Utility
     ///     You get a nice way of organizing multiple top-level windows.
     ///     Quite similar with WinAmp 2.x style of sticking the windows
     /// </summary>
-    public class StickyWindow : NativeWindow
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+    public sealed class StickyWindow : NativeWindow
     {
         /// <summary>
         ///     Global List of registered StickyWindows
@@ -99,7 +101,9 @@ namespace OotD.Utility
         protected override void WndProc(ref Message m)
         {
             if (!_messageProcessor(ref m))
+            {
                 base.WndProc(ref m);
+            }
         }
 
         #endregion
@@ -192,9 +196,15 @@ namespace OotD.Utility
         private int NormalizeInside(int iP1, int iM1, int iM2)
         {
             if (iP1 <= iM1)
+            {
                 return iM1;
+            }
+
             if (iP1 >= iM2)
+            {
                 return iM2;
+            }
+
             return iP1;
         }
 
@@ -262,7 +272,7 @@ namespace OotD.Utility
         #region Public operations and properties
 
         /// <summary>
-        ///     Distance in pixels betwen two forms or a form and the screen where the sticking should start
+        ///     Distance in pixels between two forms or a form and the screen where the sticking should start
         ///     Default value = 20
         /// </summary>
         public int StickGap
@@ -330,7 +340,9 @@ namespace OotD.Utility
                 _formOriginalRect = _originalForm.Bounds; // save the old bounds
 
                 if (!_originalForm.Capture) // start capturing messages
+                {
                     _originalForm.Capture = true;
+                }
 
                 _messageProcessor = _resizeMessageProcessor;
 
@@ -403,7 +415,9 @@ namespace OotD.Utility
                 _formRect.X = iRight - _formRect.Width;
             }
             if ((_resizeDirection & ResizeDir.Right) == ResizeDir.Right)
+            {
                 _formRect.Width = p.X - _formRect.Left;
+            }
 
             if ((_resizeDirection & ResizeDir.Top) == ResizeDir.Top)
             {
@@ -411,7 +425,9 @@ namespace OotD.Utility
                 _formRect.Y = iBottom - _formRect.Height;
             }
             if ((_resizeDirection & ResizeDir.Bottom) == ResizeDir.Bottom)
+            {
                 _formRect.Height = p.Y - _formRect.Top;
+            }
 
             // this is the real new position
             // now, try to snap it to different objects (first to screen)
@@ -424,7 +440,9 @@ namespace OotD.Utility
             _formOffsetRect.Width = 0;
 
             if (StickToScreen)
+            {
                 Resize_Stick(activeScr.WorkingArea, false);
+            }
 
             if (StickToOther)
             {
@@ -433,20 +451,35 @@ namespace OotD.Utility
                 {
                     var form = sw as Form;
                     if (form != _originalForm)
+                    {
                         if (form != null)
+                        {
                             Resize_Stick(form.Bounds, true);
+                        }
+                    }
                 }
             }
 
             // Fix (clear) the values that were not updated to stick
             if (_formOffsetRect.X == _stickGap + 1)
+            {
                 _formOffsetRect.X = 0;
+            }
+
             if (_formOffsetRect.Width == _stickGap + 1)
+            {
                 _formOffsetRect.Width = 0;
+            }
+
             if (_formOffsetRect.Y == _stickGap + 1)
+            {
                 _formOffsetRect.Y = 0;
+            }
+
             if (_formOffsetRect.Height == _stickGap + 1)
+            {
                 _formOffsetRect.Height = 0;
+            }
 
             // compute the new form size
             if ((_resizeDirection & ResizeDir.Left) == ResizeDir.Left)
@@ -455,7 +488,9 @@ namespace OotD.Utility
                 var iNewWidth = _formRect.Width + _formOffsetRect.Width + _formOffsetRect.X;
 
                 if (_originalForm.MaximumSize.Width != 0)
+                {
                     iNewWidth = Math.Min(iNewWidth, _originalForm.MaximumSize.Width);
+                }
 
                 iNewWidth = Math.Min(iNewWidth, SystemInformation.MaxWindowTrackSize.Width);
                 iNewWidth = Math.Max(iNewWidth, _originalForm.MinimumSize.Width);
@@ -475,7 +510,9 @@ namespace OotD.Utility
                 var iNewHeight = _formRect.Height + _formOffsetRect.Height + _formOffsetRect.Y;
 
                 if (_originalForm.MaximumSize.Height != 0)
+                {
                     iNewHeight = Math.Min(iNewHeight, _originalForm.MaximumSize.Height);
+                }
 
                 iNewHeight = Math.Min(iNewHeight, SystemInformation.MaxWindowTrackSize.Height);
                 iNewHeight = Math.Max(iNewHeight, _originalForm.MinimumSize.Height);
@@ -501,17 +538,25 @@ namespace OotD.Utility
                 if ((_resizeDirection & ResizeDir.Top) == ResizeDir.Top)
                 {
                     if (Math.Abs(_formRect.Top - toRect.Bottom) <= Math.Abs(_formOffsetRect.Top) && bInsideStick)
+                    {
                         _formOffsetRect.Y = _formRect.Top - toRect.Bottom; // snap top to bottom
+                    }
                     else if (Math.Abs(_formRect.Top - toRect.Top) <= Math.Abs(_formOffsetRect.Top))
+                    {
                         _formOffsetRect.Y = _formRect.Top - toRect.Top; // snap top to top
+                    }
                 }
 
                 if ((_resizeDirection & ResizeDir.Bottom) == ResizeDir.Bottom)
                 {
                     if (Math.Abs(_formRect.Bottom - toRect.Top) <= Math.Abs(_formOffsetRect.Bottom) && bInsideStick)
+                    {
                         _formOffsetRect.Height = toRect.Top - _formRect.Bottom; // snap Bottom to top
+                    }
                     else if (Math.Abs(_formRect.Bottom - toRect.Bottom) <= Math.Abs(_formOffsetRect.Bottom))
+                    {
                         _formOffsetRect.Height = toRect.Bottom - _formRect.Bottom; // snap bottom to bottom
+                    }
                 }
             }
 
@@ -520,17 +565,25 @@ namespace OotD.Utility
                 if ((_resizeDirection & ResizeDir.Right) == ResizeDir.Right)
                 {
                     if (Math.Abs(_formRect.Right - toRect.Left) <= Math.Abs(_formOffsetRect.Right) && bInsideStick)
+                    {
                         _formOffsetRect.Width = toRect.Left - _formRect.Right; // Stick right to left
+                    }
                     else if (Math.Abs(_formRect.Right - toRect.Right) <= Math.Abs(_formOffsetRect.Right))
+                    {
                         _formOffsetRect.Width = toRect.Right - _formRect.Right; // Stick right to right
+                    }
                 }
 
                 if ((_resizeDirection & ResizeDir.Left) == ResizeDir.Left)
                 {
                     if (Math.Abs(_formRect.Left - toRect.Right) <= Math.Abs(_formOffsetRect.Left) && bInsideStick)
+                    {
                         _formOffsetRect.X = _formRect.Left - toRect.Right; // Stick left to right
+                    }
                     else if (Math.Abs(_formRect.Left - toRect.Left) <= Math.Abs(_formOffsetRect.Left))
+                    {
                         _formOffsetRect.X = _formRect.Left - toRect.Left; // Stick left to left
+                    }
                 }
             }
         }
@@ -545,7 +598,9 @@ namespace OotD.Utility
             _formOriginalRect = _originalForm.Bounds; // save original position
 
             if (!_originalForm.Capture) // start capturing messages
+            {
                 _originalForm.Capture = true;
+            }
 
             _messageProcessor = _moveMessageProcessor;
         }
@@ -619,7 +674,9 @@ namespace OotD.Utility
             _formOffsetPoint.Y = _stickGap + 1;
 
             if (StickToScreen)
+            {
                 Move_Stick(activeScr.WorkingArea, false);
+            }
 
             // Now try to snap to other windows
             if (StickToOther)
@@ -628,15 +685,24 @@ namespace OotD.Utility
                 {
                     var form = sw as Form;
                     if (form != _originalForm)
+                    {
                         if (form != null)
+                        {
                             Move_Stick(form.Bounds, true);
+                        }
+                    }
                 }
             }
 
             if (_formOffsetPoint.X == _stickGap + 1)
+            {
                 _formOffsetPoint.X = 0;
+            }
+
             if (_formOffsetPoint.Y == _stickGap + 1)
+            {
                 _formOffsetPoint.Y = 0;
+            }
 
             _formRect.Offset(_formOffsetPoint);
 
@@ -710,12 +776,12 @@ namespace OotD.Utility
 
         #endregion
 
-        protected virtual void OnResizeEnded()
+        private void OnResizeEnded()
         {
             ResizeEnded?.Invoke(this, EventArgs.Empty);
         }
 
-        protected virtual void OnMoveEnded()
+        private void OnMoveEnded()
         {
             MoveEnded?.Invoke(this, EventArgs.Empty);
         }

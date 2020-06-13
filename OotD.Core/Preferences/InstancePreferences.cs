@@ -30,7 +30,9 @@ namespace OotD.Preferences
 
                 if (
                     double.TryParse((string)_appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture)), out opacity))
+                {
                     return opacity;
+                }
 
                 return DefaultOpacity;
             }

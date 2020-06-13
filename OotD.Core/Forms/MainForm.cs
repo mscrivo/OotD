@@ -117,10 +117,14 @@ namespace OotD.Forms
         {
             if (Environment.OSVersion.Version.Major < 6 || !UnsafeNativeMethods.DwmIsCompositionEnabled())
                 // Windows XP or higher with DWM window composition disabled
+            {
                 UnsafeNativeMethods.PinWindowToDesktop(this);
+            }
             else if (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 0)
                 // Vista
+            {
                 UnsafeNativeMethods.SendWindowToBack(this);
+            }
             else
             {
                 // Windows 7 or above
@@ -326,7 +330,10 @@ namespace OotD.Forms
                 try
                 {
                     _outlookFolder = Startup.OutlookNameSpace?.GetFolderFromID(Preferences.OutlookFolderEntryId, Preferences.OutlookFolderStoreId);
-                    if (_outlookFolder != null) ShowToolbarButtonsFor(_outlookFolder.DefaultMessageClass);
+                    if (_outlookFolder != null)
+                    {
+                        ShowToolbarButtonsFor(_outlookFolder.DefaultMessageClass);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -358,7 +365,9 @@ namespace OotD.Forms
                     viewItem.Click += ViewItem_Click;
 
                     if (typedView.Name == Preferences.OutlookFolderView)
+                    {
                         viewItem.Checked = true;
+                    }
 
                     OutlookViewsMenu.DropDownItems.Add(viewItem);
 
@@ -384,8 +393,10 @@ namespace OotD.Forms
         private static string GetFolderNameFromFullPath(string? fullPath)
         {
             if (fullPath != null)
+            {
                 return fullPath.Substring(fullPath.LastIndexOf("\\", StringComparison.Ordinal) + 1,
                     fullPath.Length - fullPath.LastIndexOf("\\", StringComparison.Ordinal) - 1);
+            }
 
             return string.Empty;
         }
@@ -405,7 +416,10 @@ namespace OotD.Forms
                 while (oFolder?.Parent != null)
                 {
                     oFolder = oFolder.Parent as MAPIFolder;
-                    if (oFolder != null) subfolders.Add(oFolder.Name);
+                    if (oFolder != null)
+                    {
+                        subfolders.Add(oFolder.Name);
+                    }
                 }
 
                 for (var i = subfolders.Count - 1; i >= 0; i--)
@@ -485,7 +499,10 @@ namespace OotD.Forms
         {
             var menuItems = new List<ToolStripMenuItem> { CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu, TodosMenu };
 
-            if (_customMenu != null) menuItems.Add(_customMenu);
+            if (_customMenu != null)
+            {
+                menuItems.Add(_customMenu);
+            }
 
             CheckSelectedMenuItemInCollection(itemToCheck, menuItems);
         }
@@ -499,7 +516,10 @@ namespace OotD.Forms
         {
             foreach (var menuItem in menuItems)
             {
-                if (menuItem != null) ((ToolStripMenuItem)menuItem).Checked = menuItem == itemToCheck;
+                if (menuItem != null)
+                {
+                    ((ToolStripMenuItem)menuItem).Checked = menuItem == itemToCheck;
+                }
             }
         }
 
@@ -593,7 +613,10 @@ namespace OotD.Forms
 
         private void UpdateCustomFolder(MAPIFolder oFolder)
         {
-            if (oFolder == null) return;
+            if (oFolder == null)
+            {
+                return;
+            }
 
             try
             {
@@ -634,7 +657,10 @@ namespace OotD.Forms
 
         private void ResizeForm(ResizeDirection direction)
         {
-            if (GlobalPreferences.LockPosition) return;
+            if (GlobalPreferences.LockPosition)
+            {
+                return;
+            }
 
             _movingOrResizing = true;
 
@@ -677,7 +703,9 @@ namespace OotD.Forms
         private void MoveForm()
         {
             if (GlobalPreferences.LockPosition)
+            {
                 return;
+            }
 
             _movingOrResizing = true;
 
@@ -704,7 +732,10 @@ namespace OotD.Forms
                 Preferences!.OutlookFolderView = view.Name;
             }
 
-            if (viewItem != null) CheckSelectedView(viewItem);
+            if (viewItem != null)
+            {
+                CheckSelectedView(viewItem);
+            }
         }
 
         /// <summary>
@@ -832,10 +863,16 @@ namespace OotD.Forms
         private void RenameInstanceMenu_Click(object sender, EventArgs e)
         {
             var result = InputBox.Show(this, "", "Rename Instance", InstanceName, InputBox_Validating);
-            if (!result.Ok) return;
+            if (!result.Ok)
+            {
+                return;
+            }
 
             using var parentKey = Registry.CurrentUser.OpenSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName, true);
-            if (parentKey == null) return;
+            if (parentKey == null)
+            {
+                return;
+            }
 
             RegistryHelper.RenameSubKey(parentKey, InstanceName, result.Text);
             var oldInstanceName = InstanceName;
@@ -873,34 +910,54 @@ namespace OotD.Forms
         private void MainForm_MouseMove(object sender, MouseEventArgs e)
         {
             if (GlobalPreferences.LockPosition)
+            {
                 return;
+            }
 
             if (e.Location.X < _resizeBorderWidth && e.Location.Y < _resizeBorderWidth)
+            {
                 ResizeDir = ResizeDirection.TopLeft;
+            }
 
             else if (e.Location.X < _resizeBorderWidth && e.Location.Y > Height - _resizeBorderWidth)
+            {
                 ResizeDir = ResizeDirection.BottomLeft;
+            }
 
             else if (e.Location.X > Width - _resizeBorderWidth && e.Location.Y > Height - _resizeBorderWidth)
+            {
                 ResizeDir = ResizeDirection.BottomRight;
+            }
 
             else if (e.Location.X > Width - _resizeBorderWidth && e.Location.Y < _resizeBorderWidth)
+            {
                 ResizeDir = ResizeDirection.TopRight;
+            }
 
             else if (e.Location.X < _resizeBorderWidth)
+            {
                 ResizeDir = ResizeDirection.Left;
+            }
 
             else if (e.Location.X > Width - _resizeBorderWidth)
+            {
                 ResizeDir = ResizeDirection.Right;
+            }
 
             else if (e.Location.Y < _resizeBorderWidth)
+            {
                 ResizeDir = ResizeDirection.Top;
+            }
 
             else if (e.Location.Y > Height - _resizeBorderWidth)
+            {
                 ResizeDir = ResizeDirection.Bottom;
+            }
 
             else
+            {
                 ResizeDir = ResizeDirection.None;
+            }
         }
 
         private void HeaderPanel_MouseDown(object sender, MouseEventArgs e)
@@ -1082,10 +1139,16 @@ namespace OotD.Forms
         private void SetCurrentViewControlAsActiveIfNecessary(CurrentCalendarView mode, Button button, ref Guid lastButtonGuidClicked)
         {
             // we don't need to do this if we only have one instance, so bail right away.
-            if (InstanceManager.InstanceCount == 1) return;
+            if (InstanceManager.InstanceCount == 1)
+            {
+                return;
+            }
 
             // we can bail if we know the last button clicked was the one on this form.
-            if ((Guid)button.Tag == lastButtonGuidClicked) return;
+            if ((Guid)button.Tag == lastButtonGuidClicked)
+            {
+                return;
+            }
 
             var currentDate = OutlookViewControl.SelectedDate;
 

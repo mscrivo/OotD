@@ -50,7 +50,10 @@ namespace OotD
 
                         // Before we do anything else, wait for the RPC server to be available, as the program will crash if it's not.
                         // This is especially likely when OotD is set to start with windows.
-                        if (!IsRPCServerAvailable(OutlookNameSpace)) return;
+                        if (!IsRPCServerAvailable(OutlookNameSpace))
+                        {
+                            return;
+                        }
 
                         OutlookFolder = OutlookNameSpace.GetDefaultFolder(OlDefaultFolders.olFolderCalendar);
 
@@ -97,7 +100,10 @@ namespace OotD
         {
             if (opts.StartDebugger)
             {
-                if (!Debugger.IsAttached) Debugger.Launch();
+                if (!Debugger.IsAttached)
+                {
+                    Debugger.Launch();
+                }
             }
 
             if (opts.CreateStartupEntry)

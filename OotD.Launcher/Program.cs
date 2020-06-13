@@ -137,7 +137,11 @@ namespace OotD
             // now check for the existence of the actual Outlook.exe.
             using (var key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
             {
-                if (key != null) outlookFolder = (string)key.GetValue("Path");
+                if (key != null)
+                {
+                    outlookFolder = (string)key.GetValue("Path");
+                }
+
                 if (outlookFolder != null)
                 {
                     var fullPath = Path.Combine(outlookFolder, "Outlook.exe");

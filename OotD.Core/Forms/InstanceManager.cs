@@ -86,7 +86,10 @@ namespace OotD.Forms
                 var instanceCount = 0;
 
                 using var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
-                if (appReg == null) return instanceCount;
+                if (appReg == null)
+                {
+                    return instanceCount;
+                }
 
                 instanceCount += appReg.GetSubKeyNames().Count(instanceName => instanceName != AutoUpdateInstanceName);
 
@@ -122,7 +125,10 @@ namespace OotD.Forms
                         foreach (var instanceName in appReg.GetSubKeyNames())
                         {
                             // Skip the key named "AutoUpdate" since it's the settings for the updater component
-                            if (instanceName == AutoUpdateInstanceName) continue;
+                            if (instanceName == AutoUpdateInstanceName)
+                            {
+                                continue;
+                            }
 
                             var newlyAdded = false;
                             if (!_mainFormInstances.ContainsKey(instanceName))
@@ -325,9 +331,11 @@ namespace OotD.Forms
             var dateIcon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture)!;
 
             if (dateIcon != null)
+            {
                 trayIcon.Icon = _graphics.DpiX.Equals(96f)
                     ? new Icon(dateIcon, new Size(16, 16))
                     : new Icon(dateIcon, new Size(32, 32));
+            }
         }
 
         private void UpdateTimer_Tick(object sender, EventArgs e)
@@ -511,7 +519,9 @@ namespace OotD.Forms
             // if we only have one instance left, reload everything so that the context
             // menu only shows the one instances' menu items.
             if (_mainFormInstances.Count == 1)
+            {
                 LoadInstances();
+            }
         }
 
         private void InstanceRenamedEventHandler(object? sender, InstanceRenamedEventArgs e)
@@ -552,7 +562,9 @@ namespace OotD.Forms
         private void TrayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
+            {
                 ShowHideAllInstances();
+            }
         }
 
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
