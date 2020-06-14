@@ -1,5 +1,10 @@
 # OotD Release Notes
 
+## 4.0.176
+* The header is now hidden when locking via the tray settings menu
+* Other minor fixes and reliability improvements
+* Update to .net core 3.1.5 (for security fixes)
+
 ## 4.0.152
 * Update to use .net core 3.1.1
 * Fix Logging
