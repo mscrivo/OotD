@@ -22,7 +22,7 @@ namespace OotD.Forms
         private const string AppCastUrl = "https://outlookonthedesktop.com/ootdAppcast.xml";
         private const string AutoUpdateInstanceName = "AutoUpdate";
 
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<string, MainForm> _mainFormInstances = new Dictionary<string, MainForm>();
         private readonly Graphics _graphics;
         private readonly Sparkle _sparkle;
@@ -35,7 +35,7 @@ namespace OotD.Forms
             {
                 trayIcon.ShowBalloonTip(2000, Resources.OotdRunning, Resources.RightClickToConfigure, ToolTipIcon.Info);
 
-                Logger.Debug("First Run");
+                _logger.Debug("First Run");
             }
 
             _graphics = CreateGraphics();
@@ -91,6 +91,7 @@ namespace OotD.Forms
                     return instanceCount;
                 }
 
+                // ReSharper disable once UselessBinaryOperation
                 instanceCount += appReg.GetSubKeyNames().Count(instanceName => instanceName != AutoUpdateInstanceName);
 
                 return instanceCount;
@@ -99,19 +100,19 @@ namespace OotD.Forms
 
         public void LoadInstances()
         {
-            Logger.Debug("Loading app settings from registry");
+            _logger.Debug("Loading app settings from registry");
 
             // Each subkey in our main registry key represents an instance. 
             // Read each subkey and load the instance.
             using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
             {
-                Logger.Debug("Settings Found.");
+                _logger.Debug("Settings Found.");
 
                 if (appReg != null)
                 {
                     if (InstanceCount > 1)
                     {
-                        Logger.Debug("Multiple instances to load");
+                        _logger.Debug("Multiple instances to load");
 
                         // There are multiple instances defined, so we build the context menu strip dynamically.
                         trayIcon.ContextMenuStrip = new ContextMenuStrip();
@@ -133,7 +134,7 @@ namespace OotD.Forms
                             var newlyAdded = false;
                             if (!_mainFormInstances.ContainsKey(instanceName))
                             {
-                                Logger.Debug($"Instantiating instance {instanceName}");
+                                _logger.Debug($"Instantiating instance {instanceName}");
                                 _mainFormInstances.Add(instanceName, new MainForm(instanceName));
                                 newlyAdded = true;
                             }
@@ -194,7 +195,7 @@ namespace OotD.Forms
                             // finally, show the form
                             if (newlyAdded)
                             {
-                                Logger.Debug($"Showing Instance {instanceName}");
+                                _logger.Debug($"Showing Instance {instanceName}");
                                 _mainFormInstances[instanceName].Show();
                                 UnsafeNativeMethods.SendWindowToBack(_mainFormInstances[instanceName]);
                             }
@@ -544,18 +545,15 @@ namespace OotD.Forms
 
         private void FlashForm(ToolStripDropDownItem dropDownItem)
         {
-            if (dropDownItem != null)
+            for (var i = 0; i < 2; i++)
             {
-                for (var i = 0; i < 2; i++)
-                {
-                    var formInstance = _mainFormInstances[dropDownItem.DropDownItems[0].Text];
+                var formInstance = _mainFormInstances[dropDownItem.DropDownItems[0].Text];
 
-                    var currentOpacity = formInstance.Opacity;
-                    formInstance.InvokeEx(f => formInstance.Opacity = .3);
-                    Thread.Sleep(250);
-                    formInstance.InvokeEx(f => formInstance.Opacity = currentOpacity);
-                    Thread.Sleep(250);
-                }
+                var currentOpacity = formInstance.Opacity;
+                formInstance.InvokeEx(f => formInstance.Opacity = .3);
+                Thread.Sleep(250);
+                formInstance.InvokeEx(f => formInstance.Opacity = currentOpacity);
+                Thread.Sleep(250);
             }
         }
 

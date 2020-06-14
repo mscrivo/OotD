@@ -31,32 +31,39 @@ namespace OotD.Utility
         private static void CopyKey(RegistryKey parentKey, string keyNameToCopy, string newKeyName)
         {
             //Create new key
-            RegistryKey destinationKey = parentKey.CreateSubKey(newKeyName);
+            var destinationKey = parentKey.CreateSubKey(newKeyName);
 
             //Open the sourceKey we are copying from
-            RegistryKey sourceKey = parentKey.OpenSubKey(keyNameToCopy);
+            var sourceKey = parentKey.OpenSubKey(keyNameToCopy);
 
-            RecursivelyCopyKey(sourceKey, destinationKey);
+            if (sourceKey != null && destinationKey != null)
+            {
+                RecursivelyCopyKey(sourceKey, destinationKey);
+            }
         }
 
         private static void RecursivelyCopyKey(RegistryKey sourceKey, RegistryKey destinationKey)
         {
             //copy all the values
-            foreach (string valueName in sourceKey.GetValueNames())
+            foreach (var valueName in sourceKey.GetValueNames())
             {
-                object objValue = sourceKey.GetValue(valueName);
-                RegistryValueKind valKind = sourceKey.GetValueKind(valueName);
+                var objValue = sourceKey.GetValue(valueName);
+                var valKind = sourceKey.GetValueKind(valueName);
                 destinationKey.SetValue(valueName, objValue, valKind);
             }
 
             //For Each subKey
             //Create a new subKey in destinationKey
             //Call myself
-            foreach (string sourceSubKeyName in sourceKey.GetSubKeyNames())
+            foreach (var sourceSubKeyName in sourceKey.GetSubKeyNames())
             {
                 var sourceSubKey = sourceKey.OpenSubKey(sourceSubKeyName);
                 var destinationSubKey = destinationKey.CreateSubKey(sourceSubKeyName);
-                RecursivelyCopyKey(sourceSubKey, destinationSubKey);
+
+                if (sourceSubKey != null && destinationSubKey != null)
+                {
+                    RecursivelyCopyKey(sourceSubKey, destinationSubKey);
+                }
             }
         }
     }

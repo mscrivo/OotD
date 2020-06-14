@@ -1,3 +1,4 @@
+﻿using System;
 using Microsoft.Win32;
 using System.Globalization;
 using System.Windows.Forms;
@@ -16,7 +17,7 @@ namespace OotD.Preferences
 
         public InstancePreferences(string instanceName)
         {
-            _appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName + "\\" + instanceName);
+            _appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName + "\\" + instanceName) ?? throw new InvalidOperationException();
         }
 
         /// <summary>
@@ -26,7 +27,7 @@ namespace OotD.Preferences
         {
             get
             {
-                double opacity = DefaultOpacity;
+                var opacity = DefaultOpacity;
 
                 if (
                     double.TryParse((string)_appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture)), out opacity))
@@ -80,7 +81,11 @@ namespace OotD.Preferences
             get => (string)_appReg.GetValue("CurrentViewType", "Calendar");
             set
             {
-                _appReg.SetValue("CurrentViewType", value);
+                if (value != null)
+                {
+                    _appReg.SetValue("CurrentViewType", value);
+                }
+
                 OutlookFolderView = string.Empty;
             }
         }
@@ -88,21 +93,39 @@ namespace OotD.Preferences
         public string? OutlookFolderView
         {
             get => (string)_appReg.GetValue("OutlookView", "Day/Week/Month");
-            set => _appReg.SetValue("OutlookView", value);
+            set
+            {
+                if (value != null)
+                {
+                    _appReg.SetValue("OutlookView", value);
+                }
+            }
         }
 
 
         public string? OutlookFolderEntryId
         {
             get => (string)_appReg.GetValue("FolderEntryId", "");
-            set => _appReg.SetValue("FolderEntryId", value);
+            set
+            {
+                if (value != null)
+                {
+                    _appReg.SetValue("FolderEntryId", value);
+                }
+            }
         }
 
 
         public string? OutlookFolderStoreId
         {
             get => (string)_appReg.GetValue("FolderStoreId", "");
-            set => _appReg.SetValue("FolderStoreId", value);
+            set
+            {
+                if (value != null)
+                {
+                    _appReg.SetValue("FolderStoreId", value);
+                }
+            }
         }
 
         public bool DisableEditing

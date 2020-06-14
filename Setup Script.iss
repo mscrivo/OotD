@@ -93,7 +93,7 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-	dotnetCore3x64DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/86835fe4-93b5-4f4e-a7ad-c0b0532e407b/f4f2b1239f1203a05b9952028d54fc13/windowsdesktop-runtime-3.1.5-win-x64.exe';
+  dotnetCore3x64DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/86835fe4-93b5-4f4e-a7ad-c0b0532e407b/f4f2b1239f1203a05b9952028d54fc13/windowsdesktop-runtime-3.1.5-win-x64.exe';
   dotnetCore3x86DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/df7b90d9-b93e-4974-85ef-c1de418bc186/e380e58bbd8505ebaee6c3abb23baade/windowsdesktop-runtime-3.1.5-win-x86.exe';
   dotnetCore3x64DesktopFilename = 'windowsdesktop-runtime-3.1.5-win-x64.exe';
   dotnetCore3x86DesktopFilename = 'windowsdesktop-runtime-3.1.5-win-x86.exe';

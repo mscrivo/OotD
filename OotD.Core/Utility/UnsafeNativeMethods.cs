@@ -1,6 +1,7 @@
-using NLog;
+﻿using NLog;
 using OotD.Properties;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -9,6 +10,7 @@ using System.Windows.Forms;
 
 namespace OotD.Utility
 {
+    [SuppressMessage("ReSharper", "MemberHidesStaticFromOuterClass")]
     internal static class UnsafeNativeMethods
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -103,7 +105,7 @@ namespace OotD.Utility
             try
             {
                 form.SendToBack();
-                IntPtr pWnd = FindWindow("Progman", null!);
+                var pWnd = FindWindow("Progman", null!);
                 SetParent(form.Handle, pWnd);
             }
             catch (Exception ex)

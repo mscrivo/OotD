@@ -269,7 +269,10 @@ namespace OotD.Forms
                 TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
                     new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
                 _customMenu = (ToolStripMenuItem) TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
-                _customMenu.Checked = true;
+                if (_customMenu != null)
+                {
+                    _customMenu.Checked = true;
+                }
 
                 // store the custom folder definition in case the user wants to switch back to it and we need to reload it.
                 _customFolderDefinition.OutlookFolderName = Preferences.OutlookFolderName;
@@ -315,7 +318,7 @@ namespace OotD.Forms
                     MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
 
-            TransparencySlider.Value = (int) (Preferences.Opacity * 100);
+            TransparencySlider.Value = (int)(Preferences.Opacity * 100);
         }
 
         /// <summary>
@@ -325,7 +328,7 @@ namespace OotD.Forms
         private void SetMAPIFolder()
         {
             // Load up the MAPI Folder from Entry / Store IDs 
-            if (!string.IsNullOrEmpty(Preferences?.OutlookFolderEntryId) && !string.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
+            if (!string.IsNullOrEmpty(Preferences.OutlookFolderEntryId) && !string.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
             {
                 try
                 {
@@ -611,7 +614,7 @@ namespace OotD.Forms
             }
         }
 
-        private void UpdateCustomFolder(MAPIFolder oFolder)
+        private void UpdateCustomFolder(MAPIFolder? oFolder)
         {
             if (oFolder == null)
             {
@@ -621,7 +624,7 @@ namespace OotD.Forms
             try
             {
                 // Remove old item (selectmenu+1)
-                if (TrayMenu.Items.Contains(_customMenu))
+                if (_customMenu != null && TrayMenu.Items.Contains(_customMenu))
                 {
                     TrayMenu.Items.Remove(_customMenu);
                 }
