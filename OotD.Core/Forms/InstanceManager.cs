@@ -319,6 +319,7 @@ namespace OotD.Forms
 
             var lockPositionMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["LockPositionMenu"];
             lockPositionMenu.Checked = GlobalPreferences.LockPosition;
+            LockOrUnlock(GlobalPreferences.LockPosition);
         }
 
         private void ChangeTrayIconDate()
@@ -453,28 +454,23 @@ namespace OotD.Forms
             var lockPositionMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["LockPositionMenu"];
             if (lockPositionMenu.Checked)
             {
-                GlobalPreferences.LockPosition = false;
                 lockPositionMenu.Checked = false;
-
-                foreach (var (_, formInstance) in _mainFormInstances)
-                {
-                    formInstance.TransparencySlider.Enabled = true;
-                    formInstance.ToolTip.SetToolTip(formInstance.TransparencySlider, Resources.Transparency_Slider_Help_Message);
-                    formInstance.ToolTip.SetToolTip(formInstance.LabelCurrentDate, Resources.Form_Move_Help_Message);
-                }
+                LockOrUnlock(false);
             }
             else
             {
-                GlobalPreferences.LockPosition = true;
                 lockPositionMenu.Checked = true;
+                LockOrUnlock(true);
+            }
+        }
 
-                foreach (var formInstance in _mainFormInstances)
-                {
-                    formInstance.Value.TransparencySlider.Enabled = false;
-                    formInstance.Value.ToolTip.SetToolTip(formInstance.Value.TransparencySlider, Resources.Transparency_Slider_Locked_Message);
-                    formInstance.Value.ToolTip.SetToolTip(formInstance.Value.HeaderPanel, Resources.Form_Move_Locked_Message);
-                    formInstance.Value.ToolTip.SetToolTip(formInstance.Value.LabelCurrentDate, Resources.Form_Move_Locked_Message);
-                }
+        private void LockOrUnlock(bool @lock)
+        {
+            GlobalPreferences.LockPosition = @lock;
+
+            foreach (var (_, formInstance) in _mainFormInstances)
+            {
+                formInstance.HeaderPanel.Visible = !@lock;
             }
         }
 

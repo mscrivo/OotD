@@ -26,7 +26,7 @@ namespace OotD.Forms
     /// </summary>
     public partial class MainForm : Form
     {
-        private const int _resizeBorderWidth = 4;
+        private const int ResizeBorderWidth = 4;
         private string? _customFolder;
         private ToolStripMenuItem? _customMenu;
         private MAPIFolder? _outlookFolder;
@@ -917,42 +917,42 @@ namespace OotD.Forms
                 return;
             }
 
-            if (e.Location.X < _resizeBorderWidth && e.Location.Y < _resizeBorderWidth)
+            if (e.Location.X < ResizeBorderWidth && e.Location.Y < ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.TopLeft;
             }
 
-            else if (e.Location.X < _resizeBorderWidth && e.Location.Y > Height - _resizeBorderWidth)
+            else if (e.Location.X < ResizeBorderWidth && e.Location.Y > Height - ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.BottomLeft;
             }
 
-            else if (e.Location.X > Width - _resizeBorderWidth && e.Location.Y > Height - _resizeBorderWidth)
+            else if (e.Location.X > Width - ResizeBorderWidth && e.Location.Y > Height - ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.BottomRight;
             }
 
-            else if (e.Location.X > Width - _resizeBorderWidth && e.Location.Y < _resizeBorderWidth)
+            else if (e.Location.X > Width - ResizeBorderWidth && e.Location.Y < ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.TopRight;
             }
 
-            else if (e.Location.X < _resizeBorderWidth)
+            else if (e.Location.X < ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.Left;
             }
 
-            else if (e.Location.X > Width - _resizeBorderWidth)
+            else if (e.Location.X > Width - ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.Right;
             }
 
-            else if (e.Location.Y < _resizeBorderWidth)
+            else if (e.Location.Y < ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.Top;
             }
 
-            else if (e.Location.Y > Height - _resizeBorderWidth)
+            else if (e.Location.Y > Height - ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.Bottom;
             }
