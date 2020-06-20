@@ -1,5 +1,8 @@
 # OotD Release Notes
 
+## 4.0.178
+* Fix issue where app incorrectly stated that Office 2010 or higher could not be found.
+
 ## 4.0.176
 * The header is now hidden when locking via the tray settings menu
 * Other minor fixes and reliability improvements
