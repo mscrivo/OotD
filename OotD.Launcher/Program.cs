@@ -104,7 +104,7 @@ namespace OotD
 
                         if (double.TryParse(subKey, NumberStyles.Float, new NumberFormatInfo(), out var versionKey))
                         {
-                            if (version >= 11 || versionKey > version)
+                            if (versionKey > version)
                             {
                                 version = versionKey;
                             }
