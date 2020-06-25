@@ -1,4 +1,8 @@
-﻿using Microsoft.Office.Interop.Outlook;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using NLog;
 using OotD.Enums;
@@ -116,12 +120,12 @@ namespace OotD.Forms
         private void SendWindowToBack()
         {
             if (Environment.OSVersion.Version.Major < 6 || !UnsafeNativeMethods.DwmIsCompositionEnabled())
-                // Windows XP or higher with DWM window composition disabled
+            // Windows XP or higher with DWM window composition disabled
             {
                 UnsafeNativeMethods.PinWindowToDesktop(this);
             }
             else if (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 0)
-                // Vista
+            // Vista
             {
                 UnsafeNativeMethods.SendWindowToBack(this);
             }
@@ -268,7 +272,7 @@ namespace OotD.Forms
                 var folderName = GetFolderNameFromFullPath(_customFolder);
                 TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
                     new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
-                _customMenu = (ToolStripMenuItem) TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
+                _customMenu = (ToolStripMenuItem)TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
                 if (_customMenu != null)
                 {
                     _customMenu.Checked = true;

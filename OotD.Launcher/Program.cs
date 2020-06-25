@@ -1,4 +1,8 @@
-﻿using Microsoft.Win32;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using Microsoft.Win32;
 using NLog;
 using NLog.Targets;
 using OotD.Properties;
@@ -12,23 +16,23 @@ namespace OotD
 {
     public static class Program
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         // ReSharper disable once UnusedMember.Local
-        private const string debugArg = " -d";
+        private const string DebugArg = " -d";
 
         // ReSharper disable once ConvertToConstant.Local
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         // ReSharper disable once RedundantDefaultMemberInitializer
-        private static bool IsDebug = false;
+        private static bool _isDebug = false;
 
         [STAThread]
         public static void Main(string[] args)
         {
-            Logger.Info($"Command Line Args: {string.Join(" ", args)}");
+            _logger.Info($"Command Line Args: {string.Join(" ", args)}");
 
 #if DEBUG
-            IsDebug = true;
+            _isDebug = true;
 #endif
 
             var bitness = ValidateOutlookInstallation();
@@ -55,7 +59,7 @@ namespace OotD
             }
             catch (Exception e)
             {
-                Logger.Error(e, "Error starting child process.");
+                _logger.Error(e, "Error starting child process.");
                 MessageBox.Show(
                     string.Format(Resources.ChildProcessErrorMessage, GetLoggerFileName()),
                     Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -72,9 +76,9 @@ namespace OotD
             startInfo.LoadUserProfile = true;
             startInfo.Arguments = string.Join(" ", args);
 
-            if (IsDebug)
+            if (_isDebug)
             {
-                startInfo.Arguments += debugArg;
+                startInfo.Arguments += DebugArg;
             }
 
             return startInfo;
@@ -100,7 +104,7 @@ namespace OotD
 
                     foreach (var subKey in subKeys)
                     {
-                        Logger.Info($"Found {subKey} key");
+                        _logger.Info($"Found {subKey} key");
 
                         if (double.TryParse(subKey, NumberStyles.Float, new NumberFormatInfo(), out var versionKey))
                         {
@@ -115,7 +119,7 @@ namespace OotD
 
             if (version <= 0)
             {
-                Logger.Info("Could not find Office key.");
+                _logger.Info("Could not find Office key.");
 
                 MessageBox.Show(Resources.OutlookKeyNotFoundError, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -124,7 +128,7 @@ namespace OotD
 
             if (version < 14)
             {
-                Logger.Debug("Outlook is not available or installed.");
+                _logger.Debug("Outlook is not available or installed.");
                 MessageBox.Show(
                     Resources.Office2010Requirement + Environment.NewLine +
                     Resources.InstallOutlookMsg, Resources.MissingRequirementsCapation, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -132,7 +136,7 @@ namespace OotD
                 return string.Empty;
             }
 
-            Logger.Info($"Office version {version} detected");
+            _logger.Info($"Office version {version} detected");
 
             // now check for the existence of the actual Outlook.exe.
             using (var key = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\OUTLOOK.EXE"))
@@ -148,18 +152,18 @@ namespace OotD
 
                     if (!File.Exists(fullPath))
                     {
-                        Logger.Error($"Outlook executable not found at {fullPath}");
+                        _logger.Error($"Outlook executable not found at {fullPath}");
                         MessageBox.Show(Resources.OutlookExeNotFoundError, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return string.Empty;
                     }
                 }
             }
 
-            Logger.Info($"Outlook path reported as {outlookFolder} and Outlook.exe found in that path");
+            _logger.Info($"Outlook path reported as {outlookFolder} and Outlook.exe found in that path");
 
             if (string.IsNullOrEmpty(outlookFolder))
             {
-                Logger.Error("Unable to find Outlook exe location in registry");
+                _logger.Error("Unable to find Outlook exe location in registry");
                 MessageBox.Show(Resources.OutlookLocationKeyNotFoundError, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return string.Empty;
             }
@@ -173,7 +177,7 @@ namespace OotD
                 bitness = GetBitness(version);
                 if (string.IsNullOrWhiteSpace(bitness))
                 {
-                    Logger.Info($"Could not find bitness key for Outlook under subkey {version}.0, trying {version - 1}.0");
+                    _logger.Info($"Could not find bitness key for Outlook under subkey {version}.0, trying {version - 1}.0");
                     version--;
                 }
                 else
@@ -196,8 +200,8 @@ namespace OotD
             }
             else
             {
-                Logger.Info($"Unable to find key SOFTWARE\\Microsoft\\Office\\{versionSubKey}.0\\Outlook");
-                Logger.Info($"Trying SOFTWARE\\Wow6432Node\\Microsoft\\Office\\{versionSubKey}.0\\Outlook");
+                _logger.Info($"Unable to find key SOFTWARE\\Microsoft\\Office\\{versionSubKey}.0\\Outlook");
+                _logger.Info($"Trying SOFTWARE\\Wow6432Node\\Microsoft\\Office\\{versionSubKey}.0\\Outlook");
 
                 outlookKey = Registry.LocalMachine.OpenSubKey($"SOFTWARE\\Wow6432Node\\Microsoft\\Office\\{versionSubKey}.0\\Outlook");
 
@@ -209,12 +213,12 @@ namespace OotD
 
             if (outlookKey == null)
             {
-                Logger.Info($"Unable to find key SOFTWARE\\Wow6432Node\\Microsoft\\Office\\{versionSubKey}.0\\Outlook");
+                _logger.Info($"Unable to find key SOFTWARE\\Wow6432Node\\Microsoft\\Office\\{versionSubKey}.0\\Outlook");
             }
 
             if (!string.IsNullOrWhiteSpace(bitness))
             {
-                Logger.Info($"Outlook Bitness is: {bitness}");
+                _logger.Info($"Outlook Bitness is: {bitness}");
             }
 
             return bitness;

@@ -1,19 +1,6 @@
-////////////////////////////////////////////////////////////////////////////////
-// StickyWindows
-// 
-// Copyright (c) 2004 Corneliu I. Tusnea
-//
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the author be held liable for any damages arising from 
-// the use of this software.
-// Permission to use, copy, modify, distribute and sell this software for any 
-// purpose is hereby granted without fee, provided that the above copyright 
-// notice appear in all copies and that both that copyright notice and this 
-// permission notice appear in supporting documentation.
-//
-// Notice: Check CodeProject for details about using this class
-//
-//////////////////////////////////////////////////////////////////////////////////
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
 using System;
 using System.Collections;
