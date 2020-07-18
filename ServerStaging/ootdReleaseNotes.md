@@ -1,5 +1,9 @@
 # OotD Release Notes
 
+## 4.0.188
+* Fix issue where app would not start on Windows 7
+* Update to .net core 3.1.6 runtime
+
 ## 4.0.178
 * Fix issue where app incorrectly stated that Office 2010 or higher could not be found.
 

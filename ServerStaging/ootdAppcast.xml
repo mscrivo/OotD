@@ -6,12 +6,12 @@
     <description>Most recent changes with links to updates.</description>
     <language>en</language>
     <item>
-      <title>Version 4.0.178</title>
+      <title>Version 4.0.187</title>
       <sparkle:releaseNotesLink>
         https://outlookonthedesktop.com/ootdReleaseNotes.md
       </sparkle:releaseNotesLink>
-      <pubDate>Sat, 20 Jun 2020 9:20:00 +0000</pubDate>
-      <enclosure url="https://github.com/mscrivo/OotD/releases/download/4.0.178/ootd-4.0.178.0.exe" sparkle:version="4.0.178" length="3694419" type="application/octet-stream" />
+      <pubDate>Sat, 18 Jul 2020 3:10:00 +0000</pubDate>
+      <enclosure url="https://github.com/mscrivo/OotD/releases/download/4.0.188/ootd-4.0.188.0.exe" sparkle:version="4.0.188" length="3694419" type="application/octet-stream" />
     </item>
   </channel>
 </rss>
