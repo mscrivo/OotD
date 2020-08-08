@@ -146,7 +146,7 @@ namespace OotD
                     outlookFolder = (string)key.GetValue("Path");
                 }
 
-                if (outlookFolder != null)
+                if (!string.IsNullOrWhiteSpace(outlookFolder))
                 {
                     var fullPath = Path.Combine(outlookFolder, "Outlook.exe");
 
