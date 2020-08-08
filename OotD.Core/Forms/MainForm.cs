@@ -1107,9 +1107,18 @@ namespace OotD.Forms
 
             SetCurrentViewControlAsActiveIfNecessary(mode, ButtonPrevious, ref Startup.LastPreviousButtonClicked);
 
-            var offset = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
+            var (type, offset) = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
 
-            OutlookViewControl.GoToDate(OutlookViewControl.SelectedDate.AddDays(offset * -1).ToString(CultureInfo.InvariantCulture));
+            if (type == CurrentCalendarView.Month)
+            {
+                OutlookViewControl.GoToDate(OutlookViewControl.SelectedDate
+                    .AddMonths(offset * -1).ToString(CultureInfo.CurrentCulture));
+            }
+            else
+            {
+                OutlookViewControl.GoToDate(OutlookViewControl.SelectedDate.AddDays(offset * -1)
+                            .ToString(CultureInfo.CurrentCulture));
+            }
         }
 
         private void ButtonNext_Click(object sender, EventArgs e)
@@ -1119,19 +1128,28 @@ namespace OotD.Forms
 
             SetCurrentViewControlAsActiveIfNecessary(mode, ButtonNext, ref Startup.LastNextButtonClicked);
 
-            var offset = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
+            var (type, offset) = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
 
-            OutlookViewControl.GoToDate(OutlookViewControl.SelectedDate.AddDays(offset).ToString(CultureInfo.InvariantCulture));
+            if (type == CurrentCalendarView.Month)
+            {
+                OutlookViewControl.GoToDate(OutlookViewControl.SelectedDate
+                    .AddMonths(offset).ToString(CultureInfo.CurrentCulture));
+            }
+            else
+            {
+                OutlookViewControl.GoToDate(OutlookViewControl.SelectedDate.AddDays(offset)
+                    .ToString(CultureInfo.CurrentCulture));
+            }
         }
 
-        private static double GetNextPreviousOffsetBasedOnCalendarViewMode(CurrentCalendarView mode)
+        private static (CurrentCalendarView type, int offset) GetNextPreviousOffsetBasedOnCalendarViewMode(CurrentCalendarView mode)
         {
             var offset = mode switch
             {
-                CurrentCalendarView.Day => 1,
-                CurrentCalendarView.Week => 7,
-                CurrentCalendarView.WorkWeek => 7,
-                CurrentCalendarView.Month => 31,
+                CurrentCalendarView.Day => (CurrentCalendarView.Day, 1),
+                CurrentCalendarView.Week => (CurrentCalendarView.Week, 7),
+                CurrentCalendarView.WorkWeek => (CurrentCalendarView.WorkWeek, 7),
+                CurrentCalendarView.Month => (CurrentCalendarView.Month, 1),
                 _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
             };
 
