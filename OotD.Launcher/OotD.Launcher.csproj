@@ -24,14 +24,12 @@
     <Prefer32Bit>true</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <PlatformTarget>x86</PlatformTarget>
     <NoWarn>1701;1702</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Prefer32Bit>true</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <PlatformTarget>x86</PlatformTarget>
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
