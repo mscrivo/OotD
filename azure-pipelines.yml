@@ -18,7 +18,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '3.1.302'
+    version: '3.1.401'
     includePreviewVersions: true
 
 - task: DotNetCoreCLI@2
