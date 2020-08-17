@@ -5,8 +5,9 @@
 using NLog;
 using OotD.Properties;
 using System;
-using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 
 // ReSharper disable UnusedMember.Local
@@ -14,7 +15,6 @@ using System.Windows.Forms;
 
 namespace OotD.Utility
 {
-    [SuppressMessage("ReSharper", "MemberHidesStaticFromOuterClass")]
     internal static class UnsafeNativeMethods
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -30,20 +30,15 @@ namespace OotD.Utility
         public const int SWP_NOOWNERZORDER = 0x0200;
         public const int SWP_NOSENDCHANGING = 0x0400;
 
+        private const int ZPOS_FLAGS = SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING;
+
         private const int DWMWA_EXCLUDED_FROM_PEEK = 12;
 
         public const int WM_NCLBUTTONDOWN = 0x00A1;
         public const int WM_PARENTNOTIFY = 0x0210;
-        public const int WM_LBUTTONDOWN = 0x0201;
-        public const int WM_MOUSELEAVE = 0x02A3;
-        public const int WM_MOUSEMOVE = 0x200;
-        public const int WM_ACTIVATE = 0x6;
-        public const int WM_ACTIVATEAPP = 0x1C;
         public const int WM_NCACTIVATE = 0x86;
         public const int WM_RBUTTONDOWN = 0x0204;
         public const int WM_WINDOWPOSCHANGING = 70;
-        public const int WM_NCHITTEST = 0x84;
-
 
         public const int HTBOTTOM = 15;
         public const int HTBOTTOMLEFT = 16;
@@ -98,9 +93,6 @@ namespace OotD.Utility
         [DllImport("user32.dll", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         private static extern short GetAsyncKeyState(int vKey);
 
-        [DllImport("user32.dll", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr GetDesktopWindow();
-
         public static void PinWindowToDesktop(Form form)
         {
             // for XP and 2000, the following hack pins the window to the desktop quite nicely
@@ -127,7 +119,7 @@ namespace OotD.Utility
         /// <param name="windowToSendBack">the form to work with</param>
         public static void SendWindowToBack(Form windowToSendBack)
         {
-            SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING);
+            SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0, ZPOS_FLAGS);
         }
 
         /// <summary>
@@ -136,7 +128,55 @@ namespace OotD.Utility
         /// <param name="windowToSendToTop">the form to work with</param>
         public static void SendWindowToTop(Form windowToSendToTop)
         {
-            SetWindowPos(windowToSendToTop.Handle, HWND_TOP, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING);
+            SetWindowPos(windowToSendToTop.Handle, HWND_TOP, 0, 0, 0, 0, ZPOS_FLAGS);
+        }
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+
+        [DllImport("user32.dll", EntryPoint="GetWindowLong")]
+        private static extern IntPtr GetWindowLongPtr32(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll", EntryPoint="GetWindowLongPtr")]
+        private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
+
+        // This static method is required because Win32 does not support
+        // GetWindowLongPtr directly
+        public static IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex)
+        {
+            return IntPtr.Size == 8 ? GetWindowLongPtr64(hWnd, nIndex) : GetWindowLongPtr32(hWnd, nIndex);
+        }
+
+        private const uint GW_HWNDPREV = 3;
+
+        public const int WS_EX_TOPMOST = 0x00000008;
+        static readonly int GWL_EXSTYLE = -20;
+
+        /// <summary>
+        /// This method will find the top most window and put ours just after it. This is
+        /// useful when the user initiates show desktop and we want OotD to display there.
+        /// </summary>
+        /// <param name="handle"></param>
+        public static void SetBottomMost(IntPtr handle)
+        {
+            var winPos = handle;
+
+            while ((winPos = GetWindow(winPos, GW_HWNDPREV)) != IntPtr.Zero)
+            {
+                if ((GetWindowLongPtr(winPos, GWL_EXSTYLE).ToInt32() & WS_EX_TOPMOST) == WS_EX_TOPMOST)
+                {
+                    if (SetWindowPos(handle, winPos, 0, 0, 0, 0, ZPOS_FLAGS))
+                    {
+                        break;
+                    }
+                }
+            }
         }
 
         /// <summary>
