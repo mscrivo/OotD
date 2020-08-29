@@ -2,12 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using NLog;
-using OotD.Properties;
 using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 
 // ReSharper disable UnusedMember.Local
@@ -17,8 +13,6 @@ namespace OotD.Utility
 {
     internal static class UnsafeNativeMethods
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
         private static readonly IntPtr HWND_TOP = new IntPtr(0);
 
@@ -39,6 +33,7 @@ namespace OotD.Utility
         public const int WM_NCACTIVATE = 0x86;
         public const int WM_RBUTTONDOWN = 0x0204;
         public const int WM_WINDOWPOSCHANGING = 70;
+        public const int WM_WINDOWPOSCHANGED = 0x0047;
 
         public const int HTBOTTOM = 15;
         public const int HTBOTTOMLEFT = 16;
@@ -63,13 +58,13 @@ namespace OotD.Utility
         }
 
         [DllImport("dwmapi.dll", PreserveSig = false)]
-        public static extern bool DwmIsCompositionEnabled();
-
-        [DllImport("dwmapi.dll", PreserveSig = false)]
         private static extern void DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr FindWindowEx(IntPtr parentHandle, IntPtr childAfter, string className, string windowTitle);
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
@@ -78,7 +73,7 @@ namespace OotD.Utility
         public static extern bool ReleaseCapture();
 
         [DllImport("user32.dll")]
-        public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
         public static extern bool SetWindowPos(
@@ -93,23 +88,36 @@ namespace OotD.Utility
         [DllImport("user32.dll", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         private static extern short GetAsyncKeyState(int vKey);
 
-        public static void PinWindowToDesktop(Form form)
+        // This helper static method is required because the 32-bit version of user32.dll does not contain this API
+        // (on any versions of Windows), so linking the method will fail at run-time. The bridge dispatches the request
+        // to the correct function (GetWindowLong in 32-bit mode and GetWindowLongPtr in 64-bit mode)
+        public static IntPtr SetWindowLongPtr(HandleRef hWnd, int nIndex, IntPtr dwNewLong)
         {
-            // for XP and 2000, the following hack pins the window to the desktop quite nicely
-            // (ie. pressing show desktop still shows, the calendar), but it can only be called 
-            // once during init for it to work.
-            try
+            return IntPtr.Size == 8 ? SetWindowLongPtr64(hWnd, nIndex, dwNewLong) : new IntPtr(SetWindowLong32(hWnd, nIndex, dwNewLong.ToInt32()));
+        }
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
+        private static extern int SetWindowLong32(HandleRef hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
+        private static extern IntPtr SetWindowLongPtr64(HandleRef hWnd, int nIndex, IntPtr dwNewLong);
+
+        public static bool PinToDesktop(Form form)
+        {
+            form.SendToBack();
+            var hWndTmp = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", string.Empty);
+            if (hWndTmp != IntPtr.Zero)
             {
-                form.SendToBack();
-                var pWnd = FindWindow("Progman", null!);
-                SetParent(form.Handle, pWnd);
+                hWndTmp = FindWindowEx(hWndTmp, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
+                if (hWndTmp != IntPtr.Zero)
+                {
+                    SetWindowLongPtr(new HandleRef(form, form.Handle), -8, (IntPtr)hWndTmp);
+                    return true;
+                }
             }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, $"Error pinning window to desktop, OS: {Environment.OSVersion.Version}.");
-                MessageBox.Show(form, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message,
-                                Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+
+            RemoveWindowFromAeroPeek(form);
+            return false;
         }
 
         /// <summary>
@@ -131,19 +139,13 @@ namespace OotD.Utility
             SetWindowPos(windowToSendToTop.Handle, HWND_TOP, 0, 0, 0, 0, ZPOS_FLAGS);
         }
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetForegroundWindow();
-
-        [DllImport("user32.dll")]
-        public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
-
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
 
-        [DllImport("user32.dll", EntryPoint="GetWindowLong")]
+        [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
         private static extern IntPtr GetWindowLongPtr32(IntPtr hWnd, int nIndex);
 
-        [DllImport("user32.dll", EntryPoint="GetWindowLongPtr")]
+        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
         private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
 
         // This static method is required because Win32 does not support
@@ -162,16 +164,16 @@ namespace OotD.Utility
         /// This method will find the top most window and put ours just after it. This is
         /// useful when the user initiates show desktop and we want OotD to display there.
         /// </summary>
-        /// <param name="handle"></param>
-        public static void SetBottomMost(IntPtr handle)
+        /// <param name="form"></param>
+        public static void SetBottomMost(Form form)
         {
-            var winPos = handle;
+            var winPos = form.Handle;
 
             while ((winPos = GetWindow(winPos, GW_HWNDPREV)) != IntPtr.Zero)
             {
                 if ((GetWindowLongPtr(winPos, GWL_EXSTYLE).ToInt32() & WS_EX_TOPMOST) == WS_EX_TOPMOST)
                 {
-                    if (SetWindowPos(handle, winPos, 0, 0, 0, 0, ZPOS_FLAGS))
+                    if (SetWindowPos(form.Handle, winPos, 0, 0, 0, 0, ZPOS_FLAGS))
                     {
                         break;
                     }
@@ -197,11 +199,6 @@ namespace OotD.Utility
             Disabled,
             Enabled,
             Last
-        }
-
-        public static bool Is64Bit()
-        {
-            return Marshal.SizeOf(typeof(IntPtr)) == 8;
         }
 
         /// <summary>

@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using Application = System.Windows.Forms.Application;
@@ -41,7 +40,6 @@ namespace OotD.Forms
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly StickyWindow _stickyWindow;
-        private bool _showDesktopToggled = false;
 
         // To avoid flicker when moving or resizing, this variable is set when a move or resize is started
         // and then reset when the move or resize is done.  SetWindowPos inside of WndProc will not fire
@@ -98,14 +96,6 @@ namespace OotD.Forms
 
                 // hook up event to keep the date in the header bar up to date
                 OutlookViewControl.SelectionChange += OnAxOutlookViewControlOnSelectionChange;
-
-                // Setup a timer to detect when the user initiates Show Desktop (ie. Win+D)
-                var detectShowDesktopTimer = new Timer();
-#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate.
-                detectShowDesktopTimer.Tick += DetectShowDesktopTimer_Tick;
-#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate.
-                detectShowDesktopTimer.Interval = 1000;
-                detectShowDesktopTimer.Start();
             }
             catch (Exception ex)
             {
@@ -113,44 +103,6 @@ namespace OotD.Forms
                 MessageBox.Show(this, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Fired every second to check if the user initiated show desktop, so we
-        /// can make the OotD windows visible in that case.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DetectShowDesktopTimer_Tick(object sender, EventArgs e)
-        {
-            var foregroundWindow = UnsafeNativeMethods.GetForegroundWindow();
-
-            if (string.IsNullOrWhiteSpace(GetWindowText(foregroundWindow)))
-            {
-                OnShowDesktopDetected();
-            }
-            else
-            {
-                OnShowDesktopReset();
-            }
-        }
-
-        private void OnShowDesktopDetected()
-        {
-            _showDesktopToggled = true;
-            UnsafeNativeMethods.SetBottomMost(Handle);
-        }
-
-        private void OnShowDesktopReset()
-        {
-            _showDesktopToggled = false;
-        }
-
-        private static string GetWindowText(IntPtr handle)
-        {
-            const int Chars = 256;
-            var buff = new StringBuilder(Chars);
-            return UnsafeNativeMethods.GetWindowText(handle, buff, Chars) > 0 ? buff.ToString() : string.Empty;
         }
 
         private void OnAxOutlookViewControlOnSelectionChange(object? sender, EventArgs args)
@@ -167,22 +119,7 @@ namespace OotD.Forms
 
         private void SendWindowToBack()
         {
-            if (Environment.OSVersion.Version.Major < 6 || !UnsafeNativeMethods.DwmIsCompositionEnabled())
-            // Windows XP or higher with DWM window composition disabled
-            {
-                UnsafeNativeMethods.PinWindowToDesktop(this);
-            }
-            else if (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor == 0)
-            // Vista
-            {
-                UnsafeNativeMethods.SendWindowToBack(this);
-            }
-            else
-            {
-                // Windows 7 or above
-                UnsafeNativeMethods.RemoveWindowFromAeroPeek(this);
-                UnsafeNativeMethods.SendWindowToBack(this);
-            }
+            UnsafeNativeMethods.PinToDesktop(this);
         }
 
         protected override CreateParams CreateParams
@@ -1288,12 +1225,6 @@ namespace OotD.Forms
         /// <param name="m"></param>
         protected override void WndProc(ref Message m)
         {
-            if (_showDesktopToggled)
-            {
-                base.WndProc(ref m);
-                return;
-            }
-
             switch (m.Msg)
             {
                 case UnsafeNativeMethods.WM_PARENTNOTIFY:
