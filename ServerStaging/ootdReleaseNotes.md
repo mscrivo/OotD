@@ -1,5 +1,10 @@
 # OotD Release Notes
 
+## 4.0.202
+* Fix an issue where moving left/right from current date jumped to random dates in certain regions
+* Update to .net core 3.1.8
+* More robust method of pinning to desktop (though Win+D still hides it)
+
 ## 4.0.178
 * Fix issue where app incorrectly stated that Office 2010 or higher could not be found.
 
