@@ -93,10 +93,10 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-  dotnetCore3x64DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/5e4695fb-da51-4fa8-a090-07a64480888c/65aa842670d2280b5d05b8a070a9f495/windowsdesktop-runtime-3.1.7-win-x64.exe';
-  dotnetCore3x86DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/3e6c8a13-9d89-4991-b683-b6bb279bc096/d1c44ba0c34f2be8878c36d27287e1a5/windowsdesktop-runtime-3.1.7-win-x86.exe';
-  dotnetCore3x64DesktopFilename = 'windowsdesktop-runtime-3.1.7-win-x64.exe';
-  dotnetCore3x86DesktopFilename = 'windowsdesktop-runtime-3.1.7-win-x86.exe';
+  dotnetCore3x64DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/add2ffbe-a288-4d47-8b09-a39c8645f505/8516700dd5bd85fe07e8010e55d8f653/windowsdesktop-runtime-3.1.8-win-x64.exe';
+  dotnetCore3x86DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/712f4ec2-79a4-4897-af5b-6c814dd49741/2025ef17bfc218cce1699787352d84b8/windowsdesktop-runtime-3.1.8-win-x86.exe';
+  dotnetCore3x64DesktopFilename = 'windowsdesktop-runtime-3.1.8-win-x64.exe';
+  dotnetCore3x86DesktopFilename = 'windowsdesktop-runtime-3.1.8-win-x86.exe';
 
 procedure InitializeWizard;
 begin

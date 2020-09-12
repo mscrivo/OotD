@@ -6,6 +6,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OotD.x64", "OotD.x64\OotD.x
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{07B2D199-0589-433B-8C1F-A8B3BF22D4E0}"
 	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
 		LICENSE = LICENSE
 		ServerStaging\ootdAppcast.xml = ServerStaging\ootdAppcast.xml
 		ServerStaging\ootdReleaseNotes.md = ServerStaging\ootdReleaseNotes.md
@@ -44,10 +45,6 @@ Global
 		{38490DB9-CF42-4280-BE5B-01CDB8797EDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38490DB9-CF42-4280-BE5B-01CDB8797EDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38490DB9-CF42-4280-BE5B-01CDB8797EDD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1CE51416-D856-44D8-969E-AB9FEE70E27F}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{1CE51416-D856-44D8-969E-AB9FEE70E27F}.Debug|Any CPU.Build.0 = Debug|x86
-		{1CE51416-D856-44D8-969E-AB9FEE70E27F}.Release|Any CPU.ActiveCfg = Release|x86
-		{1CE51416-D856-44D8-969E-AB9FEE70E27F}.Release|Any CPU.Build.0 = Release|x86
 		{1CE51416-D856-44D8-969E-AB9FEE70E27F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1CE51416-D856-44D8-969E-AB9FEE70E27F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CE51416-D856-44D8-969E-AB9FEE70E27F}.Release|Any CPU.ActiveCfg = Release|Any CPU
