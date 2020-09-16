@@ -22,6 +22,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>..\OotD.Core\Resources\Icons\AppIcon.ico</ApplicationIcon>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

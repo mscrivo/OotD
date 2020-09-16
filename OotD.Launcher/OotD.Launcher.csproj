@@ -37,6 +37,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>..\OotD.Core\app.manifest</ApplicationManifest>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\OotD.Core\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
