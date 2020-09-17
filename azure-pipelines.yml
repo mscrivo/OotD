@@ -38,7 +38,6 @@ steps:
       set DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
       dotnet tool install --global AzureSignTool
 
-container:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: 'ServerStaging'
