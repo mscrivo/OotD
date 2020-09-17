@@ -32,8 +32,15 @@ steps:
   inputs:
     script: 'iscc /Q "Setup Script.iss"'
 
+- task: CmdLine@2
+  inputs:
+    script: |
+      set DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
+      dotnet tool install --global AzureSignTool
+
+container:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: 'ServerStaging'
     ArtifactName: 'artifact'
-    publishLocation: 'Container'    
+    publishLocation: 'Container'
