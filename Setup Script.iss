@@ -49,7 +49,6 @@ Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipi
 
 [Files]
 Source: "OotD.Launcher\bin\Release\net5.0\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net5.0\Microsoft.Office.Interop.Outlook.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\net5.0\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\net5.0\MACTrackBarLib.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\net5.0\MarkdownSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
