@@ -48,29 +48,29 @@ Filename: "{app}\{#MyAppExeName}"; Parameters: "-s"; WorkingDir: "{app}"; Flags:
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser; Description: "{cm:LaunchProgram,{#MyAppName}}"
 
 [Files]
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\Microsoft.Office.Interop.Outlook.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\MACTrackBarLib.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\MarkdownSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\Microsoft.Win32.TaskScheduler.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\NetSparkle.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\NLog.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OLXLib.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotD.Launcher.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotD.Launcher.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotD.Launcher.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotD.Launcher.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotD.x64.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotD.x64.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotD.x64.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotD.x64.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotD.x86.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotD.x86.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotD.x86.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotD.x86.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\netcoreapp3.1\OotDScheduledTaskDefinition.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\Microsoft.Office.Interop.Outlook.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\MACTrackBarLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\MarkdownSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\Microsoft.Win32.TaskScheduler.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\NetSparkle.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\NLog.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OLXLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotD.Launcher.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotD.Launcher.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotD.Launcher.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotD.Launcher.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotD.x64.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotD.x64.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotD.x64.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotD.x64.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotD.x86.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotD.x86.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotD.x86.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotD.x86.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net5.0\OotDScheduledTaskDefinition.xml"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
