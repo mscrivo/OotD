@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <RootNamespace>OotD</RootNamespace>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyTitle>Outlook on the Desktop</AssemblyTitle>
     <Company>SMR Computer Services</Company>
@@ -61,6 +61,7 @@
     <Compile Include="..\OotD.Core\Forms\InstanceManager.designer.cs" Link="Forms\InstanceManager.designer.cs" />
     <Compile Include="..\OotD.Core\Forms\MainForm.cs" Link="Forms\MainForm.cs" />
     <Compile Include="..\OotD.Core\Forms\MainForm.designer.cs" Link="Forms\MainForm.designer.cs" />
+    <Compile Include="..\OotD.Core\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
     <Compile Include="..\OotD.Core\Options.cs" Link="Options.cs" />
     <Compile Include="..\OotD.Core\Preferences\GlobalPreferences.cs" Link="Preferences\GlobalPreferences.cs" />
     <Compile Include="..\OotD.Core\Preferences\InstancePreferences.cs" Link="Preferences\InstancePreferences.cs" />

@@ -34,7 +34,7 @@ namespace OotD.Preferences
                 var opacity = DefaultOpacity;
 
                 if (
-                    double.TryParse((string)_appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture)), out opacity))
+                    double.TryParse(_appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture))?.ToString(), out opacity))
                 {
                     return opacity;
                 }
@@ -49,7 +49,9 @@ namespace OotD.Preferences
         /// </summary>
         public int Left
         {
+#pragma warning disable CS8605 // Unboxing a possibly null value.
             get => (int)_appReg.GetValue("Left", DefaultLeftPosition);
+#pragma warning restore CS8605 // Unboxing a possibly null value.
             set => _appReg.SetValue("Left", value);
         }
 
@@ -58,7 +60,9 @@ namespace OotD.Preferences
         /// </summary>
         public int Top
         {
+#pragma warning disable CS8605 // Unboxing a possibly null value.
             get => (int)_appReg.GetValue("Top", DefaultTopPosition);
+#pragma warning restore CS8605 // Unboxing a possibly null value.
             set => _appReg.SetValue("Top", value);
         }
 
@@ -67,7 +71,9 @@ namespace OotD.Preferences
         /// </summary>
         public int Width
         {
+#pragma warning disable CS8605 // Unboxing a possibly null value.
             get => (int)_appReg.GetValue("Width", DefaultWidth);
+#pragma warning restore CS8605 // Unboxing a possibly null value.
             set => _appReg.SetValue("Width", value);
         }
 
@@ -76,13 +82,15 @@ namespace OotD.Preferences
         /// </summary>
         public int Height
         {
+#pragma warning disable CS8605 // Unboxing a possibly null value.
             get => (int)_appReg.GetValue("Height", DefaultHeight);
+#pragma warning restore CS8605 // Unboxing a possibly null value.
             set => _appReg.SetValue("Height", value);
         }
 
         public string? OutlookFolderName
         {
-            get => (string)_appReg.GetValue("CurrentViewType", "Calendar");
+            get => _appReg.GetValue("CurrentViewType", "Calendar")?.ToString();
             set
             {
                 if (value != null)
@@ -96,7 +104,7 @@ namespace OotD.Preferences
 
         public string? OutlookFolderView
         {
-            get => (string)_appReg.GetValue("OutlookView", "Day/Week/Month");
+            get => _appReg.GetValue("OutlookView", "Day/Week/Month")?.ToString();
             set
             {
                 if (value != null)
@@ -109,7 +117,7 @@ namespace OotD.Preferences
 
         public string? OutlookFolderEntryId
         {
-            get => (string)_appReg.GetValue("FolderEntryId", "");
+            get => _appReg.GetValue("FolderEntryId", "")?.ToString();
             set
             {
                 if (value != null)
@@ -122,7 +130,7 @@ namespace OotD.Preferences
 
         public string? OutlookFolderStoreId
         {
-            get => (string)_appReg.GetValue("FolderStoreId", "");
+            get => _appReg.GetValue("FolderStoreId", "")?.ToString();
             set
             {
                 if (value != null)
@@ -136,16 +144,16 @@ namespace OotD.Preferences
         {
             get
             {
-                bool.TryParse(_appReg.GetValue("DisableEditing", "False").ToString(), out var retVal);
+                _ = bool.TryParse(_appReg.GetValue("DisableEditing", "False")?.ToString(), out var retVal);
                 return retVal;
             }
             set => _appReg.SetValue("DisableEditing", value);
         }
 
-        public string ViewXml
+        public string? ViewXml
         {
-            get => (string)_appReg.GetValue("ViewXML", "");
-            set => _appReg.SetValue("ViewXML", value);
+            get => _appReg.GetValue("ViewXML", "")?.ToString();
+            set => _appReg.SetValue("ViewXML", value!);
         }
 
         ~InstancePreferences()

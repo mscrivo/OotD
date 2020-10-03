@@ -143,7 +143,7 @@ namespace OotD
             {
                 if (key != null)
                 {
-                    outlookFolder = (string)key.GetValue("Path");
+                    outlookFolder = key.GetValue("Path")?.ToString();
                 }
 
                 if (!string.IsNullOrWhiteSpace(outlookFolder))
@@ -196,7 +196,7 @@ namespace OotD
 
             if (outlookKey != null)
             {
-                bitness = (string)outlookKey.GetValue("Bitness");
+                bitness = outlookKey.GetValue("Bitness")?.ToString();
             }
             else
             {
@@ -207,7 +207,7 @@ namespace OotD
 
                 if (outlookKey != null)
                 {
-                    bitness = (string)outlookKey.GetValue("Bitness");
+                    bitness = outlookKey.GetValue("Bitness")?.ToString();
                 }
             }
 

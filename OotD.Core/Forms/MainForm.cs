@@ -1188,8 +1188,8 @@ namespace OotD.Forms
         {
             var mode = CurrentCalendarView.Day;
 
-            var xElement = XDocument.Parse(OutlookViewControl.ViewXML).Element("view");
-            var element = xElement?.Element("mode");
+            var xElement = XDocument.Parse(OutlookViewControl.ViewXML).Element("view"!);
+            var element = xElement?.Element("mode"!);
             if (element != null)
             {
                 mode = (CurrentCalendarView)Convert.ToInt32(element.Value);

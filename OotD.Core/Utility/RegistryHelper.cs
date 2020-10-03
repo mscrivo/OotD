@@ -53,7 +53,10 @@ namespace OotD.Utility
             {
                 var objValue = sourceKey.GetValue(valueName);
                 var valKind = sourceKey.GetValueKind(valueName);
-                destinationKey.SetValue(valueName, objValue, valKind);
+                if (objValue != null)
+                {
+                    destinationKey.SetValue(valueName, objValue, valKind);
+                }
             }
 
             //For Each subKey

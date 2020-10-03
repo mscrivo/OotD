@@ -564,7 +564,7 @@ namespace OotD.Forms
 
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            var item = (ToolStripDropDownItem)e.Argument;
+            var item = (ToolStripDropDownItem)e.Argument!;
             FlashForm(item);
         }
     }

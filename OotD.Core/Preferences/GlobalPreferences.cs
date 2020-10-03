@@ -42,7 +42,7 @@ namespace OotD.Preferences
                 using var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
                 if (key != null)
                 {
-                    if (bool.TryParse((string)key.GetValue("LockPosition", "false"), out var lockPositions) &&
+                    if (bool.TryParse(key.GetValue("LockPosition", "false")?.ToString(), out var lockPositions) &&
                         lockPositions)
                     {
                         return true;
@@ -71,7 +71,7 @@ namespace OotD.Preferences
                 {
                     if (key != null)
                     {
-                        if (bool.TryParse((string)key.GetValue("FirstRun", "true"), out var isFirstRun))
+                        if (bool.TryParse(key.GetValue("FirstRun", "true")?.ToString(), out var isFirstRun))
                         {
                             if (isFirstRun)
                             {
