@@ -15,7 +15,7 @@ namespace OotD.Utility
         /// the frame work totally forgot to include such a handy feature.
         /// </summary>
         /// <param name="parentKey">The RegistryKey that contains the subkey
-        /// you want to rename (must be writeable)</param>
+        /// you want to rename (must be writable)</param>
         /// <param name="subKeyName">The name of the subkey that you want to rename</param>
         /// <param name="newSubKeyName">The new name of the RegistryKey</param>
         /// <returns>True if succeeds</returns>
@@ -40,7 +40,7 @@ namespace OotD.Utility
             //Open the sourceKey we are copying from
             var sourceKey = parentKey.OpenSubKey(keyNameToCopy);
 
-            if (sourceKey != null && destinationKey != null)
+            if (sourceKey != null)
             {
                 RecursivelyCopyKey(sourceKey, destinationKey);
             }
@@ -67,7 +67,7 @@ namespace OotD.Utility
                 var sourceSubKey = sourceKey.OpenSubKey(sourceSubKeyName);
                 var destinationSubKey = destinationKey.CreateSubKey(sourceSubKeyName);
 
-                if (sourceSubKey != null && destinationSubKey != null)
+                if (sourceSubKey != null)
                 {
                     RecursivelyCopyKey(sourceSubKey, destinationSubKey);
                 }

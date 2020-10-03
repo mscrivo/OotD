@@ -40,21 +40,13 @@ namespace OotD.Preferences
             get
             {
                 using var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
-                if (key != null)
-                {
-                    if (bool.TryParse(key.GetValue("LockPosition", "false")?.ToString(), out var lockPositions) &&
-                        lockPositions)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
+                return bool.TryParse(key.GetValue("LockPosition", "false")?.ToString(), out var lockPositions) &&
+                       lockPositions;
             }
             set
             {
                 using var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
-                key?.SetValue("LockPosition", value);
+                key.SetValue("LockPosition", value);
             }
         }
 
@@ -69,16 +61,13 @@ namespace OotD.Preferences
 
                 using (var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
                 {
-                    if (key != null)
+                    if (bool.TryParse(key.GetValue("FirstRun", "true")?.ToString(), out var isFirstRun))
                     {
-                        if (bool.TryParse(key.GetValue("FirstRun", "true")?.ToString(), out var isFirstRun))
+                        if (isFirstRun)
                         {
-                            if (isFirstRun)
-                            {
-                                key.SetValue("FirstRun", false);
-                                _isFirstRun = true;
-                                return _isFirstRun.Value;
-                            }
+                            key.SetValue("FirstRun", false);
+                            _isFirstRun = true;
+                            return _isFirstRun.Value;
                         }
                     }
                 }

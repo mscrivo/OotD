@@ -36,7 +36,7 @@ namespace OotD.Forms
 
         #region Assembly Attribute Accessors
 
-        private static string? Title
+        private static string Title
         {
             get
             {
