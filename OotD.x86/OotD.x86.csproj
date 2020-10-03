@@ -263,8 +263,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="NLog" Version="4.7.4" />
-    <PackageReference Include="NLog.Schema" Version="4.7.4" />
+    <PackageReference Include="NLog" Version="4.7.5" />
+    <PackageReference Include="NLog.Schema" Version="4.7.5" />
     <PackageReference Include="TaskScheduler" Version="2.8.21" />
   </ItemGroup>
 </Project>
