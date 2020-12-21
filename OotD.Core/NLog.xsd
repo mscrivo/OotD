@@ -1244,7 +1244,7 @@
         </xs:attribute>
         <xs:attribute name="forceMutexConcurrentWrites" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Value indicationg whether file creation calls should be synchronized by a system global mutex.</xs:documentation>
+            <xs:documentation>Value indicating whether file creation calls should be synchronized by a system global mutex.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="maxLogFilenames" type="xs:integer">
@@ -2762,7 +2762,7 @@
     </xs:choice>
     <xs:attribute name="encode" type="xs:boolean">
       <xs:annotation>
-        <xs:documentation>Determines wether or not this attribute will be Json encoded.</xs:documentation>
+        <xs:documentation>Determines weather or not this attribute will be Json encoded.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="escapeUnicode" type="xs:boolean">

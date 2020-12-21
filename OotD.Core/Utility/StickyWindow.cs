@@ -21,7 +21,7 @@ namespace OotD.Utility
         /// <summary>
         ///     Global List of registered StickyWindows
         /// </summary>
-        private static readonly ArrayList GlobalStickyWindows = new ArrayList();
+        private static readonly ArrayList _globalStickyWindows = new();
 
         // public properties
         private static int _stickGap = 10; // distance to stick
@@ -70,11 +70,11 @@ namespace OotD.Utility
         {
             if ((int)Handle != 0)
             {
-                GlobalStickyWindows.Add(_originalForm);
+                _globalStickyWindows.Add(_originalForm);
             }
             else
             {
-                GlobalStickyWindows.Remove(_originalForm);
+                _globalStickyWindows.Remove(_originalForm);
             }
         }
 
@@ -298,7 +298,7 @@ namespace OotD.Utility
         /// <param name="frmExternal">External window that will be used as reference</param>
         public static void RegisterExternalReferenceForm(Form frmExternal)
         {
-            GlobalStickyWindows.Add(frmExternal);
+            _globalStickyWindows.Add(frmExternal);
         }
 
         /// <summary>
@@ -308,7 +308,7 @@ namespace OotD.Utility
         /// <param name="frmExternal">External window that will was used as reference</param>
         public static void UnregisterExternalReferenceForm(Form frmExternal)
         {
-            GlobalStickyWindows.Remove(frmExternal);
+            _globalStickyWindows.Remove(frmExternal);
         }
 
         #endregion
@@ -431,7 +431,7 @@ namespace OotD.Utility
             if (StickToOther)
             {
                 // now try to stick to other forms
-                foreach (var sw in GlobalStickyWindows)
+                foreach (var sw in _globalStickyWindows)
                 {
                     var form = sw as Form;
                     if (form != _originalForm)
@@ -652,7 +652,7 @@ namespace OotD.Utility
 
             // p is the exact location of the frame - so we can play with it
             // to detect the new position according to different bounds
-            _formRect.Location = p; // this is the new positon of the form
+            _formRect.Location = p; // this is the new position of the form
 
             _formOffsetPoint.X = _stickGap + 1; // (more than) maximum gaps
             _formOffsetPoint.Y = _stickGap + 1;
@@ -665,7 +665,7 @@ namespace OotD.Utility
             // Now try to snap to other windows
             if (StickToOther)
             {
-                foreach (var sw in GlobalStickyWindows)
+                foreach (var sw in _globalStickyWindows)
                 {
                     var form = sw as Form;
                     if (form != _originalForm)

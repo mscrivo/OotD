@@ -77,13 +77,9 @@ namespace OotD.Forms
                 var attributes =
                     Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
                 // If there aren't any Product attributes, return an empty string
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
+                return attributes.Length == 0 ? "" : ((AssemblyProductAttribute)attributes[0]).Product;
 
                 // If there is a Product attribute, return its value
-                return ((AssemblyProductAttribute)attributes[0]).Product;
             }
         }
 
@@ -95,13 +91,9 @@ namespace OotD.Forms
                 var attributes =
                     Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
                 // If there aren't any Copyright attributes, return an empty string
-                if (attributes.Length == 0)
-                {
-                    return "";
-                }
+                return attributes.Length == 0 ? "" : ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
 
                 // If there is a Copyright attribute, return its value
-                return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
             }
         }
 

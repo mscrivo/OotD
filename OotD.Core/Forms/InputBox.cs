@@ -72,15 +72,17 @@ namespace OotD.Forms
 
         private void InputTextBox_Validating(object sender, CancelEventArgs e)
         {
-            if (Validator != null)
+            if (Validator == null)
             {
-                var args = new InputBoxValidatingEventArgs { Text = InputTextBox.Text };
-                Validator(this, args);
-                if (args.Cancel)
-                {
-                    e.Cancel = true;
-                    _errorProviderText.SetError(InputTextBox, args.Message);
-                }
+                return;
+            }
+
+            var args = new InputBoxValidatingEventArgs { Text = InputTextBox.Text };
+            Validator(this, args);
+            if (args.Cancel)
+            {
+                e.Cancel = true;
+                _errorProviderText.SetError(InputTextBox, args.Message);
             }
         }
     }

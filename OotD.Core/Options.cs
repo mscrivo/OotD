@@ -6,6 +6,7 @@ using CommandLine;
 
 namespace OotD
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class Options
     {
         [Option('d', "debug", Default = false, HelpText = "Start Debugger.")]

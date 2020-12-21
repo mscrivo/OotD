@@ -26,7 +26,7 @@ namespace OotD.Utility
         }
 
         /// <summary>
-        /// Copy a registry key.  The parentKey must be writeable.
+        /// Copy a registry key.  The parentKey must be writable.
         /// </summary>
         /// <param name="parentKey"></param>
         /// <param name="keyNameToCopy"></param>

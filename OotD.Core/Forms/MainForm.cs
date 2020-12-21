@@ -347,24 +347,26 @@ namespace OotD.Forms
             OutlookViewsMenu.DropDownItems.Clear();
             OutlookFolderViews = new List<View>();
 
-            if (_outlookFolder != null)
+            if (_outlookFolder == null)
             {
-                foreach (var view in _outlookFolder.Views)
+                return;
+            }
+
+            foreach (var view in _outlookFolder.Views)
+            {
+                var typedView = (View)view!;
+                var viewItem = new ToolStripMenuItem(typedView.Name) { Tag = view };
+
+                viewItem.Click += ViewItem_Click;
+
+                if (typedView.Name == Preferences.OutlookFolderView)
                 {
-                    var typedView = (View)view!;
-                    var viewItem = new ToolStripMenuItem(typedView.Name) { Tag = view };
-
-                    viewItem.Click += ViewItem_Click;
-
-                    if (typedView.Name == Preferences.OutlookFolderView)
-                    {
-                        viewItem.Checked = true;
-                    }
-
-                    OutlookViewsMenu.DropDownItems.Add(viewItem);
-
-                    OutlookFolderViews.Add(typedView);
+                    viewItem.Checked = true;
                 }
+
+                OutlookViewsMenu.DropDownItems.Add(viewItem);
+
+                OutlookFolderViews.Add(typedView);
             }
         }
 
@@ -656,34 +658,18 @@ namespace OotD.Forms
 
             _movingOrResizing = true;
 
-            var dir = -1;
-            switch (direction)
+            var dir = direction switch
             {
-                case ResizeDirection.Left:
-                    dir = UnsafeNativeMethods.HTLEFT;
-                    break;
-                case ResizeDirection.TopLeft:
-                    dir = UnsafeNativeMethods.HTTOPLEFT;
-                    break;
-                case ResizeDirection.Top:
-                    dir = UnsafeNativeMethods.HTTOP;
-                    break;
-                case ResizeDirection.TopRight:
-                    dir = UnsafeNativeMethods.HTTOPRIGHT;
-                    break;
-                case ResizeDirection.Right:
-                    dir = UnsafeNativeMethods.HTRIGHT;
-                    break;
-                case ResizeDirection.BottomRight:
-                    dir = UnsafeNativeMethods.HTBOTTOMRIGHT;
-                    break;
-                case ResizeDirection.Bottom:
-                    dir = UnsafeNativeMethods.HTBOTTOM;
-                    break;
-                case ResizeDirection.BottomLeft:
-                    dir = UnsafeNativeMethods.HTBOTTOMLEFT;
-                    break;
-            }
+                ResizeDirection.Left => UnsafeNativeMethods.HTLEFT,
+                ResizeDirection.TopLeft => UnsafeNativeMethods.HTTOPLEFT,
+                ResizeDirection.Top => UnsafeNativeMethods.HTTOP,
+                ResizeDirection.TopRight => UnsafeNativeMethods.HTTOPRIGHT,
+                ResizeDirection.Right => UnsafeNativeMethods.HTRIGHT,
+                ResizeDirection.BottomRight => UnsafeNativeMethods.HTBOTTOMRIGHT,
+                ResizeDirection.Bottom => UnsafeNativeMethods.HTBOTTOM,
+                ResizeDirection.BottomLeft => UnsafeNativeMethods.HTBOTTOMLEFT,
+                _ => -1
+            };
 
             if (dir != -1)
             {
@@ -801,16 +787,18 @@ namespace OotD.Forms
             var result = MessageBox.Show(Parent, Resources.RemoveInstanceConfirmation,
                                                Resources.ConfirmationCaption, MessageBoxButtons.YesNo,
                                                MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-            if (result == DialogResult.Yes)
+            if (result != DialogResult.Yes)
             {
-                using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
-                {
-                    appReg?.DeleteSubKeyTree(InstanceName);
-                }
-
-                OnInstanceRemoved(this, new InstanceRemovedEventArgs(InstanceName));
-                Dispose();
+                return;
             }
+
+            using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+            {
+                appReg?.DeleteSubKeyTree(InstanceName);
+            }
+
+            OnInstanceRemoved(this, new InstanceRemovedEventArgs(InstanceName));
+            Dispose();
         }
 
         private void UpdateTimer_Tick(object? sender, EventArgs e)
@@ -910,42 +898,34 @@ namespace OotD.Forms
             {
                 ResizeDir = ResizeDirection.TopLeft;
             }
-
             else if (e.Location.X < ResizeBorderWidth && e.Location.Y > Height - ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.BottomLeft;
             }
-
             else if (e.Location.X > Width - ResizeBorderWidth && e.Location.Y > Height - ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.BottomRight;
             }
-
             else if (e.Location.X > Width - ResizeBorderWidth && e.Location.Y < ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.TopRight;
             }
-
             else if (e.Location.X < ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.Left;
             }
-
             else if (e.Location.X > Width - ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.Right;
             }
-
             else if (e.Location.Y < ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.Top;
             }
-
             else if (e.Location.Y > Height - ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.Bottom;
             }
-
             else
             {
                 ResizeDir = ResizeDirection.None;

@@ -13,8 +13,8 @@ namespace OotD.Utility
 {
     internal static class UnsafeNativeMethods
     {
-        private static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
-        private static readonly IntPtr HWND_TOP = new IntPtr(0);
+        private static readonly IntPtr HWND_BOTTOM = new(1);
+        private static readonly IntPtr HWND_TOP = new(0);
 
         private const int SWP_NOACTIVATE = 0x10;
         private const int SWP_NOMOVE = 0x0002;
@@ -76,7 +76,7 @@ namespace OotD.Utility
         public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
-        public static extern bool SetWindowPos(
+        private static extern bool SetWindowPos(
             IntPtr hWnd,
             IntPtr hWndInsertAfter,
             int X,

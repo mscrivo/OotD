@@ -33,13 +33,11 @@ namespace OotD.Preferences
             {
                 var opacity = DefaultOpacity;
 
-                if (
-                    double.TryParse(_appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture))?.ToString(), out opacity))
-                {
-                    return opacity;
-                }
-
-                return DefaultOpacity;
+                return double.TryParse(
+                    _appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture))?.ToString(),
+                    out opacity)
+                    ? opacity
+                    : DefaultOpacity;
             }
             set => _appReg.SetValue("Opacity", value);
         }

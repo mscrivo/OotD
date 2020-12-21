@@ -27,7 +27,7 @@ namespace OotD.Forms
         private const string AutoUpdateInstanceName = "AutoUpdate";
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private readonly Dictionary<string, MainForm> _mainFormInstances = new Dictionary<string, MainForm>();
+        private readonly Dictionary<string, MainForm> _mainFormInstances = new();
         private readonly Graphics _graphics;
         private readonly Sparkle _sparkle;
 
@@ -360,25 +360,27 @@ namespace OotD.Forms
         private void AddInstanceMenu_Click(object? sender, EventArgs e)
         {
             var result = InputBox.Show(this, "", Resources.NewInstanceName, string.Empty, InputBox_Validating);
-            if (result.Ok)
+            if (!result.Ok)
             {
-                // trigger the tray icon context menu to show the second instance
-                var mainForm = new MainForm(result.Text);
-                mainForm.Dispose();
-
-                LoadInstances();
-
-                // reposition the newly added instance so that it's not directly on top of the previous one
-                var rnd = new Random();
-                var xLoc = rnd.Next(0, Screen.FromHandle(Handle).WorkingArea.Width - _mainFormInstances[result.Text].Width);
-                var yLoc = rnd.Next(0, Screen.FromHandle(Handle).WorkingArea.Height - _mainFormInstances[result.Text].Height);
-                _mainFormInstances[result.Text].Left = xLoc;
-                _mainFormInstances[result.Text].Top = yLoc;
-
-                // Save the new position so that it's correctly loaded on next run
-                _mainFormInstances[result.Text].Preferences!.Left = _mainFormInstances[result.Text].Left;
-                _mainFormInstances[result.Text].Preferences!.Top = _mainFormInstances[result.Text].Top;
+                return;
             }
+
+            // trigger the tray icon context menu to show the second instance
+            var mainForm = new MainForm(result.Text);
+            mainForm.Dispose();
+
+            LoadInstances();
+
+            // reposition the newly added instance so that it's not directly on top of the previous one
+            var rnd = new Random();
+            var xLoc = rnd.Next(0, Screen.FromHandle(Handle).WorkingArea.Width - _mainFormInstances[result.Text].Width);
+            var yLoc = rnd.Next(0, Screen.FromHandle(Handle).WorkingArea.Height - _mainFormInstances[result.Text].Height);
+            _mainFormInstances[result.Text].Left = xLoc;
+            _mainFormInstances[result.Text].Top = yLoc;
+
+            // Save the new position so that it's correctly loaded on next run
+            _mainFormInstances[result.Text].Preferences!.Left = _mainFormInstances[result.Text].Left;
+            _mainFormInstances[result.Text].Preferences!.Top = _mainFormInstances[result.Text].Top;
         }
 
         private static void InputBox_Validating(object? sender, InputBoxValidatingEventArgs e)
@@ -430,20 +432,20 @@ namespace OotD.Forms
 
             if (hideShowMenuText == Resources.HideAll || hideShowMenuText == Resources.Hide)
             {
-                foreach (var formInstance in _mainFormInstances)
+                foreach (var (_, mainForm) in _mainFormInstances)
                 {
-                    formInstance.Value.Visible = false;
-                    formInstance.Value.TrayMenu.Items["HideShowMenu"].Text = Resources.Show;
+                    mainForm.Visible = false;
+                    mainForm.TrayMenu.Items["HideShowMenu"].Text = Resources.Show;
                 }
 
                 trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = _mainFormInstances.Count == 1 ? Resources.Show : Resources.ShowAll;
             }
             else if (hideShowMenuText == Resources.ShowAll || hideShowMenuText == Resources.Show)
             {
-                foreach (var formInstance in _mainFormInstances)
+                foreach (var (_, mainForm) in _mainFormInstances)
                 {
-                    formInstance.Value.Visible = true;
-                    formInstance.Value.TrayMenu.Items["HideShowMenu"].Text = Resources.Hide;
+                    mainForm.Visible = true;
+                    mainForm.TrayMenu.Items["HideShowMenu"].Text = Resources.Hide;
                 }
 
                 trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = _mainFormInstances.Count == 1 ? Resources.Hide : Resources.HideAll;
@@ -486,22 +488,22 @@ namespace OotD.Forms
 
             if (disableEditingMenu.Checked)
             {
-                foreach (var formInstance in _mainFormInstances)
+                foreach (var (_, mainForm) in _mainFormInstances)
                 {
-                    formInstance.Value.Enabled = true;
+                    mainForm.Enabled = true;
 
-                    var instanceDisableEditingMenu = (ToolStripMenuItem)formInstance.Value.TrayMenu.Items["DisableEnableEditingMenu"];
+                    var instanceDisableEditingMenu = (ToolStripMenuItem)mainForm.TrayMenu.Items["DisableEnableEditingMenu"];
                     instanceDisableEditingMenu.Checked = !instanceDisableEditingMenu.Checked;
                 }
                 disableEditingMenu.Checked = false;
             }
             else
             {
-                foreach (var formInstance in _mainFormInstances)
+                foreach (var (_, mainForm) in _mainFormInstances)
                 {
-                    formInstance.Value.Enabled = false;
+                    mainForm.Enabled = false;
 
-                    var instanceDisableEditingMenu = (ToolStripMenuItem)formInstance.Value.TrayMenu.Items["DisableEnableEditingMenu"];
+                    var instanceDisableEditingMenu = (ToolStripMenuItem)mainForm.TrayMenu.Items["DisableEnableEditingMenu"];
                     instanceDisableEditingMenu.Checked = !instanceDisableEditingMenu.Checked;
                 }
                 disableEditingMenu.Checked = true;
@@ -547,9 +549,9 @@ namespace OotD.Forms
                 var formInstance = _mainFormInstances[dropDownItem.DropDownItems[0].Text];
 
                 var currentOpacity = formInstance.Opacity;
-                formInstance.InvokeEx(f => formInstance.Opacity = .3);
+                formInstance.InvokeEx(_ => formInstance.Opacity = .3);
                 Thread.Sleep(250);
-                formInstance.InvokeEx(f => formInstance.Opacity = currentOpacity);
+                formInstance.InvokeEx(_ => formInstance.Opacity = currentOpacity);
                 Thread.Sleep(250);
             }
         }

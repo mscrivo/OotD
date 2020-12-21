@@ -12,7 +12,7 @@ namespace OotD.Preferences
     {
         // never instantiated, only contains static methods
 
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Returns true if there is a registry entry that makes Outlook on the Desktop start
@@ -26,11 +26,11 @@ namespace OotD.Preferences
             {
                 if (value)
                 {
-                    TaskScheduling.CreateOotDStartupTask(Logger);
+                    TaskScheduling.CreateOotDStartupTask(_logger);
                 }
                 else
                 {
-                    TaskScheduling.RemoveOotDStartupTask(Logger);
+                    TaskScheduling.RemoveOotDStartupTask(_logger);
                 }
             }
         }
