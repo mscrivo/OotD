@@ -1,5 +1,8 @@
 # OotD Release Notes
 
+## 4.0.221
+* Update to .net core 5.0.1
+
 ## 4.0.202
 * Fix an issue where moving left/right from current date jumped to random dates in certain regions
 * Update to .net core 3.1.8
