@@ -158,12 +158,21 @@ namespace OotD
 
         public static void DisposeOutlookObjects()
         {
-            _outlookExplorer?.Close();
+            try
+            {
+                _outlookExplorer?.Close();
 
-            _outlookExplorer = null;
-            _outlookFolder = null;
-            OutlookNameSpace = null;
-            _outlookApp = null;
+                _outlookExplorer = null;
+                _outlookFolder = null;
+                OutlookNameSpace = null;
+                _outlookApp = null;
+            }
+            catch
+            {
+                // ignore any exceptions cleaning up as they might result
+                // from a crash in Outlook itself.
+            }
+
         }
     }
 }
