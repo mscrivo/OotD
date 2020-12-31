@@ -896,6 +896,15 @@ namespace OotD.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OotD detected that Outlook is not running. Perhaps it crashed or was closed accidentally. OotD cannot run without it, please close OotD and restart it..
+        /// </summary>
+        internal static string OutlookNotRunning {
+            get {
+                return ResourceManager.GetString("OutlookNotRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap PayPal {

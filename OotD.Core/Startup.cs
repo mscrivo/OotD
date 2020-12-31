@@ -15,6 +15,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Application = Microsoft.Office.Interop.Outlook.Application;
 using Exception = System.Exception;
+using Timer = System.Timers.Timer;
 
 namespace OotD
 {
@@ -29,6 +30,7 @@ namespace OotD
         public static NameSpace? OutlookNameSpace;
         private static MAPIFolder? _outlookFolder;
         private static Explorer? _outlookExplorer;
+        private static Timer? _checkIfOutlookIsRunningTimer;
 
         public static bool UpdateDetected;
 
@@ -66,6 +68,27 @@ namespace OotD
                         // The only way I've found to work around it and keep the view control from crashing after opening an item,
                         // is to get this global instance of the active explorer and keep it going until the user closes the app.
                         _outlookExplorer = _outlookFolder!.GetExplorer();
+
+                        _checkIfOutlookIsRunningTimer = new Timer { Interval = 3000 };
+                        _checkIfOutlookIsRunningTimer.Elapsed += (_, _) =>
+                        {
+                            try
+                            {
+                                // try to access _outlookExplorer and if it throws that means
+                                // Outlook is dead.
+                                _ = _outlookExplorer.CurrentView;
+                            }
+                            catch
+                            {
+                                _checkIfOutlookIsRunningTimer.Stop();
+
+                                MessageBox.Show(Resources.OutlookNotRunning, Resources.ErrorCaption,
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                                Environment.Exit(-1);
+                            }
+                        };
+                        _checkIfOutlookIsRunningTimer.Start();
                     }
                     catch (Exception ex)
                     {
@@ -160,6 +183,7 @@ namespace OotD
         {
             try
             {
+                _checkIfOutlookIsRunningTimer?.Dispose();
                 _outlookExplorer?.Close();
 
                 _outlookExplorer = null;
@@ -172,7 +196,6 @@ namespace OotD
                 // ignore any exceptions cleaning up as they might result
                 // from a crash in Outlook itself.
             }
-
         }
     }
 }
