@@ -6,7 +6,7 @@
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "https://outlookonthedesktop.com"
 #define MyAppExeName "OotD.Launcher.exe"
-#define MyAppCopyright "©2006-2020 Michael Scrivo"
+#define MyAppCopyright "©2006-2021 Michael Scrivo"
 
 [Setup]
 AppName={#MyAppName}
