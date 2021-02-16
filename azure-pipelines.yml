@@ -13,12 +13,12 @@ name: $(Major).$(Minor).$(BuildID)
 
 steps:
 - checkout: self
-  submodules: true
+  submodules: 'true'
 
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '5.0.101'
+    version: '5.0.103'
     includePreviewVersions: true
 
 - task: DotNetCoreCLI@2
