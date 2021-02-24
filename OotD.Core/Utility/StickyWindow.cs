@@ -177,19 +177,14 @@ namespace OotD.Utility
 
         #region Utilities
 
-        private int NormalizeInside(int iP1, int iM1, int iM2)
+        private static int NormalizeInside(int iP1, int iM1, int iM2)
         {
             if (iP1 <= iM1)
             {
                 return iM1;
             }
 
-            if (iP1 >= iM2)
-            {
-                return iM2;
-            }
-
-            return iP1;
+            return iP1 >= iM2 ? iM2 : iP1;
         }
 
         #endregion

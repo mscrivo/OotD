@@ -83,12 +83,12 @@ namespace OotD.Forms
                 // hook up sticky window instance and events to let us know when resizing/moving
                 // has ended so we can update the form dimensions in the preferences.
                 _stickyWindow = new StickyWindow(this);
-                _stickyWindow.MoveEnded += (sender, args) =>
+                _stickyWindow.MoveEnded += (_, _) =>
                 {
                     _movingOrResizing = false;
                     SaveFormDimensions();
                 };
-                _stickyWindow.ResizeEnded += (sender, args) =>
+                _stickyWindow.ResizeEnded += (_, _) =>
                 {
                     _movingOrResizing = false;
                     SaveFormDimensions();
@@ -794,7 +794,7 @@ namespace OotD.Forms
 
             using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
             {
-                appReg?.DeleteSubKeyTree(InstanceName);
+                appReg.DeleteSubKeyTree(InstanceName);
             }
 
             OnInstanceRemoved(this, new InstanceRemovedEventArgs(InstanceName));

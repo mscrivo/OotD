@@ -104,7 +104,7 @@ namespace OotD.Forms
             Close();
         }
 
-        private void OpenUrl(string url)
+        private static void OpenUrl(string url)
         {
             try
             {
