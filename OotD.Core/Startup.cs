@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows.Forms;
 using CommandLine;
 using Microsoft.Office.Interop.Outlook;
 using NLog;
 using OotD.Forms;
 using OotD.Preferences;
 using OotD.Properties;
-using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Windows.Forms;
 using Application = Microsoft.Office.Interop.Outlook.Application;
 using Exception = System.Exception;
 using Timer = System.Timers.Timer;

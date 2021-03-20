@@ -3,9 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using Microsoft.Win32;
 using System.Globalization;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace OotD.Preferences
 {

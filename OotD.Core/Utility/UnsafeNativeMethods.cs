@@ -113,7 +113,7 @@ namespace OotD.Utility
                 hWndTmp = FindWindowEx(hWndTmp, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
                 if (hWndTmp != IntPtr.Zero)
                 {
-                    SetWindowLongPtr(new HandleRef(form, form.Handle), -8, (IntPtr)hWndTmp);
+                    SetWindowLongPtr(new HandleRef(form, form.Handle), -8, hWndTmp);
                     return true;
                 }
             }
@@ -160,7 +160,7 @@ namespace OotD.Utility
         private const uint GW_HWNDPREV = 3;
 
         public const int WS_EX_TOPMOST = 0x00000008;
-        static readonly int GWL_EXSTYLE = -20;
+        private static readonly int GWL_EXSTYLE = -20;
 
         /// <summary>
         /// This method will find the top most window and put ours just after it. This is

@@ -2,14 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Microsoft.Office.Interop.Outlook;
-using Microsoft.Win32;
-using NLog;
-using OotD.Enums;
-using OotD.Events;
-using OotD.Preferences;
-using OotD.Properties;
-using OotD.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +10,14 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using Microsoft.Office.Interop.Outlook;
+using Microsoft.Win32;
+using NLog;
+using OotD.Enums;
+using OotD.Events;
+using OotD.Preferences;
+using OotD.Properties;
+using OotD.Utility;
 using Application = System.Windows.Forms.Application;
 using Exception = System.Exception;
 using View = Microsoft.Office.Interop.Outlook.View;

@@ -2,13 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Microsoft.Win32;
-using NetSparkle;
-using NLog;
-using OotD.Events;
-using OotD.Preferences;
-using OotD.Properties;
-using OotD.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +11,13 @@ using System.Linq;
 using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
+using Microsoft.Win32;
+using NetSparkle;
+using NLog;
+using OotD.Events;
+using OotD.Preferences;
+using OotD.Properties;
+using OotD.Utility;
 
 namespace OotD.Forms
 {
