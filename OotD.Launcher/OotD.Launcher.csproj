@@ -67,8 +67,8 @@
     <ProjectReference Include="..\OotD.x86\OotD.x86.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.7.7" />
-    <PackageReference Include="NLog.Schema" Version="4.7.7" />
+    <PackageReference Include="NLog" Version="4.7.8" />
+    <PackageReference Include="NLog.Schema" Version="4.7.8" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\OotD.Core\Properties\Resources.resx" Link="Properties\Resources.resx">

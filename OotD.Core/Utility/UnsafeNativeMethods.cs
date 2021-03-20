@@ -8,12 +8,14 @@ using System.Windows.Forms;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
+#pragma warning disable IDE1006 // Naming Styles
 
 namespace OotD.Utility
 {
     internal static class UnsafeNativeMethods
     {
         private static readonly IntPtr HWND_BOTTOM = new(1);
+
         private static readonly IntPtr HWND_TOP = new(0);
 
         private const int SWP_NOACTIVATE = 0x10;
@@ -63,7 +65,7 @@ namespace OotD.Utility
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern IntPtr FindWindowEx(IntPtr parentHandle, IntPtr childAfter, string className, string windowTitle);
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
@@ -282,3 +284,4 @@ namespace OotD.Utility
         }
     }
 }
+#pragma warning restore IDE1006 // Naming Styles

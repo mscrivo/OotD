@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -15,7 +14,6 @@ namespace OotD.Utility
     ///     You get a nice way of organizing multiple top-level windows.
     ///     Quite similar with WinAmp 2.x style of sticking the windows
     /// </summary>
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public sealed class StickyWindow : NativeWindow
     {
         /// <summary>
@@ -24,7 +22,6 @@ namespace OotD.Utility
         private static readonly ArrayList _globalStickyWindows = new();
 
         // public properties
-        private static int _stickGap = 10; // distance to stick
 
         public event EventHandler? ResizeEnded;
         public event EventHandler? MoveEnded;
@@ -254,11 +251,7 @@ namespace OotD.Utility
         ///     Distance in pixels between two forms or a form and the screen where the sticking should start
         ///     Default value = 20
         /// </summary>
-        public int StickGap
-        {
-            get => _stickGap;
-            set => _stickGap = value;
-        }
+        public static int StickGap { get; set; } = 10;
 
         /// <summary>
         ///     Allow the form to stick while resizing
@@ -413,8 +406,8 @@ namespace OotD.Utility
 
             // CARE !!! We use "Width" and "Height" as Bottom & Right!! (C++ style)
             //formOffsetRect = new Rectangle ( stickGap + 1, stickGap + 1, 0, 0 );
-            _formOffsetRect.X = _stickGap + 1;
-            _formOffsetRect.Y = _stickGap + 1;
+            _formOffsetRect.X = StickGap + 1;
+            _formOffsetRect.Y = StickGap + 1;
             _formOffsetRect.Height = 0;
             _formOffsetRect.Width = 0;
 
@@ -440,22 +433,22 @@ namespace OotD.Utility
             }
 
             // Fix (clear) the values that were not updated to stick
-            if (_formOffsetRect.X == _stickGap + 1)
+            if (_formOffsetRect.X == StickGap + 1)
             {
                 _formOffsetRect.X = 0;
             }
 
-            if (_formOffsetRect.Width == _stickGap + 1)
+            if (_formOffsetRect.Width == StickGap + 1)
             {
                 _formOffsetRect.Width = 0;
             }
 
-            if (_formOffsetRect.Y == _stickGap + 1)
+            if (_formOffsetRect.Y == StickGap + 1)
             {
                 _formOffsetRect.Y = 0;
             }
 
-            if (_formOffsetRect.Height == _stickGap + 1)
+            if (_formOffsetRect.Height == StickGap + 1)
             {
                 _formOffsetRect.Height = 0;
             }
@@ -512,7 +505,7 @@ namespace OotD.Utility
 
         private void Resize_Stick(Rectangle toRect, bool bInsideStick)
         {
-            if (_formRect.Right >= toRect.Left - _stickGap && _formRect.Left <= toRect.Right + _stickGap)
+            if (_formRect.Right >= toRect.Left - StickGap && _formRect.Left <= toRect.Right + StickGap)
             {
                 if ((_resizeDirection & ResizeDir.Top) == ResizeDir.Top)
                 {
@@ -539,7 +532,7 @@ namespace OotD.Utility
                 }
             }
 
-            if (_formRect.Bottom >= toRect.Top - _stickGap && _formRect.Top <= toRect.Bottom + _stickGap)
+            if (_formRect.Bottom >= toRect.Top - StickGap && _formRect.Top <= toRect.Bottom + StickGap)
             {
                 if ((_resizeDirection & ResizeDir.Right) == ResizeDir.Right)
                 {
@@ -649,8 +642,8 @@ namespace OotD.Utility
             // to detect the new position according to different bounds
             _formRect.Location = p; // this is the new position of the form
 
-            _formOffsetPoint.X = _stickGap + 1; // (more than) maximum gaps
-            _formOffsetPoint.Y = _stickGap + 1;
+            _formOffsetPoint.X = StickGap + 1; // (more than) maximum gaps
+            _formOffsetPoint.Y = StickGap + 1;
 
             if (StickToScreen)
             {
@@ -673,12 +666,12 @@ namespace OotD.Utility
                 }
             }
 
-            if (_formOffsetPoint.X == _stickGap + 1)
+            if (_formOffsetPoint.X == StickGap + 1)
             {
                 _formOffsetPoint.X = 0;
             }
 
-            if (_formOffsetPoint.Y == _stickGap + 1)
+            if (_formOffsetPoint.Y == StickGap + 1)
             {
                 _formOffsetPoint.Y = 0;
             }
@@ -696,7 +689,7 @@ namespace OotD.Utility
         {
             // compare distance from toRect to formRect
             // and then with the found distances, compare the most closed position
-            if (_formRect.Bottom >= toRect.Top - _stickGap && _formRect.Top <= toRect.Bottom + _stickGap)
+            if (_formRect.Bottom >= toRect.Top - StickGap && _formRect.Top <= toRect.Bottom + StickGap)
             {
                 if (bInsideStick)
                 {
@@ -723,7 +716,7 @@ namespace OotD.Utility
                     _formOffsetPoint.X = toRect.Left + toRect.Width - _formRect.Width - _formRect.Left;
                 }
             }
-            if (_formRect.Right >= toRect.Left - _stickGap && _formRect.Left <= toRect.Right + _stickGap)
+            if (_formRect.Right >= toRect.Left - StickGap && _formRect.Left <= toRect.Right + StickGap)
             {
                 if (bInsideStick)
                 {

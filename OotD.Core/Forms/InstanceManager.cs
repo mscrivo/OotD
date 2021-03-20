@@ -223,13 +223,13 @@ namespace OotD.Forms
                 else
                 {
                     // this is a first run, or there is only 1 instance defined.
-                    const string defaultInstanceName = "Default Instance";
+                    const string DefaultInstanceName = "Default Instance";
 
-                    var instanceName = InstanceCount == 1 ? appReg.GetSubKeyNames()[0] : defaultInstanceName;
+                    var instanceName = InstanceCount == 1 ? appReg.GetSubKeyNames()[0] : DefaultInstanceName;
 
                     if (instanceName == AutoUpdateInstanceName)
                     {
-                        instanceName = defaultInstanceName;
+                        instanceName = DefaultInstanceName;
                     }
 
                     // create our instance and set the context menu to one defined in the form instance.
