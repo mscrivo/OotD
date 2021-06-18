@@ -372,8 +372,8 @@ namespace OotD.Forms
             _mainFormInstances[result.Text].Top = yLoc;
 
             // Save the new position so that it's correctly loaded on next run
-            _mainFormInstances[result.Text].Preferences!.Left = _mainFormInstances[result.Text].Left;
-            _mainFormInstances[result.Text].Preferences!.Top = _mainFormInstances[result.Text].Top;
+            _mainFormInstances[result.Text].Preferences.Left = _mainFormInstances[result.Text].Left;
+            _mainFormInstances[result.Text].Preferences.Top = _mainFormInstances[result.Text].Top;
         }
 
         private static void InputBox_Validating(object? sender, InputBoxValidatingEventArgs e)

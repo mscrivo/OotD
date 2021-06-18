@@ -554,7 +554,7 @@
     </xs:choice>
     <xs:attribute name="layout" type="SimpleLayoutAttribute">
       <xs:annotation>
-        <xs:documentation>Layout that should be use to calcuate the value for the parameter.</xs:documentation>
+        <xs:documentation>Layout that should be use to calculate the value for the parameter.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="name" type="xs:string">
@@ -913,7 +913,7 @@
     </xs:choice>
     <xs:attribute name="layout" type="SimpleLayoutAttribute">
       <xs:annotation>
-        <xs:documentation>Layout that should be use to calcuate the value for the parameter.</xs:documentation>
+        <xs:documentation>Layout that should be use to calculate the value for the parameter.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="name" type="xs:string">
@@ -1060,7 +1060,7 @@
         </xs:attribute>
         <xs:attribute name="entryType" type="SimpleLayoutAttribute">
           <xs:annotation>
-            <xs:documentation>Optional entrytype. When not set, or when not convertable to  then determined by </xs:documentation>
+            <xs:documentation>Optional entry type. When not set, or when not convertible to  then determined by </xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="maxKilobytes" type="xs:long">

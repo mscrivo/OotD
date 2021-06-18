@@ -117,23 +117,21 @@ namespace OotD
                 }
             }
 
-            if (version <= 0)
+            switch (version)
             {
-                _logger.Info("Could not find Office key.");
+                case <= 0:
+                    _logger.Info("Could not find Office key.");
 
-                MessageBox.Show(Resources.OutlookKeyNotFoundError, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(Resources.OutlookKeyNotFoundError, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                return string.Empty;
-            }
+                    return string.Empty;
+                case < 14:
+                    _logger.Debug("Outlook is not available or installed.");
+                    MessageBox.Show(
+                        Resources.Office2010Requirement + Environment.NewLine +
+                        Resources.InstallOutlookMsg, Resources.MissingRequirementsCapation, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            if (version < 14)
-            {
-                _logger.Debug("Outlook is not available or installed.");
-                MessageBox.Show(
-                    Resources.Office2010Requirement + Environment.NewLine +
-                    Resources.InstallOutlookMsg, Resources.MissingRequirementsCapation, MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                return string.Empty;
+                    return string.Empty;
             }
 
             _logger.Info($"Office version {version} detected");

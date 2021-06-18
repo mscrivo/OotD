@@ -454,13 +454,13 @@ namespace OotD.Forms
             if (Enabled)
             {
                 DisableEnableEditingMenu.Checked = true;
-                Preferences!.DisableEditing = true;
+                Preferences.DisableEditing = true;
                 Enabled = false;
             }
             else
             {
                 DisableEnableEditingMenu.Checked = false;
-                Preferences!.DisableEditing = false;
+                Preferences.DisableEditing = false;
                 Enabled = true;
             }
         }
@@ -533,7 +533,7 @@ namespace OotD.Forms
             {
                 OutlookViewControl.Folder = GetFolderFromViewType(folderViewType)?.Name;
 
-                Preferences!.OutlookFolderName = GetFolderFromViewType(folderViewType)?.Name;
+                Preferences.OutlookFolderName = GetFolderFromViewType(folderViewType)?.Name;
                 Preferences.OutlookFolderStoreId = GetFolderFromViewType(folderViewType)?.StoreID;
                 Preferences.OutlookFolderEntryId = GetFolderFromViewType(folderViewType)?.EntryID;
 
@@ -624,7 +624,7 @@ namespace OotD.Forms
                 OutlookViewControl.Folder = folderPath;
 
                 // Save the EntryId and the StoreId for this folder in the preferences. 
-                Preferences!.OutlookFolderEntryId = oFolder.EntryID;
+                Preferences.OutlookFolderEntryId = oFolder.EntryID;
                 Preferences.OutlookFolderStoreId = oFolder.StoreID;
                 Preferences.OutlookFolderName = folderPath;
 
@@ -707,7 +707,7 @@ namespace OotD.Forms
             {
                 OutlookViewControl.View = view.Name;
 
-                Preferences!.OutlookFolderView = view.Name;
+                Preferences.OutlookFolderView = view.Name;
             }
 
             if (viewItem != null)
@@ -735,7 +735,7 @@ namespace OotD.Forms
             OutlookViewControl.Folder = _customFolder;
             CheckSelectedMenuItem(_customMenu);
 
-            Preferences!.OutlookFolderName = _customFolderDefinition.OutlookFolderName;
+            Preferences.OutlookFolderName = _customFolderDefinition.OutlookFolderName;
             Preferences.OutlookFolderStoreId = _customFolderDefinition.OutlookFolderStoreId;
             Preferences.OutlookFolderEntryId = _customFolderDefinition.OutlookFolderEntryId;
 
@@ -826,7 +826,7 @@ namespace OotD.Forms
             Debug.WriteLine("Top: {0}", Top);
             Debug.WriteLine("Width: {0}", Width);
             Debug.WriteLine("Height: {0}", Height);
-            Preferences!.Left = Left;
+            Preferences.Left = Left;
             Preferences.Top = Top;
             Preferences.Width = Width;
             Preferences.Height = Height;
@@ -1032,7 +1032,7 @@ namespace OotD.Forms
         private void SetViewXml(string value)
         {
             OutlookViewControl.ViewXML = value;
-            Preferences!.ViewXml = value;
+            Preferences.ViewXml = value;
         }
 
         private void DayButton_Click(object sender, EventArgs e)
@@ -1168,8 +1168,8 @@ namespace OotD.Forms
         {
             var mode = CurrentCalendarView.Day;
 
-            var xElement = XDocument.Parse(OutlookViewControl.ViewXML).Element("view"!);
-            var element = xElement?.Element("mode"!);
+            var xElement = XDocument.Parse(OutlookViewControl.ViewXML).Element("view");
+            var element = xElement?.Element("mode");
             if (element != null)
             {
                 mode = (CurrentCalendarView)Convert.ToInt32(element.Value);
@@ -1185,7 +1185,7 @@ namespace OotD.Forms
                 opacityVal = 0.99;
             }
             Opacity = opacityVal;
-            Preferences!.Opacity = opacityVal;
+            Preferences.Opacity = opacityVal;
         }
 
         private void WindowMessageTimer_Tick(object sender, EventArgs e)

@@ -56,7 +56,7 @@ namespace OotD
 
                         // Before we do anything else, wait for the RPC server to be available, as the program will crash if it's not.
                         // This is especially likely when OotD is set to start with windows.
-                        if (!IsRPCServerAvailable(OutlookNameSpace!))
+                        if (!IsRPCServerAvailable(OutlookNameSpace))
                         {
                             return;
                         }
@@ -67,7 +67,7 @@ namespace OotD
                         // when opening and closing an item from the view control, even though the view control was still running.
                         // The only way I've found to work around it and keep the view control from crashing after opening an item,
                         // is to get this global instance of the active explorer and keep it going until the user closes the app.
-                        _outlookExplorer = _outlookFolder!.GetExplorer();
+                        _outlookExplorer = _outlookFolder.GetExplorer();
 
                         _checkIfOutlookIsRunningTimer = new Timer { Interval = 3000 };
                         _checkIfOutlookIsRunningTimer.Elapsed += (_, _) =>
