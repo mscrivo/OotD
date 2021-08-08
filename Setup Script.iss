@@ -1,7 +1,7 @@
 ﻿#include "Inno Plugins\idp.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion GetFileVersion('OotD.Launcher\bin\Release\net5.0-windows\OotD.Launcher.exe')
+#define MyAppVersion GetVersionNumbersString('OotD.Launcher\bin\Release\net5.0-windows\OotD.Launcher.exe')
 #define MyAppVerName "Outlook on the Desktop {#MyAppVersion}"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "https://outlookonthedesktop.com"
@@ -25,8 +25,6 @@ Compression=lzma
 SolidCompression=true
 VersionInfoVersion={#MyAppVersion}
 VersionInfoDescription={#MyAppName}
-WizardImageFile=Inno Plugins\WizModernImage-IS.bmp
-WizardSmallImageFile=Inno Plugins\WizModernSmallImage-IS.bmp
 AppID={{6D9785D9-FF53-4C06-9C2A-E4173D41A2FD}
 ShowLanguageDialog=yes
 OutputDir=ServerStaging
@@ -39,6 +37,7 @@ DisableDirPage=auto
 DisableReadyMemo=True
 DisableProgramGroupPage=yes
 UsePreviousGroup=False
+WizardStyle=modern
 
 [Languages]
 Name: eng; MessagesFile: compiler:Default.isl
