@@ -80,7 +80,7 @@ namespace OotD.Forms
         #endregion
 
         private NotifyIcon trayIcon;
-        private Timer updateTimer;
+        private System.Windows.Forms.Timer updateTimer;
         private BackgroundWorker backgroundWorker;
     }
 }

@@ -1,7 +1,7 @@
 ﻿#include "Inno Plugins\idp.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion GetVersionNumbersString('OotD.Launcher\bin\Release\net5.0-windows\OotD.Launcher.exe')
+#define MyAppVersion GetVersionNumbersString('OotD.Launcher\bin\Release\net6.0-windows7.0\OotD.Launcher.exe')
 #define MyAppVerName "Outlook on the Desktop {#MyAppVersion}"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "https://outlookonthedesktop.com"
@@ -91,10 +91,10 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-  dotnetRuntimex64DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/9b564b8a-a26d-4bb3-8f30-1101ae71a55a/2cee4f9e4c0e77e3d0f866fdf690864e/windowsdesktop-runtime-5.0.8-win-x64.exe';
-  dotnetRuntimex86DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/c1c0117b-3565-4661-9a77-7629c937f808/90a45135929796778a9fd418bbad6bb3/windowsdesktop-runtime-5.0.8-win-x86.exe';
-  dotnetRuntimex64DesktopFilename = 'windowsdesktop-runtime-5.0.8-win-x64.exe';
-  dotnetRuntimex86DesktopFilename = 'windowsdesktop-runtime-5.0.8-win-x86.exe';
+  dotnetRuntimex64DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/fe844509-712f-4a5f-b2d6-f445d36199b2/26d1e19f0ae549a65598e8207920b4f3/windowsdesktop-runtime-6.0.0-preview.7.21378.9-win-x64.exe';
+  dotnetRuntimex86DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/c0616dbd-ae8f-41d0-8ce4-5eeb2b987ff2/9f8ac0e92db2572ad954b22da86879a9/windowsdesktop-runtime-6.0.0-preview.7.21378.9-win-x86.exe';
+  dotnetRuntimex64DesktopFilename = 'windowsdesktop-runtime-6.0.0-preview.7.21378.9-win-x64.exe';
+  dotnetRuntimex86DesktopFilename = 'windowsdesktop-runtime-6.0.0-preview.7.21378.9-win-x86.exe';
 
 procedure InitializeWizard;
 begin

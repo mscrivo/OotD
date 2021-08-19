@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <RootNamespace>OotD</RootNamespace>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows7.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyTitle>Outlook on the Desktop</AssemblyTitle>
     <Company>SMR Computer Services</Company>
@@ -14,7 +14,7 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <Version>1.0.0</Version>
-    <LangVersion>9</LangVersion>
+    <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
       None
@@ -40,6 +40,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\OotD.Core\Properties\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />

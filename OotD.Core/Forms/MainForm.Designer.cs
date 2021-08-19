@@ -527,7 +527,7 @@ namespace OotD.Forms
         #endregion
        
         internal ContextMenuStrip TrayMenu;
-        private Timer UpdateTimer;
+        private System.Windows.Forms.Timer UpdateTimer;
         private ToolStripMenuItem SelectFolderMenu;
         private ToolStripMenuItem CalendarMenu;
         private ToolStripMenuItem ContactsMenu;
@@ -555,7 +555,7 @@ namespace OotD.Forms
         private Button WeekButton;
         private Button WorkWeekButton;
         public ToolTip ToolTip;
-        private Timer WindowMessageTimer;
+        private System.Windows.Forms.Timer WindowMessageTimer;
         private ToolStripSeparator Separator6;
         private Button TodayButton;
         private Button ButtonNext;
