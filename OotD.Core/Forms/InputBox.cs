@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using JetBrains.Annotations;
 using OotD.Events;
 
 namespace OotD.Forms
@@ -14,9 +15,10 @@ namespace OotD.Forms
     /// </summary>
     public delegate void InputBoxValidatingEventHandler(object sender, InputBoxValidatingEventArgs e);
 
+    [UsedImplicitly]
     public partial class InputBox : Form
     {
-        public InputBox()
+        private InputBox()
         {
             InitializeComponent();
         }
@@ -57,11 +59,13 @@ namespace OotD.Forms
             var result = form.ShowDialog();
 
             var inputBoxResult = new InputBoxResult();
-            if (result == DialogResult.OK)
+            if (result != DialogResult.OK)
             {
-                inputBoxResult.Text = form.InputTextBox.Text;
-                inputBoxResult.Ok = true;
+                return inputBoxResult;
             }
+
+            inputBoxResult.Text = form.InputTextBox.Text;
+            inputBoxResult.Ok = true;
             return inputBoxResult;
         }
 
@@ -79,11 +83,13 @@ namespace OotD.Forms
 
             var args = new InputBoxValidatingEventArgs { Text = InputTextBox.Text };
             Validator(this, args);
-            if (args.Cancel)
+            if (!args.Cancel)
             {
-                e.Cancel = true;
-                _errorProviderText.SetError(InputTextBox, args.Message);
+                return;
             }
+
+            e.Cancel = true;
+            _errorProviderText.SetError(InputTextBox, args.Message);
         }
     }
 }

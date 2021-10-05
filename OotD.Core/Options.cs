@@ -2,11 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.Diagnostics.CodeAnalysis;
 using CommandLine;
 
 namespace OotD
 {
     // ReSharper disable once ClassNeverInstantiated.Global
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class Options
     {
         [Option('d', "debug", Default = false, HelpText = "Start Debugger.")]

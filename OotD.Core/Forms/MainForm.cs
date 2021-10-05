@@ -134,7 +134,9 @@ namespace OotD.Forms
 
         #region Events
 
+        // ReSharper disable once InconsistentNaming
         public EventHandler<InstanceRemovedEventArgs>? InstanceRemoved;
+        // ReSharper disable once InconsistentNaming
         public EventHandler<InstanceRenamedEventArgs>? InstanceRenamed;
 
         private void OnInstanceRemoved(object sender, InstanceRemovedEventArgs e)
@@ -211,16 +213,18 @@ namespace OotD.Forms
             }
 
             // If the view is a calendar view, use the stored ViewXML to restore their day/week/month view setting.
-            if (Preferences.OutlookFolderName == FolderViewType.Calendar.ToString())
+            if (Preferences.OutlookFolderName != FolderViewType.Calendar.ToString())
             {
-                if (!string.IsNullOrEmpty(Preferences.ViewXml))
-                {
-                    OutlookViewControl.ViewXML = Preferences.ViewXml;
-                }
-                else
-                {
-                    SetViewXml(Resources.MonthXML);
-                }
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(Preferences.ViewXml))
+            {
+                OutlookViewControl.ViewXML = Preferences.ViewXml;
+            }
+            else
+            {
+                SetViewXml(Resources.MonthXML);
             }
         }
 
@@ -671,11 +675,13 @@ namespace OotD.Forms
                 _ => -1
             };
 
-            if (dir != -1)
+            if (dir == -1)
             {
-                UnsafeNativeMethods.ReleaseCapture();
-                UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)dir, IntPtr.Zero);
+                return;
             }
+
+            UnsafeNativeMethods.ReleaseCapture();
+            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)dir, IntPtr.Zero);
         }
 
         private void MoveForm()
@@ -864,21 +870,25 @@ namespace OotD.Forms
 
         private static void InputBox_Validating(object sender, InputBoxValidatingEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(e.Text))
+            if (!string.IsNullOrWhiteSpace(e.Text))
             {
-                e.Cancel = true;
-                e.Message = "Required";
+                return;
             }
+
+            e.Cancel = true;
+            e.Message = "Required";
         }
 
         private void MainForm_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && WindowState != FormWindowState.Maximized)
+            if (e.Button != MouseButtons.Left || WindowState == FormWindowState.Maximized)
             {
-                // temporarily hide Outlook View Control because it makes resizing really slow
-                ViewControlHostPanel.Visible = false;
-                ResizeForm(ResizeDir);
+                return;
             }
+
+            // temporarily hide Outlook View Control because it makes resizing really slow
+            ViewControlHostPanel.Visible = false;
+            ResizeForm(ResizeDir);
         }
 
         private void MainForm_MouseUp(object sender, MouseEventArgs e)
@@ -1126,7 +1136,7 @@ namespace OotD.Forms
         // work on the last "active" view of the calendar, which may or may not be the current one.  
         // So to get around that, if the last clicked next button was not this one, we reset the 
         // calendar view to make it active, before using GoToDate.            
-        private void SetCurrentViewControlAsActiveIfNecessary(CurrentCalendarView mode, Button button, ref Guid lastButtonGuidClicked)
+        private void SetCurrentViewControlAsActiveIfNecessary(CurrentCalendarView mode, Control button, ref Guid lastButtonGuidClicked)
         {
             // we don't need to do this if we only have one instance, so bail right away.
             if (InstanceManager.InstanceCount == 1)

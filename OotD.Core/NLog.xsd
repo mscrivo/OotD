@@ -535,7 +535,7 @@
   </xs:complexType>
   <xs:simpleType name="NLog.Targets.NetworkTargetConnectionsOverflowAction">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="AllowNewConnnection" />
+      <xs:enumeration value="AllowNewConnection" />
       <xs:enumeration value="DiscardMessage" />
       <xs:enumeration value="Block" />
     </xs:restriction>

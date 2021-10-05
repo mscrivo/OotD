@@ -378,11 +378,13 @@ namespace OotD.Forms
 
         private static void InputBox_Validating(object? sender, InputBoxValidatingEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(e.Text))
+            if (!string.IsNullOrWhiteSpace(e.Text))
             {
-                e.Cancel = true;
-                e.Message = "Required";
+                return;
             }
+
+            e.Cancel = true;
+            e.Message = "Required";
         }
 
         private static void AboutMenu_Click(object? sender, EventArgs e)

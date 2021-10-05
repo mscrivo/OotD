@@ -152,7 +152,7 @@ namespace OotD
         /// </summary>
         /// <param name="outlookNameSpace"></param>
         /// <returns></returns>
-        private static bool IsRPCServerAvailable(NameSpace outlookNameSpace)
+        private static bool IsRPCServerAvailable(_NameSpace outlookNameSpace)
         {
             var retryCount = 0;
             while (retryCount < 120)
