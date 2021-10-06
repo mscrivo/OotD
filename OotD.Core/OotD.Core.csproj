@@ -118,6 +118,6 @@
     <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
     <PackageReference Include="NLog" Version="4.7.11" />
     <PackageReference Include="NLog.Schema" Version="4.7.11" />
-    <PackageReference Include="TaskScheduler" Version="2.9.1" />
+    <PackageReference Include="TaskScheduler" Version="2.9.2" />
   </ItemGroup>
 </Project>
