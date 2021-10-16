@@ -97,6 +97,7 @@ namespace OotD
                     }
 
                     System.Windows.Forms.Application.EnableVisualStyles();
+                    System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
 
                     _logger.Info("Starting the instance manager and loading instances.");
                     var instanceManager = new InstanceManager();

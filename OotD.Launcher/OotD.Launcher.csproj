@@ -51,7 +51,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\OotD.Core\App.config" Link="App.config" />
     <None Include="..\OotD.Core\app.manifest">
       <Link>app.manifest</Link>
     </None>
