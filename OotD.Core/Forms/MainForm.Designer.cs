@@ -295,14 +295,12 @@ namespace OotD.Forms
             this.TransparencySlider.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(125)))), ((int)(((byte)(123)))));
             this.TransparencySlider.IndentHeight = 6;
             this.TransparencySlider.LargeChange = 15;
-            this.TransparencySlider.Location = new System.Drawing.Point(0, -3);
+            this.TransparencySlider.Location = new System.Drawing.Point(0, 0);
             this.TransparencySlider.Margin = new System.Windows.Forms.Padding(0);
             this.TransparencySlider.Maximum = 100;
-            this.TransparencySlider.MaximumSize = new System.Drawing.Size(200, 28);
             this.TransparencySlider.Minimum = 30;
-            this.TransparencySlider.MinimumSize = new System.Drawing.Size(100, 14);
             this.TransparencySlider.Name = "TransparencySlider";
-            this.TransparencySlider.Size = new System.Drawing.Size(100, 24);
+            this.TransparencySlider.Size = new System.Drawing.Size(100, 48);
             this.TransparencySlider.SmallChange = 5;
             this.TransparencySlider.TabIndex = 10;
             this.TransparencySlider.TextTickStyle = System.Windows.Forms.TickStyle.None;
@@ -311,7 +309,7 @@ namespace OotD.Forms
             this.TransparencySlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.ToolTip.SetToolTip(this.TransparencySlider, global::OotD.Properties.Resources.Transparency_Slider_Help_Message);
             this.TransparencySlider.TrackerColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(130)))), ((int)(((byte)(198)))));
-            this.TransparencySlider.TrackerSize = new System.Drawing.Size(12, 12);
+            this.TransparencySlider.TrackerSize = new System.Drawing.Size(20, 20);
             this.TransparencySlider.TrackLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(93)))), ((int)(((byte)(90)))));
             this.TransparencySlider.TrackLineHeight = 2;
             this.TransparencySlider.Value = 50;
