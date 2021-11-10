@@ -11,7 +11,7 @@
         https://outlookonthedesktop.com/ootdReleaseNotes.md
       </sparkle:releaseNotesLink>
       <pubDate>Sat, 9 Nov 2021 9:02:00 +0000</pubDate>
-      <enclosure url="https://github.com/mscrivo/OotD/releases/download/4.0.227/ootd-4.0.267.0.exe" sparkle:version="4.0.267" length="3661824" type="application/octet-stream" />
+      <enclosure url="https://github.com/mscrivo/OotD/releases/download/4.0.267/ootd-4.0.267.0.exe" sparkle:version="4.0.267" length="3661824" type="application/octet-stream" />
     </item>
   </channel>
 </rss>
