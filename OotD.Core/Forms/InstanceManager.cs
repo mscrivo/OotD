@@ -55,6 +55,12 @@ namespace OotD.Forms
             _sparkle.StartLoop(!GlobalPreferences.IsFirstRun, TimeSpan.FromDays(20));
         }
 
+        public static float GetDPI()
+        {
+            using var graphics = Graphics.FromHwnd(IntPtr.Zero);
+            return graphics.DpiX;
+        }
+
         private static void OnSparkleOnUpdateWindowDismissed(object? sender, EventArgs args)
         {
             Startup.UpdateDetected = false;

@@ -295,7 +295,7 @@ namespace OotD.Forms
             this.TransparencySlider.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(125)))), ((int)(((byte)(123)))));
             this.TransparencySlider.IndentHeight = 6;
             this.TransparencySlider.LargeChange = 15;
-            this.TransparencySlider.Location = new System.Drawing.Point(0, 0);
+            this.TransparencySlider.Location = InstanceManager.GetDPI() > 96 ? new System.Drawing.Point(0, 0) : new System.Drawing.Point(0, -3);
             this.TransparencySlider.Margin = new System.Windows.Forms.Padding(0);
             this.TransparencySlider.Maximum = 100;
             this.TransparencySlider.Minimum = 30;
@@ -309,7 +309,7 @@ namespace OotD.Forms
             this.TransparencySlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.ToolTip.SetToolTip(this.TransparencySlider, global::OotD.Properties.Resources.Transparency_Slider_Help_Message);
             this.TransparencySlider.TrackerColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(130)))), ((int)(((byte)(198)))));
-            this.TransparencySlider.TrackerSize = new System.Drawing.Size(20, 20);
+            this.TransparencySlider.TrackerSize = InstanceManager.GetDPI() > 96 ? new System.Drawing.Size(20, 20) : new System.Drawing.Size(12, 12);
             this.TransparencySlider.TrackLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(93)))), ((int)(((byte)(90)))));
             this.TransparencySlider.TrackLineHeight = 2;
             this.TransparencySlider.Value = 50;
@@ -318,8 +318,8 @@ namespace OotD.Forms
             // 
             // LabelCurrentDate
             // 
-            this.LabelCurrentDate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.LabelCurrentDate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LabelCurrentDate.Location = new System.Drawing.Point(97, -1);
             this.LabelCurrentDate.Name = "LabelCurrentDate";
@@ -444,8 +444,8 @@ namespace OotD.Forms
             // 
             // LabelBackground
             // 
-            this.LabelBackground.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.LabelBackground.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LabelBackground.Location = new System.Drawing.Point(0, 0);
             this.LabelBackground.Name = "LabelBackground";
@@ -523,7 +523,7 @@ namespace OotD.Forms
         }
 
         #endregion
-       
+
         internal ContextMenuStrip TrayMenu;
         private System.Windows.Forms.Timer UpdateTimer;
         private ToolStripMenuItem SelectFolderMenu;
