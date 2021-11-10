@@ -1,5 +1,10 @@
 # OotD Release Notes
 
+## 4.0.226
+* Update to .net 6
+* Fixed transparency slider size and location on HiDPI displays
+* Fix crash when Outlook is not running
+
 ## 4.0.221
 * Update to .net core 5.0.1
 
