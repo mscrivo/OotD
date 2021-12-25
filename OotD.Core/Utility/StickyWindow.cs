@@ -309,22 +309,23 @@ namespace OotD.Utility
 
         private bool StartResize(ResizeDir resDir)
         {
-            if (StickOnResize)
+            if (!StickOnResize)
             {
-                _resizeDirection = resDir;
-                _formRect = _originalForm.Bounds;
-                _formOriginalRect = _originalForm.Bounds; // save the old bounds
-
-                if (!_originalForm.Capture) // start capturing messages
-                {
-                    _originalForm.Capture = true;
-                }
-
-                _messageProcessor = _resizeMessageProcessor;
-
-                return true; // catch the message
+                return false; // leave default processing !
             }
-            return false; // leave default processing !
+
+            _resizeDirection = resDir;
+            _formRect = _originalForm.Bounds;
+            _formOriginalRect = _originalForm.Bounds; // save the old bounds
+
+            if (!_originalForm.Capture) // start capturing messages
+            {
+                _originalForm.Capture = true;
+            }
+
+            _messageProcessor = _resizeMessageProcessor;
+
+            return true; // catch the message
         }
 
         private bool ResizeMsgProcessor(ref Message m)
@@ -426,12 +427,14 @@ namespace OotD.Utility
                 foreach (var sw in _globalStickyWindows)
                 {
                     var form = sw as Form;
-                    if (form != _originalForm)
+                    if (form == _originalForm)
                     {
-                        if (form != null)
-                        {
-                            Resize_Stick(form.Bounds, true);
-                        }
+                        continue;
+                    }
+
+                    if (form != null)
+                    {
+                        Resize_Stick(form.Bounds, true);
                     }
                 }
             }
@@ -536,30 +539,32 @@ namespace OotD.Utility
                 }
             }
 
-            if (_formRect.Bottom >= toRect.Top - StickGap && _formRect.Top <= toRect.Bottom + StickGap)
+            if (_formRect.Bottom < toRect.Top - StickGap || _formRect.Top > toRect.Bottom + StickGap)
             {
-                if ((_resizeDirection & ResizeDir.Right) == ResizeDir.Right)
-                {
-                    if (Math.Abs(_formRect.Right - toRect.Left) <= Math.Abs(_formOffsetRect.Right) && bInsideStick)
-                    {
-                        _formOffsetRect.Width = toRect.Left - _formRect.Right; // Stick right to left
-                    }
-                    else if (Math.Abs(_formRect.Right - toRect.Right) <= Math.Abs(_formOffsetRect.Right))
-                    {
-                        _formOffsetRect.Width = toRect.Right - _formRect.Right; // Stick right to right
-                    }
-                }
+                return;
+            }
 
-                if ((_resizeDirection & ResizeDir.Left) == ResizeDir.Left)
+            if ((_resizeDirection & ResizeDir.Right) == ResizeDir.Right)
+            {
+                if (Math.Abs(_formRect.Right - toRect.Left) <= Math.Abs(_formOffsetRect.Right) && bInsideStick)
                 {
-                    if (Math.Abs(_formRect.Left - toRect.Right) <= Math.Abs(_formOffsetRect.Left) && bInsideStick)
-                    {
-                        _formOffsetRect.X = _formRect.Left - toRect.Right; // Stick left to right
-                    }
-                    else if (Math.Abs(_formRect.Left - toRect.Left) <= Math.Abs(_formOffsetRect.Left))
-                    {
-                        _formOffsetRect.X = _formRect.Left - toRect.Left; // Stick left to left
-                    }
+                    _formOffsetRect.Width = toRect.Left - _formRect.Right; // Stick right to left
+                }
+                else if (Math.Abs(_formRect.Right - toRect.Right) <= Math.Abs(_formOffsetRect.Right))
+                {
+                    _formOffsetRect.Width = toRect.Right - _formRect.Right; // Stick right to right
+                }
+            }
+
+            if ((_resizeDirection & ResizeDir.Left) == ResizeDir.Left)
+            {
+                if (Math.Abs(_formRect.Left - toRect.Right) <= Math.Abs(_formOffsetRect.Left) && bInsideStick)
+                {
+                    _formOffsetRect.X = _formRect.Left - toRect.Right; // Stick left to right
+                }
+                else if (Math.Abs(_formRect.Left - toRect.Left) <= Math.Abs(_formOffsetRect.Left))
+                {
+                    _formOffsetRect.X = _formRect.Left - toRect.Left; // Stick left to left
                 }
             }
         }
@@ -660,12 +665,14 @@ namespace OotD.Utility
                 foreach (var sw in _globalStickyWindows)
                 {
                     var form = sw as Form;
-                    if (form != _originalForm)
+                    if (form == _originalForm)
                     {
-                        if (form != null)
-                        {
-                            Move_Stick(form.Bounds, true);
-                        }
+                        continue;
+                    }
+
+                    if (form != null)
+                    {
+                        Move_Stick(form.Bounds, true);
                     }
                 }
             }

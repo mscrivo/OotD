@@ -104,7 +104,7 @@ namespace OotD.Utility
         [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
         private static extern IntPtr SetWindowLongPtr64(HandleRef hWnd, int nIndex, IntPtr dwNewLong);
 
-        public static bool PinToDesktop(Form form)
+        public static void PinToDesktop(Form form)
         {
             form.SendToBack();
             var hWndTmp = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", string.Empty);
@@ -114,12 +114,11 @@ namespace OotD.Utility
                 if (hWndTmp != IntPtr.Zero)
                 {
                     SetWindowLongPtr(new HandleRef(form, form.Handle), -8, hWndTmp);
-                    return true;
+                    return;
                 }
             }
 
             RemoveWindowFromAeroPeek(form);
-            return false;
         }
 
         /// <summary>
@@ -173,12 +172,14 @@ namespace OotD.Utility
 
             while ((winPos = GetWindow(winPos, GW_HWNDPREV)) != IntPtr.Zero)
             {
-                if ((GetWindowLongPtr(winPos, GWL_EXSTYLE).ToInt32() & WS_EX_TOPMOST) == WS_EX_TOPMOST)
+                if ((GetWindowLongPtr(winPos, GWL_EXSTYLE).ToInt32() & WS_EX_TOPMOST) != WS_EX_TOPMOST)
                 {
-                    if (SetWindowPos(form.Handle, winPos, 0, 0, 0, 0, ZPOS_FLAGS))
-                    {
-                        break;
-                    }
+                    continue;
+                }
+
+                if (SetWindowPos(form.Handle, winPos, 0, 0, 0, 0, ZPOS_FLAGS))
+                {
+                    break;
                 }
             }
         }
@@ -188,7 +189,7 @@ namespace OotD.Utility
         /// in Windows 7.
         /// </summary>
         /// <param name="window"></param>
-        public static void RemoveWindowFromAeroPeek(Form window)
+        private static void RemoveWindowFromAeroPeek(Form window)
         {
             var renderPolicy = (int)DwmNCRenderingPolicy.Enabled;
 
