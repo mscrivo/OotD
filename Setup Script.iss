@@ -6,7 +6,7 @@
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "https://outlookonthedesktop.com"
 #define MyAppExeName "OotD.Launcher.exe"
-#define MyAppCopyright "©2006-2021 Michael Scrivo"
+#define MyAppCopyright "©2006-2022 Michael Scrivo"
 
 [Setup]
 AppName={#MyAppName}
@@ -92,10 +92,10 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-  dotnetRuntimex64DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/a865ccae-2219-4184-bcd6-0178dc580589/ba452d37e8396b7a49a9adc0e1a07e87/windowsdesktop-runtime-6.0.0-win-x64.exe';
-  dotnetRuntimex86DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/a1ca7d0d-ce01-4878-b952-3fa1e6d9a7c6/e386db367490b631b8c013a9fb0f3794/windowsdesktop-runtime-6.0.0-win-x86.exe';
-  dotnetRuntimex64DesktopFilename = 'windowsdesktop-runtime-6.0.0-win-x64.exe';
-  dotnetRuntimex86DesktopFilename = 'windowsdesktop-runtime-6.0.0-win-x86.exe';
+  dotnetRuntimex64DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/bf058765-6f71-4971-aee1-15229d8bfb3e/c3366e6b74bec066487cd643f915274d/windowsdesktop-runtime-6.0.1-win-x64.exe';
+  dotnetRuntimex86DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/7977218c-1a01-4b69-a8ec-9d9311a6de5b/4c74f995295be78a9ebe1d5fede8f7f3/windowsdesktop-runtime-6.0.1-win-x86.exe';
+  dotnetRuntimex64DesktopFilename = 'windowsdesktop-runtime-6.0.1-win-x64.exe';
+  dotnetRuntimex86DesktopFilename = 'windowsdesktop-runtime-6.0.1-win-x86.exe';
 
 procedure InitializeWizard;
 begin
