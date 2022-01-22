@@ -9,7 +9,7 @@
     <Product>Outlook on the Desktop</Product>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Description>Places Microsoft Outlook Components on your Windows Desktop.</Description>
-    <Copyright>Copyright 2006-2021 Michael Scrivo</Copyright>
+    <Copyright>Copyright 2006-2022 Michael Scrivo</Copyright>
     <PlatformTarget>x86</PlatformTarget>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
