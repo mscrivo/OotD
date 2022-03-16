@@ -664,14 +664,14 @@ namespace OotD.Forms
 
             var dir = direction switch
             {
-                ResizeDirection.Left => UnsafeNativeMethods.HTLEFT,
-                ResizeDirection.TopLeft => UnsafeNativeMethods.HTTOPLEFT,
-                ResizeDirection.Top => UnsafeNativeMethods.HTTOP,
-                ResizeDirection.TopRight => UnsafeNativeMethods.HTTOPRIGHT,
-                ResizeDirection.Right => UnsafeNativeMethods.HTRIGHT,
-                ResizeDirection.BottomRight => UnsafeNativeMethods.HTBOTTOMRIGHT,
-                ResizeDirection.Bottom => UnsafeNativeMethods.HTBOTTOM,
-                ResizeDirection.BottomLeft => UnsafeNativeMethods.HTBOTTOMLEFT,
+                ResizeDirection.Left => UnsafeNativeMethods.HT.HTLEFT,
+                ResizeDirection.TopLeft => UnsafeNativeMethods.HT.HTTOPLEFT,
+                ResizeDirection.Top => UnsafeNativeMethods.HT.HTTOP,
+                ResizeDirection.TopRight => UnsafeNativeMethods.HT.HTTOPRIGHT,
+                ResizeDirection.Right => UnsafeNativeMethods.HT.HTRIGHT,
+                ResizeDirection.BottomRight => UnsafeNativeMethods.HT.HTBOTTOMRIGHT,
+                ResizeDirection.Bottom => UnsafeNativeMethods.HT.HTBOTTOM,
+                ResizeDirection.BottomLeft => UnsafeNativeMethods.HT.HTBOTTOMLEFT,
                 _ => -1
             };
 
@@ -681,7 +681,7 @@ namespace OotD.Forms
             }
 
             UnsafeNativeMethods.ReleaseCapture();
-            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)dir, IntPtr.Zero);
+            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM.WM_NCLBUTTONDOWN, (IntPtr)dir, IntPtr.Zero);
         }
 
         private void MoveForm()
@@ -694,7 +694,7 @@ namespace OotD.Forms
             _movingOrResizing = true;
 
             UnsafeNativeMethods.ReleaseCapture();
-            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM_NCLBUTTONDOWN, (IntPtr)UnsafeNativeMethods.HTCAPTION, IntPtr.Zero);
+            UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM.WM_NCLBUTTONDOWN, (IntPtr)UnsafeNativeMethods.HT.HTCAPTION, IntPtr.Zero);
         }
 
         #region Event Handlers
