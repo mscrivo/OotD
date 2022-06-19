@@ -5,9 +5,12 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-
+// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable UnusedMethodReturnValue.Global
+// ReSharper disable ClassNeverInstantiated.Global
 #pragma warning disable IDE1006 // Naming Styles
 
 namespace OotD.Utility
@@ -137,47 +140,12 @@ namespace OotD.Utility
         [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
         private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
 
-        // This static method is required because Win32 does not support
-        // GetWindowLongPtr directly
-        public static IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex)
-        {
-            return IntPtr.Size == 8 ? GetWindowLongPtr64(hWnd, nIndex) : GetWindowLongPtr32(hWnd, nIndex);
-        }
-
-        private const uint GW_HWNDPREV = 3;
-
-        public const int WS_EX_TOPMOST = 0x00000008;
-        private static readonly int GWL_EXSTYLE = -20;
-
-        /// <summary>
-        /// This method will find the top most window and put ours just after it. This is
-        /// useful when the user initiates show desktop and we want OotD to display there.
-        /// </summary>
-        /// <param name="form"></param>
-        public static void SetBottomMost(Form form)
-        {
-            var winPos = form.Handle;
-
-            while ((winPos = GetWindow(winPos, GW_HWNDPREV)) != IntPtr.Zero)
-            {
-                if ((GetWindowLongPtr(winPos, GWL_EXSTYLE).ToInt32() & WS_EX_TOPMOST) != WS_EX_TOPMOST)
-                {
-                    continue;
-                }
-
-                if (SetWindowPos(form.Handle, winPos, 0, 0, 0, 0, ZPOS_FLAGS))
-                {
-                    break;
-                }
-            }
-        }
-
         /// <summary>
         /// Does not hide the calendar when the user hovers their mouse over the "Show Desktop" button 
         /// in Windows 7.
         /// </summary>
         /// <param name="window"></param>
-        private static void RemoveWindowFromAeroPeek(Form window)
+        private static void RemoveWindowFromAeroPeek(IWin32Window window)
         {
             var renderPolicy = (int)DwmNCRenderingPolicy.Enabled;
 
@@ -198,11 +166,6 @@ namespace OotD.Utility
         public class VK
         {
             public const int VK_ESCAPE = 0x1B;
-
-            public static bool IsKeyPressed(int KeyCode)
-            {
-                return (GetAsyncKeyState(KeyCode) & 0x0800) == 0;
-            }
         }
 
         /// <summary>

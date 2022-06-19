@@ -106,12 +106,14 @@ namespace OotD
                     {
                         _logger.Info($"Found {subKey} key");
 
-                        if (double.TryParse(subKey, NumberStyles.Float, new NumberFormatInfo(), out var versionKey))
+                        if (!double.TryParse(subKey, NumberStyles.Float, new NumberFormatInfo(), out var versionKey))
                         {
-                            if (versionKey > version)
-                            {
-                                version = versionKey;
-                            }
+                            continue;
+                        }
+
+                        if (versionKey > version)
+                        {
+                            version = versionKey;
                         }
                     }
                 }

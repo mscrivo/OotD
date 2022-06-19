@@ -140,6 +140,7 @@ namespace OotD
                 Environment.Exit(0);
             }
 
+            // ReSharper disable once InvertIf
             if (opts.RemoveStartupEntry)
             {
                 TaskScheduling.RemoveOotDStartupTask(_logger);

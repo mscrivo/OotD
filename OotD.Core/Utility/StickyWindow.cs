@@ -288,6 +288,7 @@ namespace OotD.Utility
         ///     window
         /// </summary>
         /// <param name="frmExternal">External window that will be used as reference</param>
+        // ReSharper disable once UnusedMember.Global
         public static void RegisterExternalReferenceForm(Form frmExternal)
         {
             _globalStickyWindows.Add(frmExternal);
@@ -298,6 +299,7 @@ namespace OotD.Utility
         ///     <see cref="RegisterExternalReferenceForm" />
         /// </summary>
         /// <param name="frmExternal">External window that will was used as reference</param>
+        // ReSharper disable once UnusedMember.Global
         public static void UnregisterExternalReferenceForm(Form frmExternal)
         {
             _globalStickyWindows.Remove(frmExternal);
@@ -556,6 +558,7 @@ namespace OotD.Utility
                 }
             }
 
+            // ReSharper disable once InvertIf
             if ((_resizeDirection & ResizeDir.Left) == ResizeDir.Left)
             {
                 if (Math.Abs(_formRect.Left - toRect.Right) <= Math.Abs(_formOffsetRect.Left) && bInsideStick)
@@ -727,33 +730,36 @@ namespace OotD.Utility
                     _formOffsetPoint.X = toRect.Left + toRect.Width - _formRect.Width - _formRect.Left;
                 }
             }
-            if (_formRect.Right >= toRect.Left - StickGap && _formRect.Left <= toRect.Right + StickGap)
-            {
-                if (bInsideStick)
-                {
-                    if (Math.Abs(_formRect.Top - toRect.Bottom) <= Math.Abs(_formOffsetPoint.Y))
-                    {
-                        // Stick Top to Bottom
-                        _formOffsetPoint.Y = toRect.Bottom - _formRect.Top;
-                    }
-                    if (Math.Abs(_formRect.Top + _formRect.Height - toRect.Top) <= Math.Abs(_formOffsetPoint.Y))
-                    {
-                        // snap Bottom to Top
-                        _formOffsetPoint.Y = toRect.Top - _formRect.Height - _formRect.Top;
-                    }
-                }
 
-                // try to snap top 2 top also
-                if (Math.Abs(_formRect.Top - toRect.Top) <= Math.Abs(_formOffsetPoint.Y))
+            if (_formRect.Right < toRect.Left - StickGap || _formRect.Left > toRect.Right + StickGap)
+            {
+                return;
+            }
+
+            if (bInsideStick)
+            {
+                if (Math.Abs(_formRect.Top - toRect.Bottom) <= Math.Abs(_formOffsetPoint.Y))
                 {
-                    // top 2 top
-                    _formOffsetPoint.Y = toRect.Top - _formRect.Top;
+                    // Stick Top to Bottom
+                    _formOffsetPoint.Y = toRect.Bottom - _formRect.Top;
                 }
-                if (Math.Abs(_formRect.Top + _formRect.Height - toRect.Top - toRect.Height) <= Math.Abs(_formOffsetPoint.Y))
+                if (Math.Abs(_formRect.Top + _formRect.Height - toRect.Top) <= Math.Abs(_formOffsetPoint.Y))
                 {
-                    // bottom 2 bottom
-                    _formOffsetPoint.Y = toRect.Top + toRect.Height - _formRect.Height - _formRect.Top;
+                    // snap Bottom to Top
+                    _formOffsetPoint.Y = toRect.Top - _formRect.Height - _formRect.Top;
                 }
+            }
+
+            // try to snap top 2 top also
+            if (Math.Abs(_formRect.Top - toRect.Top) <= Math.Abs(_formOffsetPoint.Y))
+            {
+                // top 2 top
+                _formOffsetPoint.Y = toRect.Top - _formRect.Top;
+            }
+            if (Math.Abs(_formRect.Top + _formRect.Height - toRect.Top - toRect.Height) <= Math.Abs(_formOffsetPoint.Y))
+            {
+                // bottom 2 bottom
+                _formOffsetPoint.Y = toRect.Top + toRect.Height - _formRect.Height - _formRect.Top;
             }
         }
 

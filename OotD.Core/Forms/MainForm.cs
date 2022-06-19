@@ -904,6 +904,7 @@ namespace OotD.Forms
                 return;
             }
 
+            // ReSharper disable once ConvertIfStatementToSwitchStatement
             if (e.Location.X < ResizeBorderWidth && e.Location.Y < ResizeBorderWidth)
             {
                 ResizeDir = ResizeDirection.TopLeft;
