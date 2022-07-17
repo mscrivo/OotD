@@ -1243,7 +1243,6 @@ namespace OotD.Forms
 
                 case UnsafeNativeMethods.WM_WINDOWPOSCHANGING
                     when !_outlookContextMenuActivated &&
-                         !Startup.UpdateDetected &&
                          !_movingOrResizing:
 
                     var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS))!;

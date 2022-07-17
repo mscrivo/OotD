@@ -32,8 +32,6 @@ namespace OotD
         private static Explorer? _outlookExplorer;
         private static Timer? _checkIfOutlookIsRunningTimer;
 
-        public static bool UpdateDetected;
-
         /// <summary>
         /// The main entry point for the application.
         /// We only want one instance of the application to be running.

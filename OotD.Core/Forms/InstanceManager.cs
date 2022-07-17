@@ -12,7 +12,7 @@ using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
-using NetSparkle;
+using AutoUpdaterDotNET;
 using NLog;
 using OotD.Events;
 using OotD.Preferences;
@@ -23,13 +23,12 @@ namespace OotD.Forms
 {
     public partial class InstanceManager : Form
     {
-        private const string AppCastUrl = "https://outlookonthedesktop.com/ootdAppcast.xml";
+        private const string AppCastUrl = "https://outlookonthedesktop.com/ootdUpdate.xml";
         private const string AutoUpdateInstanceName = "AutoUpdate";
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<string, MainForm> _mainFormInstances = new();
         private readonly Graphics _graphics;
-        private readonly Sparkle _sparkle;
 
         public InstanceManager()
         {
@@ -45,37 +44,13 @@ namespace OotD.Forms
             _graphics = CreateGraphics();
 
             // setup update checker.
-            _sparkle = new Sparkle(AppCastUrl, Resources.AppIcon);
-
-            _sparkle.UpdateDetected += OnSparkleOnUpdateDetectedShowWithToast;
-            _sparkle.UpdateWindowDismissed += OnSparkleOnUpdateWindowDismissed;
-            _sparkle.CustomInstallerArguments = "/silent";
-
-            // check for updates every 20 days, but don't check on first run because we'll have 2 tooltips popup and will likely confuse the user.
-            _sparkle.StartLoop(!GlobalPreferences.IsFirstRun, TimeSpan.FromDays(20));
+            AutoUpdater.Start(AppCastUrl);
         }
 
         public static float GetDPI()
         {
             using var graphics = Graphics.FromHwnd(IntPtr.Zero);
             return graphics.DpiX;
-        }
-
-        private static void OnSparkleOnUpdateWindowDismissed(object? sender, EventArgs args)
-        {
-            Startup.UpdateDetected = false;
-        }
-
-        private void OnSparkleOnUpdateDetectedShowWithToast(object sender, UpdateDetectedEventArgs args)
-        {
-            Startup.UpdateDetected = true;
-            _sparkle.ShowUpdateNeededUI(args.LatestVersion, true);
-        }
-
-        private void OnSparkleOnUpdateDetectedShowWithoutToast(object sender, UpdateDetectedEventArgs args)
-        {
-            Startup.UpdateDetected = true;
-            _sparkle.ShowUpdateNeededUI(args.LatestVersion, false);
         }
 
         protected override CreateParams CreateParams
@@ -399,12 +374,9 @@ namespace OotD.Forms
             aboutForm.ShowDialog();
         }
 
-        private void CheckForUpdates_Click(object? sender, EventArgs e)
+        private static void CheckForUpdates_Click(object? sender, EventArgs e)
         {
-            _sparkle.UpdateDetected -= OnSparkleOnUpdateDetectedShowWithToast;
-            _sparkle.UpdateDetected += OnSparkleOnUpdateDetectedShowWithoutToast;
-
-            _sparkle.CheckForUpdatesAtUserRequest();
+            AutoUpdater.Start(AppCastUrl);
         }
 
         private void StartWithWindowsMenu_Click(object? sender, EventArgs e)
