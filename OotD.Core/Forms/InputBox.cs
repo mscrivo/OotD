@@ -8,88 +8,87 @@ using System.Windows.Forms;
 using JetBrains.Annotations;
 using OotD.Events;
 
-namespace OotD.Forms
+namespace OotD.Forms;
+
+/// <summary>
+/// Delegate used to Validate an InputBox
+/// </summary>
+public delegate void InputBoxValidatingEventHandler(object sender, InputBoxValidatingEventArgs e);
+
+[UsedImplicitly]
+public partial class InputBox : Form
 {
-    /// <summary>
-    /// Delegate used to Validate an InputBox
-    /// </summary>
-    public delegate void InputBoxValidatingEventHandler(object sender, InputBoxValidatingEventArgs e);
-
-    [UsedImplicitly]
-    public partial class InputBox : Form
+    private InputBox()
     {
-        private InputBox()
+        InitializeComponent();
+    }
+
+    private InputBoxValidatingEventHandler? Validator { get; set; }
+
+    private void ButtonCancel_Click(object sender, EventArgs e)
+    {
+        Validator = null;
+        Close();
+    }
+
+    private void OkButton_Click(object sender, EventArgs e)
+    {
+        Close();
+    }
+
+    /// <summary>
+    /// Displays an Input Box with validation.
+    /// </summary>
+    /// <param name="owner">The form's owner.</param>
+    /// <param name="instructions">Instructions to present above the input box.</param>
+    /// <param name="caption">The form's caption</param>
+    /// <param name="defaultValue">The default value to place in the Inbox Box.</param>
+    /// <param name="validator">A validator method that performs validation on the user's input.</param>
+    /// <returns></returns>
+    public static InputBoxResult Show(Form owner, string instructions, string caption, string defaultValue, InputBoxValidatingEventHandler validator)
+    {
+        using var form = new InputBox
         {
-            InitializeComponent();
-        }
+            Owner = owner,
+            PromptLabel = { Text = instructions },
+            Text = caption,
+            InputTextBox = { Text = defaultValue },
+            Validator = validator
+        };
 
-        private InputBoxValidatingEventHandler? Validator { get; set; }
+        var result = form.ShowDialog();
 
-        private void ButtonCancel_Click(object sender, EventArgs e)
+        var inputBoxResult = new InputBoxResult();
+        if (result != DialogResult.OK)
         {
-            Validator = null;
-            Close();
-        }
-
-        private void OkButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        /// <summary>
-        /// Displays an Input Box with validation.
-        /// </summary>
-        /// <param name="owner">The form's owner.</param>
-        /// <param name="instructions">Instructions to present above the input box.</param>
-        /// <param name="caption">The form's caption</param>
-        /// <param name="defaultValue">The default value to place in the Inbox Box.</param>
-        /// <param name="validator">A validator method that performs validation on the user's input.</param>
-        /// <returns></returns>
-        public static InputBoxResult Show(Form owner, string instructions, string caption, string defaultValue, InputBoxValidatingEventHandler validator)
-        {
-            using var form = new InputBox
-            {
-                Owner = owner,
-                PromptLabel = { Text = instructions },
-                Text = caption,
-                InputTextBox = { Text = defaultValue },
-                Validator = validator
-            };
-
-            var result = form.ShowDialog();
-
-            var inputBoxResult = new InputBoxResult();
-            if (result != DialogResult.OK)
-            {
-                return inputBoxResult;
-            }
-
-            inputBoxResult.Text = form.InputTextBox.Text;
-            inputBoxResult.Ok = true;
             return inputBoxResult;
         }
 
-        private void InputTextBox_TextChanged(object sender, EventArgs e)
+        inputBoxResult.Text = form.InputTextBox.Text;
+        inputBoxResult.Ok = true;
+        return inputBoxResult;
+    }
+
+    private void InputTextBox_TextChanged(object sender, EventArgs e)
+    {
+        _errorProviderText.SetError(InputTextBox, "");
+    }
+
+    private void InputTextBox_Validating(object sender, CancelEventArgs e)
+    {
+        if (Validator == null)
         {
-            _errorProviderText.SetError(InputTextBox, "");
+            return;
         }
 
-        private void InputTextBox_Validating(object sender, CancelEventArgs e)
+        var args = new InputBoxValidatingEventArgs { Text = InputTextBox.Text };
+        Validator(this, args);
+        if (!args.Cancel)
         {
-            if (Validator == null)
-            {
-                return;
-            }
-
-            var args = new InputBoxValidatingEventArgs { Text = InputTextBox.Text };
-            Validator(this, args);
-            if (!args.Cancel)
-            {
-                return;
-            }
-
-            e.Cancel = true;
-            _errorProviderText.SetError(InputTextBox, args.Message);
+            return;
         }
+
+        e.Cancel = true;
+        _errorProviderText.SetError(InputTextBox, args.Message);
     }
 }

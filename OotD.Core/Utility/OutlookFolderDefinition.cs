@@ -4,16 +4,15 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace OotD.Utility
+namespace OotD.Utility;
+
+/// <summary>
+/// Structure to hold the currently selected custom folder details
+/// </summary>
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+internal struct OutlookFolderDefinition
 {
-    /// <summary>
-    /// Structure to hold the currently selected custom folder details
-    /// </summary>
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
-    internal struct OutlookFolderDefinition
-    {
-        public string? OutlookFolderName;
-        public string? OutlookFolderStoreId;
-        public string? OutlookFolderEntryId;
-    }
+    public string? OutlookFolderName;
+    public string? OutlookFolderStoreId;
+    public string? OutlookFolderEntryId;
 }

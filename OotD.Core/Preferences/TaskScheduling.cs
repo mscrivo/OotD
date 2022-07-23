@@ -6,53 +6,52 @@ using System;
 using Microsoft.Win32.TaskScheduler;
 using NLog;
 
-namespace OotD.Preferences
+namespace OotD.Preferences;
+
+internal static class TaskScheduling
 {
-    internal static class TaskScheduling
+    private const string OotDSchedTaskDefinitionName = "Outlook on the Desktop";
+    private const string OotDSchedTaskDefinitionXMLPath = @"OotDScheduledTaskDefinition.xml";
+
+    public static bool OotDScheduledTaskExists()
     {
-        private const string OotDSchedTaskDefinitionName = "Outlook on the Desktop";
-        private const string OotDSchedTaskDefinitionXMLPath = @"OotDScheduledTaskDefinition.xml";
+        return TaskService.Instance.GetTask(OotDSchedTaskDefinitionName) != null;
+    }
 
-        public static bool OotDScheduledTaskExists()
+    public static void CreateOotDStartupTask(Logger logger)
+    {
+        try
         {
-            return TaskService.Instance.GetTask(OotDSchedTaskDefinitionName) != null;
+            using var ts = new TaskService();
+            logger.Info($"Creating {OotDSchedTaskDefinitionName} Scheduled Task");
+            var td = ts.NewTaskFromFile(OotDSchedTaskDefinitionXMLPath);
+            var logonTrigger = (LogonTrigger)td.Triggers[0];
+            logonTrigger.UserId = Environment.UserName;
+            ts.RootFolder.RegisterTaskDefinition(OotDSchedTaskDefinitionName, td);
         }
-
-        public static void CreateOotDStartupTask(Logger logger)
+        catch (Exception e)
         {
-            try
-            {
-                using var ts = new TaskService();
-                logger.Info($"Creating {OotDSchedTaskDefinitionName} Scheduled Task");
-                var td = ts.NewTaskFromFile(OotDSchedTaskDefinitionXMLPath);
-                var logonTrigger = (LogonTrigger)td.Triggers[0];
-                logonTrigger.UserId = Environment.UserName;
-                ts.RootFolder.RegisterTaskDefinition(OotDSchedTaskDefinitionName, td);
-            }
-            catch (Exception e)
-            {
-                logger.Error(e, "Error while trying to create startup scheduled task.");
-                throw;
-            }
+            logger.Error(e, "Error while trying to create startup scheduled task.");
+            throw;
         }
+    }
 
-        public static void RemoveOotDStartupTask(Logger logger)
+    public static void RemoveOotDStartupTask(Logger logger)
+    {
+        try
         {
-            try
+            logger.Info($"Removing {OotDSchedTaskDefinitionName} Scheduled Task");
+            var td = TaskService.Instance.GetTask(OotDSchedTaskDefinitionName);
+            if (td != null)
             {
-                logger.Info($"Removing {OotDSchedTaskDefinitionName} Scheduled Task");
-                var td = TaskService.Instance.GetTask(OotDSchedTaskDefinitionName);
-                if (td != null)
-                {
-                    TaskService.Instance.RootFolder.DeleteTask(OotDSchedTaskDefinitionName);
-                }
+                TaskService.Instance.RootFolder.DeleteTask(OotDSchedTaskDefinitionName);
+            }
 
-            }
-            catch (Exception e)
-            {
-                logger.Error(e, "Error while trying to remove startup scheduled task.");
-                throw;
-            }
+        }
+        catch (Exception e)
+        {
+            logger.Error(e, "Error while trying to remove startup scheduled task.");
+            throw;
         }
     }
 }

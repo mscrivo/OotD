@@ -6,76 +6,75 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using NLog;
 
-namespace OotD.Preferences
+namespace OotD.Preferences;
+
+internal static class GlobalPreferences
 {
-    internal static class GlobalPreferences
+    // never instantiated, only contains static methods
+
+    private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+    /// <summary>
+    /// Returns true if there is a registry entry that makes Outlook on the Desktop start
+    /// when Windows starts. On set, we save or delete that registry value
+    /// accordingly.
+    /// </summary>
+    public static bool StartWithWindows
     {
-        // never instantiated, only contains static methods
-
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
-        /// <summary>
-        /// Returns true if there is a registry entry that makes Outlook on the Desktop start
-        /// when Windows starts. On set, we save or delete that registry value
-        /// accordingly.
-        /// </summary>
-        public static bool StartWithWindows
+        get => TaskScheduling.OotDScheduledTaskExists();
+        set
         {
-            get => TaskScheduling.OotDScheduledTaskExists();
-            set
+            if (value)
             {
-                if (value)
-                {
-                    TaskScheduling.CreateOotDStartupTask(_logger);
-                }
-                else
-                {
-                    TaskScheduling.RemoveOotDStartupTask(_logger);
-                }
+                TaskScheduling.CreateOotDStartupTask(_logger);
+            }
+            else
+            {
+                TaskScheduling.RemoveOotDStartupTask(_logger);
             }
         }
+    }
 
-        public static bool LockPosition
+    public static bool LockPosition
+    {
+        get
         {
-            get
-            {
-                using var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
-                return bool.TryParse(key.GetValue("LockPosition", "false")?.ToString(), out var lockPositions) &&
-                       lockPositions;
-            }
-            set
-            {
-                using var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
-                key.SetValue("LockPosition", value);
-            }
+            using var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
+            return bool.TryParse(key.GetValue("LockPosition", "false")?.ToString(), out var lockPositions) &&
+                   lockPositions;
         }
-
-        public static bool IsFirstRun
+        set
         {
-            get
+            using var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
+            key.SetValue("LockPosition", value);
+        }
+    }
+
+    public static bool IsFirstRun
+    {
+        get
+        {
+            if (_isFirstRun.HasValue)
             {
-                if (_isFirstRun.HasValue)
-                {
-                    return _isFirstRun.Value;
-                }
-
-                using (var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
-                {
-                    if (bool.TryParse(key.GetValue("FirstRun", "true")?.ToString(), out var isFirstRun))
-                    {
-                        if (isFirstRun)
-                        {
-                            key.SetValue("FirstRun", false);
-                            _isFirstRun = true;
-                            return _isFirstRun.Value;
-                        }
-                    }
-                }
-                _isFirstRun = false;
-
                 return _isFirstRun.Value;
             }
+
+            using (var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+            {
+                if (bool.TryParse(key.GetValue("FirstRun", "true")?.ToString(), out var isFirstRun))
+                {
+                    if (isFirstRun)
+                    {
+                        key.SetValue("FirstRun", false);
+                        _isFirstRun = true;
+                        return _isFirstRun.Value;
+                    }
+                }
+            }
+            _isFirstRun = false;
+
+            return _isFirstRun.Value;
         }
-        private static bool? _isFirstRun;
     }
+    private static bool? _isFirstRun;
 }
