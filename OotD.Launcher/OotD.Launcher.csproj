@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <RootNamespace>OotD</RootNamespace>
-    <TargetFramework>net6.0-windows7.0</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyTitle>Outlook on the Desktop</AssemblyTitle>
     <Company>SMR Computer Services</Company>
@@ -68,8 +68,8 @@
     <ProjectReference Include="..\OotD.x86\OotD.x86.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NLog" Version="5.0.2" />
-    <PackageReference Include="NLog.Schema" Version="5.0.2" />
+    <PackageReference Include="NLog" Version="5.0.4" />
+    <PackageReference Include="NLog.Schema" Version="5.0.4" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\OotD.Core\Properties\Resources.resx" Link="Properties\Resources.resx">

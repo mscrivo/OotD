@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace OotD.Forms
 {
-    partial class AboutBox
+    sealed partial class AboutBox
     {
         /// <summary>
         /// Required designer variable.

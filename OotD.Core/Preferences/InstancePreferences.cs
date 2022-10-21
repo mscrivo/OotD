@@ -34,7 +34,7 @@ public class InstancePreferences
             var opacity = DefaultOpacity;
 
             return double.TryParse(
-                _appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture))?.ToString(),
+                _appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture)).ToString(),
                 out opacity)
                 ? opacity
                 : DefaultOpacity;
@@ -88,7 +88,7 @@ public class InstancePreferences
 
     public string? OutlookFolderName
     {
-        get => _appReg.GetValue("CurrentViewType", "Calendar")?.ToString();
+        get => _appReg.GetValue("CurrentViewType", "Calendar").ToString();
         set
         {
             if (value != null)
@@ -102,7 +102,7 @@ public class InstancePreferences
 
     public string? OutlookFolderView
     {
-        get => _appReg.GetValue("OutlookView", "Day/Week/Month")?.ToString();
+        get => _appReg.GetValue("OutlookView", "Day/Week/Month").ToString();
         set
         {
             if (value != null)
@@ -115,7 +115,7 @@ public class InstancePreferences
 
     public string? OutlookFolderEntryId
     {
-        get => _appReg.GetValue("FolderEntryId", "")?.ToString();
+        get => _appReg.GetValue("FolderEntryId", "").ToString();
         set
         {
             if (value != null)
@@ -128,7 +128,7 @@ public class InstancePreferences
 
     public string? OutlookFolderStoreId
     {
-        get => _appReg.GetValue("FolderStoreId", "")?.ToString();
+        get => _appReg.GetValue("FolderStoreId", "").ToString();
         set
         {
             if (value != null)
@@ -142,7 +142,7 @@ public class InstancePreferences
     {
         get
         {
-            _ = bool.TryParse(_appReg.GetValue("DisableEditing", "False")?.ToString(), out var retVal);
+            _ = bool.TryParse(_appReg.GetValue("DisableEditing", "False").ToString(), out var retVal);
             return retVal;
         }
         set => _appReg.SetValue("DisableEditing", value);
@@ -150,7 +150,7 @@ public class InstancePreferences
 
     public string? ViewXml
     {
-        get => _appReg.GetValue("ViewXML", "")?.ToString();
+        get => _appReg.GetValue("ViewXML", "").ToString();
         set => _appReg.SetValue("ViewXML", value!);
     }
 

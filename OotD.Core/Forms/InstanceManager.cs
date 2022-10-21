@@ -410,7 +410,7 @@ public partial class InstanceManager : Form
 
     private void StartWithWindowsMenu_Click(object? sender, EventArgs e)
     {
-        var startWithWindowsMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["StartWithWindows"];
+        var startWithWindowsMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip!.Items["StartWithWindows"];
         if (startWithWindowsMenu.Checked)
         {
             GlobalPreferences.StartWithWindows = false;
@@ -430,7 +430,7 @@ public partial class InstanceManager : Form
 
     private void ShowHideAllInstances()
     {
-        var hideShowMenuText = trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text;
+        var hideShowMenuText = trayIcon.ContextMenuStrip!.Items["HideShowMenu"].Text;
 
         if (hideShowMenuText == Resources.HideAll || hideShowMenuText == Resources.Hide)
         {
@@ -456,7 +456,7 @@ public partial class InstanceManager : Form
 
     private void LockPositionMenu_Click(object? sender, EventArgs e)
     {
-        var lockPositionMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["LockPositionMenu"];
+        var lockPositionMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip!.Items["LockPositionMenu"];
         if (lockPositionMenu.Checked)
         {
             lockPositionMenu.Checked = false;
@@ -486,7 +486,7 @@ public partial class InstanceManager : Form
 
     private void DisableEnableAllInstances()
     {
-        var disableEditingMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip.Items["DisableEnableEditingMenu"];
+        var disableEditingMenu = (ToolStripMenuItem)trayIcon.ContextMenuStrip!.Items["DisableEnableEditingMenu"];
 
         if (disableEditingMenu.Checked)
         {
@@ -515,7 +515,7 @@ public partial class InstanceManager : Form
     private void InstanceRemovedEventHandler(object? sender, InstanceRemovedEventArgs e)
     {
         // remove the menu item for the removed instance.
-        trayIcon.ContextMenuStrip.Items.RemoveByKey(e.InstanceName);
+        trayIcon.ContextMenuStrip!.Items.RemoveByKey(e.InstanceName);
         _mainFormInstances.Remove(e.InstanceName);
 
         // if we only have one instance left, reload everything so that the context
@@ -529,7 +529,7 @@ public partial class InstanceManager : Form
     private void InstanceRenamedEventHandler(object? sender, InstanceRenamedEventArgs e)
     {
         // remove the menu item for the removed instance.
-        trayIcon.ContextMenuStrip.Items[e.OldInstanceName].Text = e.NewInstanceName;
+        trayIcon.ContextMenuStrip!.Items[e.OldInstanceName].Text = e.NewInstanceName;
         trayIcon.ContextMenuStrip.Items[e.OldInstanceName].Name = e.NewInstanceName;
     }
 

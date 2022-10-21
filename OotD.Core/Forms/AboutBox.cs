@@ -12,7 +12,7 @@ using OotD.Properties;
 
 namespace OotD.Forms;
 
-public partial class AboutBox : Form
+public sealed partial class AboutBox : Form
 {
     public AboutBox()
     {
@@ -26,12 +26,6 @@ public partial class AboutBox : Form
         labelProductName.Text = Product;
         labelVersion.Text = string.Format(Resources.AboutVersion, Version);
         labelCopyright.Text = CopyRight;
-    }
-
-    public sealed override string Text
-    {
-        get => base.Text;
-        set => base.Text = value;
     }
 
     #region Assembly Attribute Accessors

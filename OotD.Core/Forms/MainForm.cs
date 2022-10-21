@@ -1146,7 +1146,7 @@ public partial class MainForm : Form
         }
 
         // we can bail if we know the last button clicked was the one on this form.
-        if ((Guid)button.Tag == lastButtonGuidClicked)
+        if ((Guid)button.Tag! == lastButtonGuidClicked)
         {
             return;
         }

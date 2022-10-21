@@ -40,7 +40,7 @@ internal static class GlobalPreferences
         get
         {
             using var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
-            return bool.TryParse(key.GetValue("LockPosition", "false")?.ToString(), out var lockPositions) &&
+            return bool.TryParse(key.GetValue("LockPosition", "false").ToString(), out var lockPositions) &&
                    lockPositions;
         }
         set
@@ -61,7 +61,7 @@ internal static class GlobalPreferences
 
             using (var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
             {
-                if (bool.TryParse(key.GetValue("FirstRun", "true")?.ToString(), out var isFirstRun))
+                if (bool.TryParse(key.GetValue("FirstRun", "true").ToString(), out var isFirstRun))
                 {
                     if (isFirstRun)
                     {
