@@ -21,7 +21,6 @@ VersionInfoCompany={#MyAppPublisher}
 VersionInfoCopyright={#MyAppCopyright}
 AppCopyright={#MyAppCopyright}
 OutputBaseFilename=ootd-{#MyAppVersion}
-Compression=lzma
 SolidCompression=true
 VersionInfoVersion={#MyAppVersion}
 VersionInfoDescription={#MyAppName}
