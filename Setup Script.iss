@@ -37,6 +37,7 @@ DisableReadyMemo=True
 DisableProgramGroupPage=yes
 UsePreviousGroup=False
 WizardStyle=modern
+SignTool=MsSign
 
 [Languages]
 Name: eng; MessagesFile: compiler:Default.isl
