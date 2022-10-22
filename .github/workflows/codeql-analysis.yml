@@ -21,7 +21,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: windows-2019
+    runs-on: windows-latest
     permissions:
       actions: read
       contents: read
@@ -37,7 +37,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with: 
        submodules: 'true'
 
@@ -52,9 +52,9 @@ jobs:
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1.8.1
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '7.0.x'
         include-prerelease: true        
     - run: dotnet build OutlookDesktop.sln
 
