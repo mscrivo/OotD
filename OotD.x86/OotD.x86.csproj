@@ -24,7 +24,7 @@
     <ApplicationIcon>..\OotD.Core\Resources\Icons\AppIcon.ico</ApplicationIcon>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
     <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
