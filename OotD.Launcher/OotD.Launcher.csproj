@@ -37,7 +37,7 @@
     <ApplicationManifest>..\OotD.Core\app.manifest</ApplicationManifest>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
     <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
