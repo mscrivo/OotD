@@ -58,7 +58,7 @@ public partial class InstanceManager : Form
     // ReSharper disable once InconsistentNaming
     public static float GetDPI()
     {
-        using var graphics = Graphics.FromHwnd(IntPtr.Zero);
+        using var graphics = Graphics.FromHwnd(nint.Zero);
         return graphics.DpiX;
     }
 

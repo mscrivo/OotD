@@ -112,7 +112,7 @@ public sealed class StickyWindow : NativeWindow
                     if (OnNCLButtonDown((int)m.WParam, _mousePoint))
                     {
                         //m.Result = new IntPtr ( (resizingForm || movingForm) ? 1 : 0 );
-                        m.Result = (IntPtr)(_resizingForm || _movingForm ? 1 : 0);
+                        m.Result = _resizingForm || _movingForm ? 1 : 0;
                         return true;
                     }
                     break;

@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 // ReSharper disable MemberCanBePrivate.Global
@@ -18,9 +17,9 @@ namespace OotD.Utility;
 
 internal static class UnsafeNativeMethods
 {
-    private static readonly IntPtr HWND_BOTTOM = new(1);
+    private static readonly nint HWND_BOTTOM = new(1);
 
-    private static readonly IntPtr HWND_TOP = new(0);
+    private static readonly nint HWND_TOP = new(0);
 
     private const int SWP_NOACTIVATE = 0x10;
     private const int SWP_NOMOVE = 0x0002;
@@ -42,8 +41,8 @@ internal static class UnsafeNativeMethods
     [StructLayout(LayoutKind.Sequential)]
     public struct WINDOWPOS
     {
-        public IntPtr hwnd;
-        public IntPtr hwndInsertAfter;
+        public nint hwnd;
+        public nint hwndInsertAfter;
         public int x;
         public int y;
         public int cx;
@@ -52,27 +51,27 @@ internal static class UnsafeNativeMethods
     }
 
     [DllImport("dwmapi.dll", PreserveSig = false)]
-    private static extern void DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+    private static extern void DwmSetWindowAttribute(nint hwnd, int attr, ref int attrValue, int attrSize);
 
     [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-    private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+    private static extern nint FindWindow(string lpClassName, string lpWindowName);
 
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    private static extern IntPtr FindWindowEx(IntPtr parentHandle, IntPtr childAfter, string className, string windowTitle);
+    private static extern nint FindWindowEx(nint parentHandle, nint childAfter, string className, string windowTitle);
 
     [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-    private static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+    private static extern nint SetParent(nint hWndChild, nint hWndNewParent);
 
     [DllImport("user32.dll")]
     public static extern bool ReleaseCapture();
 
     [DllImport("user32.dll")]
-    public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+    public static extern nint SendMessage(nint hWnd, uint Msg, nint wParam, nint lParam);
 
     [DllImport("user32.dll")]
     private static extern bool SetWindowPos(
-        IntPtr hWnd,
-        IntPtr hWndInsertAfter,
+        nint hWnd,
+        nint hWndInsertAfter,
         int X,
         int Y,
         int cx,
@@ -85,25 +84,25 @@ internal static class UnsafeNativeMethods
     // This helper static method is required because the 32-bit version of user32.dll does not contain this API
     // (on any versions of Windows), so linking the method will fail at run-time. The bridge dispatches the request
     // to the correct function (GetWindowLong in 32-bit mode and GetWindowLongPtr in 64-bit mode)
-    public static IntPtr SetWindowLongPtr(HandleRef hWnd, int nIndex, IntPtr dwNewLong)
+    public static nint SetWindowLongPtr(HandleRef hWnd, int nIndex, nint dwNewLong)
     {
-        return IntPtr.Size == 8 ? SetWindowLongPtr64(hWnd, nIndex, dwNewLong) : new IntPtr(SetWindowLong32(hWnd, nIndex, dwNewLong.ToInt32()));
+        return nint.Size == 8 ? SetWindowLongPtr64(hWnd, nIndex, dwNewLong) : new nint(SetWindowLong32(hWnd, nIndex, dwNewLong.ToInt32()));
     }
 
     [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
     private static extern int SetWindowLong32(HandleRef hWnd, int nIndex, int dwNewLong);
 
     [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
-    private static extern IntPtr SetWindowLongPtr64(HandleRef hWnd, int nIndex, IntPtr dwNewLong);
+    private static extern nint SetWindowLongPtr64(HandleRef hWnd, int nIndex, nint dwNewLong);
 
     public static void PinToDesktop(Form form)
     {
         form.SendToBack();
-        var hWndTmp = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", string.Empty);
-        if (hWndTmp != IntPtr.Zero)
+        var hWndTmp = FindWindowEx(nint.Zero, nint.Zero, "Progman", string.Empty);
+        if (hWndTmp != nint.Zero)
         {
-            hWndTmp = FindWindowEx(hWndTmp, IntPtr.Zero, "SHELLDLL_DefView", string.Empty);
-            if (hWndTmp != IntPtr.Zero)
+            hWndTmp = FindWindowEx(hWndTmp, nint.Zero, "SHELLDLL_DefView", string.Empty);
+            if (hWndTmp != nint.Zero)
             {
                 SetWindowLongPtr(new HandleRef(form, form.Handle), -8, hWndTmp);
                 return;
@@ -133,13 +132,13 @@ internal static class UnsafeNativeMethods
     }
 
     [DllImport("user32.dll", SetLastError = true)]
-    private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+    private static extern nint GetWindow(nint hWnd, uint uCmd);
 
     [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
-    private static extern IntPtr GetWindowLongPtr32(IntPtr hWnd, int nIndex);
+    private static extern nint GetWindowLongPtr32(nint hWnd, int nIndex);
 
     [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
-    private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
+    private static extern nint GetWindowLongPtr64(nint hWnd, int nIndex);
 
     /// <summary>
     /// Does not hide the calendar when the user hovers their mouse over the "Show Desktop" button 

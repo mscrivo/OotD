@@ -135,9 +135,11 @@ public partial class MainForm : Form
     #region Events
 
     // ReSharper disable once InconsistentNaming
+#pragma warning disable IDE1006 // Naming Styles
     public EventHandler<InstanceRemovedEventArgs>? InstanceRemoved;
     // ReSharper disable once InconsistentNaming
     public EventHandler<InstanceRenamedEventArgs>? InstanceRenamed;
+#pragma warning restore IDE1006 // Naming Styles
 
     private void OnInstanceRemoved(object sender, InstanceRemovedEventArgs e)
     {
@@ -681,7 +683,7 @@ public partial class MainForm : Form
         }
 
         UnsafeNativeMethods.ReleaseCapture();
-        UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM.WM_NCLBUTTONDOWN, (IntPtr)dir, IntPtr.Zero);
+        UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM.WM_NCLBUTTONDOWN, dir, nint.Zero);
     }
 
     private void MoveForm()
@@ -694,7 +696,7 @@ public partial class MainForm : Form
         _movingOrResizing = true;
 
         UnsafeNativeMethods.ReleaseCapture();
-        UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM.WM_NCLBUTTONDOWN, (IntPtr)UnsafeNativeMethods.HT.HTCAPTION, IntPtr.Zero);
+        UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM.WM_NCLBUTTONDOWN, UnsafeNativeMethods.HT.HTCAPTION, nint.Zero);
     }
 
     #region Event Handlers
@@ -1225,7 +1227,7 @@ public partial class MainForm : Form
                     _outlookContextMenuActivated = true;
                     UnsafeNativeMethods.SendWindowToTop(this);
                     WindowMessageTimer.Start();
-                    m.Result = IntPtr.Zero;
+                    m.Result = nint.Zero;
                 }
 
                 break;
@@ -1236,7 +1238,7 @@ public partial class MainForm : Form
                 {
                     _outlookContextMenuActivated = false;
                     UnsafeNativeMethods.SendWindowToBack(this);
-                    m.Result = IntPtr.Zero;
+                    m.Result = nint.Zero;
                 }
 
                 break;
@@ -1250,7 +1252,7 @@ public partial class MainForm : Form
                 mwp.flags |= UnsafeNativeMethods.SWP_NOZORDER;
                 Marshal.StructureToPtr(mwp, m.LParam, true);
                 UnsafeNativeMethods.SendWindowToBack(this);
-                m.Result = IntPtr.Zero;
+                m.Result = nint.Zero;
                 break;
         }
 
