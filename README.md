@@ -1,6 +1,6 @@
 ## Outlook on the Desktop
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://dev.azure.com/mscrivo/OotD/_apis/build/status/mscrivo.OotD?branchName=master)](https://dev.azure.com/mscrivo/OotD/_build/latest?definitionId=1&branchName=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://dev.azure.com/mscrivo/OotD/_apis/build/status/mscrivo.OotD?branchName=main)](https://dev.azure.com/mscrivo/OotD/_build/latest?definitionId=1&branchName=master)
 [![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)]() [![CodeQL](https://github.com/mscrivo/OotD/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/mscrivo/OotD/actions/workflows/codeql-analysis.yml)
 
 ### Description
