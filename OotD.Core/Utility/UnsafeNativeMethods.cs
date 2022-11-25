@@ -37,7 +37,6 @@ internal static class UnsafeNativeMethods
     public const int WM_RBUTTONDOWN = 0x0204;
     public const int WM_WINDOWPOSCHANGING = 70;
 
-
     [StructLayout(LayoutKind.Sequential)]
     public struct WINDOWPOS
     {
