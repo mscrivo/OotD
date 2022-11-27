@@ -1024,7 +1024,6 @@ public partial class MainForm : Form
         Cursor = Cursors.Default;
     }
 
-
     private void NewEmailButton_MouseHover(object sender, EventArgs e)
     {
         ResizeDir = ResizeDirection.None;
