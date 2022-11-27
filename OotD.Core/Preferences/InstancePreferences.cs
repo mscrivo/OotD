@@ -47,9 +47,7 @@ public class InstancePreferences
     /// </summary>
     public int Left
     {
-#pragma warning disable CS8605 // Unboxing a possibly null value.
         get => (int)_appReg.GetValue("Left", DefaultLeftPosition);
-#pragma warning restore CS8605 // Unboxing a possibly null value.
         set => _appReg.SetValue("Left", value);
     }
 
@@ -58,9 +56,7 @@ public class InstancePreferences
     /// </summary>
     public int Top
     {
-#pragma warning disable CS8605 // Unboxing a possibly null value.
         get => (int)_appReg.GetValue("Top", DefaultTopPosition);
-#pragma warning restore CS8605 // Unboxing a possibly null value.
         set => _appReg.SetValue("Top", value);
     }
 
@@ -69,9 +65,7 @@ public class InstancePreferences
     /// </summary>
     public int Width
     {
-#pragma warning disable CS8605 // Unboxing a possibly null value.
         get => (int)_appReg.GetValue("Width", DefaultWidth);
-#pragma warning restore CS8605 // Unboxing a possibly null value.
         set => _appReg.SetValue("Width", value);
     }
 
@@ -80,9 +74,7 @@ public class InstancePreferences
     /// </summary>
     public int Height
     {
-#pragma warning disable CS8605 // Unboxing a possibly null value.
         get => (int)_appReg.GetValue("Height", DefaultHeight);
-#pragma warning restore CS8605 // Unboxing a possibly null value.
         set => _appReg.SetValue("Height", value);
     }
 
@@ -112,7 +104,6 @@ public class InstancePreferences
         }
     }
 
-
     public string? OutlookFolderEntryId
     {
         get => _appReg.GetValue("FolderEntryId", "").ToString();
@@ -124,7 +115,6 @@ public class InstancePreferences
             }
         }
     }
-
 
     public string? OutlookFolderStoreId
     {
