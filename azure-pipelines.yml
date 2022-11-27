@@ -28,16 +28,28 @@ steps:
     versioningScheme: byBuildNumber
     arguments: '--configuration $(BuildConfiguration) -p:Version=$(Build.BuildNumber);FileVersion=$(Build.BuildNumber)'
 
+- task: codesigning@2
+  inputs:
+    secureFileId: 'ootd.pfx'
+    signCertPassword: '${{ variables.pfx_password }}'
+    files: 'OotD.Launcher\bin\Release\net7.0-windows\OotD.*'
+    timeServer: 'http://timestamp.digicert.com'
+    hashingAlgorithm: 'SHA256'
+    signToolLocationMethod: 'latest'
+
 - task: CmdLine@2
   inputs:
     script: 'iscc /Q "Setup Script.iss"'
 
-- task: CmdLine@2
+- task: codesigning@2
   inputs:
-    script: |
-      set DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
-      dotnet tool install --global AzureSignTool
-
+    secureFileId: 'ootd.pfx'
+    signCertPassword: '${{ variables.pfx_password }}'
+    files: 'serverStaging/*.exe'
+    timeServer: 'http://timestamp.digicert.com'
+    hashingAlgorithm: 'SHA256'
+    signToolLocationMethod: 'latest'
+    
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: 'ServerStaging'
