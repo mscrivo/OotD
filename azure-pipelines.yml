@@ -31,7 +31,7 @@ steps:
 - task: codesigning@2
   inputs:
     secureFileId: 'ootd.pfx'
-    signCertPassword: '${{ variables.pfx_password }}'
+    signCertPassword: $(pfx_password)
     files: 'OotD.Launcher\bin\Release\net7.0-windows\OotD.*'
     timeServer: 'http://timestamp.digicert.com'
     hashingAlgorithm: 'SHA256'
@@ -44,7 +44,7 @@ steps:
 - task: codesigning@2
   inputs:
     secureFileId: 'ootd.pfx'
-    signCertPassword: '${{ variables.pfx_password }}'
+    signCertPassword: $(pfx_password)
     files: 'serverStaging/*.exe'
     timeServer: 'http://timestamp.digicert.com'
     hashingAlgorithm: 'SHA256'
