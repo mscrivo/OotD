@@ -86,7 +86,6 @@ public static class Program
         return startInfo;
     }
 
-
     /// <summary>
     /// Validates that the minimum supported version of Outlook is installed and returns the bitness of the installed version.
     /// </summary>
