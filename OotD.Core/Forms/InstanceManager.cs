@@ -177,18 +177,22 @@ public partial class InstanceManager : Form
                     {
                         _mainFormInstances[instanceName].TrayMenu.Items["AddInstanceMenu"].Visible = false;
                     }
+
                     if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AboutMenu"))
                     {
                         _mainFormInstances[instanceName].TrayMenu.Items["AboutMenu"].Visible = false;
                     }
+
                     if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("StartWithWindows"))
                     {
                         _mainFormInstances[instanceName].TrayMenu.Items["StartWithWindows"].Visible = false;
                     }
+
                     if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("LockPositionMenu"))
                     {
                         _mainFormInstances[instanceName].TrayMenu.Items["LockPositionMenu"].Visible = false;
                     }
+
                     if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("CheckForUpdatesMenu"))
                     {
                         _mainFormInstances[instanceName].TrayMenu.Items["CheckForUpdatesMenu"].Visible = false;
@@ -204,6 +208,7 @@ public partial class InstanceManager : Form
                         _mainFormInstances[instanceName].Show();
                         UnsafeNativeMethods.SendWindowToBack(_mainFormInstances[instanceName]);
                     }
+
                     count++;
                 }
 
@@ -262,18 +267,22 @@ public partial class InstanceManager : Form
                 {
                     _mainFormInstances[instanceName].TrayMenu.Items["AddInstanceMenu"].Visible = true;
                 }
+
                 if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AboutMenu"))
                 {
                     _mainFormInstances[instanceName].TrayMenu.Items["AboutMenu"].Visible = true;
                 }
+
                 if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("StartWithWindows"))
                 {
                     _mainFormInstances[instanceName].TrayMenu.Items["StartWithWindows"].Visible = true;
                 }
+
                 if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("LockPositionMenu"))
                 {
                     _mainFormInstances[instanceName].TrayMenu.Items["LockPositionMenu"].Visible = true;
                 }
+
                 if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("CheckForUpdatesMenu"))
                 {
                     _mainFormInstances[instanceName].TrayMenu.Items["CheckForUpdatesMenu"].Visible = true;
@@ -353,6 +362,7 @@ public partial class InstanceManager : Form
         {
             formInstance.Value.Dispose();
         }
+
         Startup.DisposeOutlookObjects();
         Application.Exit();
     }
@@ -497,6 +507,7 @@ public partial class InstanceManager : Form
                 var instanceDisableEditingMenu = (ToolStripMenuItem)mainForm.TrayMenu.Items["DisableEnableEditingMenu"];
                 instanceDisableEditingMenu.Checked = !instanceDisableEditingMenu.Checked;
             }
+
             disableEditingMenu.Checked = false;
         }
         else
@@ -508,6 +519,7 @@ public partial class InstanceManager : Form
                 var instanceDisableEditingMenu = (ToolStripMenuItem)mainForm.TrayMenu.Items["DisableEnableEditingMenu"];
                 instanceDisableEditingMenu.Checked = !instanceDisableEditingMenu.Checked;
             }
+
             disableEditingMenu.Checked = true;
         }
     }
@@ -570,5 +582,29 @@ public partial class InstanceManager : Form
     {
         var item = (ToolStripDropDownItem)e.Argument!;
         FlashForm(item);
+    }
+
+    public void SendAllToTop()
+    {
+        foreach (var formInstance in _mainFormInstances)
+        {
+            UnsafeNativeMethods.SendWindowToTop(formInstance.Value);
+        }
+    }
+
+    public void SendAllToBack()
+    {
+        foreach (var formInstance in _mainFormInstances)
+        {
+            UnsafeNativeMethods.SendWindowToBack(formInstance.Value);
+        }
+    }
+
+    public void SendAllToNotTopMost()
+    {
+        foreach (var formInstance in _mainFormInstances)
+        {
+            UnsafeNativeMethods.SendWindowToNotTopMost(formInstance.Value);
+        }
     }
 }

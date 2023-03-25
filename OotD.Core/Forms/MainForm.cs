@@ -38,6 +38,7 @@ public partial class MainForm : Form
     private OutlookFolderDefinition _customFolderDefinition;
     private bool _outlookContextMenuActivated;
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly StickyWindow _stickyWindow;
 
@@ -78,7 +79,7 @@ public partial class MainForm : Form
             SuspendLayout();
             LoadSettings();
             ResumeLayout();
-            SendWindowToBack();
+            RemoveFromAeroPeek();
 
             // hook up sticky window instance and events to let us know when resizing/moving
             // has ended so we can update the form dimensions in the preferences.
@@ -117,9 +118,9 @@ public partial class MainForm : Form
         }
     }
 
-    private void SendWindowToBack()
+    private void RemoveFromAeroPeek()
     {
-        UnsafeNativeMethods.PinToDesktop(this);
+        UnsafeNativeMethods.RemoveWindowFromAeroPeek(this);
     }
 
     protected override CreateParams CreateParams
@@ -137,6 +138,7 @@ public partial class MainForm : Form
     // ReSharper disable once InconsistentNaming
 #pragma warning disable IDE1006 // Naming Styles
     public EventHandler<InstanceRemovedEventArgs>? InstanceRemoved;
+
     // ReSharper disable once InconsistentNaming
     public EventHandler<InstanceRenamedEventArgs>? InstanceRenamed;
 #pragma warning restore IDE1006 // Naming Styles
@@ -323,7 +325,8 @@ public partial class MainForm : Form
     private void SetMAPIFolder()
     {
         // Load up the MAPI Folder from Entry / Store IDs 
-        if (!string.IsNullOrEmpty(Preferences.OutlookFolderEntryId) && !string.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
+        if (!string.IsNullOrEmpty(Preferences.OutlookFolderEntryId) &&
+            !string.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
         {
             try
             {
@@ -497,7 +500,15 @@ public partial class MainForm : Form
     /// <param name="itemToCheck"></param>
     private void CheckSelectedMenuItem(ToolStripMenuItem? itemToCheck)
     {
-        var menuItems = new List<ToolStripMenuItem> { CalendarMenu, ContactsMenu, InboxMenu, NotesMenu, TasksMenu, TodosMenu };
+        var menuItems = new List<ToolStripMenuItem>
+        {
+            CalendarMenu,
+            ContactsMenu,
+            InboxMenu,
+            NotesMenu,
+            TasksMenu,
+            TodosMenu
+        };
 
         if (_customMenu != null)
         {
@@ -824,6 +835,7 @@ public partial class MainForm : Form
                 _logger.Warn(ex, "Unable to go to today on calendar.");
             }
         }
+
         _previousDate = DateTime.Now;
     }
 
@@ -970,6 +982,7 @@ public partial class MainForm : Form
     }
 
     #region Resize Cursor Reset Events
+
     private void HeaderPanel_MouseMove(object sender, MouseEventArgs e)
     {
         ResizeDir = ResizeDirection.None;
@@ -1039,6 +1052,7 @@ public partial class MainForm : Form
     {
         Cursor = Cursors.SizeAll;
     }
+
     #endregion
 
     private void SetViewXml(string value)
@@ -1186,6 +1200,7 @@ public partial class MainForm : Form
         {
             mode = (CurrentCalendarView)Convert.ToInt32(element.Value);
         }
+
         return mode;
     }
 
@@ -1196,6 +1211,7 @@ public partial class MainForm : Form
         {
             opacityVal = 0.99;
         }
+
         Opacity = opacityVal;
         Preferences.Opacity = opacityVal;
     }
@@ -1204,6 +1220,7 @@ public partial class MainForm : Form
     {
         WindowMessageTimer.Enabled = false;
     }
+
     #endregion
 
     /// <summary>
@@ -1221,7 +1238,18 @@ public partial class MainForm : Form
         {
             case UnsafeNativeMethods.WM_PARENTNOTIFY:
 
-                if (m.WParam.ToInt32() == UnsafeNativeMethods.WM_RBUTTONDOWN)
+                // If we're in show desktop mode and left mouse button is clicked, we need to 
+                // set the window to not top most anymore, otherwise it disappears on click
+                if (m.WParam.ToInt32() == UnsafeNativeMethods.WM_LBUTTONDOWN && Startup.IsShowingDesktop)
+                {
+                    Startup.InstanceManager!.SendAllToNotTopMost();
+                    UnsafeNativeMethods.SendWindowToNotTopMost(this);
+
+                }
+
+                // If we right click on a window, we're bringing up the outlook context menu and
+                // have to temporarily set the window to top most so the context menu is visible.
+                if (m.WParam.ToInt32() == UnsafeNativeMethods.WM_RBUTTONDOWN && !Startup.IsShowingDesktop)
                 {
                     _outlookContextMenuActivated = true;
                     UnsafeNativeMethods.SendWindowToTop(this);
@@ -1233,6 +1261,7 @@ public partial class MainForm : Form
 
             case UnsafeNativeMethods.WM_NCACTIVATE:
 
+                // after the context menu is gone, we can resend the window to the back.
                 if (m.WParam.ToInt32() == 1 && _outlookContextMenuActivated && !WindowMessageTimer.Enabled)
                 {
                     _outlookContextMenuActivated = false;
@@ -1245,6 +1274,7 @@ public partial class MainForm : Form
             case UnsafeNativeMethods.WM_WINDOWPOSCHANGING
                 when !_outlookContextMenuActivated &&
                      !Startup.UpdateDetected &&
+                     !Startup.IsShowingDesktop &&
                      !_movingOrResizing:
 
                 var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS))!;
@@ -1253,6 +1283,20 @@ public partial class MainForm : Form
                 UnsafeNativeMethods.SendWindowToBack(this);
                 m.Result = nint.Zero;
                 break;
+
+            case UnsafeNativeMethods.WM_WINDOWPOSCHANGED:
+                // This is to fix a case where the OotD windows are still in front of other windows
+                // after showing desktop but bringing other windows to front.
+                if (UnsafeNativeMethods.IsWindowInFrontOfOtherWindows(Handle))
+                {
+                    var mwp2 = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS))!;
+                    mwp2.flags |= UnsafeNativeMethods.SWP_NOZORDER;
+                    Marshal.StructureToPtr(mwp2, m.LParam, true);
+                    UnsafeNativeMethods.SendWindowToBack(this);
+                    m.Result = nint.Zero;
+                }
+                break;
+
         }
 
         base.WndProc(ref m);
@@ -1303,5 +1347,6 @@ public partial class MainForm : Form
         Bottom = 7,
         BottomLeft = 8
     }
-    #endregion        
+
+    #endregion
 }
