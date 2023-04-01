@@ -918,8 +918,7 @@ public partial class MainForm : Form
             return;
         }
 
-        // ReSharper disable once ConvertIfStatementToSwitchStatement
-        if (e.Location.X < ResizeBorderWidth && e.Location.Y < ResizeBorderWidth)
+        if (e.Location is { X: < ResizeBorderWidth, Y: < ResizeBorderWidth })
         {
             ResizeDir = ResizeDirection.TopLeft;
         }
@@ -1238,23 +1237,23 @@ public partial class MainForm : Form
         {
             case UnsafeNativeMethods.WM_PARENTNOTIFY:
 
-                // If we're in show desktop mode and left mouse button is clicked, we need to 
-                // set the window to not top most anymore, otherwise it disappears on click
-                if (m.WParam.ToInt32() == UnsafeNativeMethods.WM_LBUTTONDOWN && Startup.IsShowingDesktop)
+                switch (m.WParam.ToInt32())
                 {
-                    Startup.InstanceManager!.SendAllToNotTopMost();
-                    UnsafeNativeMethods.SendWindowToNotTopMost(this);
+                    // If we're in show desktop mode and left mouse button is clicked, we need to 
+                    // set the window to not top most anymore, otherwise it disappears on click
+                    case UnsafeNativeMethods.WM_LBUTTONDOWN when Startup.IsShowingDesktop:
+                        Startup.InstanceManager!.SendAllToNotTopMost();
+                        UnsafeNativeMethods.SendWindowToNotTopMost(this);
+                        break;
 
-                }
-
-                // If we right click on a window, we're bringing up the outlook context menu and
-                // have to temporarily set the window to top most so the context menu is visible.
-                if (m.WParam.ToInt32() == UnsafeNativeMethods.WM_RBUTTONDOWN && !Startup.IsShowingDesktop)
-                {
-                    _outlookContextMenuActivated = true;
-                    UnsafeNativeMethods.SendWindowToTop(this);
-                    WindowMessageTimer.Start();
-                    m.Result = nint.Zero;
+                    // If we right click on a window, we're bringing up the outlook context menu and
+                    // have to temporarily set the window to top most so the context menu is visible.
+                    case UnsafeNativeMethods.WM_RBUTTONDOWN when !Startup.IsShowingDesktop:
+                        _outlookContextMenuActivated = true;
+                        UnsafeNativeMethods.SendWindowToTop(this);
+                        WindowMessageTimer.Start();
+                        m.Result = nint.Zero;
+                        break;
                 }
 
                 break;
