@@ -13,7 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{07B2D1
 		ServerStaging\ootdReleaseNotes.md = ServerStaging\ootdReleaseNotes.md
 		README.md = README.md
 		Setup Script.iss = Setup Script.iss
-		ServerStaging\signInstaller.bat = ServerStaging\signInstaller.bat
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OotD.x86", "OotD.x86\OotD.x86.csproj", "{38490DB9-CF42-4280-BE5B-01CDB8797EDD}"
