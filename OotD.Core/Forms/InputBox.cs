@@ -47,14 +47,12 @@ public partial class InputBox : Form
     /// <returns></returns>
     public static InputBoxResult Show(Form owner, string instructions, string caption, string defaultValue, InputBoxValidatingEventHandler validator)
     {
-        using var form = new InputBox
-        {
-            Owner = owner,
-            PromptLabel = { Text = instructions },
-            Text = caption,
-            InputTextBox = { Text = defaultValue },
-            Validator = validator
-        };
+        using var form = new InputBox();
+        form.Owner = owner;
+        form.PromptLabel.Text = instructions;
+        form.Text = caption;
+        form.InputTextBox.Text = defaultValue;
+        form.Validator = validator;
 
         var result = form.ShowDialog();
 
