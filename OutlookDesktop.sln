@@ -30,6 +30,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{19CE5627-1B2C-44BE-86A4-CED5B029D570}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		renovate.json = renovate.json
 	EndProjectSection
 EndProject
 Global
