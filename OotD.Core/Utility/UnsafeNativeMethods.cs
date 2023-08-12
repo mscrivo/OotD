@@ -35,7 +35,7 @@ internal static class UnsafeNativeMethods
     internal const int SWP_NOOWNERZORDER = 0x0200;
     internal const int SWP_NOSENDCHANGING = 0x0400;
 
-    private const int ZPOS_FLAGS = SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING;
+    private const int ZPOS_FLAGS = SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING;
 
     private const int DWMWA_EXCLUDED_FROM_PEEK = 12;
 

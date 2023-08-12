@@ -841,11 +841,6 @@ public partial class MainForm : Form
 
     private void SaveFormDimensions()
     {
-        Debug.WriteLine("Saving window position");
-        Debug.WriteLine("Left: {0}", Left);
-        Debug.WriteLine("Top: {0}", Top);
-        Debug.WriteLine("Width: {0}", Width);
-        Debug.WriteLine("Height: {0}", Height);
         Preferences.Left = Left;
         Preferences.Top = Top;
         Preferences.Width = Width;
