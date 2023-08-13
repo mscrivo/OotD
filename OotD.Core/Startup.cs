@@ -13,7 +13,6 @@ using NLog;
 using OotD.Forms;
 using OotD.Preferences;
 using OotD.Properties;
-using static OotD.Utility.UnsafeNativeMethods;
 using Application = Microsoft.Office.Interop.Outlook.Application;
 using Exception = System.Exception;
 using Timer = System.Timers.Timer;
@@ -32,13 +31,9 @@ internal static class Startup
     private static MAPIFolder? _outlookFolder;
     private static Explorer? _outlookExplorer;
     private static readonly Timer _checkIfOutlookIsRunningTimer = new() { Interval = 3000 };
-    private static readonly Timer _keyDeBounceTimer = new() { Interval = 200, AutoReset = false };
 
     public static bool UpdateDetected;
-    public static bool IsShowingDesktop;
     public static InstanceManager? InstanceManager;
-    private static IntPtr _showDesktopKeyPressHookHandle = IntPtr.Zero;
-    private static IntPtr _windowEventsHookHandle = IntPtr.Zero;
 
     /// <summary>
     /// The main entry point for the application.
@@ -111,16 +106,6 @@ internal static class Startup
                 {
                     using var proc = Process.GetCurrentProcess();
                     using var curModule = proc.MainModule;
-                    var moduleHandle = GetModuleHandle(curModule?.ModuleName ?? throw new InvalidOperationException());
-                    _showDesktopKeyPressHookHandle = HookManager.SetWindowsHookEx(HookManager.WH_KEYBOARD_LL, KeyboardEventCallback, moduleHandle, 0);
-
-                    _windowEventsHookHandle = HookManager.SubscribeToWindowEvents(WindowEventCallback);
-
-                    _keyDeBounceTimer.Elapsed += (_, _) =>
-                    {
-                        _logger.Debug("Disabling KeyDeBounderTimer");
-                        _keyDeBounceTimer.Enabled = false;
-                    };
 
                     InstanceManager.LoadInstances();
                     System.Windows.Forms.Application.Run(InstanceManager);
@@ -128,11 +113,6 @@ internal static class Startup
                 catch (Exception ex)
                 {
                     _logger.Error(ex, "Could not load instances");
-                }
-                finally
-                {
-                    HookManager.UnhookWindowsHookEx(_showDesktopKeyPressHookHandle);
-                    HookManager.UnhookWindowsHookEx(_windowEventsHookHandle);
                 }
             }
             else
@@ -143,91 +123,6 @@ internal static class Startup
                     MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
         }
-    }
-
-    /// <summary>
-    /// Event callback for EVENT_SYSTEM_FOREGROUND.
-    /// When this fires, we are no longer in show desktop mode and want to restore the
-    /// OotD windows to the bottom of the z-order.
-    /// </summary>
-    /// <param name="eventHook"></param>
-    /// <param name="eventType"></param>
-    /// <param name="hwnd"></param>
-    /// <param name="idObject"></param>
-    /// <param name="idChild"></param>
-    /// <param name="eventThread"></param>
-    /// <param name="eventTime"></param>
-    private static void WindowEventCallback(IntPtr eventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint eventThread, uint eventTime)
-    {
-        _logger.Debug("In WindowEventCallback...");
-        if (eventType != HookManager.EVENT_SYSTEM_FOREGROUND)
-        {
-            return;
-        }
-
-        if (!GetWindowClass(hwnd).Equals("WorkerW") || !BelongToSameProcess(GetDefaultShellWindow(), hwnd))
-        {
-            return;
-        }
-
-        _logger.Debug("WorkerW found...");
-
-        const int MaxRetries = 5;
-        var counter = 0;
-        while (counter < MaxRetries && FindWindowEx(hwnd, IntPtr.Zero, "SHELLDLL_DefView", null!) == IntPtr.Zero)
-        {
-            Thread.Sleep(2);
-            counter++;
-        }
-
-        _logger.Debug("ShellDefView found, sending all to back...");
-
-        IsShowingDesktop = false;
-        InstanceManager!.SendAllToBack();
-    }
-
-    /// <summary>
-    /// Returns true if Win+D keyboard combo was pressed
-    /// </summary>
-    /// <param name="wParam"></param>
-    /// <param name="lParam"></param>
-    /// <returns></returns>
-    private static bool IsWin_D(IntPtr wParam, IntPtr lParam)
-    {
-        if (wParam != WM.WM_KEYDOWN && wParam != WM.WM_KEYUP)
-        {
-            return false;
-        }
-
-        var keyInfo = (HookManager.KbHookParam)Marshal.PtrToStructure(lParam, typeof(HookManager.KbHookParam))!;
-        if (keyInfo.VkCode != (int)Keys.D) return false;
-
-        return GetAsyncKeyState(Keys.LWin) < 0 || GetAsyncKeyState(Keys.RWin) < 0;
-    }
-
-    /// <summary>
-    /// Hook into low-level keyboard events to detect when Win+D is pressed so
-    /// we can bring the OotD windows to the top so they remain visible.
-    /// </summary>
-    /// <param name="nCode"></param>
-    /// <param name="wParam"></param>
-    /// <param name="lParam"></param>
-    /// <returns></returns>
-    private static IntPtr KeyboardEventCallback(int nCode, IntPtr wParam, IntPtr lParam)
-    {
-        switch (nCode)
-        {
-            case HookManager.HC_ACTION when IsWin_D(wParam, lParam):
-                if (_keyDeBounceTimer.Enabled) break;
-                _keyDeBounceTimer.Start();
-                _logger.Debug("Win+D pressed");
-                _logger.Debug("sending to top");
-                InstanceManager!.SendAllToTop();
-                IsShowingDesktop = true;
-                break;
-        }
-
-        return HookManager.CallNextHookEx(_showDesktopKeyPressHookHandle, nCode, wParam, lParam);
     }
 
     private static void ProcessCommandLineArgs(Options opts)

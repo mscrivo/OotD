@@ -84,8 +84,9 @@ public partial class InstanceManager : Form
         get
         {
             var cp = base.CreateParams;
-            cp.ExStyle |= 0x80;             // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
-            cp.ExStyle |= 0x02000000;       // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
+            cp.ExStyle |= 0x80; // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
+            cp.ExStyle |=
+                0x02000000; // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
             return cp;
         }
     }
@@ -96,7 +97,9 @@ public partial class InstanceManager : Form
         {
             var instanceCount = 0;
 
-            using var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
+            using var appReg =
+                Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
+                                                  Application.ProductName);
 
             // ReSharper disable once UselessBinaryOperation
             instanceCount += appReg.GetSubKeyNames().Count(instanceName => instanceName != AutoUpdateInstanceName);
@@ -111,7 +114,9 @@ public partial class InstanceManager : Form
 
         // Each subkey in our main registry key represents an instance. 
         // Read each subkey and load the instance.
-        using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+        using (var appReg =
+               Registry.CurrentUser.CreateSubKey(
+                   "Software\\" + Application.CompanyName + "\\" + Application.ProductName))
         {
             _logger.Debug("Settings Found.");
 
@@ -121,7 +126,8 @@ public partial class InstanceManager : Form
 
                 // There are multiple instances defined, so we build the context menu strip dynamically.
                 trayIcon.ContextMenuStrip = new ContextMenuStrip();
-                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.AddInstance, null, AddInstanceMenu_Click, "AddInstanceMenu"));
+                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.AddInstance, null,
+                    AddInstanceMenu_Click, "AddInstanceMenu"));
                 trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
                 var instanceSubmenu = new ToolStripMenuItem[InstanceCount];
@@ -157,12 +163,14 @@ public partial class InstanceManager : Form
                     // instance the submenu belongs to.
                     if (!_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey(instanceName))
                     {
-                        _mainFormInstances[instanceName].TrayMenu.Items.Insert(0, new ToolStripMenuItem(instanceName) { Name = instanceName });
+                        _mainFormInstances[instanceName].TrayMenu.Items.Insert(0,
+                            new ToolStripMenuItem(instanceName) { Name = instanceName });
                         _mainFormInstances[instanceName].TrayMenu.Items[0].BackColor = Color.Gainsboro;
 
                         if (!_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AddInstanceSeparator"))
                         {
-                            _mainFormInstances[instanceName].TrayMenu.Items.Insert(1, new ToolStripSeparator { Name = "AddInstanceSeparator" });
+                            _mainFormInstances[instanceName].TrayMenu.Items.Insert(1,
+                                new ToolStripSeparator { Name = "AddInstanceSeparator" });
                         }
                     }
 
@@ -215,22 +223,29 @@ public partial class InstanceManager : Form
                 // add the rest of the necessary menu items to the main context menu.
                 trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
-                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.StartWithWindows, null, StartWithWindowsMenu_Click, "StartWithWindows"));
+                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.StartWithWindows, null,
+                    StartWithWindowsMenu_Click, "StartWithWindows"));
 
                 trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
-                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.HideAll, null, HideShowAllMenu_Click, "HideShowMenu"));
-                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.LockPosition, null, LockPositionMenu_Click, "LockPositionMenu"));
-                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.DisableEditing, null, DisableEnableEditingMenu_Click, "DisableEnableEditingMenu"));
+                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.HideAll, null,
+                    HideShowAllMenu_Click, "HideShowMenu"));
+                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.LockPosition, null,
+                    LockPositionMenu_Click, "LockPositionMenu"));
+                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.DisableEditing, null,
+                    DisableEnableEditingMenu_Click, "DisableEnableEditingMenu"));
 
                 trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
-                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
-                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click, "CheckForUpdatesMenu"));
+                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.About, null, AboutMenu_Click,
+                    "AboutMenu"));
+                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.CheckForUpdates, null,
+                    CheckForUpdates_Click, "CheckForUpdatesMenu"));
 
                 trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
-                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.Exit, null, ExitMenu_Click, "ExitMenu"));
+                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.Exit, null, ExitMenu_Click,
+                    "ExitMenu"));
             }
             else
             {
@@ -255,7 +270,8 @@ public partial class InstanceManager : Form
                 trayIcon.ContextMenuStrip = _mainFormInstances[instanceName].TrayMenu;
 
                 // remove unnecessary menu items
-                while (trayIcon.ContextMenuStrip.Items.Count > 0 && trayIcon.ContextMenuStrip.Items[0].Text != Resources.Calendar)
+                while (trayIcon.ContextMenuStrip.Items.Count > 0 &&
+                       trayIcon.ContextMenuStrip.Items[0].Text != Resources.Calendar)
                 {
                     trayIcon.ContextMenuStrip.Items.RemoveAt(0);
                 }
@@ -291,29 +307,37 @@ public partial class InstanceManager : Form
                 // add global menu items that don't apply to the instance.
                 if (!trayIcon.ContextMenuStrip.Items.ContainsKey("AddInstanceMenu"))
                 {
-                    trayIcon.ContextMenuStrip.Items.Insert(0, new ToolStripMenuItem(Resources.AddInstance, null, AddInstanceMenu_Click, "AddInstanceMenu"));
+                    trayIcon.ContextMenuStrip.Items.Insert(0,
+                        new ToolStripMenuItem(Resources.AddInstance, null, AddInstanceMenu_Click, "AddInstanceMenu"));
 
                     trayIcon.ContextMenuStrip.Items.Insert(1, new ToolStripSeparator { Name = "AddInstanceSeparator" });
                 }
 
                 if (!trayIcon.ContextMenuStrip.Items.ContainsKey("StartWithWindows"))
                 {
-                    trayIcon.ContextMenuStrip.Items.Insert(12, new ToolStripMenuItem(Resources.StartWithWindows, null, StartWithWindowsMenu_Click, "StartWithWindows"));
+                    trayIcon.ContextMenuStrip.Items.Insert(12,
+                        new ToolStripMenuItem(Resources.StartWithWindows, null, StartWithWindowsMenu_Click,
+                            "StartWithWindows"));
                 }
 
                 if (!trayIcon.ContextMenuStrip.Items.ContainsKey("LockPositionMenu"))
                 {
-                    trayIcon.ContextMenuStrip.Items.Insert(15, new ToolStripMenuItem(Resources.LockPosition, null, LockPositionMenu_Click, "LockPositionMenu"));
+                    trayIcon.ContextMenuStrip.Items.Insert(15,
+                        new ToolStripMenuItem(Resources.LockPosition, null, LockPositionMenu_Click,
+                            "LockPositionMenu"));
                 }
 
                 if (!trayIcon.ContextMenuStrip.Items.ContainsKey("CheckForUpdatesMenu"))
                 {
-                    trayIcon.ContextMenuStrip.Items.Insert(20, new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click, "CheckForUpdatesMenu"));
+                    trayIcon.ContextMenuStrip.Items.Insert(20,
+                        new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click,
+                            "CheckForUpdatesMenu"));
                 }
 
                 if (!trayIcon.ContextMenuStrip.Items.ContainsKey("AboutMenu"))
                 {
-                    trayIcon.ContextMenuStrip.Items.Insert(20, new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
+                    trayIcon.ContextMenuStrip.Items.Insert(20,
+                        new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
                 }
 
                 _mainFormInstances[instanceName].TrayMenu.Items["Separator6"].Visible = true;
@@ -451,7 +475,8 @@ public partial class InstanceManager : Form
                 mainForm.TrayMenu.Items["HideShowMenu"].Text = Resources.Show;
             }
 
-            trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = _mainFormInstances.Count == 1 ? Resources.Show : Resources.ShowAll;
+            trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text =
+                _mainFormInstances.Count == 1 ? Resources.Show : Resources.ShowAll;
         }
         else if (hideShowMenuText == Resources.ShowAll || hideShowMenuText == Resources.Show)
         {
@@ -461,7 +486,8 @@ public partial class InstanceManager : Form
                 mainForm.TrayMenu.Items["HideShowMenu"].Text = Resources.Hide;
             }
 
-            trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text = _mainFormInstances.Count == 1 ? Resources.Hide : Resources.HideAll;
+            trayIcon.ContextMenuStrip.Items["HideShowMenu"].Text =
+                _mainFormInstances.Count == 1 ? Resources.Hide : Resources.HideAll;
         }
     }
 
@@ -583,29 +609,5 @@ public partial class InstanceManager : Form
     {
         var item = (ToolStripDropDownItem)e.Argument!;
         FlashForm(item);
-    }
-
-    public void SendAllToTop()
-    {
-        foreach (var formInstance in _mainFormInstances)
-        {
-            UnsafeNativeMethods.SendWindowToTop(formInstance.Value);
-        }
-    }
-
-    public void SendAllToBack()
-    {
-        foreach (var formInstance in _mainFormInstances)
-        {
-            UnsafeNativeMethods.SendWindowToBack(formInstance.Value);
-        }
-    }
-
-    public void SendAllToNotTopMost()
-    {
-        foreach (var formInstance in _mainFormInstances)
-        {
-            UnsafeNativeMethods.SendWindowToNotTopMost(formInstance.Value);
-        }
     }
 }
