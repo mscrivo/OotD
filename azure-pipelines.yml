@@ -6,10 +6,10 @@ pool:
 
 variables:
   Major-Minor: 4.1
-  Revision: $[ counter(variables['major-minor'],0) ]
+  Revision: $[ counter(variables['Major-Minor'],0) ]
   BuildConfiguration: 'Release'
 
-name: $(Major-Minor).$(Revision).$(Build.BuildId)
+name: $(Major-Minor).$(Revision)
 
 steps:
 - checkout: self
