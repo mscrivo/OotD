@@ -3,5 +3,5 @@
 	<viewname>Calendar</viewname>
 	<mode>4</mode>
 	<showfullweek>0</showfullweek>
-  <showworkweek>1</showworkweek>	
+    <showworkweek>1</showworkweek>	
 </view>

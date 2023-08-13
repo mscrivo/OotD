@@ -87,8 +87,6 @@ public class InstancePreferences
             {
                 _appReg.SetValue("CurrentViewType", value);
             }
-
-            OutlookFolderView = string.Empty;
         }
     }
 
