@@ -5,11 +5,11 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  Major: 4
-  Minor: 1
+  Major-Minor: 4.1
+  Revision: $[ counter(variables['major-minor'],0) ]
   BuildConfiguration: 'Release'
 
-name: $(Major).$(Minor).$(BuildID)
+name: $(Major-Minor).$(Revision).$(Build.BuildId)
 
 steps:
 - checkout: self
