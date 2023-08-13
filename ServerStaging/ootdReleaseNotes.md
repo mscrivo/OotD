@@ -1,6 +1,6 @@
 # OotD Release Notes
 
-## 4.1.0
+## 4.1.2
 * Tasks/Notes/Todos views will retain view customizations on exit
 * Update to .net 7
 * New code signing cert used
