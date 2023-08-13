@@ -1,5 +1,15 @@
 # OotD Release Notes
 
+## 4.1.0
+* Tasks/Notes/Todos views will retain view customizations on exit
+* Update to .net 7
+* New code signing cert used
+
+### *IMPORTANT NOTE*
+
+Because this release uses a brand new code signing cert, Windows SmartScreen will flag it as an unknown publisher. 
+This is normal and expected. It will go away once enough people have downloaded and installed the new version.
+
 ## 4.0.267
 * Update to .net 6
 * Fixed transparency slider size and location on HiDPI displays

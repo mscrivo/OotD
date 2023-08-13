@@ -6,7 +6,7 @@ pool:
 
 variables:
   Major: 4
-  Minor: 0
+  Minor: 1
   BuildConfiguration: 'Release'
 
 name: $(Major).$(Minor).$(BuildID)
