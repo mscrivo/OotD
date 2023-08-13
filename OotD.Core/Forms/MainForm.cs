@@ -1081,8 +1081,6 @@ public partial class MainForm : Form
 
     public void SaveCurrentViewSettings()
     {
-        MyDebug.WriteLine($"Updating ViewControl XML to: #{OutlookViewControl.ViewXML}");
-
         Preferences.OutlookFolderView = OutlookViewControl.View;
         Preferences.OutlookFolderName = OutlookViewControl.Folder;
         SetViewXml(OutlookViewControl.ViewXML);

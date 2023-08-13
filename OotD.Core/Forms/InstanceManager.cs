@@ -360,6 +360,7 @@ public partial class InstanceManager : Form
     {
         foreach (var formInstance in _mainFormInstances)
         {
+            formInstance.Value.SaveCurrentViewSettings();
             formInstance.Value.Dispose();
         }
 
