@@ -33,7 +33,7 @@ internal static class Startup
     private static readonly Timer _checkIfOutlookIsRunningTimer = new() { Interval = 3000 };
 
     public static bool UpdateDetected;
-    public static InstanceManager? InstanceManager;
+    private static InstanceManager? _instanceManager;
 
     /// <summary>
     /// The main entry point for the application.
@@ -100,15 +100,15 @@ internal static class Startup
                 System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
 
                 _logger.Info("Starting the instance manager and loading instances.");
-                InstanceManager = new InstanceManager();
+                _instanceManager = new InstanceManager();
 
                 try
                 {
                     using var proc = Process.GetCurrentProcess();
                     using var curModule = proc.MainModule;
 
-                    InstanceManager.LoadInstances();
-                    System.Windows.Forms.Application.Run(InstanceManager);
+                    _instanceManager.LoadInstances();
+                    System.Windows.Forms.Application.Run(_instanceManager);
                 }
                 catch (Exception ex)
                 {

@@ -5,7 +5,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -571,7 +570,7 @@ public partial class MainForm : Form
     /// <param name="itemToCheck"></param>
     private void DefaultFolderTypesClicked(FolderViewType folderViewType, ToolStripMenuItem itemToCheck)
     {
-        if (folderViewType == FolderViewType.Notes || folderViewType == FolderViewType.Tasks || folderViewType == FolderViewType.Todo)
+        if (folderViewType is FolderViewType.Notes or FolderViewType.Tasks or FolderViewType.Todo)
         {
             SetViewXml(string.Empty);
         }
