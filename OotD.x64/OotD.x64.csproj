@@ -271,7 +271,7 @@
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
-    <PackageReference Include="NLog" Version="5.2.3" />
+    <PackageReference Include="NLog" Version="5.2.4" />
     <PackageReference Include="NLog.Schema" Version="5.2.4" />
     <PackageReference Include="TaskScheduler" Version="2.10.1" />
   </ItemGroup>
