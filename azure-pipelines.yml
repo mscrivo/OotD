@@ -30,9 +30,20 @@ steps:
 
 - task: codesigning@2
   inputs:
+    name: 'Sign exe'
     secureFileId: 'ootd.pfx'
     signCertPassword: $(pfx_password)
-    files: 'OotD.Launcher\bin\Release\net8.0-windows7.0\OotD.*(dll|exe)'
+    files: 'OotD.Launcher\bin\Release\net8.0-windows7.0\OotD*.exe'
+    timeServer: 'http://timestamp.digicert.com'
+    hashingAlgorithm: 'SHA256'
+    signToolLocationMethod: 'latest'
+
+- task: codesigning@2
+  inputs:
+    name: 'Sign dlls'
+    secureFileId: 'ootd.pfx'
+    signCertPassword: $(pfx_password)
+    files: 'OotD.Launcher\bin\Release\net8.0-windows7.0\OotD*.dll'
     timeServer: 'http://timestamp.digicert.com'
     hashingAlgorithm: 'SHA256'
     signToolLocationMethod: 'latest'
