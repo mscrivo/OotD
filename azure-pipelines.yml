@@ -32,7 +32,7 @@ steps:
   inputs:
     secureFileId: 'ootd.pfx'
     signCertPassword: $(pfx_password)
-    files: 'OotD.Launcher\bin\Release\net7.0-windows\OotD*.exe'
+    files: 'OotD.Launcher\bin\Release\net8.0-windows7.0\OotD*'
     timeServer: 'http://timestamp.digicert.com'
     hashingAlgorithm: 'SHA256'
     signToolLocationMethod: 'latest'
