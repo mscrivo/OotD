@@ -7,7 +7,7 @@
     {
       "groupName": "NLog",
       "groupSlug": "NLog",
-      "matchPackageNames": "NLog*"      
+      "matchPackageNames": "NLog"      
     }
   ]
 }
