@@ -6,15 +6,9 @@ using System;
 
 namespace OotD.Events;
 
-public class InstanceRenamedEventArgs : EventArgs
+public class InstanceRenamedEventArgs(string oldInstanceName, string newInstanceName) : EventArgs
 {
-    public InstanceRenamedEventArgs(string oldInstanceName, string newInstanceName)
-    {
-        OldInstanceName = oldInstanceName;
-        NewInstanceName = newInstanceName;
-    }
+    public string OldInstanceName { get; } = oldInstanceName;
 
-    public string OldInstanceName { get; }
-
-    public string NewInstanceName { get; }
+    public string NewInstanceName { get; } = newInstanceName;
 }

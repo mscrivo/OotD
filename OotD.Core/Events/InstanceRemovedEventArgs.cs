@@ -6,12 +6,7 @@ using System;
 
 namespace OotD.Events;
 
-public class InstanceRemovedEventArgs : EventArgs
+public class InstanceRemovedEventArgs(string instanceName) : EventArgs
 {
-    public InstanceRemovedEventArgs(string instanceName)
-    {
-        InstanceName = instanceName;
-    }
-
-    public string InstanceName { get; }
+    public string InstanceName { get; } = instanceName;
 }

@@ -9,7 +9,7 @@ using Microsoft.Win32;
 
 namespace OotD.Preferences;
 
-public class InstancePreferences
+public class InstancePreferences(string instanceName)
 {
     public const int DefaultHeight = 500;
     public const int DefaultLeftPosition = 100;
@@ -17,12 +17,7 @@ public class InstancePreferences
     public const int DefaultTopPosition = 100;
     public const int DefaultWidth = 700;
 
-    private readonly RegistryKey _appReg;
-
-    public InstancePreferences(string instanceName)
-    {
-        _appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName + "\\" + instanceName) ?? throw new InvalidOperationException();
-    }
+    private readonly RegistryKey _appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName + "\\" + instanceName) ?? throw new InvalidOperationException();
 
     /// <summary>
     /// Main Window Opacity.
