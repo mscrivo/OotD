@@ -472,7 +472,6 @@ namespace OotD.Forms
             this.OutlookViewControl.Location = new System.Drawing.Point(0, 0);
             this.OutlookViewControl.Margin = new System.Windows.Forms.Padding(0);
             this.OutlookViewControl.Name = "OutlookViewControl";
-            this.OutlookViewControl.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("OutlookViewControl.OcxState")));
             this.OutlookViewControl.Size = new System.Drawing.Size(507, 368);
             this.OutlookViewControl.TabIndex = 3;
             // 
