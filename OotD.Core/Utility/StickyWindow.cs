@@ -15,14 +15,16 @@ namespace OotD.Utility;
 ///     You get a nice way of organizing multiple top-level windows.
 ///     Quite similar with WinAmp 2.x style of sticking the windows
 /// </summary>
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
 [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+#pragma warning restore IDE0079 // Remove unnecessary suppression
 public sealed class StickyWindow : NativeWindow
 {
     /// <summary>
     ///     Global List of registered StickyWindows
     /// </summary>
-    private static readonly ArrayList _globalStickyWindows = new();
+    private static readonly ArrayList _globalStickyWindows = [];
 
     // public properties
 
