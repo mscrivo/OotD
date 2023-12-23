@@ -1,6 +1,6 @@
 # OotD Release Notes
 
-## 4.2.2
+## 4.2.3
 * Update to .net 8
 * Fixed issue with checking for updates
 * Minor fixes, performance improvements and code moderination
