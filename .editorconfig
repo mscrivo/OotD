@@ -62,7 +62,7 @@ dotnet_style_null_propagation = true:suggestion
 dotnet_style_explicit_tuple_names = true:suggestion
 
 # Whitespace options
-dotnet_style_allow_multiple_blank_lines_experimental = false
+dotnet_style_allow_multiple_blank_lines_experimental = false:silent
 
 # Non-private static fields are PascalCase
 dotnet_naming_rule.non_private_static_fields_should_be_pascal_case.severity = suggestion
@@ -189,6 +189,10 @@ dotnet_style_namespace_match_folder = true:suggestion
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
 tab_width = 4
 end_of_line = crlf
+dotnet_style_readonly_field = true:suggestion
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:silent
+dotnet_style_allow_statement_immediately_after_block_experimental = true:silent
+dotnet_code_quality_unused_parameters = all:suggestion
 
 # CSharp code style settings:
 [*.cs]
@@ -210,11 +214,11 @@ csharp_indent_switch_labels = true
 csharp_indent_labels = flush_left
 
 # Whitespace options
-csharp_style_allow_embedded_statements_on_same_line_experimental = false
-csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false
-csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false
-csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = false
-csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = false
+csharp_style_allow_embedded_statements_on_same_line_experimental = false:silent
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false:silent
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false:silent
+csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = false:silent
+csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = false:silent
 
 # Prefer "var" everywhere
 csharp_style_var_for_built_in_types = true:suggestion
@@ -286,6 +290,12 @@ csharp_style_prefer_range_operator = true:suggestion
 csharp_style_implicit_object_creation_when_type_is_apparent = true:suggestion
 csharp_style_prefer_tuple_swap = true:suggestion
 csharp_style_prefer_utf8_string_literals = true:suggestion
+csharp_style_unused_value_expression_statement_preference = discard_variable:silent
+csharp_style_unused_value_assignment_preference = discard_variable:suggestion
+csharp_style_deconstructed_variable_declaration = true:suggestion
+csharp_style_prefer_readonly_struct = true:suggestion
+csharp_prefer_static_local_function = true:suggestion
+csharp_style_prefer_readonly_struct_member = true:suggestion
 
 [src/{Compilers,ExpressionEvaluator,Scripting}/**Test**/*.{cs,vb}]
 

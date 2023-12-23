@@ -20,7 +20,7 @@ using System.Windows.Forms;
 
 namespace OotD.Utility;
 
-internal static class UnsafeNativeMethods
+internal static partial class UnsafeNativeMethods
 {
     private static readonly nint HWND_BOTTOM = new(1);
     private static readonly nint HWND_TOPMOST = new(-1);
@@ -53,19 +53,20 @@ internal static class UnsafeNativeMethods
         internal int flags;
     }
 
-    [DllImport("dwmapi.dll", PreserveSig = false)]
-    private static extern void DwmSetWindowAttribute(nint hwnd, int attr, ref int attrValue, int attrSize);
+    [LibraryImport("dwmapi.dll")]
+    private static partial int DwmSetWindowAttribute(nint hwnd, int attr, ref int attrValue, int attrSize);
 
-    [DllImport("user32.dll")]
-    internal static extern bool ReleaseCapture();
+    [LibraryImport("user32.dll", EntryPoint = "ReleaseCapture")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static partial bool ReleaseCapture();
 
-    [DllImport("user32.dll")]
-    internal static extern nint SendMessage(nint hWnd, uint Msg, nint wParam, nint lParam);
+    [LibraryImport("user32.dll", EntryPoint = "SendMessageA")]
+    internal static partial nint SendMessage(nint hWnd, uint Msg, nint wParam, nint lParam);
 
-    [DllImport("user32.dll")]
-    private static extern bool SetWindowPos(
-        nint hWnd,
-        nint hWndInsertAfter,
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial void SetWindowPos(IntPtr hWnd,
+        IntPtr hWndInsertAfter,
         int X,
         int Y,
         int cx,
@@ -95,24 +96,24 @@ internal static class UnsafeNativeMethods
         SetWindowPos(windowToSendToTop.Handle, HWND_TOPMOST, 0, 0, 0, 0, ZPOS_FLAGS);
     }
 
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+    [LibraryImport("user32.dll", SetLastError = true)]
+    private static partial int GetWindowLong(IntPtr hWnd, int nIndex);
 
-    [DllImport("user32.dll")]
+    [LibraryImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool IsWindowVisible(IntPtr hWnd);
+    private static partial bool IsWindowVisible(IntPtr hWnd);
 
-    [DllImport("user32.dll")]
-    private static extern IntPtr GetShellWindow();
+    [LibraryImport("user32.dll")]
+    private static partial IntPtr GetShellWindow();
 
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+    [LibraryImport("user32.dll", SetLastError = true)]
+    private static partial uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
-    [DllImport("user32.dll")]
-    private static extern IntPtr GetWindow(IntPtr hWnd, uint wCmd);
+    [LibraryImport("user32.dll")]
+    private static partial IntPtr GetWindow(IntPtr hWnd, uint wCmd);
 
     /// <summary>
     /// Does not hide the calendar when the user hovers their mouse over the "Show Desktop" button 
@@ -122,8 +123,8 @@ internal static class UnsafeNativeMethods
     internal static void RemoveWindowFromAeroPeek(IWin32Window window)
     {
         var renderPolicy = (int)DwmNCRenderingPolicy.Enabled;
-
-        DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof(int));
+        Marshal.ThrowExceptionForHR(
+        DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof(int)));
     }
 
     private enum DwmNCRenderingPolicy
