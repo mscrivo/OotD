@@ -1,5 +1,10 @@
 # OotD Release Notes
 
+## 4.2.1
+* Update to .net 8
+* Fixed issue with checking for updates
+* Minor fixes, performance improvements and code moderination
+
 ## 4.1.2
 
 * Tasks/Notes/Todos views will retain view customizations on exit
