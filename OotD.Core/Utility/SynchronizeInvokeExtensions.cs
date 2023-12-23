@@ -17,7 +17,7 @@ public static class SynchronizeInvokeExtensions
     {
         if (@this.InvokeRequired)
         {
-            @this.Invoke(action, new object[] { @this });
+            @this.Invoke(action, [@this]);
         }
         else
         {
