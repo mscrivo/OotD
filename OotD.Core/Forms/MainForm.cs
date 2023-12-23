@@ -383,7 +383,7 @@ public partial class MainForm : Form
     private void UpdateOutlookViewsList()
     {
         OutlookViewsMenu.DropDownItems.Clear();
-        OutlookFolderViews = new List<View>();
+        OutlookFolderViews = [];
 
         if (_outlookFolder == null)
         {
@@ -426,8 +426,8 @@ public partial class MainForm : Form
     {
         if (fullPath != null)
         {
-            return fullPath.Substring(fullPath.LastIndexOf("\\", StringComparison.Ordinal) + 1,
-                fullPath.Length - fullPath.LastIndexOf("\\", StringComparison.Ordinal) - 1);
+            return fullPath.Substring(fullPath.LastIndexOf('\\') + 1,
+                fullPath.Length - fullPath.LastIndexOf('\\') - 1);
         }
 
         return string.Empty;
@@ -460,7 +460,7 @@ public partial class MainForm : Form
             }
         }
 
-        if (fullFolderPath.EndsWith("\\"))
+        if (fullFolderPath.EndsWith('\\'))
         {
             fullFolderPath = fullFolderPath[..^1];
         }

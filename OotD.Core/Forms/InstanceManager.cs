@@ -259,13 +259,14 @@ public partial class InstanceManager : Form
 
                 // create our instance and set the context menu to one defined in the form instance.
                 var newlyAdded = false;
-                if (!_mainFormInstances.ContainsKey(instanceName))
+                if (!_mainFormInstances.TryGetValue(instanceName, out var value))
                 {
-                    _mainFormInstances.Add(instanceName, new MainForm(instanceName));
+                    value = new MainForm(instanceName);
+                    _mainFormInstances.Add(instanceName, value);
                     newlyAdded = true;
                 }
 
-                trayIcon.ContextMenuStrip = _mainFormInstances[instanceName].TrayMenu;
+                trayIcon.ContextMenuStrip = value.TrayMenu;
 
                 // remove unnecessary menu items
                 while (trayIcon.ContextMenuStrip.Items.Count > 0 &&
@@ -277,29 +278,29 @@ public partial class InstanceManager : Form
                 trayIcon.ContextMenuStrip.Items["RemoveInstanceMenu"]!.Visible = false;
                 trayIcon.ContextMenuStrip.Items["RenameInstanceMenu"]!.Visible = false;
 
-                if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AddInstanceMenu"))
+                if (value.TrayMenu.Items.ContainsKey("AddInstanceMenu"))
                 {
-                    _mainFormInstances[instanceName].TrayMenu.Items["AddInstanceMenu"]!.Visible = true;
+                    value.TrayMenu.Items["AddInstanceMenu"]!.Visible = true;
                 }
 
-                if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("AboutMenu"))
+                if (value.TrayMenu.Items.ContainsKey("AboutMenu"))
                 {
-                    _mainFormInstances[instanceName].TrayMenu.Items["AboutMenu"]!.Visible = true;
+                    value.TrayMenu.Items["AboutMenu"]!.Visible = true;
                 }
 
-                if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("StartWithWindows"))
+                if (value.TrayMenu.Items.ContainsKey("StartWithWindows"))
                 {
-                    _mainFormInstances[instanceName].TrayMenu.Items["StartWithWindows"]!.Visible = true;
+                    value.TrayMenu.Items["StartWithWindows"]!.Visible = true;
                 }
 
-                if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("LockPositionMenu"))
+                if (value.TrayMenu.Items.ContainsKey("LockPositionMenu"))
                 {
-                    _mainFormInstances[instanceName].TrayMenu.Items["LockPositionMenu"]!.Visible = true;
+                    value.TrayMenu.Items["LockPositionMenu"]!.Visible = true;
                 }
 
-                if (_mainFormInstances[instanceName].TrayMenu.Items.ContainsKey("CheckForUpdatesMenu"))
+                if (value.TrayMenu.Items.ContainsKey("CheckForUpdatesMenu"))
                 {
-                    _mainFormInstances[instanceName].TrayMenu.Items["CheckForUpdatesMenu"]!.Visible = true;
+                    value.TrayMenu.Items["CheckForUpdatesMenu"]!.Visible = true;
                 }
 
                 // add global menu items that don't apply to the instance.
@@ -338,13 +339,13 @@ public partial class InstanceManager : Form
                         new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
                 }
 
-                _mainFormInstances[instanceName].TrayMenu.Items["Separator6"]!.Visible = true;
-                _mainFormInstances[instanceName].TrayMenu.Items["ExitMenu"]!.Visible = true;
+                value.TrayMenu.Items["Separator6"]!.Visible = true;
+                value.TrayMenu.Items["ExitMenu"]!.Visible = true;
 
                 if (newlyAdded)
                 {
-                    _mainFormInstances[instanceName].Show();
-                    UnsafeNativeMethods.SendWindowToBack(_mainFormInstances[instanceName]);
+                    value.Show();
+                    UnsafeNativeMethods.SendWindowToBack(value);
                 }
             }
         }
