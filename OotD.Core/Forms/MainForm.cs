@@ -345,6 +345,8 @@ public partial class MainForm : Form
         }
 
         TransparencySlider.Value = (int)(Preferences.Opacity * 100);
+        TransparencyMenuSlider.Value = (int)(Preferences.Opacity * 100);
+        OpacityLabel.Text = "Opacity: " + Math.Round(Preferences.Opacity * 100) + "%";
     }
 
     /// <summary>
@@ -1234,7 +1236,7 @@ public partial class MainForm : Form
         return mode;
     }
 
-    private void TransparencySlider_ValueChanged(object sender, EventArgs e, decimal value)
+    private void TransparencySlider_ValueChanged(object _1, EventArgs _2, decimal value)
     {
         var opacityVal = (double)(value / 100);
         if (Math.Abs(opacityVal - 1) < double.Epsilon)
@@ -1309,6 +1311,33 @@ public partial class MainForm : Form
         }
 
         base.WndProc(ref m);
+    }
+
+    private void MenuItem_Click(object sender, EventArgs e)
+    {
+        // Handle the exit menu item click event here
+        Application.Exit();
+    }
+
+    private void TransparencyMenuSlider_ValueChanged(object sender, EventArgs e)
+    {
+        //int transparencyValue = this.TransparencyMenuSlider.Value; // Get the value from TransparencyMenuSlider
+
+        TrackBarMenuItem trackBar = (TrackBarMenuItem)sender;
+        double transparencyValue = (double)trackBar.Value / 100; // Get the value from TransparencyMenuSlider
+
+        if (Math.Abs(transparencyValue - 1) < double.Epsilon)
+        {
+            transparencyValue = 0.99;
+        }
+
+        OpacityLabel.Text = "Opacity: " + Math.Round(transparencyValue * 100) + "%";
+
+        // Apply the value to TransparencySlider
+        this.TransparencySlider.Value = (int)(transparencyValue * 100);
+
+        // Trigger the ValueChanged event for TransparencySlider
+        this.TransparencySlider_ValueChanged(this.TransparencySlider, EventArgs.Empty, (int)(transparencyValue * 100));
     }
 
     #region Properties

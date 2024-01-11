@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 using AxOLXLib;
 using MACTrackBarLib;
+using OotD.Utility;
 
 namespace OotD.Forms
 {
@@ -54,6 +56,7 @@ namespace OotD.Forms
             this.OutlookViewsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.DefaultOutlookViewSubMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.Separator7 = new System.Windows.Forms.ToolStripSeparator();
             this.RenameInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator4 = new System.Windows.Forms.ToolStripSeparator();
             this.HideShowMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,7 +79,9 @@ namespace OotD.Forms
             this.DayButton = new System.Windows.Forms.Button();
             this.LabelBackground = new System.Windows.Forms.Label();
             this.ViewControlHostPanel = new System.Windows.Forms.Panel();
+            this.OpacityLabel = new ToolStripLabel("Opacity: ##%");
             this.OutlookViewControl = new AxOLXLib.AxViewCtl();
+            this.TransparencyMenuSlider = new TrackBarMenuItem();
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.WindowMessageTimer = new System.Windows.Forms.Timer(this.components);
@@ -106,6 +111,9 @@ namespace OotD.Forms
             this.DisableEnableEditingMenu,
             this.Separator5,
             this.RemoveInstanceMenu,
+            this.Separator7,
+            this.OpacityLabel,
+            this.TransparencyMenuSlider,
             this.Separator6,
             this.ExitMenu});
             this.TrayMenu.Name = "trayMenu";
@@ -157,6 +165,19 @@ namespace OotD.Forms
             // 
             this.Separator1.Name = "Separator1";
             this.Separator1.Size = new System.Drawing.Size(183, 6);
+            //
+            // TransparencyMenuSlider
+            //
+            this.TransparencyMenuSlider.Name = "TransparencyMenuSlider";
+            this.TransparencyMenuSlider.Location = new System.Drawing.Point(10, 5); // Adjust as needed
+            this.TransparencyMenuSlider.Margin = new System.Windows.Forms.Padding(0);
+            this.TransparencyMenuSlider.Maximum = 100;
+            this.TransparencyMenuSlider.Minimum = 30;
+            this.TransparencyMenuSlider.Size = new System.Drawing.Size(105, 25);
+            this.TransparencyMenuSlider.Font = new Font(this.TransparencyMenuSlider.Font.FontFamily, 8f);
+            this.TransparencyMenuSlider.TrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.TransparencyMenuSlider.Value = 50;            
+            this.TransparencyMenuSlider.ValueChanged += TransparencyMenuSlider_ValueChanged;
             // 
             // SelectFolderMenu
             // 
@@ -504,7 +525,7 @@ namespace OotD.Forms
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(325, 125);
             this.Name = "MainForm";
-            this.Opacity = 0.5D;
+            this.Opacity = 1;
             this.Padding = new System.Windows.Forms.Padding(4);
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
@@ -542,7 +563,9 @@ namespace OotD.Forms
         private ToolStripMenuItem DefaultOutlookViewSubMenu;
         private ToolStripSeparator Separator3;
         private ToolStripSeparator Separator2;
+        private ToolStripSeparator Separator7;
         private ToolStripMenuItem DisableEnableEditingMenu;
+        private TrackBarMenuItem TransparencyMenuSlider;
         internal Panel HeaderPanel;
         private Panel ViewControlHostPanel;
         private AxViewCtl OutlookViewControl;
@@ -558,6 +581,7 @@ namespace OotD.Forms
         private Button ButtonNext;
         private Button ButtonPrevious;
         public Label LabelCurrentDate;
+        public ToolStripLabel OpacityLabel;
 #pragma warning disable CS3003 // Type is not CLS-compliant
         public MACTrackBar TransparencySlider;
         private Label LabelBackground;
