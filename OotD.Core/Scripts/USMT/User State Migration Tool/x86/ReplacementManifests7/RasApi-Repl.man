@@ -1,0 +1,113 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      buildType="release"
+      language="neutral"
+      name="Microsoft-Windows-RasApi"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      scope="Upgrade,MigWiz,USMT"
+      replacementSettingsVersionRange="0"
+      settingsVersion="0"
+      >
+    <migXml xmlns="">
+      <rules context="User">
+        <include>
+          <objectSet>
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\Network\Connections\Pbk\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\RAS Phonebook\* [*]</pattern>
+          </objectSet>
+        </include>
+        <locationModify script="MigXmlHelper.RelativeMove(&apos;%CSIDL_APPDATA%\Microsoft\Network\Connections\Pbk&apos;,&apos;%CSIDL_APPDATA%\Microsoft\Network\Connections\Pbk_old&apos;)">
+          <objectSet>
+            <!-- We modify the migratable Pbk folder path to be Pbk_old on the new machine. -->
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\Network\Connections\Pbk\* [*]</pattern>
+          </objectSet>
+        </locationModify>
+        <merge script="MigXmlHelper.DestinationPriority()">
+          <objectSet>
+            <!-- If there is a conflict for any key, this will give priority to destination and will ignore the source  -->
+            <pattern type="Registry">HKCU\Software\Microsoft\RAS Phonebook\* [*]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="File">%CSIDL_COMMON_APPDATA%\Microsoft\Network\Connections\Pbk\* [*]</pattern>
+            <pattern type="File">%windir%\system32\ras [router.pbk]</pattern>
+          </objectSet>
+        </include>
+        <locationModify script="MigXmlHelper.RelativeMove(&apos;%CSIDL_COMMON_APPDATA%\Microsoft\Network\Connections\Pbk&apos;,&apos;%CSIDL_COMMON_APPDATA%\Microsoft\Network\Connections\Pbk_old&apos;)">
+          <objectSet>
+            <!-- If there is a conflict for any file, this will give priority to destination and will ignore the source -->
+            <pattern type="File">%CSIDL_COMMON_APPDATA%\Microsoft\Network\Connections\Pbk\* [*]</pattern>
+          </objectSet>
+        </locationModify>
+        <locationModify script="MigXmlHelper.ExactMove(&apos;%windir%\system32\ras [router_old.pbk]&apos;)">
+          <objectSet>
+            <!-- We modify the migratable router.pbk to be router_old.pbk on the new machine. -->
+            <pattern type="File">%windir%\system32\ras [router.pbk]</pattern>
+          </objectSet>
+        </locationModify>
+      </rules>
+      <plugin
+          classId="{92c85649-0892-4bc7-9b63-949f64149a26}"
+          file="%windir%\system32\setup\pbkmigr.dll"
+          />
+    </migXml>
+    <supportedComponents>
+      <supportedComponent>
+        <supportedComponentIdentity
+            buildFilter=""
+            buildType="$(build.buildType)"
+            language="neutral"
+            name="Microsoft-Windows-RasApi"
+            processorArchitecture="*"
+            publicKeyToken="$(Build.WindowsPublicKeyToken)"
+            settingsVersionRange="0"
+            type=""
+            versionScope="nonSxS"
+            />
+        <migXml xmlns="">
+          <rules context="User">
+            <locationModify script="MigXmlHelper.RelativeMove(&apos;%CSIDL_APPDATA%\Microsoft\Network\Connections\Pbk&apos;,&apos;%CSIDL_APPDATA%\Microsoft\Network\Connections\Pbk_old&apos;)">
+              <objectSet>
+                <!-- We modify the migratable Pbk folder path to be Pbk_old on the new machine. -->
+                <pattern type="File">%CSIDL_APPDATA%\Microsoft\Network\Connections\Pbk\* [*]</pattern>
+              </objectSet>
+            </locationModify>
+            <merge script="MigXmlHelper.DestinationPriority()">
+              <objectSet>
+                <!-- If there is a conflict for any key, this will give priority to destination and will ignore the source  -->
+                <pattern type="Registry">HKCU\Software\Microsoft\RAS Phonebook\* [*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+          <rules context="System">
+            <locationModify script="MigXmlHelper.RelativeMove(&apos;%CSIDL_COMMON_APPDATA%\Microsoft\Network\Connections\Pbk&apos;,&apos;%CSIDL_COMMON_APPDATA%\Microsoft\Network\Connections\Pbk_old&apos;)">
+              <objectSet>
+                <!-- If there is a conflict for any file, this will give priority to destination and will ignore the source -->
+                <pattern type="File">%CSIDL_COMMON_APPDATA%\Microsoft\Network\Connections\Pbk\* [*]</pattern>
+              </objectSet>
+            </locationModify>
+            <locationModify script="MigXmlHelper.ExactMove(&apos;%windir%\system32\ras [router_old.pbk]&apos;)">
+              <objectSet>
+                <!-- We modify the migratable router.pbk to be router_old.pbk on the new machine. -->
+                <pattern type="File">%windir%\system32\ras [router.pbk]</pattern>
+              </objectSet>
+            </locationModify>
+          </rules>
+        </migXml>
+      </supportedComponent>
+    </supportedComponents>
+    <migrationDisplayID>Network_and_Internet\Networking_Connections</migrationDisplayID>
+  </migration>
+</assembly>

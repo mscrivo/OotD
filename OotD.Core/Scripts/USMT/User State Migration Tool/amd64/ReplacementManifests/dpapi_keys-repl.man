@@ -1,0 +1,93 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-dpapi-keys"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      scope="Upgrade,MigWiz,USMT,Data"
+      settingsVersion="1"
+      replacementSettingsVersionRange="0" 
+      >
+    <machineSpecific>
+      <migXml xmlns="">
+        <rules context="User">
+          <include>
+            <objectSet>
+              <pattern type="File">%CSIDL_APPDATA%\Microsoft\Protect [CREDHIST]</pattern>
+              <pattern type="File">%CSIDL_APPDATA%\Microsoft\Protect\* [Preferred]</pattern>
+            </objectSet>
+          </include>
+          <merge script="MigXmlHelper.DestinationPriority()">
+            <objectSet>
+              <pattern type="File">%CSIDL_APPDATA%\Microsoft\Protect\*[*]</pattern>
+            </objectSet>
+          </merge>
+        </rules>
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="File">%SYSTEMROOT%\ServiceProfiles\LocalService\AppData\Roaming\Microsoft\Protect\* [*]</pattern>
+              <pattern type="File">%SYSTEMROOT%\ServiceProfiles\NetworkService\AppData\Roaming\Microsoft\Protect\* [*]</pattern>
+            </objectSet>
+          </include>
+          <merge script="MigXmlHelper.DestinationPriority()">
+            <objectSet>
+              <pattern type="File">%SYSTEMROOT%\ServiceProfiles\LocalService\AppData\Roaming\Microsoft\Protect\* [*]</pattern>
+              <pattern type="File">%SYSTEMROOT%\ServiceProfiles\NetworkService\AppData\Roaming\Microsoft\Protect\* [*]</pattern>
+            </objectSet>
+          </merge>
+        </rules>
+      </migXml>
+    </machineSpecific>
+    <migXml xmlns="">
+      <rules context="User">
+        <include>
+          <objectSet>
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\Protect\*[*]</pattern>@*: rule to include the generated values under addObjects
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows NT\CurrentVersion\DPAPI\MigratedUsers\%USERSID%\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce [DPAPIKeyMig]</pattern>
+          </objectSet>
+        </include>
+        <exclude>
+          <objectSet>@*: exclude the credhist and preferred files for migratable
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\Protect [CREDHIST]</pattern>
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\Protect\* [Preferred]</pattern></objectSet>
+        </exclude>
+        <merge script="MigXmlHelper.DestinationPriority()">
+          <objectSet>
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\Protect\*[*]</pattern>
+          </objectSet>
+        </merge>
+        <addObjects>
+          <conditions>
+            <condition negation="Yes">MigXmlHelper.IsUpgrade()</condition>
+          </conditions>
+          <object>
+            <location type="Registry">HKCU\Software\Microsoft\Windows NT\CurrentVersion\DPAPI\MigratedUsers\%USERSID%\UserDomain [%USERDOMAIN%]</location>
+            <attributes>String</attributes>
+            <bytes>0000</bytes>
+          </object>
+          <object>
+            <location type="Registry">HKCU\Software\Microsoft\Windows NT\CurrentVersion\DPAPI\MigratedUsers\%USERSID%\UserName [%USERNAME%]</location>
+            <attributes>String</attributes>
+            <bytes>0000</bytes>
+          </object>
+          <object>
+            <location type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce [DPAPIKeyMig]</location>
+            <attributes>ExpandString</attributes>
+            <bytes>2500530079007300740065006d0052006f006f00740025005c00730079007300740065006d00330032005c00640070006100700069006d00690067002e0065007800650020002d00710075006900650074000000</bytes>
+          </object>
+        </addObjects>
+      </rules>
+    </migXml>
+    <migrationDisplayID>Additional_Options\Windows_Core_Settings</migrationDisplayID>
+  </migration>
+</assembly>

@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    owners="aknanda"
+    supportInformation=""
+    testers="arpang"
+    >
+  <assemblyIdentity
+      name="Microsoft-Windows-RasBase"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      language="neutral"
+      versionScope="nonSxS"
+      />
+
+  <migration
+      replacementSettingsVersionRange="0"
+      replacementVersionRange="6.0-6.1"
+      scope="Upgrade,SvrMig,MigWiz,USMT"
+      settingsVersion="0"
+      >
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [AllowClientIpAddresses]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [AllowNetworkAccess]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [EnableIn]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [IpAddress]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [IpMask]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [UseDhcpAddressing]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [EnableRoute]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [NetworkAdapterGUID]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ipv6 [AllowNetworkAccess]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ipv6 [EnableIn]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ipv6 [UseDhcpAddressing]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ipv6 [EnableRoute]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ipv6 [AdvertiseDefaultRoute]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ipv6 [NetworkAdapterGUID]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\Telephony [KmddspDebugLevel]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\Telephony [ndptspDebugLevel]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+    <supportedComponents>
+      <supportedComponent>
+        <supportedComponentIdentity
+            buildFilter=""
+            buildType="$(build.buildType)"
+            language="neutral"
+            name="Microsoft-Windows-RasBase"
+            processorArchitecture="*"
+            publicKeyToken="$(Build.WindowsPublicKeyToken)"
+            settingsVersionRange="0"
+            type=""
+            versionScope="nonSxS"
+            />
+        <migXml xmlns="">
+          <rules context="System">
+            <include>
+              <objectSet>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [AllowClientIpAddresses]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [AllowNetworkAccess]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [EnableIn]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [IpAddress]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [IpMask]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [UseDhcpAddressing]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [EnableRoute]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ip [NetworkAdapterGUID]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ipv6 [AllowNetworkAccess]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ipv6 [EnableIn]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ipv6 [UseDhcpAddressing]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ipv6 [EnableRoute]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ipv6 [AdvertiseDefaultRoute]</pattern>
+                <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RemoteAccess\Parameters\Ipv6 [NetworkAdapterGUID]</pattern>
+                <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\Telephony [KmddspDebugLevel]</pattern>
+                <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\Telephony [ndptspDebugLevel]</pattern>
+              </objectSet>
+            </include>
+          </rules>
+        </migXml>
+      </supportedComponent>
+    </supportedComponents>
+    <migrationDisplayID>Additional_Options\Windows_Core_Settings</migrationDisplayID>
+  </migration>
+</assembly>

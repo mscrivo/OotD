@@ -1,0 +1,37 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-Security-NGC-CtnrSvc"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      scope="Upgrade,Data"
+      settingsVersion="1"
+      replacementSettingsVersionRange="0" 
+      >
+    <machineSpecific>
+      <migXml xmlns="">
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="File">%SYSTEMROOT%\ServiceProfiles\LocalService\AppData\Local\Microsoft\NGC\* [*]</pattern>
+            </objectSet>
+          </include>
+          <merge script="MigXmlHelper.SourcePriority()">
+            <objectSet>
+              <pattern type="File">%SYSTEMROOT%\ServiceProfiles\LocalService\AppData\Local\Microsoft\NGC\* [*]</pattern>
+            </objectSet>
+          </merge>
+        </rules>
+      </migXml>
+    </machineSpecific>
+    <migrationDisplayID>Additional_Options\Windows_Core_Settings</migrationDisplayID>
+  </migration>
+</assembly>

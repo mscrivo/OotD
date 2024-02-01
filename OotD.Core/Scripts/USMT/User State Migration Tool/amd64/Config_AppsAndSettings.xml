@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Applications/>
+  <Documents/>
+  <WindowsComponents>
+    <component displayname="Microsoft-Windows-AppX-AllUserStore" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-appx-alluserstore/microsoft-windows-appx-alluserstore/settings"/>
+    <component displayname="Microsoft-Windows-AppX-Deployment-Server" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-appx-deployment-server/microsoft-windows-appx-deployment-server/settings"/>
+    <component displayname="Microsoft-Windows-OfflineFiles-Core" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-offlinefiles-core/microsoft-windows-offlinefiles-core/settings"/>
+    <component displayname="Microsoft-Windows-CoreOS" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-coreos/microsoft-windows-coreos/settings"/>
+    <component displayname="Microsoft-Windows-RecoveryServices" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-recoveryservices/microsoft-windows-recoveryservices/settings"/>
+    <component displayname="Microsoft-Windows-DeliveryOptimization" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-deliveryoptimization/microsoft-windows-deliveryoptimization/settings"/>
+    <component displayname="Security-Malware-Windows-Defender" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/security-malware-windows-defender/security-malware-windows-defender/settings"/>
+    <component displayname="Windows-Defender-AM-Engine" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/windows-defender-am-engine/windows-defender-am-engine/settings"/>
+    <component displayname="Windows-Defender-AM-Sigs" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/windows-defender-am-sigs/windows-defender-am-sigs/settings"/>
+    <component displayname="Microsoft-Windows-Time-Service" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-time-service/microsoft-windows-time-service/settings"/>
+    <component displayname="Microsoft-Windows-AppX-Deployment-Server" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/offlineupgrade/Microsoft-Windows-AppX-Deployment-Server/settings"/>
+    <component displayname="DiagTrack" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/offlineupgrade/DiagTrack/settings"/>
+    <component displayname="Microsoft-OneCore-Bluetooth-Gatt" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/offlineupgrade/Microsoft-OneCore-Bluetooth-Gatt/settings"/>
+    <component displayname="Microsoft-OneCore-LanguageOverlay-LanguageOverlayServer" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/Microsoft-OneCore-LanguageOverlay-LanguageOverlayServer/Microsoft-OneCore-LanguageOverlay-LanguageOverlayServer/settings"/>
+    <component displayname="Microsoft-Windows-BrokerInfrastructure" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-brokerinfrastructure/microsoft-windows-brokerinfrastructure/settings"/>
+    <component displayname="Microsoft-Windows-Security-NGC-PopKeySrv" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-security-ngc-popkeysrv/microsoft-windows-security-ngc-popkeysrv/settings"/>
+    <component displayname="Microsoft-Windows-WBioSrvc" migrate="no" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/Microsoft-Windows-WBioSrvc/Microsoft-Windows-WBioSrvc/settings"/>
+  </WindowsComponents>
+  <Policies>
+    <ErrorControl>
+      <!--   Example:
+      <fileError>
+        <nonFatal errorCode="33">*[*]</nonFatal>
+        <fatal errorCode="any">C:\Users\*[*]</fatal>
+      </fileError>
+      <registryError>
+        <nonFatal errorCode="5">*[*]</nonFatal>
+      </registryError>
+      -->
+    </ErrorControl>
+  </Policies>
+</Configuration>

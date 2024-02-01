@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-explorer"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      replacementSettingsVersionRange="0"
+      replacementVersionRange="6.1-10.0.10135"
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="0"
+      >
+    <migXml xmlns="">
+      <rules context="User">
+        <include>
+          <objectSet>
+            <!-- Migration engine uses explorer-repl.man for builds with in the replacementVersionRange instead of explorer.man in the OS. -->
+            <!-- So if a key needs to be migrated when upgraded from a build with in the replacementVersionRange to a higher build then it -->
+            <!-- needs to be added here in addition to adding in explorer.man -->
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Streams\Desktop [Taskbar]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Streams\Desktop [TaskbarWinXP]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects [Settings]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects2 [Settings]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer [EnableAutoTray]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer [ShellState]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Ribbon [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\StartPage\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\StartPage2\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Search [SearchboxTaskbarMode]</pattern>
+            <pattern type="Registry">HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify\* [*]</pattern>
+            <!-- Explicitly include the shortcut files that back the pinned lists -->
+            <pattern type="File">%CSIDL_QUICKLAUNCH%\User Pinned\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\SyncRootManager\* [*]</pattern>
+          </objectSet>
+        </include>
+        <exclude>
+          <objectSet>
+            <!-- Implicitly exclude legacy OEM Start layout information -->
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\SyncRootManager\SkyDrive\* [*]</pattern>
+          </objectSet>
+        </exclude>
+      </rules>
+      <!-- Hardware App Keys -->
+      <rules context="System">
+        <!-- Since these are hardware specific, only apply on upgrades -->
+        <conditions>
+          <condition>MigXmlHelper.IsUpgrade()</condition>
+        </conditions>
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\AppKey\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+    <migrationDisplayID>Appearance_and_Display\Taskbar_and_Start_Menu</migrationDisplayID>
+  </migration>
+</assembly>

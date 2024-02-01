@@ -1,0 +1,32 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      buildType="$(build.buildType)"
+      language="neutral"
+      name="Microsoft-Windows-PowerShell-WS08-Repl"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+  <!-- our scope is to only support upgrade. We do not intend to support PC to PC migration 
+       or USMT since that is not supported for PowerShell overall-->
+  <migration scope="Upgrade"
+             settingsVersion="0"
+             replacementSettingsVersionRange="0"
+             replacementVersionRange="6.0.*"
+             alwaysProcess="yes">
+    <registerSDF name="MicrosoftWindowsPowerShell"/>
+    <migXml xmlns="">
+      <detects>
+        <detect>
+          <condition>MigXmlHelper.DoesObjectExist( "File", "%windir%\system32 [servermanager.msc]" )</condition>
+        </detect>
+      </detects>
+    </migXml>
+  </migration>
+</assembly>

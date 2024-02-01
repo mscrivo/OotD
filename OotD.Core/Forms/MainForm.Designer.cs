@@ -169,12 +169,13 @@ namespace OotD.Forms
             // TransparencyMenuSlider
             //
             this.TransparencyMenuSlider.Name = "TransparencyMenuSlider";
-            this.TransparencyMenuSlider.Location = new System.Drawing.Point(10, 5); // Adjust as needed
+            this.TransparencyMenuSlider.AutoSize = false;
+            //this.TransparencyMenuSlider.Location = new System.Drawing.Point(20, 0); // Adjust as needed
             this.TransparencyMenuSlider.Margin = new System.Windows.Forms.Padding(0);
             this.TransparencyMenuSlider.Maximum = 100;
             this.TransparencyMenuSlider.Minimum = 30;
-            this.TransparencyMenuSlider.Size = new System.Drawing.Size(105, 25);
-            this.TransparencyMenuSlider.Font = new Font(this.TransparencyMenuSlider.Font.FontFamily, 8f);
+            this.TransparencyMenuSlider.Size = new System.Drawing.Size(150, 25);
+            this.TransparencyMenuSlider.Font = new Font(this.TransparencyMenuSlider.Font.FontFamily, 1f);
             this.TransparencyMenuSlider.TrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.TransparencyMenuSlider.Value = 50;            
             this.TransparencyMenuSlider.ValueChanged += TransparencyMenuSlider_ValueChanged;

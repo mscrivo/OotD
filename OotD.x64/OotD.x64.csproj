@@ -77,6 +77,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="..\OotD.Core\Startup.cs" Link="Startup.cs" />
+    <Compile Include="..\OotD.Core\TransparencyMenuSlider.cs" Link="TransparencyMenuSlider.cs" />
     <Compile Include="..\OotD.Core\Utility\OutlookFolderDefinition.cs" Link="Utility\OutlookFolderDefinition.cs" />
     <Compile Include="..\OotD.Core\Utility\RegistryHelper.cs" Link="Utility\RegistryHelper.cs" />
     <Compile Include="..\OotD.Core\Utility\StickyWindow.cs" Link="Utility\StickyWindow.cs" />

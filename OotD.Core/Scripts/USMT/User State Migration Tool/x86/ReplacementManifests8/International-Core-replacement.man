@@ -1,0 +1,203 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+
+<!-- replacement manifest for Vista, the original did not include the system default user keys --><assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-International-Core"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+  <migration
+      scope="Upgrade,MigWiz,USMT"
+      replacementVersionRange="6.0-6.1"
+      replacementSettingsVersionRange="0"
+      settingsVersion="0"
+      >
+    <machineSpecific>
+      <migXml xmlns="">
+        <!-- Migrate system Locale data -->
+        <rules context="System">
+          <include>
+            <objectSet>
+              <!-- Locales -->
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\Language [Default]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\Locale [(Default)]</pattern>
+              <!-- Codepages -->
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage [ACP]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage [OEMCP]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage [MACCP]</pattern>
+              <!-- Custom keyboard layouts -->
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layouts\a* [*]</pattern>
+              <!-- .Default settings -->
+              <pattern type="Registry">HKU\.Default\Control Panel\International\* [*]</pattern>
+            </objectSet>
+          </include>
+          <merge script="MigXmlHelper.SourcePriority()">
+            <objectSet>
+              <!-- Locales -->
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\Language [Default]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\Locale [(Default)]</pattern>
+              <!-- Codepages -->
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage [ACP]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage [OEMCP]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage [MACCP]</pattern>
+              <!-- Custom keyboard layouts -->
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layouts\a* [*]</pattern>
+              <!-- .Default settings -->
+              <pattern type="Registry">HKU\.Default\Control Panel\International\* [*]</pattern>
+            </objectSet>
+          </merge>
+        </rules>
+      </migXml>
+    </machineSpecific>
+    <migXml xmlns="">
+      <!-- Migrate system data -->
+      <rules context="System">
+        <include>
+          <objectSet>
+            <!-- Migrate custom locale files -->
+            <pattern type="File">%windir%\Globalization [*.NLP]</pattern>
+            <!-- Migrate custom locale reg keys -->
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CustomLocale\* [*]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\IetfLanguage\* [*]</pattern>
+          </objectSet>
+        </include>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <!-- Migrate custom locale files -->
+            <pattern type="File">%windir%\Globalization [*.NLP]</pattern>
+            <!-- Migrate custom locale reg keys -->
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CustomLocale\* [*]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\IetfLanguage\* [*]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+      <rules context="User">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKCU\Control Panel\International\* [*]</pattern>
+          </objectSet>
+        </include>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <pattern type="Registry">HKCU\Control Panel\International\* [*]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+    </migXml>
+    <supportedComponents>
+      <supportedComponent>
+        <supportedComponentIdentity
+            buildFilter=""
+            buildType="$(build.buildType)"
+            language="neutral"
+            name="Microsoft-Windows-International-Core"
+            processorArchitecture="*"
+            publicKeyToken="$(Build.WindowsPublicKeyToken)"
+            settingsVersionRange="0"
+            type=""
+            versionScope="nonSxS"
+            />
+        <machineSpecific>
+          <migXml xmlns="">
+            <rules context="System">
+              <merge script="MigXmlHelper.SourcePriority()">
+                <objectSet>
+                  <!-- Locales -->
+                  <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\Language [Default]</pattern>
+                  <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\Locale [(Default)]</pattern>
+                  <!-- Codepages -->
+                  <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage [ACP]</pattern>
+                  <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage [OEMCP]</pattern>
+                  <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage [MACCP]</pattern>
+                  <!-- Custom keyboard layouts -->
+                  <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layouts\a* [*]</pattern>
+                  <!-- .Default settings -->
+                  <pattern type="Registry">HKU\.Default\Control Panel\International\* [*]</pattern>
+                </objectSet>
+              </merge>
+            </rules>
+          </migXml>
+        </machineSpecific>
+        <migXml xmlns="">
+          <rules context="System">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <!-- Migrate custom locale files -->
+                <pattern type="File">%windir%\Globalization [*.NLP]</pattern>
+                <!-- Migrate custom locale reg keys -->
+                <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CustomLocale\* [*]</pattern>
+                <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\IetfLanguage\* [*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+          <rules context="User">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKCU\Control Panel\International\* [*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+        </migXml>
+      </supportedComponent>
+      <supportedComponent>
+        <supportedComponentIdentity
+            language="*"
+            name="Microsoft-Windows-International-Core-DL"
+            processorArchitecture="*"
+            settingsVersionRange="0"
+            />
+        <machineSpecific>
+          <migXml xmlns="">
+            <!-- Migrate system Locale data -->
+            <rules context="System">
+              <merge script="MigXmlHelper.SourcePriority()">
+                <objectSet>
+                  <!-- Locales -->
+                  <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\Language [Default]</pattern>
+                  <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\Locale [(Default)]</pattern>
+                  <!-- Codepages -->
+                  <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage [ACP]</pattern>
+                  <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage [OEMCP]</pattern>
+                  <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage [MACCP]</pattern>
+                  <!-- Custom keyboard layouts -->
+                  <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layouts\a* [*]</pattern>
+                  <!-- .Default settings -->
+                  <pattern type="Registry">HKU\.Default\Control Panel\International\* [*]</pattern>
+                </objectSet>
+              </merge>
+            </rules>
+          </migXml>
+        </machineSpecific>
+        <migXml xmlns="">
+          <!-- Migrate system data -->
+          <rules context="System">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <!-- Migrate custom locale files -->
+                <pattern type="File">%windir%\Globalization [*.NLP]</pattern>
+                <!-- Migrate custom locale reg keys -->
+                <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\CustomLocale\* [*]</pattern>
+                <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Nls\IetfLanguage\* [*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+          <rules context="User">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKCU\Control Panel\International\* [*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+        </migXml>
+      </supportedComponent>
+    </supportedComponents>
+    <migrationDisplayID>Date_Time_Language_and_Region\Regional_Language_Options</migrationDisplayID>
+  </migration>
+</assembly>

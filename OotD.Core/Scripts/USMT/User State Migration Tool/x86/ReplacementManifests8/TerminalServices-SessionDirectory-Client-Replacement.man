@@ -1,0 +1,60 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-TerminalServices-SessionDirectory-Client"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+  <migration
+      replacementSettingsVersionRange="0"
+      replacementVersionRange="6.1.*"
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="0"
+      >
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server [SessionDirectoryActive]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server [SessionDirectoryExposeServerIP]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\ClusterSettings [SessionDirectoryClusterName]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\ClusterSettings [SessionDirectoryLocation]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\ClusterSettings [SessionDirectoryRedirectionIP]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\ClusterSettings [SessionDirectoryAdditionalParams]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\ClusterSettings [SessionDirectoryPerf]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+    <supportedComponents>
+      <supportedComponent>
+        <supportedComponentIdentity
+            xmlns="urn:schemas-microsoft-com:asm.v3"
+            buildFilter=""
+            buildType="$(build.buildType)"
+            language="neutral"
+            name="Microsoft-Windows-TerminalServices-SessionDirectory-Client"
+            processorArchitecture="$(build.processorArchitecture)"
+            publicKeyToken="$(Build.WindowsPublicKeyToken)"
+            settingsVersionRange="0"
+            versionScope="nonSxS"
+            />
+      </supportedComponent>
+      <supportedComponent>
+        <supportedComponentIdentity
+            language="*"
+            name="Microsoft-Windows-TerminalServices-SessionDirectory-Client-DL"
+            processorArchitecture="*"
+            settingsVersionRange="0"
+            />
+      </supportedComponent>
+    </supportedComponents>
+  </migration>
+</assembly>

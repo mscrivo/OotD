@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-TerminalServices-LicenseServer"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+    <migration
+      scope="Upgrade,MigWiz,USMT"
+      replacementSettingsVersionRange="0"
+      settingsVersion="1"
+      replacementVersionRange="6.0.*" 
+      >
+     <migXml xmlns="">
+      <plugin
+          classId="{999293E6-7830-45f3-9E3E-A0403E828EFB}"
+          file="Microsoft-Windows-TerminalServices-LicenseServer\TlsRepPlugin.dll"
+          />
+      <rules context="System">
+         <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\System\CurrentControlset\Services\TermServLicensing\Parameters [Role]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlset\Services\TermServLicensing\Parameters [DBPath]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\TermServLicensing\Policy\Microsoft Corporation\* [*]</pattern>
+	    <pattern type="Registry">HKLM\Software\Microsoft\TermServLicensing\LrWiz\Params [2.5.4.*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+     </migXml>
+  </migration>
+</assembly>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly>
+  <assemblyIdentity
+        name="Microsoft-Windows-IE-PDM-Configuration"
+        version="0.0.0.0"
+        processorArchitecture="*"
+        language="*"
+/>
+  <migration
+        settingsVersion="0"
+        replacementSettingsVersionRange="0"
+        replacementVersionRange="6.0-6.1"
+        alwaysProcess="yes"
+        scope="Upgrade"
+        >
+    <!-- Migration rules when moving data across machines; these rules also apply to in-place upgrade,
+         except when there is an explicit condition statement blocking application during upgrade. -->
+    <migXml xmlns="">
+      <rules context="System">
+        <conditions>
+          <condition negation="Yes">MigXmlHelper.DoesStringContentContain("Registry", "HKLM\SOFTWARE\Classes\CLSID\{C5621364-87CC-4731-8947-929CAE75323E}\InProcServer32 []","\Internet Explorer\")</condition>
+        </conditions>
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Classes\CLSID\{C5621364-87CC-4731-8947-929CAE75323E}\InProcServer32\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+      <rules context="System">
+        <conditions>
+          <condition negation="Yes">MigXmlHelper.DoesStringContentContain("Registry", "HKLM\SOFTWARE\Wow6432Node\Classes\CLSID\{C5621364-87CC-4731-8947-929CAE75323E}\InProcServer32 []","\Internet Explorer\")</condition>
+        </conditions>
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Wow6432Node\Classes\CLSID\{C5621364-87CC-4731-8947-929CAE75323E}\InProcServer32\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+      <rules context="System">
+        <conditions>
+          <condition negation="Yes">MigXmlHelper.DoesStringContentContain("Registry", "HKLM\SOFTWARE\Classes\CLSID\{D6FCA954-F7AE-4EAC-8783-85F5E4ABD840}\InProcServer32 []","\Internet Explorer\")</condition>
+        </conditions>
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Classes\CLSID\{D6FCA954-F7AE-4EAC-8783-85F5E4ABD840}\InProcServer32\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+      <rules context="System">
+        <conditions>
+          <condition negation="Yes">MigXmlHelper.DoesStringContentContain("Registry", "HKLM\SOFTWARE\Wow6432Node\Classes\CLSID\{D6FCA954-F7AE-4EAC-8783-85F5E4ABD840}\InProcServer32 []","\Internet Explorer\")</condition>
+        </conditions>
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Wow6432Node\Classes\CLSID\{D6FCA954-F7AE-4EAC-8783-85F5E4ABD840}\InProcServer32\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+  </migration>
+</assembly>

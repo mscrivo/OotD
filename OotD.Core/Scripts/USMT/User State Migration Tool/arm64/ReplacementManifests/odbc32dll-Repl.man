@@ -1,0 +1,248 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <!-- This is a replacement manifest to replace the faulty manifest for Vista, Win7 and early builds of Win8 (before 8156). -->
+  <!-- This is because those faulty manifests did not take WOW64 entries into account -->
+  <!-- This will support both gather phrase and apply phrase, since USMT can be used to migrate settings from Win7 to Win7 -->
+  <!-- This will also support the gather phrase from sources machines of WinXP and Srv03, since those machines can still migrate to Win7 -->
+  <!-- Currently, we only support 3 favors of migration: (x86 -> x86), (x86 -> AMD64), (AMD64 -> AMD64) -->
+  <assemblyIdentity
+      name="Microsoft-Windows-Microsoft-Data-Access-Components-(MDAC)-ODBC-DriverManager-Dll"
+      version="0.0.0.0"
+      processorArchitecture="*"
+      language="neutral"
+      />
+  <migration
+      scope="Upgrade,MigWiz,USMT,SvrMig"
+      settingsVersion="0"
+      replacementSettingsVersionRange="0"
+      replacementVersionRange="6.0-6.2.8156"
+      >
+    <!-- Main section of migration. This is only used for exact matching. -->
+    <!-- In other words, source and target machines are of the same build version and the same architecture -->
+    <!-- Otherwise, it will go to the following <supportedComponents> elements -->
+    <migXml xmlns="">
+      <!-- Since all environment variables are the same in all <supportedComponents>, we only need to define them in this main section -->
+
+      <!-- "IsNative64Bit" in <conditions> of <environment> block is evaluated on "source machine context" in gather phrase -->
+      <!-- and on "target machine context" in apply phrase -->
+      <!-- Therefore, in [x86 -> AMD64 migration] scenario, %HklmWowSoftware% equals to "HKLM\Software" in "source machine environment" -->
+      <!-- and "HKLM\Software\Wow6432Node" in "target machine environment" respectively -->
+      <environment context="System">
+        <conditions>
+          <condition>MigXmlHelper.IsNative64Bit()</condition>
+        </conditions>
+        <variable name="HklmWowSoftware">
+          <text>HKLM\Software\Wow6432Node</text>
+        </variable>
+      </environment>
+      <environment context="System">
+        <conditions>
+          <condition negation="Yes">MigXmlHelper.IsNative64Bit()</condition>
+        </conditions>
+        <variable name="HklmWowSoftware">
+          <text>HKLM\Software</text>
+        </variable>
+      </environment>
+      <!-- The default DSN location is "C:\program files\Common Files\ODBC\Data Sources", but it can be overriden by registry -->
+      <environment context="System">
+        <variable name="ODBCDSNDir_System">
+          <text>%CSIDL_PROGRAM_FILES_COMMON%\ODBC\Data Sources\</text>
+        </variable>
+        <variable name="ODBCDSNDir_System">
+          <script>MigXmlHelper.GetStringContent("Registry","HKLM\Software\ODBC\ODBC.INI\ODBC File DSN [DefaultDSNDir]")</script>
+        </variable>
+      </environment>
+      <environment context="System">
+        <!-- We left %ODBCDSNDir_SystemX86% undefined when the source machine is X86 -->
+        <!-- Otherwise, we will gather data from both user-defined DSN folder and "C:\program files\Common Files\ODBC\Data Sources", -->
+        <!-- since %CSIDL_PROGRAM_FILES_COMMONX86% is defined to be "C:\program files\Common Files" on x86 source machine -->
+        <!-- <pattern> below will be ignored, when it is referencing the undefined variable %ODBCDSNDir_SystemX86% -->
+        <conditions>
+          <condition>MigXmlHelper.IsNative64Bit()</condition>
+        </conditions>
+        <variable name="ODBCDSNDir_SystemX86">
+          <text>%CSIDL_PROGRAM_FILES_COMMONX86%\ODBC\Data Sources\</text>
+        </variable>
+        <variable name="ODBCDSNDir_SystemX86">
+          <script>MigXmlHelper.GetStringContent("Registry","HKLM\Software\Wow6432Node\ODBC\ODBC.INI\ODBC File DSN [DefaultDSNDir]")</script>
+        </variable>
+      </environment>
+      <!-- The default file DSN location (under user context) has been modified to "My Documents"; see Windows OS Bug #1633815 -->
+      <environment context="User">
+        <variable name="ODBCDSNDir_User">
+          <text>%CSIDL_MYDOCUMENTS%\</text>
+        </variable>
+        <variable name="ODBCDSNDir_User">
+          <script>MigXmlHelper.GetStringContent("Registry","HKCU\Software\ODBC\ODBC.INI\ODBC File DSN [DefaultDSNDir]")</script>
+        </variable>
+      </environment>
+      <!-- User specific setting (Gather and Apply Phrase) -->
+      <rules context="User">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\ODBC\ODBC.INI\* [*]</pattern>
+            <pattern type="File">%ODBCDSNDir_User% [*.DSN]</pattern>
+          </objectSet>
+        </include>
+        <!-- "DestinationPriority" means that it won't migrate if the same object exists on the target machine -->
+        <merge script="MigXmlHelper.DestinationPriority()">
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\ODBC\ODBC.INI\* [*]</pattern>
+            <pattern type="File">%ODBCDSNDir_User% [*.DSN]</pattern>
+          </objectSet>
+        </merge>
+        <!-- We need to use <destinationCleanup> to ensure that the absence of "DefaultDSNDir" 
+             value name is also replicated. See Win8 #326933 for more detail -->
+        <destinationCleanup>
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\ODBC\ODBC.INI\ODBC File DSN [DefaultDSNDir]</pattern>
+          </objectSet>
+        </destinationCleanup>
+      </rules>
+      <!-- System wide setting (Gather and Apply Phrase) -->
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\Software\ODBC\ODBC.INI\* [*]</pattern>
+            <pattern type="Registry">HKLM\Software\Wow6432Node\ODBC\ODBC.INI\* [*]</pattern>
+            <pattern type="File">%ODBCDSNDir_System% [*.DSN]</pattern>
+            <pattern type="File">%ODBCDSNDir_SystemX86% [*.DSN]</pattern>
+          </objectSet>
+        </include>
+        <merge script="MigXmlHelper.DestinationPriority()">
+          <objectSet>
+            <pattern type="Registry">HKLM\Software\ODBC\ODBC.INI\* [*]</pattern>
+            <pattern type="Registry">HKLM\Software\Wow6432Node\ODBC\ODBC.INI\* [*]</pattern>
+            <pattern type="File">%ODBCDSNDir_System% [*.DSN]</pattern>
+            <pattern type="File">%ODBCDSNDir_SystemX86% [*.DSN]</pattern>
+          </objectSet>
+        </merge>
+        <!-- We need to use <destinationCleanup> to ensure that the absence of "DefaultDSNDir" 
+             value name is also replicated. See Win8 #326933 for more detail -->
+        <destinationCleanup>
+          <objectSet>
+            <pattern type="Registry">HKLM\Software\ODBC\ODBC.INI\ODBC File DSN [DefaultDSNDir]</pattern>
+            <pattern type="Registry">HKLM\Software\Wow6432Node\ODBC\ODBC.INI\ODBC File DSN [DefaultDSNDir]</pattern>
+          </objectSet>
+        </destinationCleanup>
+      </rules>
+    </migXml>
+    <supportedComponents>
+      <!-- 1st <supportedComponent> [source machine = AMD64, target machine = AMD64]: -->
+      <!-- There is no support for [AMD64 -> X86 migration]. USMT would error out before processing our manifest -->
+      <!-- Note the asterisk character at the end of the "name" attribute in <supportedComponentIdentity>: -->
+      <!-- This matches both normal manifest (Vista / Win7) and DL manifest (Srv03) -->
+      <supportedComponent>
+        <supportedComponentIdentity
+            language="*"
+            name="Microsoft-Windows-Microsoft-Data-Access-Components-(MDAC)-ODBC-DriverManager-Dll*"
+            processorArchitecture="amd64"
+            settingsVersionRange="0"
+            />
+        <migXml xmlns="">
+          <!-- User specific setting (Apply Phrase) -->
+          <rules context="User">
+            <merge script="MigXmlHelper.DestinationPriority()">
+              <objectSet>
+                <pattern type="Registry">HKCU\Software\ODBC\ODBC.INI\* [*]</pattern>
+                <pattern type="File">%ODBCDSNDir_User% [*.DSN]</pattern>
+              </objectSet>
+            </merge>
+            <!-- We need to use <destinationCleanup> to ensure that the absence of "DefaultDSNDir" 
+                 value name is also replicated. See Win8 #326933 for more detail -->
+            <destinationCleanup>
+              <objectSet>
+                <pattern type="Registry">HKCU\Software\ODBC\ODBC.INI\ODBC File DSN [DefaultDSNDir]</pattern>
+              </objectSet>
+            </destinationCleanup>
+          </rules>
+          <!-- System wide setting (Apply Phrase) -->
+          <rules context="System">
+            <merge script="MigXmlHelper.DestinationPriority()">
+              <objectSet>
+                <pattern type="Registry">HKLM\Software\ODBC\ODBC.INI\* [*]</pattern>
+                <pattern type="Registry">HKLM\Software\Wow6432Node\ODBC\ODBC.INI\* [*]</pattern>
+                <pattern type="File">%ODBCDSNDir_System% [*.DSN]</pattern>
+                <pattern type="File">%ODBCDSNDir_SystemX86% [*.DSN]</pattern>
+              </objectSet>
+            </merge>
+            <!-- We need to use <destinationCleanup> to ensure that the absence of "DefaultDSNDir" 
+                 value name is also replicated. See Win8 #326933 for more detail -->
+            <destinationCleanup>
+              <objectSet>
+                <pattern type="Registry">HKLM\Software\ODBC\ODBC.INI\ODBC File DSN [DefaultDSNDir]</pattern>
+                <pattern type="Registry">HKLM\Software\Wow6432Node\ODBC\ODBC.INI\ODBC File DSN [DefaultDSNDir]</pattern>
+              </objectSet>
+            </destinationCleanup>
+          </rules>
+        </migXml>
+      </supportedComponent>
+      <!-- 2nd <supportedComponent> [source machine = X86, target machine = X86/AMD64]: -->
+      <!-- Note the asterisk character at the end of the "name" attribute in <supportedComponentIdentity>: -->
+      <!-- This matches both normal manifest (Vista / Win7) and DL manifest (Srv03) -->
+      <supportedComponent>
+        <supportedComponentIdentity
+            language="*"
+            name="Microsoft-Windows-Microsoft-Data-Access-Components-(MDAC)-ODBC-DriverManager-Dll*"
+            processorArchitecture="*"
+            settingsVersionRange="0"
+          />
+        <migXml xmlns="">
+          <!-- User specific setting (Apply Phrase) -->
+          <rules context="User">
+            <merge script="MigXmlHelper.DestinationPriority()">
+              <objectSet>
+                <pattern type="Registry">HKCU\Software\ODBC\ODBC.INI\* [*]</pattern>
+                <pattern type="File">%ODBCDSNDir_User% [*.DSN]</pattern>
+              </objectSet>
+            </merge>
+            <!-- We need to use <destinationCleanup> to ensure that the absence of "DefaultDSNDir"
+                 value name is also replicated. See Win8 #326933 for more detail -->
+            <destinationCleanup>
+              <objectSet>
+                <pattern type="Registry">HKCU\Software\ODBC\ODBC.INI\ODBC File DSN [DefaultDSNDir]</pattern>
+              </objectSet>
+            </destinationCleanup>
+          </rules>
+          <!-- System wide setting (Apply Phrase) -->
+          <rules context="System">
+            <!-- The first argument in "RelativeMove" is computed with "source machine environment", -->
+            <!-- while the second one is computed with "target machine environment" -->
+            <!-- The first argument in "RelativeMove" must always be "HKLM\Software", since the source machine is x86 -->
+            <!-- For [x86 -> x86 migration]: the second argument in "RelativeMove" is "HKLM\Software" -->
+            <!-- For [x86 -> AMD64 migration]: the second argument in "RelativeMove" is "HKLM\Software\Wow6432Node" -->
+            <!-- Therefore, no location was modified in the first case; but it is modified in the second case -->
+            <locationModify script="MigXmlHelper.RelativeMove(&apos;%HklmWowSoftware%\ODBC\ODBC.INI&apos;, &apos;%HklmWowSoftware%\ODBC\ODBC.INI&apos;)">
+              <objectSet>
+                <!-- %HklmWowSoftware% here is computed with the "source machine context" -->
+                <pattern type="Registry">%HklmWowSoftware%\ODBC\ODBC.INI\* [*]</pattern>
+              </objectSet>
+            </locationModify>
+            <merge script="MigXmlHelper.DestinationPriority()">
+              <objectSet>
+                <!-- %HklmWowSoftware% here is computed with the "target machine environment" -->
+                <pattern type="Registry">%HklmWowSoftware%\ODBC\ODBC.INI\* [*]</pattern>
+                <pattern type="File">%ODBCDSNDir_System% [*.DSN]</pattern>
+              </objectSet>
+            </merge>
+            <!-- We need to use destinationCleanup to ensure that the absence of "DefaultDSNDir" 
+                 value name is also replicated. See Win8 #326933 for more detail -->
+            <!-- %HklmWowSoftware% is computed with the "target machine environment" -->
+            <destinationCleanup>
+              <objectSet>
+                <pattern type="Registry">%HklmWowSoftware%\ODBC\ODBC.INI\ODBC File DSN [DefaultDSNDir]</pattern>
+              </objectSet>
+            </destinationCleanup>
+          </rules>
+        </migXml>
+      </supportedComponent>
+    </supportedComponents>
+    <!-- Use a special name for better output in log file -->
+    <migrationDisplayID>ReplacementManifests</migrationDisplayID>
+  </migration>
+</assembly>

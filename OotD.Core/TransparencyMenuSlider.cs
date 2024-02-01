@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using MACTrackBarLib;
 
 public class TrackBarMenuItem : ToolStripControlHost
 {
-    public TrackBar TrackBar { get; }
+#pragma warning disable CS3003
+    public MACTrackBar TrackBar { get; }
+#pragma warning restore CS3003
 
     public event EventHandler? ValueChanged;
 
     public ToolTip ToolTip { get; } = new ToolTip(); // Add ToolTip property
 
-    public TrackBarMenuItem() : base(new TrackBar())
+    public TrackBarMenuItem() : base(new MACTrackBar())
     {
-        this.TrackBar = (TrackBar)this.Control;
+        this.TrackBar = (MACTrackBar)this.Control;
         this.TrackBar.Scroll += TrackBar_Scroll;
     }
 

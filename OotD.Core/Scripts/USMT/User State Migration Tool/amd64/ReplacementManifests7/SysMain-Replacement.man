@@ -1,0 +1,49 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-SystemMaintenanceService"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      alwaysProcess="yes"
+      replacementSettingsVersionRange="1"
+      replacementVersionRange="6.0-6.1.6940"
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="1"
+      >
+    <migXml xmlns="">
+      <rules context="System">
+        <addObjects>
+          <object>
+            <location type="Registry">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Superfetch [MigratedData]</location>
+            <attributes>Dword</attributes>
+            <bytes>00000001</bytes>
+          </object>
+        </addObjects>
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\EMDMgmt\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Superfetch [MigratedData]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+    <supportedComponents>
+      <supportedComponent>
+        <supportedComponentIdentity
+            language="neutral"
+            name="Microsoft-Windows-SystemMaintenanceService"
+            processorArchitecture="*"
+            settingsVersionRange="1"
+            />
+      </supportedComponent>
+    </supportedComponents>
+  </migration>
+</assembly>

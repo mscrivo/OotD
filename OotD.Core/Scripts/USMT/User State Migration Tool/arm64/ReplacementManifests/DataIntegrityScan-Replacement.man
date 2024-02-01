@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-DataIntegrityScan"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+  <migration
+      xmlns:auto-ns1="urn:schemas-microsoft-com:asm.v3"
+      replacementSettingsVersionRange="0"
+      replacementVersionRange="6.0-6.2"
+      scope="Upgrade,MigWiz,USMT,SvrMig"
+      alwaysProcess="yes"
+      settingsVersion="0"
+      >
+    <machineSpecific>
+      <migXml xmlns="">
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\FileSystem [ScrubConcurrencyMaximum]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\FileSystem [ScrubConcurrencyRate]</pattern>
+            </objectSet>
+          </include>
+        </rules>
+      </migXml>
+    </machineSpecific>
+  </migration>
+</assembly>

@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+    <assemblyIdentity
+      name="Microsoft-Windows-WSRM-Service"
+      processorArchitecture="*" 
+      version="0.0.0.0"
+      language="neutral"
+      versionScope="nonSxS"      
+      />
+    <migration
+     scope="Upgrade,MigWiz,USMT"
+     replacementSettingsVersionRange="0"
+     settingsVersion="0"
+     replacementVersionRange="6.0.*"
+      >
+        <migXml xmlns="">
+            <rules context="System">
+                <!-- Collect these files only if WSRM is installed -->
+                <detects>
+                    <detect>
+                        <condition>MigXmlHelper.DoesObjectExist("Registry", "HKLM\SYSTEM\CurrentControlSet\Services\WSRM")</condition>
+                    </detect>
+                </detects>
+                <include>
+                    <objectSet>
+                        <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\WSRM\Parameters [*]</pattern>
+                    </objectSet>
+                    <objectSet>
+                        <pattern type="File">%windir%\system32\windows system resource manager\backup [*]</pattern>
+                    </objectSet>
+                    <objectSet>
+                        <pattern type="File">%windir%\system32\windows system resource manager\data [*.xml]</pattern>
+                    </objectSet>
+                    <objectSet>
+                        <pattern type="File">%windir%\system32\windows system resource manager\DB [wsrmdat*.*]</pattern>
+                        <pattern type="File">%windir%\* [wsrmdat*.*]</pattern>
+                    </objectSet>
+                    <objectSet>
+                        <pattern type="File">%windir%\SYSMSI\SSEE\MSSQL.2005\MSSQL\SchemaSig [wsrmsign*.*]</pattern>
+                    </objectSet>
+                </include>
+            </rules>
+         </migXml>
+    </migration>
+</assembly>

@@ -1,0 +1,74 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      name="Microsoft-Windows-TerminalServices-RDP-WinStationExtensions"
+      language="neutral"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      scope="Upgrade,MigWiz,USMT"
+      replacementSettingsVersionRange="0"
+      settingsVersion="0"
+      replacementVersionRange="6.0-6.1"
+      >
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\VIDEO\* [*]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\Wds\* [*]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\* [*]</pattern>
+          </objectSet>
+        </include>
+        <exclude>
+          <objectSet>
+            <!--
+                Ignore values under WinStations key
+                as ConsoleSecurity and DefaultSecurity are created through 'Microsoft-Windows-TerminalServices-LocalSessionManager' assembly
+                and SelfSignedCertificate and SelfSignedCertStore are created programmatically.
+            -->
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations [ConsoleSecurity]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations [DefaultSecurity]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations [SelfSignedCertificate]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations [SelfSignedCertStore]</pattern>
+            <!--
+                EH-Tcp is created through 'Microsoft-Windows-ehome-devices-McrMgr' assembly.
+            -->
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\EH-Tcp\* [*]</pattern>
+            <!--
+                ColorDepth and WdName were not marked for migration.
+            -->
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp [ColorDepth]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp [WdName]</pattern>
+            <!--
+                Switch to UMRDP (from KMRDP)
+            -->
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\Wds\rdpwd [LoadableProtocol_Object]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp [LoadableProtocol_Object]</pattern>
+          </objectSet>
+        </exclude>
+      </rules>
+      <rules context="System">
+        <!--
+          If Remote Connections are disabled do not collect the UserAuthentication value.
+        -->
+        <detects>
+          <detect>
+            <condition>MigXmlHelper.DoesStringContentEqual("Registry", "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server [fDenyTSConnections]", "0x00000001")</condition>
+          </detect>
+        </detects>
+        <exclude>
+          <objectSet>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp [UserAuthentication]</pattern>
+          </objectSet>
+        </exclude>
+      </rules>
+    </migXml>
+  </migration>
+</assembly>

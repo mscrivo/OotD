@@ -1,0 +1,33 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly>
+  <assemblyIdentity
+      language="*"
+      name="Microsoft-Windows-X509CertificateEnrollment"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      alwaysProcess="yes"
+      replacementSettingsVersionRange="0"
+      replacementVersionRange="6.1.*"
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="0"
+      >
+    <migXml xmlns="">
+      <rules context="User">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\Microsoft\Cryptography\PolicyServers\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\Software\Microsoft\Cryptography\PolicyServers\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+  </migration>
+</assembly>

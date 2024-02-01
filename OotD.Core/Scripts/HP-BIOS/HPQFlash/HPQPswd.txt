@@ -1,0 +1,69 @@
+HPQ Password Utility
+
+HPQ Password Utility is an application which allows the user (typically a
+system administrator) to create an encrypted password file which can be used
+with with the /p option of the HPQFlash application.  This option is usually
+used along with the /s option to perform a silent mode update of the system
+BIOS on HP computers which have a BIOS Setup password set.
+
+
+HOW TO RUN
+1. Run the HPQPswd.exe executable and enter the information requested:
+   a. BIOS Setup password of target machines
+   b. Location of encrypted password file to be created
+      NOTE: 
+      - Please save the password file with a ".bin" extension.
+      - This password file only works with hpqFlash application version 4.20 B5 and later.
+        
+
+2. Click on OK.
+3. The entered password will be encrypted and stored in the specified location.
+
+
+CHANGE HISTORY
+
+Version 3.0 B3, 4/11/2011
+- Added command line support
+
+Version 3.0 A2, 5/13/2008
+- Rebuilt with "Use MFC in a Static Library" option to be able to run in non-English OS.
+
+Version 2.0 C1,  10/04/06
+- Fixed Issue with saving bin file on Windows Vista OS
+
+Version 2.0 B1,  07/27/05
+- Added Password Confirmation Edit Box Support
+  
+Version 2.0 A3,  04/26/05
+- Fixed issue where upper case alphabet letter Could not be entered
+  in BIOS Password field to encrypt in the HPQ Password Utility.  
+  
+Version 2.0 A2,  04/21/05
+- Fixed issue where in the HPQ Password Utility was not storing a 32 byte password
+  in the bin file.
+
+Version 2.0 A1,  04/07/05
+-Added Support to Change HPQ Password Utility to support case sensitive BIOS Setup Passwords.
+-The default installation directory is changed from c:\program files \ HPQ\ HPQ Password utility 
+ to c:\swsetup \ SPXXXXX.exe.
+
+Version 1.0 B1,  02/06/03
+- Added changes to remove Compaq Bitmap from the UI. 
+
+Version 1.0 A3,  01/15/03
+- Added correct Version to the About page
+- The installation directory is changed from c:\program files \ Compaq \ Compaq password utility 
+  to c:\program files \ HPQ\ HPQ Password utility.
+
+Version 1.0 A2,  7/15/02
+- Renamed utility to HPQPswd
+
+Version 1.0 A1,  7/1/02
+- Original version
+
+
+Copyright (c) 2002-2016 Hewlett-Packard Company. All Rights Reserved.
+Compaq and the Compaq logo are trademarks of the Hewlett-Packard Company in the
+U.S. and other countries.
+All other product names mentioned herein may be trademarks of their respective
+companies.

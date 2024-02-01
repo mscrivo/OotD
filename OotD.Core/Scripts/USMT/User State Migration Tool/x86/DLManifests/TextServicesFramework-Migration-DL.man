@@ -1,0 +1,68 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      buildType="$(build.buildType)"
+      language="*"
+      name="Microsoft-Windows-TextServicesFramework-Migration-DL"
+      processorArchitecture="*"
+      publicKeyToken="$(Build.WindowsPublicKeyToken)"
+      type=""
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+  <migration scope="Upgrade,MigWiz,USMT">
+    <migXml xmlns="">
+      <!-- Check as this is only valid for down-level OS < than Windows Vista -->
+      <detects>
+        <detect>
+          <condition>MigXmlHelper.IsOSEarlierThan("NT", "6.0.0.0")</condition>
+        </detect>
+      </detects>
+      <!-- Plug-in setting for msctfmig.dll -->
+      <plugin
+          classId="{0b23c863-4410-4153-8733-a60c9b1990fb}"
+          file="Microsoft-Windows-TextServicesFramework-Migration-DL\msctfmig.dll"
+          />
+      <!-- Gather the registry keys that need to be migrated -->
+      <rules context="User">
+        <!-- Check as this is only valid for down-level OS < than Windows Vista -->
+        <detects>
+          <detect>
+            <condition>MigXmlHelper.IsOSEarlierThan("NT", "6.0.0.0")</condition>
+          </detect>
+        </detects>
+        <include>
+          <objectSet>
+            <!-- LangBar settings -->
+            <pattern type="Registry">HKCU\Software\Microsoft\CTF\LangBar\* [*]</pattern>
+            <!-- MSUTB settings -->
+            <pattern type="Registry">HKCU\Software\Microsoft\CTF\MSUTB\* [*]</pattern>
+            <!-- Sortrder settings -->
+            <pattern type="Registry">HKCU\Software\Microsoft\CTF\SortOrder\* [*]</pattern>
+            <pattern type="Registry">HKCU\Control Panel\International\User Profile\* [*]</pattern>
+            <!-- IME data files -->
+            <pattern type="File">%APPDATA%\Microsoft\InputMethod\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\InputMethod\Settings\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\InputMethod\CandidateWindow\* [*]</pattern>
+          </objectSet>
+        </include>
+        <exclude>
+          <objectSet>
+            <!-- ctfmon.exe -->
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Run [ctfmon.exe]</pattern>
+          </objectSet>
+        </exclude>
+      </rules>
+    </migXml>
+    <migrationDisplayID>Date_Time_Language_and_Region\Regional_Language_Options</migrationDisplayID>
+  </migration>
+  <wcs:Application
+      xmlns:wcs="urn:schemas-microsoft-com:wcs.v1"
+      wcs:Version="1.0.239.0"
+      />
+</assembly>

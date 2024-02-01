@@ -1,0 +1,160 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      name="Microsoft-Windows-Application-Experience-Program-Compatibility-Assistant"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      scope="Upgrade,MigWiz,USMT"
+      replacementVersionRange="6.0.0-6.1.7000" 
+      replacementSettingsVersionRange="0"
+      settingsVersion="0"
+      alwaysProcess="6.0.0-6.1.7000"
+      >
+    <migXml xmlns="">
+      <rules context="system">
+        <include>
+          <objectSet>
+            <!-- Settings under the Layers key are handled by the Shim Infrastructure manifest -->
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat  [DisablePca]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{acfd1ca6-18b6-4ccf-9c07-580cdb6eded4}\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{081D3213-48AA-4533-9284-D98F01BDC8E6}\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{659F08FB-2FAB-42a7-BD4F-566CFA528769}\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{88D69CE1-577A-4dd9-87AE-AD36D3CD9643}\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{D113E4AA-2D07-41b1-8D9B-C065194A791D}\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{affc81e2-612a-4f70-6fb2-916ff5c7e3f8}\* [*]</pattern>
+          </objectSet>
+        </include>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat  [DisablePca]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{acfd1ca6-18b6-4ccf-9c07-580cdb6eded4}\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{081D3213-48AA-4533-9284-D98F01BDC8E6}\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{659F08FB-2FAB-42a7-BD4F-566CFA528769}\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{88D69CE1-577A-4dd9-87AE-AD36D3CD9643}\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{D113E4AA-2D07-41b1-8D9B-C065194A791D}\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{affc81e2-612a-4f70-6fb2-916ff5c7e3f8}\* [*]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+      <rules context="user">
+        <include>
+          <objectSet>
+            <!-- Settings under the Layers key are handled by the Shim Infrastructure manifest -->
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\AppCompat  [DisablePca]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{acfd1ca6-18b6-4ccf-9c07-580cdb6eded4}\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{081D3213-48AA-4533-9284-D98F01BDC8E6}\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{659F08FB-2FAB-42a7-BD4F-566CFA528769}\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{88D69CE1-577A-4dd9-87AE-AD36D3CD9643}\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{D113E4AA-2D07-41b1-8D9B-C065194A791D}\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{affc81e2-612a-4f70-6fb2-916ff5c7e3f8}\* [*]</pattern>
+          </objectSet>
+        </include>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\AppCompat  [DisablePca]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{acfd1ca6-18b6-4ccf-9c07-580cdb6eded4}\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{081D3213-48AA-4533-9284-D98F01BDC8E6}\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{659F08FB-2FAB-42a7-BD4F-566CFA528769}\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{88D69CE1-577A-4dd9-87AE-AD36D3CD9643}\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{D113E4AA-2D07-41b1-8D9B-C065194A791D}\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{affc81e2-612a-4f70-6fb2-916ff5c7e3f8}\* [*]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+    </migXml>
+    <supportedComponents>
+      <supportedComponent>
+        <supportedComponentIdentity
+            buildFilter=""
+            buildType="$(build.buildType)"
+            language="neutral"
+            name="Microsoft-Windows-Application-Experience-Program-Compatibility-Assistant"
+            processorArchitecture="*"
+            publicKeyToken="$(Build.WindowsPublicKeyToken)"
+            settingsVersionRange="0"
+            type=""
+            versionScope="nonSxS"
+            />
+        <migXml xmlns="">
+          <rules context="system">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat  [DisablePca]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{acfd1ca6-18b6-4ccf-9c07-580cdb6eded4}\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{081D3213-48AA-4533-9284-D98F01BDC8E6}\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{659F08FB-2FAB-42a7-BD4F-566CFA528769}\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{88D69CE1-577A-4dd9-87AE-AD36D3CD9643}\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{D113E4AA-2D07-41b1-8D9B-C065194A791D}\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{affc81e2-612a-4f70-6fb2-916ff5c7e3f8}\* [*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+          <rules context="user">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\AppCompat  [DisablePca]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{acfd1ca6-18b6-4ccf-9c07-580cdb6eded4}\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{081D3213-48AA-4533-9284-D98F01BDC8E6}\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{659F08FB-2FAB-42a7-BD4F-566CFA528769}\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{88D69CE1-577A-4dd9-87AE-AD36D3CD9643}\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{D113E4AA-2D07-41b1-8D9B-C065194A791D}\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{affc81e2-612a-4f70-6fb2-916ff5c7e3f8}\* [*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+        </migXml>
+      </supportedComponent>
+      <supportedComponent>
+        <supportedComponentIdentity
+            language="*"
+            name="Microsoft-Windows-Application-Experience-Program-Compatibility-Assistant-DL"
+            processorArchitecture="*"
+            settingsVersionRange="0"
+            />
+        <migXml xmlns="">
+          <rules context="system">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\AppCompat  [DisablePca]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{acfd1ca6-18b6-4ccf-9c07-580cdb6eded4}\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{081D3213-48AA-4533-9284-D98F01BDC8E6}\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{659F08FB-2FAB-42a7-BD4F-566CFA528769}\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{88D69CE1-577A-4dd9-87AE-AD36D3CD9643}\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{D113E4AA-2D07-41b1-8D9B-C065194A791D}\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Policies\Microsoft\Windows\WDI\{affc81e2-612a-4f70-6fb2-916ff5c7e3f8}\* [*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+          <rules context="user">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\AppCompat  [DisablePca]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{acfd1ca6-18b6-4ccf-9c07-580cdb6eded4}\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{081D3213-48AA-4533-9284-D98F01BDC8E6}\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{659F08FB-2FAB-42a7-BD4F-566CFA528769}\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{88D69CE1-577A-4dd9-87AE-AD36D3CD9643}\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{D113E4AA-2D07-41b1-8D9B-C065194A791D}\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Policies\Microsoft\Windows\WDI\{affc81e2-612a-4f70-6fb2-916ff5c7e3f8}\* [*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+        </migXml>
+      </supportedComponent>
+    </supportedComponents>
+  </migration>
+</assembly>

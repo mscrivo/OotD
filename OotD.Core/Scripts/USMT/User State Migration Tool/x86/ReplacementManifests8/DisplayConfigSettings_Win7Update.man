@@ -1,0 +1,50 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-DisplayConfigSettings"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+  <migration
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="1"
+      replacementSettingsVersionRange="1"
+      replacementVersionRange="6.1.*"
+      >
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Control\GraphicsDrivers\Connectivity\* [*]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Control\GraphicsDrivers\Configuration\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+    <!-- We put the same migrations rules in machineSpecific section so that on a upgrade the registry setting will be applied 
+         before the last reboot and this ensures the displays are configured using the users CCD database before the
+         finial user interaction part of setup.
+         NOTE : Doing this will mean on upgrade two migration packets will be generated and processed, the non-machineSpecific
+                migration packet will be applied after the final reboot and will override the CCD database at that time, this
+                means any display configuration changes stored between the two times will be lost. -->
+    <machineSpecific>
+      <migXml xmlns="">
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Control\GraphicsDrivers\Connectivity\* [*]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Control\GraphicsDrivers\Configuration\* [*]</pattern>
+            </objectSet>
+          </include>
+        </rules>
+      </migXml>
+    </machineSpecific>
+  </migration>
+</assembly>

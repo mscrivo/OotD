@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-IE-InternetExplorer"
+      processorArchitecture="*"
+      publicKeyToken=""
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+    <migration 
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="4"
+      replacementSettingsVersionRange="0"
+      replacementVersionRange="6.0-11.0.10120.0">
+    <migXml
+        xmlns=""
+        xmlns:auto-ns2="urn:schemas-microsoft-com:asm.v3"
+        >
+      <!-- Gather and apply rules for current version -->
+      <environment context="System">
+        <variable name="InternetExplorer.BrandGUID">
+          <script>MigXmlHelper.GetStringContent("Registry","HKLM\SOFTWARE\Microsoft\Internet Explorer [BrandGUID]")</script>
+        </variable>
+      </environment>
+      <rules context="User">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoComplete\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MenuOrder\Favorites\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Webcheck\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Ext\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Search Assistant\* [*]</pattern>
+            <pattern type="File">%CSIDL_LOCAL_APPDATA%\Microsoft\Internet Explorer\* [*]</pattern>
+            <pattern type="File">%CSIDL_LOCAL_APPDATA%\Microsoft\Windows\History\* [*]</pattern>
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\Windows\Cookies\* [*]</pattern>
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\Internet Explorer\* [*]</pattern>
+          </objectSet>
+        </include>
+        <exclude>
+          <objectSet>
+            <!-- Extensibility points, handled by upgrade -->
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\Default Behaviors\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\Explorer Bars\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\EmbedExtnToClsidMappings\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\Extensions\CmdMapping\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\MenuExt\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\Media\\MimeTypes\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\Plugins\Extension\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\Plugins\MIME\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\URLSearchHooks\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\Toolbar\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Ext\Settings\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Ext\Stats\* [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings [PrivacyAdvanced]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\1 [Flags]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Lockdown_Zones\1 [Flags]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3 [1A10]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3 [{AEBA21FA-782A-4A90-978D-B72164C80120}]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3 [{A8A88C49-5EB2-4990-A1A2-0876022C854F}]</pattern>
+            <!-- Extensibility points, handled by upgrade -->
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\Security\AntiPhishing\* [*]</pattern>
+            <!-- Exclude this Wininet settings, let their manifest migrate them. -->
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings [SecureProtocols]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\5.0\* [*]</pattern>
+            <!-- Handled by bulk upgrade -->
+            <pattern type="File">%CSIDL_QUICKLAUNCH%\* [*]</pattern>
+            <!-- SmartScreen should be disabled upon install/upgrade -->
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\PhishingFilter [EnabledV8]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\PhishingFilter [EnabledV9]</pattern>
+            <!-- Don't migrate ElevationPolicy settings for Adobe Flash since it should always be in HKLM -->
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\Low Rights\ElevationPolicy\{FAB3E735-69C7-453B-A446-B6823C6DF1C9} [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\Low Rights\ElevationPolicy\{FAF199D2-BFA7-4394-A4DE-044A08E59B32} [*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\BrowserEmulation [MSCompatibilityMode]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\Main [DoNotTrack]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Internet Explorer\CodeIntegrity [DynamicCodePolicy]</pattern>
+          </objectSet>
+        </exclude>
+      </rules>
+      <rules context="User">
+        <!-- Exclude additional keys from migration on PC-2-PC migration. -->
+        <detects>
+          <detect>
+            <condition negation="Yes">MigXmlHelper.IsUpgrade()</condition>
+          </detect>
+        </detects>
+        <exclude>
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\Microsoft\Internet Explorer\Styles [Use My Stylesheet]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Internet Explorer\Styles [User Stylesheet]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Internet Explorer\Desktop\General [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Internet Explorer\Default HTML Editor\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Internet Explorer\Default MHTML Editor\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Internet Explorer\Main [Save Directory]</pattern>
+            <pattern type="File">%CSIDL_LOCAL_APPDATA%\Microsoft\Internet Explorer [MSIMGSIZ.dat]</pattern>
+          </objectSet>
+        </exclude>
+      </rules>
+      <rules context="User">
+        <!-- Exclude additional keys from migration on upgrade. -->
+        <detects>
+          <detect>
+            <condition>MigXmlHelper.IsUpgrade()</condition>
+          </detect>
+        </detects>
+        <exclude>
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\Microsoft\Internet Explorer\Main [Check_Associations]</pattern>
+          </objectSet>
+        </exclude>
+      </rules>
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\{89820200-ECBD-11cf-8B85-00AA005B4383} [IsInstalled]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Clients\StartMenuInternet\IEXPLORE.EXE\InstallInfo [IconsVisible]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\SearchScopes\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\NavigatorPluginsList\* [*]</pattern>
+            <pattern type="File">%WINDIR%\System32 [rsaci.rat]</pattern>
+          </objectSet>
+        </include>
+        <exclude>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\AboutURLs\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\AdvancedOptions\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Unattend\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer [Build]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer [Version]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer [W2kVersion]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer [svcVersion]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer [svcUpdateVersion]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer [svcKBNumber]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer [svcKBFWLink]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Main [EnableAutoUpgrade]</pattern>
+            <!-- Extensibility points, handled by upgrade -->
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\ActiveX Compatibility\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Default Behaviors\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Explorer Bars\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\EmbedExtnToClsidMappings\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Extensions\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Extensions\CmdMapping\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Extension Compatibility\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\International\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Main [Isolation]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\MenuExt\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Media\\MimeTypes\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Plugins\Extension\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Plugins\MIME\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\URLSearchHooks\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Toolbar\* [*]</pattern>
+            <!-- Extensibility points, handled by upgrade -->
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings [MinorVersion]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\SO\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\TemplatePolicies\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\* [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Lockdown_Zones\1 [Flags]</pattern>
+            <!-- Exclude this Wininet settings, let their manifest migrate them. -->
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\5.0\* [*]</pattern>
+            <!-- Gopher was removed after Beta2 in Vista. Make sure upgrades don't pickup this key. -->
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Capabilities\UrlAssociations [gopher]</pattern>
+            <!-- ExcludedUrls was removed from roaming since Windows 8.1. Make sure upgrades don't pickup this key. -->
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Capabilities\Roaming\ExcludedUrls\* [*]</pattern>
+            <!-- Don't migrate version numbers - get the Vista ones instead -->
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Version Vector\* [*]</pattern>
+            <!-- SmartScreen should be disabled upon install/upgrade -->
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\PhishingFilter [EnabledV8]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\PhishingFilter [EnabledV9]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Low Rights\ElevationPolicy\{0002df01-0000-0000-c000-000000000046}
+            <!-- Don't migrate ElevationPolicy settings for Adobe Flash -->
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Low Rights\ElevationPolicy\{FAB3E735-69C7-453B-A446-B6823C6DF1C9} [*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Low Rights\ElevationPolicy\{FAF199D2-BFA7-4394-A4DE-044A08E59B32} [*]</pattern>
+            <!-- Don't migrate ElevationPolicy settings for classic Chx IME since it is replaced by modern Chx IME -->
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Low Rights\ElevationPolicy\{5b71395d-ff8a-4ebc-bca3-abbb32790bec}\* [*]</pattern>
+            <!--pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Low Rights\ElevationPolicy\{afe26134-8a16-4149-b798-242574f3f4a9}\* [*]</pattern-->
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\BrowserEmulation [MSCompatibilityMode]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\Main [DoNotTrack]</pattern> [Policy]</pattern>
+          </objectSet>
+        </exclude>
+      </rules>
+      <rules context="System">
+        <!-- Exclude additional keys from migration on PC-2-PC migration. -->
+        <detects>
+          <detect>
+            <condition negation="Yes">MigXmlHelper.IsUpgrade()</condition>
+          </detect>
+        </detects>
+        <exclude>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer\View Source Editor [Editor Name]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer [BrandGUID]</pattern>
+          </objectSet>
+        </exclude>
+      </rules>
+      <rules context="System">
+        <!-- On upgrades include the branding active setup stub -->
+        <detects>
+          <detect>
+            <condition>MigXmlHelper.IsUpgrade()</condition>
+          </detect>
+          <detect>
+            <condition>MigXmlHelper.DoesObjectExist("Registry", "HKLM\SOFTWARE\Microsoft\Internet Explorer [BrandGUID]")</condition>
+          </detect>
+          <detect>
+            <condition>MigXmlHelper.DoesObjectExist("Registry", "HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\%InternetExplorer.BrandGUID%")</condition>
+          </detect>
+        </detects>
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Internet Explorer [BrandGUID]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components\%InternetExplorer.BrandGUID%\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+    <migrationDisplayID>Network_and_Internet\Internet_Options</migrationDisplayID>
+  </migration>
+</assembly>

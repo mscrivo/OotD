@@ -1,0 +1,210 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      name="Microsoft-Windows-Winlogon"
+      processorArchitecture="*"
+      language="neutral"
+      version="0.0.0.0"
+      />
+  <configuration
+      xmlns:asmv2="urn:schemas-microsoft-com:asm.v3"
+      xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+      buildFilter="not build.isWow"
+      >
+    <configurationSchema>
+      <xsd:schema
+          xmlns="Microsoft-Windows-Winlogon"
+          targetNamespace="Microsoft-Windows-Winlogon"
+          >
+        <xsd:element
+            default="2"
+            name="NumberOfInitialSessions"
+            type="xsd:unsignedInt"
+            wcm:description="$(resourceString.description)"
+            wcm:displayName="$(resourceString.displayName)"
+            wcm:handler="regkey(&apos;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager&apos;)"
+            wcm:legacyType="REG_DWORD"
+            wcm:scope="allUsers"
+            wcm:subScope="machineIndependent"
+            />
+        <xsd:element
+            default="1"
+            name="AutoRestartShell"
+            type="xsd:unsignedInt"
+            wcm:description="$(resourceString.description)"
+            wcm:displayName="$(resourceString.displayName)"
+            wcm:handler="regkey(&apos;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&apos;)"
+            wcm:legacyType="REG_DWORD"
+            wcm:scope="allUsers"
+            wcm:subScope="machineIndependent"
+            />
+        <xsd:element
+            default="$(build.empty)"
+            name="LegalNoticeCaption"
+            type="xsd:string"
+            wcm:description="$(resourceString.description)"
+            wcm:displayName="$(resourceString.displayName)"
+            wcm:handler="regkey(&apos;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&apos;)"
+            wcm:legacyType="REG_SZ"
+            wcm:scope="allUsers"
+            wcm:subScope="machineIndependent"
+            />
+        <xsd:element
+            default="$(build.empty)"
+            name="LegalNoticeText"
+            type="xsd:string"
+            wcm:description="$(resourceString.description)"
+            wcm:displayName="$(resourceString.displayName)"
+            wcm:handler="regkey(&apos;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&apos;)"
+            wcm:legacyType="REG_SZ"
+            wcm:scope="allUsers"
+            wcm:subScope="machineIndependent"
+            />
+        <xsd:element
+            default="0"
+            name="PowerdownAfterShutdown"
+            type="xsd:string"
+            wcm:description="$(resourceString.description)"
+            wcm:displayName="$(resourceString.displayName)"
+            wcm:handler="regkey(&apos;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&apos;)"
+            wcm:legacyType="REG_SZ"
+            wcm:scope="allUsers"
+            wcm:subScope="machineIndependent"
+            />
+        <xsd:element
+            default="0"
+            name="ShutdownWithoutLogon"
+            type="xsd:string"
+            wcm:description="$(resourceString.description)"
+            wcm:displayName="$(resourceString.displayName)"
+            wcm:handler="regkey(&apos;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&apos;)"
+            wcm:legacyType="REG_SZ"
+            wcm:scope="allUsers"
+            wcm:subScope="machineIndependent"
+            />
+        <xsd:element
+            default="10"
+            name="CachedLogonsCount"
+            type="xsd:string"
+            wcm:description="$(resourceString.description)"
+            wcm:displayName="$(resourceString.displayName)"
+            wcm:handler="regkey(&apos;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&apos;)"
+            wcm:legacyType="REG_SZ"
+            wcm:scope="allUsers"
+            wcm:subScope="machineIndependent"
+            />
+        <xsd:element
+            default="0"
+            name="ForceUnlockLogon"
+            type="xsd:unsignedInt"
+            wcm:description="$(resourceString.description)"
+            wcm:displayName="$(resourceString.displayName)"
+            wcm:handler="regkey(&apos;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&apos;)"
+            wcm:legacyType="REG_DWORD"
+            wcm:scope="allUsers"
+            wcm:subScope="machineIndependent"
+            />
+        <xsd:element
+            default="5"
+            name="PasswordExpiryWarning"
+            type="xsd:unsignedInt"
+            wcm:description="$(resourceString.description)"
+            wcm:displayName="$(resourceString.displayName)"
+            wcm:handler="regkey(&apos;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&apos;)"
+            wcm:legacyType="REG_DWORD"
+            wcm:scope="allUsers"
+            wcm:subScope="machineIndependent"
+            />
+        <xsd:element
+            default="0 0 0"
+            name="Background"
+            type="xsd:string"
+            wcm:description="$(resourceString.description)"
+            wcm:displayName="$(resourceString.displayName)"
+            wcm:handler="regkey(&apos;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&apos;)"
+            wcm:legacyType="REG_SZ"
+            wcm:scope="allUsers"
+            wcm:subScope="machineIndependent"
+            />
+        <xsd:element
+            default="no"
+            name="DebugServerCommand"
+            type="xsd:string"
+            wcm:description="$(resourceString.description)"
+            wcm:displayName="$(resourceString.displayName)"
+            wcm:handler="regkey(&apos;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&apos;)"
+            wcm:legacyType="REG_SZ"
+            wcm:scope="allUsers"
+            wcm:subScope="machineIndependent"
+            />
+      </xsd:schema>
+    </configurationSchema>
+  </configuration>
+  <migration
+      scope="Upgrade,MigWiz,USMT"
+      replacementSettingsVersionRange="0"
+      settingsVersion="0"
+      replacementVersionRange="6.0-6.1"
+      >
+    <migXml xmlns="">
+      <rules context="System">
+        <destinationCleanup>
+          <objectSet>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [DisableCad]</pattern>
+          </objectSet>
+        </destinationCleanup>
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [ScreenSaverGracePeriod]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [LegalNoticeCaption]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [LegalNoticeText]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [DisableLockWorkstation]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [ReportControllerMissing]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [AutoRestartShell]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [PasswordExpiryWarning]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [NoDebugThread]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [DisableCad]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [cachedlogonscount]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [USERINIT]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [Shell]</pattern>
+          </objectSet>
+        </include>
+        <rules context="System">
+          <detects>
+            <detect>
+              <condition>MigXmlHelper.DoesObjectExist( "File", "%windir%\system32 [scregedit.wsf]" )</condition>
+            </detect>
+            <detect context="System">
+              <condition>MigXmlHelper.DoesStringContentContain("Registry", "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [Shell]", " &amp; start cmd.exe /k runonce.exe /AlternateShellStartup")</condition>
+            </detect>
+          </detects>
+          <exclude>
+            <objectSet>
+              <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [Shell]</pattern>
+            </objectSet>
+          </exclude>
+        </rules>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [ScreenSaverGracePeriod]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [LegalNoticeCaption]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [LegalNoticeText]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [DisableLockWorkstation]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [ReportControllerMissing]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [AutoRestartShell]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [PasswordExpiryWarning]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [NoDebugThread]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [DisableCad]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [cachedlogonscount]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon [Shell]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+    </migXml>
+  </migration>
+</assembly>

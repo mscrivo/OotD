@@ -1,0 +1,104 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    authors="jeffspel"
+    buildFilter=""
+    company="Microsoft"
+    copyright=""
+    creationTimeStamp="2005-09-13T14:05:43.4054402-07:00"
+    lastUpdateTimeStamp="2005-09-13T15:41:02.9208750-08:00"
+    manifestVersion="1.0"
+    owners="jeffspel"
+    supportInformation=""
+    testers=""
+    >
+  <assemblyIdentity
+      buildFilter=""
+      buildType="release"
+      language="neutral"
+      name="Microsoft-Windows-dpapi-keys-DL"
+      processorArchitecture="*"
+      publicKeyToken=""
+      type=""
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+  <migration
+      xmlns=""
+      scope="Upgrade,MigWiz,USMT"
+      >
+    <machineSpecific>
+      <migXml>
+        <!-- Check as this is only valid for down-level OS < than Windows Vista ? -->
+        <detects>
+          <detect>
+            <condition>MigXmlHelper.IsOSEarlierThan("NT","6.0.0.0")</condition>
+          </detect>
+        </detects>
+        <rules context="User">
+          <include>
+            <objectSet>
+              <!-- include credhist/preferred for upgrade -->
+              <pattern type="File">%CSIDL_APPDATA%\Microsoft\Protect [CREDHIST]</pattern>
+              <pattern type="File">%CSIDL_APPDATA%\Microsoft\Protect\* [Preferred]</pattern>
+            </objectSet>
+          </include>
+        </rules>
+        <!-- pick up user master keys for wellknown service accounts -->
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="File">%PROFILESFOLDER%\LocalService\Application Data\Microsoft\Protect\* [*]</pattern>
+              <pattern type="File">%PROFILESFOLDER%\NetworkService\Application Data\Microsoft\Protect\* [*]</pattern>
+            </objectSet>
+          </include>
+        </rules>
+        <!--  NOTE: System master key files are now migrated during WinPE via offline.xml  -->
+      </migXml>
+    </machineSpecific>
+    <migXml>
+      <!-- Check as this is only valid for down-level OS < than Windows Vista ? -->
+      <detects>
+        <detect>
+          <condition>MigXmlHelper.IsOSEarlierThan("NT","6.0.0.0")</condition>
+        </detect>
+      </detects>
+      <rules context="User">
+        <include>
+          <objectSet>
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\Protect\*[*]</pattern>@*: rule to include the generated values under addObjects
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows NT\CurrentVersion\DPAPI\MigratedUsers\%USERSID%\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce [DPAPIKeyMig]</pattern>
+          </objectSet>
+        </include>
+        <exclude>
+          <objectSet>@*: exclude the credhist and preferred files for migratable
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\Protect [CREDHIST]</pattern>
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\Protect\* [Preferred]</pattern></objectSet>
+        </exclude>
+        <addObjects>
+          <object>
+            <location type="Registry">HKCU\Software\Microsoft\Windows NT\CurrentVersion\DPAPI\MigratedUsers\%USERSID%\UserDomain [%USERDOMAIN%]</location>
+            <attributes>String</attributes>
+            <bytes>0000</bytes>
+          </object>
+          <object>
+            <location type="Registry">HKCU\Software\Microsoft\Windows NT\CurrentVersion\DPAPI\MigratedUsers\%USERSID%\UserName [%USERNAME%]</location>
+            <attributes>String</attributes>
+            <bytes>0000</bytes>
+          </object>
+          <object>
+            <location type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce [DPAPIKeyMig]</location>
+            <attributes>ExpandString</attributes>
+            <bytes>2500530079007300740065006d0052006f006f00740025005c00730079007300740065006d00330032005c00640070006100700069006d00690067002e0065007800650020002d00710075006900650074000000</bytes>
+            <!-- %SystemRoot%\system32\dpapimig.exe -quiet -->
+          </object>
+        </addObjects>
+      </rules>
+      <!--  NOTE: System master key files are now migrated during WinPE via offline.xml  -->
+    </migXml>
+    <migrationDisplayID>Additional_Options\Windows_Core_Settings</migrationDisplayID>
+  </migration>
+</assembly>

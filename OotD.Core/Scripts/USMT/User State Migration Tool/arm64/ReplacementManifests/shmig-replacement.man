@@ -1,0 +1,55 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-shmig"
+      processorArchitecture="*"
+      publicKeyToken=""
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+  <!-- The replacement manifest will allow this _new_ gather plugin to run in the Old OS -->
+  <!-- The settingsVersion below should be the same as in shmig.man -->
+  <!-- replacementSettingsVersionRange should be 0 to settingsVersion minus 1 -->
+  <migration
+      replacementSettingsVersionRange="0-4"
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="5"
+      >
+    <machineSpecific>
+      <migXml xmlns="">
+        <plugin
+            classId="{526D451C-721A-4b97-AD34-DCE5D8CD22C5}"
+            file="Microsoft-Windows-shmig\shmig.dll"
+            offlineApply="yes"
+            />
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\PropertySystem\PropertySchema\* [*]</pattern>
+              <pattern type="Registry">HKLM\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\PropertySystem\PropertySchema\* [*]</pattern>
+              <!-- Migrate Desktop NamespaceRestrictionHelper keys used in EDU SharedPC scenarios -->
+              <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\AllowedEnumeration\* [*]</pattern>
+              <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\AllowedNavigation\* [*]</pattern>
+              <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\TWinUI\FilePicker [OverrideDefaultLocation]</pattern>
+              <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32 [OverrideDefaultLocation]</pattern>
+              <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced [LaunchTo]</pattern>
+            </objectSet>
+          </include>
+        </rules>
+      </migXml>
+    </machineSpecific>
+    <migXml xmlns="">
+      <plugin
+          classId="{050ed09e-a530-41e6-8ac9-a9a96e74a2c1}"
+          file="Microsoft-Windows-shmig\shmig.dll"
+          offlineApply="yes"
+          />
+    </migXml>
+  </migration>
+</assembly>

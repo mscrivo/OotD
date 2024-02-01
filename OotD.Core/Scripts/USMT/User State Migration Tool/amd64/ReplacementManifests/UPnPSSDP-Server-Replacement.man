@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      buildType="$(build.buildType)"
+      language="neutral"
+      name="Microsoft-Windows-UPnPSSDP-Server"
+      processorArchitecture="*"
+      product="$(build.product)"
+      publicKeyToken="$(Build.WindowsPublicKeyToken)"
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+  <migration
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="0"
+      replacementSettingsVersionRange="0"
+      replacementVersionRange="6.2.*"
+      alwaysProcess="6.2.*"
+      >
+    <machineSpecific>
+      <migXml xmlns="">
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\SSDPSRV\Parameters [AdditionalIPv6Scope]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\SSDPSRV\Parameters [MaxCache]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\SSDPSRV\Parameters [TTL]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\SSDPSRV\Parameters [ReceiveScope]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\SSDPSRV\Parameters [MaxDeviceLifetime]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\SSDPSRV\Parameters [MinDeviceLifetime]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\SSDPSRV\Parameters [MaxHttpSize]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\SSDPSRV [Start]</pattern>
+            </objectSet>
+          </include>
+          <merge script="MigXmlHelper.SourcePriority()">
+            <objectSet>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\UPnPHost [Start]</pattern>
+            </objectSet>
+          </merge>
+        </rules>
+      </migXml>
+    </machineSpecific>
+    <migrationDisplayID>Additional_Options\Windows_Core_Settings</migrationDisplayID>
+  </migration>
+</assembly>

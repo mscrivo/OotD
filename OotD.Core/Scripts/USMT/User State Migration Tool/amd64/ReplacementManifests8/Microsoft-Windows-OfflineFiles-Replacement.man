@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly>
+  <assemblyIdentity
+        name="Microsoft-Windows-OfflineFiles-Core"
+        version="0.0.0.0"
+        processorArchitecture="*"
+        language="*"
+/>
+  <!-- We handle upgrade differently from migrating data across two machines to help
+       increase the speed of upgrade. On upgrade, we will let the migration wizard
+       engine rename the cache from the old location to the new location rather than
+       doing the file-by-file migration. This has the additional benefit of allowing
+       us to keep the full cache content on upgrade and not just the dirty files
+       (which is the default behavior).
+       
+       There can only be one migration element in an <assembly>, so you will see
+       a set of migration rules (<migXml>) wrapped in the <machineSpecific> element
+       that apply to in-place upgrade, while the other migration rules apply
+       to cross machine migration.
+
+       This replacement manifest should be used for Vista, Windows 7 and Windows 8
+       builds before the OS version was increased to 6.2 (i.e., Win 8 M1).
+  -->
+  <migration
+        settingsVersion="2"
+        replacementSettingsVersionRange="0-1"
+        replacementVersionRange="6.0-6.2"
+        scope="Upgrade,MigWiz,USMT,Data"
+        >
+    <!-- Migration rules when moving data across machines; these rules also apply to in-place upgrade,
+         except when there is an explicit condition statement blocking application during upgrade. -->
+    <migXml xmlns="">
+      <plugin
+          classId="{0db12ccb-7cfd-46b6-b4d1-daa6ff0fbcf7}"
+          file="Microsoft-Windows-OfflineFiles-Core\Cscmig.dll" 
+          />
+      <!-- Move computer preference. In non-upgrade case, we only want to migrate these preferences
+           if they are not already defined on the target machine. -->
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows\CurrentVersion\NetCache\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+      <rules context="System">
+        <detects>
+          <detect>
+            <condition negation="Yes">MigXmlHelper.IsUpgrade()</condition>
+          </detect>
+        </detects>
+      </rules>
+      <!-- Move user preferences. In the non-upgrade case, we only want to migrate these preferences
+           if they are not already defined on the target machine. -->
+      <rules context="User">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\NetCache\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+      <rules context="User">
+        <detects>
+          <detect>
+            <condition negation="Yes">MigXmlHelper.IsUpgrade()</condition>
+          </detect>
+        </detects>
+        <merge script="MigXmlHelper.DestinationPriority()">
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\NetCache\* [*]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+    </migXml>
+    <!-- Migration rules for in-place upgrade (either build to build, or downlevel OS 
+         to current OS). Note that for in-place upgrade we do NOT make use of cscmig.dll.
+         
+         We need to move the following additional state for the machine:
+           * Current driver and service start states
+           * Driver parameters
+           * The cache itself
+          
+         There is no additional user state to move.
+    -->
+    <machineSpecific>
+      <migXml xmlns="">
+        <!-- Determine the cache location based on the current config before we get started gathering data. -->
+        <environment context="System">
+          <conditions>
+            <condition>MigXmlHelper.DoesObjectExist("Registry","HKLM\SYSTEM\CurrentControlSet\Services\CSC\Parameters[CacheLocation]")</condition>
+          </conditions>
+          <variable name="CSCCacheLocation">
+            <script>MigXmlHelper.GetStringContent("Registry","HKLM\SYSTEM\CurrentControlSet\Services\CSC\Parameters[CacheLocation]")</script>
+          </variable>
+        </environment>
+        <environment context="System">
+          <conditions>
+            <condition negation="Yes">MigXmlHelper.DoesObjectExist("Registry","HKLM\SYSTEM\CurrentControlSet\Services\CSC\Parameters[CacheLocation]")</condition>
+          </conditions>
+          <variable name="CSCCacheLocation">
+            <text>%windir%\CSC</text>
+          </variable>
+        </environment>
+        <!-- Per-machine state -->
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC [Start]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSCService [Start]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [CacheLocation]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [LastSparseExclusionList]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [MaxCacheFreesizePercent]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [MaxUnpinnedSizePercent]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [QuotaCheckEnabled]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [FreeSpaceThresholdPercent]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [EvictToThresholdPercent]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [QuotaWarningThresholdPercent]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [ExcludedFileTypes]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [ManualEvictionPeriodSeconds]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [AutocacheEvictionUnsuccessfulPeriodSeconds]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [AutocacheEvictionIncompletePqPeriodSeconds]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [TemporaryOfflineFilesQuotaZeroFudgeKB]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [ReadOnlyCache]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [ShareEnumOfflineOnOfflineShare]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [OnlineCachingLatencyThreshold]</pattern>
+              <pattern type="Registry">HKLM\System\CurrentControlSet\Services\CSC\Parameters [PeerCachingLatencyThreshold]</pattern>
+              <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\UserState\UserStateTechnologies\ConfigurationControls [OfflineFiles]</pattern>
+              <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\UserState\OfflineFiles\* [*]</pattern>
+              <pattern type="File">%CSCCacheLocation%\*[*]</pattern>
+            </objectSet>
+          </include>
+        </rules>
+        <!-- Per-user state -->
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\UserState\OfflineFiles\* [*]</pattern>
+            </objectSet>
+          </include>
+        </rules>
+      </migXml>
+    </machineSpecific>
+  </migration>
+</assembly>

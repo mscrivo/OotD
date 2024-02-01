@@ -1,0 +1,43 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      name="Microsoft-Windows-explorer"
+      version="0.0.0.0"
+      processorArchitecture="*"
+      language="neutral"
+      />
+  <migration
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="0"
+      replacementSettingsVersionRange="0"
+      replacementVersionRange="6.1-6.2.8032"
+      >
+    <migXml xmlns="">
+      <rules context="User">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Streams\Desktop [Taskbar]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Streams\Desktop [TaskbarWinXP]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects [Settings]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects2 [Settings]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer [EnableAutoTray]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer [ShellState]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\StartPage\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\StartPage2\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\TrayNotify\* [*]</pattern>
+            <!-- Explicitly include the shortcut files that back the pinned lists -->
+            <pattern type="File">%CSIDL_QUICKLAUNCH%\User Pinned\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+    <migrationDisplayID>Appearance_and_Display\Taskbar_and_Start_Menu</migrationDisplayID>
+  </migration>
+</assembly>

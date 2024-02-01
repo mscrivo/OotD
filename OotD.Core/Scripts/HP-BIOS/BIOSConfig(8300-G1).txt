@@ -1,0 +1,173 @@
+BIOSConfig 1.0
+;
+;     Originally created by BIOS Configuration Utility
+;     Version: 4.0.26.1
+;     Date="2019/12/11" Time="13:39:14" UTC="-6"
+;
+;     Found 126 settings
+;
+SATA Emulation
+	IDE
+	--
+	RAID
+	*AHCI
+EFI Boot Order
+	Other
+	USB Floppy/CD
+	USB Hard Drive
+	ATAPI CD-ROM Drive
+Legacy Boot Order
+	USB Floppy/CD Disabled
+	Hard Drive Disabled
+	ATAPI CD-ROM Drive Disabled
+	Network Controller Disabled
+	PnP Device #1 Disabled
+	PnP Device #2 Disabled
+	PnP Device #3 Disabled
+	PnP Device #4 Disabled
+	PnP Device #5 Disabled
+	PnP Device #6 Disabled
+	PnP Device #7 Disabled
+	PnP Device #8 Disabled
+	PnP Device #9 Disabled
+	PnP Device #10 Disabled
+	PnP Device #11 Disabled
+Network Server Mode
+	*Disable
+	Enable
+Setup Browse Mode
+	Disable
+	*Enable
+Password prompt on F9 F11 & F12
+	Enable
+	*Disable
+Cover Lock
+	*Unlock
+	Lock
+Cover Removal Sensor
+	*Disable
+	Notify User
+	--
+	Setup Password
+Network Controller
+	Device hidden
+	*Device available
+Embedded Security Device
+	Device hidden
+	*Device available
+Network Service Boot
+	Disable
+	*Enable
+Data Execution Prevention
+	Disable
+	*Enable
+Virtualization Technology (VTx)
+	Disable
+	*Enable
+Virtualization Technology Directed I/O (VTd)
+	Disable
+	*Enable
+Intel TXT(LT) Support
+	Disable
+	*Enable
+Activate Embedded Security On Next Boot
+	Disable
+	*Enable
+Embedded Security Activation Policy
+	F1 to Boot
+	Allow user to reject
+	*No prompts
+OS management of Embedded Security Device
+	*Enable
+	Disable
+Reset of Embedded Security Device through OS
+	*Disable
+	Enable
+Master Boot Record Security
+	*Disable
+	Enable
+Legacy Support
+	*Disable
+	Enable
+Secure Boot
+	Disable
+	*Enable
+Clear Secure Boot Keys
+	*Don't Clear
+	Clear
+Key Ownership
+	*HP Keys
+	Custom Keys
+Fast Boot
+	*Disable
+	Enable
+Option ROM Prompt
+	*Enable
+	Disable
+Remote Wakeup Boot Source
+	Remote Server
+	*Local Hard Drive
+After Power Loss
+	Off
+	*On
+	Previous State
+POST Delay (in seconds)
+	*None
+	5
+	10
+	15
+	20
+POST Memory Manager Runtime Allocation
+	*Disable
+	Enable
+Multi-Processor
+	*Enable
+	Disable
+Hyper-Threading
+	Disable
+	*Enable
+Bypass F1 Prompt on Configuration Changes
+	Disable
+	*Enable
+Num Lock State at Power-On
+	Off
+	*On
+Integrated Video
+	Disable
+	*Enable
+Internal Speaker
+	Disable
+	*Enable
+NIC Option ROM Download
+	*PXE
+	Disable
+	iSCSI
+SATA RAID Option ROM Download
+	*Enable
+	Disable
+Turbo Mode
+	Disable
+	*Enable
+PXE Option ROMs
+	Legacy Only
+	*UEFI Only
+	Do Not Launch
+Storage Option ROMs
+	Legacy Only
+	*UEFI Only
+	Do Not Launch
+Video Option ROMs
+	Legacy Only
+	*UEFI Only
+Runtime Power Management
+	*Disable
+	Enable
+Idle Power Savings
+	*Normal
+	Extended
+Unique Sleep State Blink Rates
+	*Disable
+	Enable
+S5 Maximum Power Savings
+	*Disable
+	Enable

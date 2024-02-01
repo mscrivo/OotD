@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Applications/>
+  <Documents/>
+  <WindowsComponents defaultMigrate="no">
+    <component displayname="Microsoft-Windows-Font-TrueType-FontsRegistrySettingsMigration" migrate="yes" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-font-truetype-fontsregistrysettingsmigration/microsoft-windows-font-truetype-fontsregistrysettingsmigration/settings"/>
+    <component displayname="Microsoft-Windows-IE-InternetExplorer" migrate="yes" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-ie-internetexplorer/microsoft-windows-ie-internetexplorer/settings"/>
+    <component displayname="Microsoft-Windows-propsys" migrate="yes" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-propsys/microsoft-windows-propsys/settings"/>
+    <component displayname="Microsoft-Windows-Security-SPP" migrate="yes" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-security-spp/microsoft-windows-security-spp/settings"/>
+    <component displayname="Microsoft-Windows-Sxs" migrate="yes" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-sxs/microsoft-windows-sxs/settings"/>
+    <component displayname="Microsoft-Windows-TaskScheduler-Service" migrate="yes" ID="http://www.microsoft.com/migration/1.0/migxmlext/cmi/microsoft-windows-taskscheduler-service/microsoft-windows-taskscheduler-service/settings"/>
+    <component displayname="offlineUpgrade" migrate="yes" ID="http://www.microsoft.com/migration/1.0/migxmlext/offlineupgrade/offlineUpgrade/settings"/>
+  </WindowsComponents>
+  <Policies>
+    <ErrorControl>
+      <!--   Example:
+      <fileError>
+        <nonFatal errorCode="33">*[*]</nonFatal>
+        <fatal errorCode="any">C:\Users\*[*]</fatal>
+      </fileError>
+      <registryError>
+        <nonFatal errorCode="5">*[*]</nonFatal>
+      </registryError>
+      -->
+    </ErrorControl>
+  </Policies>
+</Configuration>

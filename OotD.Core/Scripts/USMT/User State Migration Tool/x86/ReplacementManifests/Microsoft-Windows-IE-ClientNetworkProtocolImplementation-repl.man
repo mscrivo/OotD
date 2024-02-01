@@ -1,0 +1,83 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-IE-ClientNetworkProtocolImplementation"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      alwaysProcess="yes"
+      replacementSettingsVersionRange="0-1"
+      replacementVersionRange="6.0-11.0.10054.0"
+      scope="Upgrade"
+      settingsVersion="1"
+      >
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\5.0\* [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+      <rules context="user">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\5.0\* [*]</pattern>
+            <pattern type="File">%CSIDL_COOKIES%\* [*]</pattern>
+            <pattern type="File">%CSIDL_HISTORY%\* [*]</pattern>
+            <!-- Extensible Cache Files -->
+            <!-- Translation of encoding below: MigXmlHelper.ExtractDirectory(NULL, '0', '\* [*]') -->
+            <content filter="MigXmlHelper.ExtractDirectory(NULL,&apos;0&apos;,&apos;\* [*]&apos;)">
+              <objectSet>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\5.0\Cache\Extensible Cache\$ [CachePath]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\5.0\LowCache\Extensible Cache\$ [CachePath]</pattern>
+              </objectSet>
+            </content>
+            <!-- Low Box Cache -->
+            <pattern type="Registry">HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$\Internet Settings\Cache\* [*]</pattern>
+            <pattern type="File">%CSIDL_PROFILE%\AppData\$\INetCookies\* [*]</pattern>
+            <pattern type="File">%CSIDL_PROFILE%\AppData\$\INetHistory\* [*]</pattern>
+            <pattern type="File">%CSIDL_PROFILE%\AppData\$\AppCache\* [*]</pattern>
+            <!-- Low Box Extensible Cache Files -->
+            <content filter="MigXmlHelper.ExtractDirectory(NULL,&apos;0&apos;,&apos;\* [*]&apos;)">
+              <objectSet>
+                <pattern type="Registry">HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\$\Internet Settings\Cache\Extensible Cache\$ [CachePath]</pattern>
+              </objectSet>
+            </content>
+            <!-- New Cache DB Files Location -->
+            <pattern type="File">%CSIDL_LOCAL_APPDATA%\Microsoft\Windows\WebCache [*]</pattern>
+            <!-- App Cache File Location -->
+            <pattern type="File">%CSIDL_LOCAL_APPDATA%\Microsoft\Windows\AppCache\* [*]</pattern>
+            <pattern type="File">%FOLDERID_LocalAppDataLow%\Microsoft\Windows\AppCache\* [*]</pattern>
+          </objectSet>
+        </include>
+        <!-- Use this section to explicitly EXCLUDE anything that was picked up as a result of the <include> tag above -->
+        <!-- The example below excludes the files stored by the ietld extensible cache container
+             NOTE: The manifest parser doesn't like XML escape sequences in comments. Replace the arguments to
+                   ExtractDirectory(.) with those from an example above or below.
+        <exclude>
+          <objectSet>
+            <content filter="MigXmlHelper.ExtractDirectory( TODO: Copy args here )">
+              <objectSet>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\5.0\Cache\Extensible Cache\ietld [CachePath]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\5.0\LowCache\Extensible Cache\ietld [CachePath]</pattern>
+              </objectSet>
+            </content>
+          </objectSet>
+        </exclude>
+        -->
+        <exclude>
+          <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings [PrivacyAdvanced]</pattern>
+        </exclude>
+      </rules>
+    </migXml>
+    <migrationDisplayID>Network_and_Internet\Internet_Options</migrationDisplayID>
+  </migration>
+</assembly>

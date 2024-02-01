@@ -1,0 +1,58 @@
+HPQFlash.TXT										
+
+HPQFlash.exe is a utility which is designed to update the system BIOS through 
+a Windows environment. 
+
+NOTES:
+     1. [Path]\HPQFlash -? will display the available options for this utility.
+     
+     2. If the system has a F10-Setup password enabled, then HPQFlash will prompt
+	for the password to be entered before completing the flash process.
+
+USAGE:
+  
+     1.	Close all other applications before launching HPQFlash.
+
+     2. On the Windows Task Bar select Start, then Run, and enter 
+	the following on the command line:
+		[Path]\HPQFlash 
+
+     3. HPQFlash will inform the user that a BIOS flash is about to occur.
+
+     4. The version of the BIOS image in the ROM.CAB file and the version of the 
+	current system BIOS are displayed. Once OK is selected the flash
+      	process begins.
+
+     5.	Upon completion, the user is notified that the BIOS Flash was 
+	successful.  Select Shutdown.
+
+     6.	Turn the unit back on using the power button.
+
+     7.	The system BIOS update is complete.
+
+ADVANCED USAGE:
+
+     1.	Close all other applications before launching HPQFlash.
+
+     2. On the Windows Task Bar select Start, then Run, and enter 
+	the following on the command line:
+		[Path]\HPQFlash -f[Name].CAB
+
+     3. HPQFlash will inform the user that a BIOS Flash is about to occur.
+
+     4.	The version of the BIOSimage in the [Name].cab file and the version of the 
+	current system BIOS are displayed. Once OK is selected the flash
+      	process begins.
+
+     5.	Upon completion, the user is notified that the BIOS Flash was 
+	successful.  Select Shutdown.
+
+     6.	Turn the unit back on using the power button.
+
+     7.	The system BIOS update is complete.
+
+HPQFlash.exe version 4.40 Rev. A Pass 1
+
+Copyright (c) 2010-2016 Hewlett-Packard Development Company, L.P.
+
+

@@ -1,0 +1,35 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      name="Microsoft-Windows-sysdm"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      language="neutral"
+      />
+  <migration
+      replacementVersionRange="6.0.*"
+      alwaysProcess="yes"
+      replacementSettingsVersionRange="0"
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="0"
+      >
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\PriorityControl [Win32PrioritySeparation]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management [PagingFiles]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management [ExistingPageFiles]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management [TempPageFile]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\CrashControl [*]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+  </migration>
+</assembly>

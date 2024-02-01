@@ -1,0 +1,124 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      name="Microsoft-Windows-TextServicesFramework-Migration"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      language="neutral"
+      />
+  <migration
+      scope="Upgrade,Data,MigWiz,USMT"
+      settingsVersion="2"
+      replacementSettingsVersionRange="0-1"
+      >
+    <machineSpecific>
+      <migXml xmlns="">
+        <!-- Plug-in setting for msctfmig.dll -->
+        <plugin
+            classId="{0b23c863-4410-4153-8733-a60c9b1990fb}"
+            file="Microsoft-Windows-TextServicesFramework-Migration\msctfmig.dll"
+            offlineApply="Yes"
+            />
+        <!-- Gather the registry keys that need to be migrated -->
+        <!-- valid only in full ugprade or data-only upgrade   -->
+        <rules context="User">
+          <conditions operation="OR">  
+            <condition>MigXmlHelper.IsMigrationScope("Upgrade")</condition>  
+            <condition>MigXmlHelper.IsMigrationScope("Data")</condition>  
+          </conditions>  
+          <include>
+            <objectSet>
+              <!-- LangBar settings -->
+              <pattern type="Registry">HKCU\Software\Microsoft\CTF\LangBar\* [*]</pattern>
+              <!-- MSUTB settings -->
+              <pattern type="Registry">HKCU\Software\Microsoft\CTF\MSUTB\* [*]</pattern>
+              <!-- SortOrder settings -->
+              <pattern type="Registry">HKCU\Software\Microsoft\CTF\SortOrder\* [*]</pattern>
+              <pattern type="Registry">HKCU\Control Panel\International\User Profile\* [*]</pattern>
+              <!-- DirectSwitchHotkeys settings -->
+              <pattern type="Registry">HKCU\Software\Microsoft\CTF\DirectSwitchHotkeys\* [*]</pattern>
+              <!-- IME data files -->
+              <pattern type="File">%APPDATA%\Microsoft\InputMethod\* [*]</pattern>
+              <pattern type="Registry">HKCU\Software\Microsoft\InputMethod\Settings\* [*]</pattern>
+              <pattern type="Registry">HKCU\Software\Microsoft\InputMethod\CandidateWindow\* [*]</pattern>
+            </objectSet>
+          </include>
+          <exclude>
+            <objectSet>
+              <!-- ctfmon.exe -->
+              <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Run [ctfmon.exe]</pattern>
+            </objectSet>
+          </exclude>
+          <merge script="MigXmlHelper.SourcePriority()">
+            <objectSet>
+              <pattern type="Registry">HKCU\Software\Microsoft\CTF\LangBar\* [*]</pattern>
+              <pattern type="Registry">HKCU\Software\Microsoft\CTF\MSUTB\* [*]</pattern>
+              <pattern type="Registry">HKCU\Software\Microsoft\CTF\SortOrder\* [*]</pattern>
+              <pattern type="Registry">HKCU\Software\Microsoft\CTF\DirectSwitchHotkeys\* [*]</pattern>
+              <pattern type="Registry">HKCU\Control Panel\International\User Profile\* [*]</pattern>
+              <pattern type="File">%APPDATA%\Microsoft\InputMethod\* [*]</pattern>
+              <pattern type="Registry">HKCU\Software\Microsoft\InputMethod\Settings\* [*]</pattern>
+              <pattern type="Registry">HKCU\Software\Microsoft\InputMethod\CandidateWindow\* [*]</pattern>
+            </objectSet>
+          </merge>
+        </rules>
+      </migXml>
+    </machineSpecific>
+    <migXml xmlns="">
+      <!-- Plug-in setting for msctfmig.dll -->
+      <plugin
+          classId="{0b23c863-4410-4153-8733-a60c9b1990fb}"
+          file="Microsoft-Windows-TextServicesFramework-Migration\msctfmig.dll"
+          offlineApply="Yes"
+          />
+      <!-- Gather the registry keys that need to be migrated -->
+      <!-- valid only in PC to PC migration scenarios        -->
+      <rules context="User">
+        <conditions operation="AND">  
+          <condition negation="Yes">MigXmlHelper.IsMigrationScope("Upgrade")</condition>  
+          <condition negation="Yes">MigXmlHelper.IsMigrationScope("Data")</condition>  
+        </conditions>  
+        <include>
+          <objectSet>
+            <!-- LangBar settings -->
+            <pattern type="Registry">HKCU\Software\Microsoft\CTF\LangBar\* [*]</pattern>
+            <!-- MSUTB settings -->
+            <pattern type="Registry">HKCU\Software\Microsoft\CTF\MSUTB\* [*]</pattern>
+            <!-- SortOrder settings -->
+            <pattern type="Registry">HKCU\Software\Microsoft\CTF\SortOrder\* [*]</pattern>
+            <pattern type="Registry">HKCU\Control Panel\International\User Profile\* [*]</pattern>
+            <!-- DirectSwitchHotkeys settings -->
+            <pattern type="Registry">HKCU\Software\Microsoft\CTF\DirectSwitchHotkeys\* [*]</pattern>
+            <!-- IME data files -->
+            <pattern type="File">%APPDATA%\Microsoft\InputMethod\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\InputMethod\Settings\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\InputMethod\CandidateWindow\* [*]</pattern>
+          </objectSet>
+        </include>
+        <exclude>
+          <objectSet>
+            <!-- ctfmon.exe -->
+            <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Run [ctfmon.exe]</pattern>
+          </objectSet>
+        </exclude>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <pattern type="Registry">HKCU\Software\Microsoft\CTF\LangBar\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\CTF\MSUTB\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\CTF\SortOrder\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\CTF\DirectSwitchHotkeys\* [*]</pattern>
+            <pattern type="Registry">HKCU\Control Panel\International\User Profile\* [*]</pattern>
+            <pattern type="File">%APPDATA%\Microsoft\InputMethod\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\InputMethod\Settings\* [*]</pattern>
+            <pattern type="Registry">HKCU\Software\Microsoft\InputMethod\CandidateWindow\* [*]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+    </migXml>
+  </migration>
+</assembly>

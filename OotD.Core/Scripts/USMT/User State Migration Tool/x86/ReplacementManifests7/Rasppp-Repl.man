@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      name="Microsoft-Windows-Rasppp"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      language="neutral"
+      versionScope="nonSxS"
+      />
+  <migration
+      scope="Upgrade,MigWiz,USMT"
+      replacementVersionRange="6.0.0-6.1.7100"
+      replacementSettingsVersionRange="0"
+      settingsVersion="1"
+      >
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RasMan\PPP [MaxConfigure]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RasMan\PPP [MaxFailure]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RasMan\PPP [MaxReject]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RasMan\PPP [MaxTerminate]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RasMan\PPP [Multilink]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RasMan\PPP [NegotiateTime]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RasMan\PPP [RestartTimer]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RasMan\PPP\EAP\* [*]</pattern>
+          </objectSet>
+        </include>
+        <exclude>
+          <objectSet>  
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RasMan\PPP\EAP\4\[*]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RasMan\PPP\EAP\13 [Properties]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RasMan\PPP\EAP\25 [Properties]</pattern>
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\RasMan\PPP\EAP\26 [Properties]</pattern>
+          </objectSet>
+        </exclude>
+      </rules>
+    </migXml>
+    <supportedComponents>
+      <supportedComponent>
+        <supportedComponentIdentity
+            buildFilter=""
+            buildType="$(build.buildType)"
+            language="neutral"
+            name="Microsoft-Windows-Rasppp"
+            processorArchitecture="*"
+            publicKeyToken="$(Build.WindowsPublicKeyToken)"
+            settingsVersionRange="1"
+            type=""
+            versionScope="nonSxS"
+            />
+      </supportedComponent>
+    </supportedComponents>
+  </migration>
+</assembly>

@@ -1,0 +1,202 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-CAPI2-certs"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <migration
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="0"
+      replacementSettingsVersionRange="0" 
+      replacementVersionRange="6.0-6.1"
+      >
+    <migXml xmlns="">
+      <rules context="User">
+        <include>
+          <objectSet>
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\SystemCertificates\My\Certificates[*]</pattern>
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\SystemCertificates\Request\Certificates[*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\Root\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\TrustedPublisher\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\TrustedPeople\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\*[*]</pattern>
+          </objectSet>
+        </include>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\SystemCertificates\My\Certificates[*]</pattern>
+            <pattern type="File">%CSIDL_APPDATA%\Microsoft\SystemCertificates\Request\Certificates[*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\Root\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\TrustedPublisher\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\TrustedPeople\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\*[*]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+    </migXml>
+    <machineSpecific>
+      <migXml xmlns="">
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\My\Certificates\*[*]</pattern>
+            </objectSet>
+          </include>
+          <merge script="MigXmlHelper.SourcePriority()">
+            <objectSet>
+              <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\My\Certificates\*[*]</pattern>
+            </objectSet>
+          </merge>
+        </rules>
+      </migXml>
+    </machineSpecific>
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Request\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Root\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\TrustedPublisher\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\TrustedPeople\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\ACRS\CTLs\*[*]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\EnterpriseCertificates\*[*]</pattern>
+          </objectSet>
+        </include>
+        <exclude>
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Root\Certificates\2BD63D28D7BCD0E251195AEB519243C13142EBC3\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Root\Certificates\8A334AA8052DD244A647306A76B8178FA215F344\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\1916A2AF346D399F50313C393200F14140456616\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\305F8BD17AA2CBC483A4C41B19A39A0C75DA39D6\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\471C949A8143DB5AD5CDF1C972864A2504FA23C9\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\61793FCBFA4F9008309BBA5FF12D2CB29CD4151A\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\637162CC59A3A1E25956FA5FA8F60D2E1C52EAC6\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\63FEAE960BAA91E343CE2BD8B71798C76BDB77D0\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\6431723036FD26DEA502792FA595922493030F97\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\7D7F4414CCEF168ADF6BF40753B5BECD78375931\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\80962AE4D6C5B442894E95A13E4A699E07D694CF\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\CEA586B2CE593EC7D939898337C57814708AB2BE\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\D018B62DC518907247DF50925BB09ACF4A5CB3AD\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\43D9BCB568E039D073A74A71D8511F7476089CC3\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\C060ED44CBD881BD0EF86C0BA287DDCF8167478C\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\40AA38731BD189F9CDB5B9DC35E2136F38777AF4\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\5DE83EE82AC5090AEA9D6AC4E7A6E213F946E179\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\B533345D06F64516403C00DA03187D3BFEF59156\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\2B84BFBB34EE2EF949FE1CBE30AA026416EB2216\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\367D4B3B4FCBBC0B767B2EC0CDB2A36EAB71A4EB\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\86E817C81A5CA672FE000F36F878C19518D6F844\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\9845A431D51959CAF225322B4A4FE9F223CE6D15\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\B86E791620F759F17B8D25E38CA8BE32E7D5EAC2\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\F8A54E03AADC5692B850496A4C4630FFEAA29D83\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\51C3247D60F356C7CA3BAF4C3F429DAC93EE7B74\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\8E5BD50D6AE686D65252F843A9D4B96D197730AB\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\2A83E9020591A55FC6DDAD3FB102794C52B24E70\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\3A850044D8A195CD401A680C012CB0A3B5F8DC08\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\FA6660A94AB45F6A88C0D7874D89A863D74DEE97\*[*]</pattern>
+          </objectSet>
+        </exclude>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Root\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Request\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\TrustedPublisher\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\TrustedPeople\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\*[*]</pattern>
+            <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\ACRS\CTLs\*[*]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\EnterpriseCertificates\*[*]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+    </migXml>
+    <supportedComponents xmlns="">
+      <supportedComponent>
+        <supportedComponentIdentity
+            language="*"
+            name="Microsoft-Windows-CAPI2-certs"
+            processorArchitecture="*"
+            settingsVersionRange="0"
+            />
+        <migXml>
+          <rules context="User">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="File">%CSIDL_APPDATA%\Microsoft\SystemCertificates\My\Certificates[*]</pattern>
+                <pattern type="File">%CSIDL_APPDATA%\Microsoft\SystemCertificates\Request\Certificates[*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\Root\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\TrustedPublisher\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\TrustedPeople\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\*[*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+          <rules context="System">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Root\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\My\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Request\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\TrustedPublisher\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\TrustedPeople\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\ACRS\CTLs\*[*]</pattern>
+                <pattern type="Registry">HKLM\Software\Microsoft\EnterpriseCertificates\*[*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+        </migXml>
+      </supportedComponent>
+      <supportedComponent>
+        <supportedComponentIdentity
+            language="*"
+            name="Microsoft-Windows-CAPI2-certs-DL"
+            processorArchitecture="*"
+            settingsVersionRange="0"
+            />
+        <migXml>
+          <rules context="User">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="File">%CSIDL_APPDATA%\Microsoft\SystemCertificates\My\Certificates[*]</pattern>
+                <pattern type="File">%CSIDL_APPDATA%\Microsoft\SystemCertificates\Request\Certificates[*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\TrustedPublisher\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\TrustedPeople\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\*[*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+          <rules context="System">
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Root\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\My\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Request\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\TrustedPublisher\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\TrustedPeople\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\Disallowed\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\CA\Certificates\*[*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\SystemCertificates\ACRS\CTLs\*[*]</pattern>
+                <pattern type="Registry">HKLM\Software\Microsoft\EnterpriseCertificates\*[*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+        </migXml>
+      </supportedComponent>
+    </supportedComponents>
+    <migrationDisplayID>Additional_Options\Windows_Core_Settings</migrationDisplayID>
+  </migration>
+</assembly>

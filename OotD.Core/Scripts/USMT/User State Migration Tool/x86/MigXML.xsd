@@ -1,0 +1,721 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- In this schema we are more restrictive. We are allowing only
+        the values in these enumerations, though engine does accept values in case insensitive way -->
+
+  <xs:simpleType name="PatternType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Registry"/>
+      <xs:enumeration value="File"/>
+      <xs:enumeration value="Ini"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType  name="BooleanType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="YesType" />
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="NoType" />
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="YesType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="TRUE"/>
+      <xs:enumeration value="Yes"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NoType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="0"/>
+      <xs:enumeration value="FALSE"/>
+      <xs:enumeration value="No"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="BooleanOperation">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AND"/>
+      <xs:enumeration value="OR"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ComponentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="System"/>
+      <xs:enumeration value="Application"/>
+      <xs:enumeration value="Device"/>
+      <xs:enumeration value="Documents"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ContextString">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="System"/>
+      <xs:enumeration value="User"/>
+      <xs:enumeration value="UserAndSystem"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="AttributesType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Security"/>
+      <xs:enumeration value="TimeFields"/>
+      <xs:enumeration value="Security,TimeFields"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ProcessTimeString">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="pre-scan"/>
+      <xs:enumeration value="scan-success"/>
+      <xs:enumeration value="post-scan"/>
+      <xs:enumeration value="pre-apply"/>
+      <xs:enumeration value="apply-success"/>
+      <xs:enumeration value="post-apply"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RoleTypeString">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Container"/>
+      <xs:enumeration value="Binaries"/>
+      <xs:enumeration value="Settings"/>
+      <xs:enumeration value="Data"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--  ALLOW ONLY THE FOLLOWING IN ATTRIBUTE ELEMENT OF ADDOBJECT  -->
+  <xs:simpleType name="AddObjectAttributeType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="FileAttributeType" />
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="RegAttributeType" />
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="FileAttributeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ARCHIVE"/>
+      <xs:enumeration value="READ-ONLY"/>
+      <xs:enumeration value="SYSTEM"/>
+      <xs:enumeration value="HIDDEN"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RegAttributeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NONE"/>
+      <xs:enumeration value="DWORD"/>
+      <xs:enumeration value="STRING"/>
+      <xs:enumeration value="EXPANDSTRING"/>
+      <xs:enumeration value="BINARY"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ExtensionString">
+    <xs:restriction base = "xs:string">
+      <xs:pattern value = "[\s]*\*\.[\S]+[\s]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NonEmptyString">
+    <xs:restriction base = "xs:string">
+      <xs:pattern value = "[\s]*[\S][\s\S]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Following pattern allows only valid file/reg system characters-->
+
+  <xs:simpleType name="Path">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[\s]*[\S][\s\S]*\[[\s\S]*\][\s]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Reduce the scope of the following elements-->
+  <xs:complexType name="ElementWithFilter">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" ref="objectSet" />
+    </xs:sequence>
+    <xs:attribute name="filter" type="NonEmptyString" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="ElementWithAttribute">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" ref="objectSet" />
+    </xs:sequence>
+    <xs:attribute name="attributes" type="AttributesType"  use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="ElementWithScript">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" ref="objectSet" />
+    </xs:sequence>
+    <xs:attribute name="script" type="NonEmptyString" use="required" />
+  </xs:complexType>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--     DEFINTION OF ::PATTERN:: ELEMENT      -->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="pattern">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="Path">
+          <xs:attribute name="type" type="PatternType" use="required" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "CONTENT" ELEMENT -->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+
+  <!--I am getting more restritive here, mendating atleast one
+      objectSet element, Engine does not care -->
+  <xs:element name="content">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="objectSet" />
+      </xs:sequence>
+      <xs:attribute name="filter" type="NonEmptyString" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "SCRIPT" ELEMENT -->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="script" type="NonEmptyString"/>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--   DEFINTION OF ::OBJECTSET:: ELEMENT      -->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+
+  <xs:element name="objectSet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group minOccurs="0" ref="ConditionGroup"/>
+        <xs:group ref="objectSetSubelements"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="objectSetSubelements" id="objectSetSubelements">
+    <xs:choice>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="script"/>
+        <xs:element ref="pattern" />
+        <xs:element ref="content"/>
+      </xs:choice>
+    </xs:choice>
+  </xs:group>
+
+  <!-- To Specify the constraint that only one of conditions or condition can occur-->
+  <xs:group name="ConditionGroup" id="ConditionGroup">
+    <xs:choice>
+      <xs:element maxOccurs="unbounded" ref="condition"/>
+      <xs:element maxOccurs="1" ref="conditions"/>
+    </xs:choice>
+  </xs:group>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--       DEFINTION OF "RULE" ELEMENT         -->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="rules">
+    <xs:complexType>
+
+      <xs:sequence>
+
+        <xs:choice minOccurs="0">
+          <xs:element  maxOccurs="1" ref="conditions"/>
+          <xs:element  maxOccurs="unbounded" ref="detects"/>
+        </xs:choice>
+
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!-- DEFINTION OF "INCLUDE" ELEMENT -->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="include" type="ElementWithFilter"/>
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!--DEFINTION OF "EXCLUDE" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="exclude" type="ElementWithFilter"/>
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!---DEFINTION OF "INCLUDEATTRIBUTES" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="includeAttributes" type="ElementWithAttribute"/>
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!--DEFINTION OF "EXCLUDEATTRIBUTES" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="excludeAttributes" type="ElementWithAttribute"/>
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!--DEFINTION OF "UNCONDITIONALEXCLUDE" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="unconditionalExclude" type="ElementWithFilter"/>
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!-- DEFINTION OF "MERGE" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="merge" type="ElementWithScript"/>
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!--DEFINTION OF "WINDOWSOBJECTS" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="windowsObjects" type="ElementWithFilter"/>
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!--DEFINTION OF "LOCATIONMODIFY" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="locationModify" type="ElementWithScript"/>
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!--DEFINTION OF "CONTENTMODIFY" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="contentModify" type="ElementWithScript"/>
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!-- DEFINTION OF "DESTINATIONCLEANUP" ELEMENT -->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="destinationCleanup" type="ElementWithFilter"/>
+
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!--DEFINTION OF "ADDOBJECTS" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="addObjects">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:group minOccurs="0" ref="ConditionGroup"/>
+                <xs:group ref="ObjectElement"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!--DEFINTION OF "EXTERNALPROCESS" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="externalProcess">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element  maxOccurs="unbounded" name="commandLine" type="NonEmptyString"/>
+              </xs:sequence>
+              <xs:attribute name="when" type="ProcessTimeString" use="required" />
+            </xs:complexType>
+          </xs:element>
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!--DEFINTION OF "PROCESSING" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element name="processing">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="script"/>
+              </xs:sequence>
+              <xs:attribute name="when" type="ProcessTimeString" use="required" />
+            </xs:complexType>
+          </xs:element>
+
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!--DEFINTION OF "RULES" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element ref="rules" />
+
+        </xs:choice>
+      </xs:sequence>
+
+      <xs:attribute name="name" type="NonEmptyString"/>
+      <xs:attribute name="context" type="ContextString" default="UserAndSystem"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!--GROUP "OBJECT" ELEMENT-->
+  <xs:group id="ObjectElement" name="ObjectElement">
+    <xs:choice>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element minOccurs="0" ref="script"/>
+        <xs:element minOccurs="0" name="object">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="location">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="type" type="PatternType" use="required" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="attributes" type="NonEmptyString" />
+              <xs:element minOccurs="0" name="bytes">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="string" type="BooleanType" default="No"/>
+                      <xs:attribute name="expand" type="BooleanType" default="Yes" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:choice>
+  </xs:group>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "CONDITION" ELEMENT-->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="condition">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="NonEmptyString">
+          <xs:attribute name="negation" type="BooleanType" default="No"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "CONDITIONS" ELEMENT-->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="conditions">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="condition" />
+        <xs:element ref="conditions" />
+      </xs:choice>
+      <xs:attribute name="name" type="NonEmptyString"/>
+      <xs:attribute name="operation" type="BooleanOperation" default="AND"/>
+    </xs:complexType>
+  </xs:element>
+
+
+  <!--Following two elements are deprecated and will need to be removed -->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "DETECT" ELEMENT-->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="detect">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="condition"/>
+        <xs:element ref="objectSet" />
+      </xs:choice>
+      <xs:attribute name="name" type="NonEmptyString"/>
+      <xs:attribute name="context" type="ContextString"  default="UserAndSystem"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "DETECTS" ELEMENT-->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="detects">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="detect" />
+      </xs:sequence>
+      <xs:attribute name="name" type="NonEmptyString"/>
+      <xs:attribute name="context" type="ContextString" default="UserAndSystem"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "DETECTION" ELEMENT-->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="detection">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" ref="conditions" />
+      </xs:sequence>
+      <xs:attribute name="name" type="NonEmptyString"/>
+      <xs:attribute name="context" type="ContextString" default="UserAndSystem"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "SUPPORTEDCOMPONENTS" ELEMENT-->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="supportedComponents">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="supportedComponent"/>
+      </xs:sequence>
+    </xs:complexType>
+    </xs:element>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "SUPPORTEDCOMPONENT" ELEMENT-->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="supportedComponent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="version" type="NonEmptyString"/>
+        <xs:element maxOccurs="unbounded" ref="rules"/>
+      </xs:sequence>
+      <xs:attribute name="id" type="NonEmptyString" use="required" />
+      <xs:attribute name="rules" type="supportedRuleType" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="supportedRuleType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="add"/>
+      <xs:enumeration value="replace"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "ROLE" ELEMENT-->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="role">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice minOccurs="0">
+          <xs:element maxOccurs="unbounded" ref="detects"/>
+          <xs:element maxOccurs="unbounded" ref="detection"/>
+        </xs:choice>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="environment"/>
+        </xs:choice>
+        <!-- IF the role is that of container no "rules" element is
+                     allowed -->
+        <xs:choice>
+          <xs:element maxOccurs="unbounded" ref="rules" />
+          <xs:element maxOccurs="1" ref="supportedComponents" />
+          <!-- Component element is allowed only if the attr value of
+                     container role element is not "Container" -->
+          <xs:element maxOccurs="unbounded" ref="component" />
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="role" type="RoleTypeString" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "NAMEDELEMENTS" ELEMENT -->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="namedElements">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded" minOccurs="0">
+        <xs:element ref="detect"/>
+        <xs:element ref="detects"/>
+        <xs:element ref="environment" />
+        <xs:element ref="rules"/>
+        <xs:element ref="detection"/>
+        <xs:element ref="conditions"/>
+      </xs:choice>
+      <xs:attribute name="name" type="NonEmptyString"/>
+    </xs:complexType>
+
+    <!--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+    <!-- Uniqueness restriction of value of attribute name on any of element above  -->
+    <!--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+    <xs:key name="UniqueNameDetect">
+      <xs:selector xpath="./detect"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+
+    <xs:key name="UniqueNameDetects">
+      <xs:selector xpath="./detects"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+
+    <xs:key name="UniqueNameEnvironment">
+      <xs:selector xpath="./environment"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+
+    <xs:key name="UniqueNameRules">
+      <xs:selector xpath="./rules"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+
+    <xs:key name="UniqueNamedetections">
+      <xs:selector xpath="./detection"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+
+    <xs:key name="UniqueNameConditions">
+      <xs:selector xpath="./conditions"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+
+  </xs:element>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "ENVIRONMENT" ELEMENT-->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="environment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="conditions"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <!--DEFINTION OF "VARIABLE" ELEMENT-->
+          <!--:::::::::::::::::::::::::::::::::::::::::::-->
+          <xs:element  name="variable">
+            <xs:complexType>
+              <xs:choice>
+                <xs:element ref="objectSet" />
+                <xs:element name="text" type="xs:string" />
+                <xs:element name="script" type="xs:string" />
+              </xs:choice>
+              <xs:attribute name="name" type="NonEmptyString" use="required"/>
+              <xs:attribute name="remap" type="BooleanType" use="optional"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="context" type="ContextString" default="UserAndSystem"/>
+      <xs:attribute name="name" type="NonEmptyString"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "COMPONENT" ELEMENT-->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <xs:element name="component">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="ComponentInformation"/>
+        <xs:group ref="ComponentsMainElements"/>
+      </xs:sequence>
+      <xs:attribute name="type" type="ComponentType" use="required" />
+      <xs:attribute name="context" type="ContextString" default="UserAndSystem" />
+      <xs:attribute name="defaultSupported" type="BooleanType" default="TRUE"/>
+      <xs:attribute name="hidden" type="BooleanType" default="FALSE"/>
+    </xs:complexType>
+
+    <!--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+    <!--     Uniqueness restriction of value of attribute role on element role      -->
+    <!--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+    <xs:key name="UniqueValueForRole">
+      <xs:selector xpath="./role"/>
+      <xs:field xpath="@role"/>
+    </xs:key>
+
+  </xs:element>
+
+  <!-- We are more restritive here having ordering of element when it is not
+       enforced by engine-->
+  <xs:group name="ComponentsMainElements" id="ComponentsMainElements">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" ref="environment"/>
+      <xs:element minOccurs="0" maxOccurs="3" ref="role" />
+      <xs:element minOccurs="0" maxOccurs="1" name="extensions">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="extension" type="ExtensionString"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:group id="ComponentInformation" name="ComponentInformation">
+    <xs:sequence>
+      <xs:element name="displayName">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="NonEmptyString">
+              <xs:attribute name="_locID" type="xs:string"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="manufacturer" type="NonEmptyString"/>
+      <xs:element minOccurs="0" name="version" type="NonEmptyString"/>
+      <xs:element minOccurs="0" name="description" type="NonEmptyString" />
+      <xs:element minOccurs="0" name="icon" type="NonEmptyString" />
+      <xs:element minOccurs="0" name="paths">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="path">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:attribute name="type" type="PatternType" use="required" />
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+  <!--DEFINTION OF "MIGRATION" ELEMENT-->
+  <!--:::::::::::::::::::::::::::::::::::::::::::-->
+
+  <!--Display name of each component needs to be unique-->
+  <xs:element name="migration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="library">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="prefix" type="NonEmptyString" use="required" />
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="_locDefinition">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="_locDefault">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="_loc" type="xs:string" use="optional"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" maxOccurs="1" name="_locTag">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="_loc" type="xs:string" use="optional"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element minOccurs="1" ref="component" />
+          <xs:element minOccurs="0" ref="namedElements" />
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="urlid" type="xs:anyURI" use="required" />
+    </xs:complexType>
+
+    <xs:key name="UniqueValueForDisplayName">
+      <xs:selector xpath="./component" />
+      <xs:field xpath="displayName" />
+    </xs:key>
+
+  </xs:element>
+
+</xs:schema>

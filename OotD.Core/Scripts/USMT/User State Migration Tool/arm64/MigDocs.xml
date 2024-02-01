@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<migration urlid="http://www.microsoft.com/migration/1.0/migxmlext/migdocs">
+
+  <!-- This component migrates data in system context -->
+  <component type="Documents" context="System">
+    <displayName>MigDocSystem</displayName>
+    <role role="Data">
+      <rules>
+
+        <!--
+          GenerateDocPatterns takes 3 arguments
+          1. generate patterns for scattered files inside %ProgramFiles%
+          2. generate include patterns (FALSE generates exclude patterns)
+          3. generate patterns for system drive only
+        -->
+
+        <include filter='MigXmlHelper.IgnoreIrrelevantLinks()'>
+          <objectSet>
+            <script>MigXmlHelper.GenerateDocPatterns ("FALSE","TRUE","FALSE")</script>
+          </objectSet>
+        </include>
+        <exclude filter='MigXmlHelper.IgnoreIrrelevantLinks()'>
+          <objectSet>
+            <script>MigXmlHelper.GenerateDocPatterns ("FALSE","FALSE","FALSE")</script>
+          </objectSet>
+        </exclude>
+
+        <!--   Example:
+        <exclude>
+          <objectSet>
+            <pattern type="File">%CSIDL_COMMON_VIDEO%\* [*]</pattern>
+          </objectSet>
+        </exclude>
+        -->
+
+        <contentModify script="MigXmlHelper.MergeShellLibraries('TRUE','TRUE')">
+          <objectSet>
+            <pattern type="File">*[*.library-ms]</pattern>
+          </objectSet>
+        </contentModify>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <pattern type="File">*[*.library-ms]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+    </role>
+  </component>
+
+  <!-- This component migrates data in user context -->
+  <component type="Documents" context="User">
+    <displayName>MigDocUser</displayName>
+    <role role="Data">
+      <rules>
+        <include filter='MigXmlHelper.IgnoreIrrelevantLinks()'>
+          <objectSet>
+            <script>MigXmlHelper.GenerateDocPatterns ("FALSE","TRUE","FALSE")</script>
+          </objectSet>
+        </include>
+        <exclude filter='MigXmlHelper.IgnoreIrrelevantLinks()'>
+          <objectSet>
+            <script>MigXmlHelper.GenerateDocPatterns ("FALSE","FALSE","FALSE")</script>
+          </objectSet>
+        </exclude>
+
+        <!--   Example:
+        <exclude>
+          <objectSet>
+            <pattern type="File">%CSIDL_MYVIDEO%\* [*]</pattern>
+          </objectSet>
+        </exclude>
+        -->
+
+        <contentModify script="MigXmlHelper.MergeShellLibraries('TRUE','TRUE')">
+          <objectSet>
+            <pattern type="File">*[*.library-ms]</pattern>
+          </objectSet>
+        </contentModify>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <pattern type="File">*[*.library-ms]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+    </role>
+  </component>
+</migration>
+

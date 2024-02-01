@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly>
+  <!-- This doesn't actually replace the Microsoft-Windows-WCFCoreComp component.
+       It's just here to provide a dummy MigUnit so the post-apply step for WCF runs
+       if NetFX3 OC is enabled during migration. -->
+  <assemblyIdentity name="Microsoft-Windows-WCFCoreComp" 
+                    version="0.0.0.0" 
+                    processorArchitecture="*" />
+  <migration scope="Upgrade,MigWiz,USMT" 
+             settingsVersion="0"
+             replacementVersionRange="6.0"
+             replacementSettingsVersionRange="0" 
+             alwaysProcess="yes">
+    <migXml xmlns="">
+      <detects>
+        <detect>
+          <condition>MigXmlHelper.IsOSLaterThan("NT", "6.0.0.0")</condition>
+        </detect>
+      </detects>
+    </migXml>
+  </migration>
+</assembly>

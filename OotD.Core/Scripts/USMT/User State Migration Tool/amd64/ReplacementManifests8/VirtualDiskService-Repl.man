@@ -1,0 +1,48 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      name="Microsoft-Windows-VirtualDiskService"
+      version="0.0.0.0"
+      processorArchitecture="*"
+      language="neutral"
+      />
+  <!--
+      This manifest is used to gather settings for migration from Vista and WS08
+      because those builds shipped with an incorrect manifest.
+
+      As this manifest is only used to  gather settings,  it does not need the
+      supportedComponents and merge elements.
+
+      The only settings that we need to gather from Vista and WS08 is the list
+      of registered hardware providers and the alignment values.
+
+      The  machineSpecific element informs the  migration engine  to limit our
+      participation to inplace upgrades only and to not include us in PC-to-PC
+      migration scenarios such as WET, USMT, etc.
+    
+      This manifest is not compiled and hence should not include  build macros
+  -->
+  <migration 
+      replacementSettingsVersionRange="0"
+      replacementVersionRange="6.0.*"
+      settingsVersion="0"
+      >
+    <machineSpecific>
+      <migXml xmlns="">
+        <rules context="System">
+          <include>
+            <objectSet>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\vds\HardwareProviders\* [*]</pattern>
+              <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\vds\Alignment\* [*]</pattern>
+            </objectSet>
+          </include>
+        </rules>
+      </migXml>
+    </machineSpecific>
+  </migration>
+</assembly>

@@ -1,0 +1,58 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-Identity-Foundation-Migration"
+      version="0.0.0.0"
+      processorArchitecture="*"
+      />
+  <migration
+      replacementVersionRange="6.0-6.1"
+      replacementSettingsVersionRange="0"
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="0"
+      alwaysProcess="yes">
+    <migrationDisplayID>Microsoft-Windows-Identity-Foundation-Migration</migrationDisplayID>
+    <registerSDF name="Windows-Identity-Foundation"/>
+    <migXml xmlns="">
+      <detects>
+        <detect>
+          <condition>
+            MigXmlHelper.DoesObjectExist("Registry","HKLM\SOFTWARE\Microsoft\Windows Identity Foundation\Setup\v3.5 [InstallPath]")
+          </condition>
+          <condition>
+            MigXmlHelper.DoesObjectExist("Registry","HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows Identity Foundation\Setup\v3.5 [InstallPath]")
+          </condition>
+        </detect>
+      </detects>
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="File">%programfiles%\Windows Identity Foundation\v3.5\* [c2wtshost.exe.config]</pattern>
+          </objectSet>
+        </include>
+        <merge script="MigXmlHelper.SourcePriority()">
+          <objectSet>
+            <pattern type="File">%programfiles%\Windows Identity Foundation\v3.5\* [c2wtshost.exe.config]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+    </migXml>
+    <supportedComponents>
+      <supportedComponent>
+        <supportedComponentIdentity
+            language="neutral"
+            name="Microsoft-Windows-Identity-Foundation-Migration"
+            processorArchitecture="*"
+            settingsVersionRange="0"
+            versionScope="nonSxS"
+            />
+      </supportedComponent>
+    </supportedComponents>
+  </migration>
+</assembly>

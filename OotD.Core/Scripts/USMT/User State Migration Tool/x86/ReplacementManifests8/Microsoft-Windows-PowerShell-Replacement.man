@@ -1,0 +1,86 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      buildType="$(build.buildType)"
+      language="neutral"
+      name="Microsoft-Windows-PowerShell"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+  <!-- Migrations of .ps1 associations-->
+  <!-- our scope is to only support upgrade. We do not intend to support PC to PC migration 
+       or USMT since that is not supported for PowerShell overall-->
+  <migration scope="Upgrade"
+             settingsVersion="0"
+             replacementSettingsVersionRange="0"
+             replacementVersionRange="6.0.*"
+             alwaysProcess="yes">
+    <migXml xmlns="">
+        <rules context="System">
+            <include>
+                <objectSet>
+                    <pattern type="Registry">HKCR\.ps1\* [*]</pattern>
+                    <pattern type="Registry">HKCR\Microsoft.PowerShellScript.1\* [*]</pattern>
+                    <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment[PSModulePath]</pattern>
+                </objectSet>
+            </include>
+        </rules>
+        <rules context="User">
+            <include>
+                <objectSet>
+                    <pattern type="Registry">HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.ps1\UserChoice\* [*]</pattern>
+                </objectSet>
+            </include>
+        </rules>
+        <rules context="System">
+            <include>
+                <objectSet>
+                    <pattern type="File">%windir%\system32\WindowsPowerShell\v1.0[profile.ps1]</pattern>
+                    <pattern type="File">%windir%\system32\WindowsPowerShell\v1.0[Microsoft.PowerShell_profile.ps1]</pattern>
+                    <pattern type="File">%windir%\system32\WindowsPowerShell\v1.0\[Microsoft.PowerShellISE_profile.ps1]</pattern>
+                    <pattern type="File">%windir%\system32\WindowsPowerShell\v1.0\SessionConfig[*.pssc]</pattern>
+                    <pattern type="File">%windir%\SysWOW64\WindowsPowerShell\v1.0[profile.ps1]</pattern>
+                    <pattern type="File">%windir%\SysWOW64\WindowsPowerShell\v1.0[Microsoft.PowerShell_profile.ps1]</pattern>
+                    <pattern type="File">%windir%\SysWOW64\WindowsPowerShell\v1.0\[Microsoft.PowerShellISE_profile.ps1]</pattern>
+                    <pattern type="File">%windir%\SysWOW64\WindowsPowerShell\v1.0\SessionConfig[*.pssc]</pattern>
+                </objectSet>
+            </include>
+        </rules>
+    </migXml>
+  </migration>
+  <!--TrustInfo for files and directories security-->
+  <trustInfo>
+    <security>
+      <accessControl>
+        <securityDescriptorDefinitions>
+          <securityDescriptorDefinition
+              name="WRP_DIR_DEFAULT_SDDL"
+              sddl="$(build.wrpDirSddl)"
+              />
+          <securityDescriptorDefinition
+              name="WRP_PARENT_DIR_DEFAULT_SDDL"
+              sddl="$(build.wrpParentDirSddl)"
+              />
+          <securityDescriptorDefinition
+              name="WRP_FILE_DEFAULT_SDDL"
+              sddl="$(build.wrpFileSddl)"
+              />
+          <securityDescriptorDefinition
+              name="WRP_MUTABLE_FILE_DEFAULT_SDDL"
+              sddl="O:SYG:SYD:AIS:"
+              />
+          <securityDescriptorDefinition
+              name="WRP_REGKEY_DEFAULT_SDDL"
+              sddl="$(build.wrpRegKeySddl)"
+              />
+        </securityDescriptorDefinitions>
+      </accessControl>
+    </security>
+  </trustInfo>
+</assembly>

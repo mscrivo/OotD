@@ -1,0 +1,64 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      buildType="$(build.buildType)"
+      language="neutral"
+      name="Microsoft-Windows-RasmanService"
+      processorArchitecture="*"
+      version="0.0.0.1"
+      />
+  <migration
+      replacementSettingsVersionRange="1"
+      replacementVersionRange="6.1.*"
+      scope="Upgrade,SvrMig,MigWiz,USMT"
+      settingsVersion="1"
+      >
+    <migXml xmlns="">
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\RasMan\Parameters [AllowPPTPWeakCrypto]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\RasMan\Parameters [AllowL2TPWeakCrypto]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\RasMan\Parameters [KeepRasConnections]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\RasMan\Parameters [NegotiateDH2048_AES256]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\RasMan\Parameters [NegotiateDH2048]</pattern>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\RasMan\Parameters [ProhibitIPSec]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+      <rules context="System">
+        <!-- Include 'CustomDLL' only for in-place upgrade scenario. -->
+        <detects>
+          <detect>
+            <condition negation="No">MigXmlHelper.IsUpgrade()</condition>
+          </detect>
+        </detects>
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\RasMan\Parameters [CustomDLL]</pattern>
+          </objectSet>
+        </include>
+      </rules>
+    </migXml>
+    <supportedComponents>
+      <supportedComponent>
+        <supportedComponentIdentity
+            buildFilter=""
+            buildType="$(build.buildType)"
+            language="neutral"
+            name="Microsoft-Windows-RasmanService"
+            processorArchitecture="*"
+            publicKeyToken="$(Build.WindowsPublicKeyToken)"
+            settingsVersionRange="1"
+            type=""
+            versionScope="nonSxS"
+            />
+      </supportedComponent>
+    </supportedComponents>
+  </migration>
+</assembly>

@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      name="Microsoft-Windows-SpeechCommon-OneCore"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      language="neutral"
+      />
+  <migration
+      replacementSettingsVersionRange="0-3"
+      scope="Upgrade,MigWiz,USMT"
+      settingsVersion="4"
+      >
+      <machineSpecific>
+        <migXml xmlns="">
+          <rules context="System">
+            <conditions>
+              <condition negation="Yes">MigXmlHelper.DoesObjectExist("Registry", "HKLM\SOFTWARE\Policies\Microsoft\InputPersonalization [AllowInputPersonalization]")</condition>
+              <condition>MigXmlHelper.DoesObjectExist("Registry", "HKLM\SOFTWARE\Microsoft\PolicyManager\Current\Device\Privacy [AllowInputPersonalization]")</condition>
+              <condition>MigXmlHelper.DoesStringContentEqual("Registry", "HKLM\SOFTWARE\Microsoft\PolicyManager\Current\Device\Privacy [AllowInputPersonalization]", "0x00000000")</condition>
+            </conditions>
+            <include>
+              <objectSet>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\PolicyManager\Current\Device\Privacy [AllowInputPersonalization]</pattern>
+              </objectSet>
+            </include>
+          </rules>
+          <rules context="System">
+            <conditions>
+              <condition negation="Yes">MigXmlHelper.DoesObjectExist("Registry", "HKLM\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy [HasAccepted]")</condition>
+              <condition>MigXmlHelper.DoesObjectExist("Registry", "HKLM\SOFTWARE\Microsoft\Personalization\Settings [AcceptedPrivacyPolicy]")</condition>
+              <condition>MigXmlHelper.DoesStringContentEqual("Registry", "HKLM\SOFTWARE\Microsoft\Personalization\Settings [AcceptedPrivacyPolicy]", "0x00000000")</condition>
+            </conditions>
+            <addObjects>
+              <object>
+                <location type="Registry">HKLM\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy [HasAccepted]</location>
+                <attributes>dword</attributes>
+                <bytes>00000000</bytes>
+              </object>
+            </addObjects>
+          </rules>
+          <rules context="System">
+            <conditions>
+              <condition negation="Yes">MigXmlHelper.DoesObjectExist("Registry", "HKLM\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy [HasAccepted]")</condition>
+              <condition>MigXmlHelper.DoesObjectExist("Registry", "HKLM\SOFTWARE\Microsoft\Personalization\Settings [AcceptedPrivacyPolicy]")</condition>
+              <condition>MigXmlHelper.DoesStringContentEqual("Registry", "HKLM\SOFTWARE\Microsoft\Personalization\Settings [AcceptedPrivacyPolicy]", "0x00000001")</condition>
+            </conditions>
+            <addObjects>
+              <object>
+                <location type="Registry">HKLM\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy [HasAccepted]</location>
+                <attributes>dword</attributes>
+                <bytes>01000000</bytes>
+              </object>
+            </addObjects>
+          </rules>
+          <rules context="System">
+            <include>
+              <objectSet>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Personalization\Settings\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy\* [*]</pattern>
+              </objectSet>
+            </include>
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Personalization\Settings\* [*]</pattern>
+                <pattern type="Registry">HKLM\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy\* [*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+          <rules context="User">
+            <conditions>
+              <condition negation="Yes">MigXmlHelper.DoesObjectExist("Registry", "HKCU\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy [HasAccepted]")</condition>
+              <condition>MigXmlHelper.DoesObjectExist("Registry", "HKCU\SOFTWARE\Microsoft\Personalization\Settings [AcceptedPrivacyPolicy]")</condition>
+              <condition>MigXmlHelper.DoesStringContentEqual("Registry", "HKCU\SOFTWARE\Microsoft\Personalization\Settings [AcceptedPrivacyPolicy]", "0x00000000")</condition>
+            </conditions>
+            <addObjects>
+              <object>
+                <location type="Registry">HKCU\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy [HasAccepted]</location>
+                <attributes>dword</attributes>
+                <bytes>00000000</bytes>
+              </object>
+            </addObjects>
+          </rules>
+          <rules context="User">
+            <conditions>
+              <condition negation="Yes">MigXmlHelper.DoesObjectExist("Registry", "HKCU\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy [HasAccepted]")</condition>
+              <condition>MigXmlHelper.DoesObjectExist("Registry", "HKCU\SOFTWARE\Microsoft\Personalization\Settings [AcceptedPrivacyPolicy]")</condition>
+              <condition>MigXmlHelper.DoesStringContentEqual("Registry", "HKCU\SOFTWARE\Microsoft\Personalization\Settings [AcceptedPrivacyPolicy]", "0x00000001")</condition>
+            </conditions>
+            <addObjects>
+              <object>
+                <location type="Registry">HKCU\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy [HasAccepted]</location>
+                <attributes>dword</attributes>
+                <bytes>01000000</bytes>
+              </object>
+            </addObjects>
+          </rules>
+          <rules context="User">
+            <include>
+              <objectSet>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Personalization\Settings\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy\* [*]</pattern>
+              </objectSet>
+            </include>
+            <merge script="MigXmlHelper.SourcePriority()">
+              <objectSet>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Personalization\Settings\* [*]</pattern>
+                <pattern type="Registry">HKCU\SOFTWARE\Microsoft\Speech_OneCore\Settings\OnlineSpeechPrivacy\* [*]</pattern>
+              </objectSet>
+            </merge>
+          </rules>
+        </migXml>
+      </machineSpecific>
+      <migXml xmlns="">
+          <rules context="System">
+              <include>
+                  <objectSet>
+                      <pattern type="Registry">HKLM\Software\Microsoft\Speech_OneCore\AudioInput\MicWiz [DefaultDefaultMicGain]</pattern>
+                  </objectSet>
+              </include>
+          </rules>
+          <rules context="User">
+              <include>
+                  <objectSet>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\AppLexicons [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\CurrentUserLexicon\* [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\CurrentUserShortcut\* [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\PromptVoices [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\RecoProfiles\* [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\Recognizers\* [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\Voices [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\AudioInput\TokenEnums\MMAudioIn\* [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\AudioOutput\TokenEnums\MMAudioOut\* [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\AudioInput\[DefaultTokenId]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\AudioOutput\[DefaultTokenId]</pattern>
+                      <pattern type="File">%CSIDL_APPDATA%\Microsoft\Speech_OneCore\Files\* [*]</pattern>
+                      <pattern type="File">%CSIDL_LOCAL_APPDATA%\Microsoft\Speech_OneCore\Files\* [*]</pattern>
+                  </objectSet>
+              </include>
+              <locationModify script="MigXmlHelper.ExactMove(&apos;HKCU\Software\Microsoft\Speech_OneCore\RecoProfiles\Tokens\* [Model Characteristic 1]&apos;)">
+                  <objectSet>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\RecoProfiles\Tokens\* [Age]</pattern>
+                  </objectSet>
+              </locationModify>
+              <locationModify script="MigXmlHelper.ExactMove(&apos;HKCU\Software\Microsoft\Speech_OneCore\RecoProfiles\Tokens\* [Model Characteristic 2]&apos;)">
+                  <objectSet>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\RecoProfiles\Tokens\* [Gender]</pattern>
+                  </objectSet>
+              </locationModify>
+              <merge script="MigXmlHelper.SourcePriority()">
+                  <objectSet>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\AppLexicons [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\CurrentUserLexicon\* [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\CurrentUserShortcut\* [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\PromptVoices [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\RecoProfiles\* [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\Recognizers\* [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\Voices [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\AudioInput\TokenEnums\MMAudioIn\* [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\AudioOutput\TokenEnums\MMAudioOut\* [*]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\AudioInput\[DefaultTokenId]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\AudioOutput\[DefaultTokenId]</pattern>
+                      <pattern type="File">%CSIDL_APPDATA%\Microsoft\Speech_OneCore\Files\* [*]</pattern>
+                      <pattern type="File">%CSIDL_LOCAL_APPDATA%\Microsoft\Speech_OneCore\Files\* [*]</pattern>
+                  </objectSet>
+              </merge>
+              <exclude>
+                  <objectSet>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\RecoProfiles\Tokens\* [Age]</pattern>
+                      <pattern type="Registry">HKCU\Software\Microsoft\Speech_OneCore\RecoProfiles\Tokens\* [Gender]</pattern>
+                  </objectSet>
+              </exclude>
+          </rules>
+      </migXml>
+      <migrationDisplayID>Sound_and_Speech_Recognition\Speech_Recognition</migrationDisplayID>
+  </migration>
+</assembly>

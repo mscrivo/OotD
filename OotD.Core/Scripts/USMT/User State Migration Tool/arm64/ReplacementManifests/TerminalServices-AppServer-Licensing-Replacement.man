@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <assemblyIdentity
+      language="neutral"
+      name="Microsoft-Windows-TerminalServices-AppServer-Licensing"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      versionScope="nonSxS"
+      />
+    <migration
+      scope="Upgrade,MigWiz,USMT"
+      replacementSettingsVersionRange="0"
+      settingsVersion="1"
+      replacementVersionRange="6.0.*" 
+      alwaysProcess="yes"
+      >
+     <migXml xmlns="">
+      <detects>
+        <detect>
+	  <condition>MigXmlHelper.DoesOSMatch("NT", "6.0.*")</condition>
+        </detect>
+      </detects>
+      <rules context="System">
+        <include>
+          <objectSet>
+            <pattern type="Registry">HKLM\SYSTEM\CurrentControlSet\Services\TermService\Parameters\LicenseServers\*</pattern>
+          </objectSet>
+        </include>
+      </rules>
+     </migXml>
+  </migration>
+</assembly>

@@ -1,0 +1,119 @@
+﻿<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+<assembly
+    xmlns="urn:schemas-microsoft-com:asm.v3"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    manifestVersion="1.0"
+    >
+  <!--
+       The same manifest is used for both server migration and client migration.
+       We must not change the assembly identy name of the manifest, or we risk breaking our link
+       with the server migration tools.
+       
+       In Win8, BranchCache has two manifests with <migration> sections:
+           PeerDist-Server-Migration:  Covers all migration scenarios, with SettingsVersion=2
+           PeerDist-Upgrade: New to Win8.  Covers all upgrade scenarios, with SettingsVersion=2 for consistency
+       
+       In Win7, BranchCache originally had two manifests:
+           PeerDist-Server-Migration: Covered both upgrade and migration scenarios for Server SKUs with SettingsVersion=1
+           PeerDist-Client-Migration: Covered both upgrade and migration scenarios for Client SKUs with SettingsVersion=1
+
+       In Win8, we defined replacement manifests for the Win7 manifests.  In the replacement manifests:
+          PeerDist-Server-Migration: Covers only migration for server SKUs with SettingsVersion=1
+          PeerDist-Client-Migration: Covers only migration for client SKUs with SettingsVersion=1
+          PeerDist-Upgrade: Covers upgrade scenarios with SettingsVersion=1
+       
+       SettingsVersion=0 was used in pre-release versions of Win7.
+  -->
+  <assemblyIdentity
+      name="Microsoft-Windows-PeerDist-Server-Migration"
+      processorArchitecture="*"
+      version="0.0.0.0"
+      />
+  <!-- Defines the migration rules for Win7, with SettingsVersion=1 -->
+  <migration
+      replacementSettingsVersionRange="1"
+      replacementVersionRange="6.1.*"
+      scope="MigWiz,USMT,SvrMig"
+      settingsVersion="1"
+      >
+    <migXml xmlns="">
+      <!-- Defines custom environment variables for our cache file locations, based on current registry settings. -->
+      <environment>
+        <variable name="CustomRepubCacheDirectory">
+          <script>MigXmlHelper.GetStringContent("Registry", "HKLM\Software\Microsoft\Windows NT\CurrentVersion\PeerDist\CacheMgr\Republication [Directory]")</script>
+        </variable>
+        <variable name="CustomPubCacheDirectory">
+          <script>MigXmlHelper.GetStringContent("Registry", "HKLM\Software\Microsoft\Windows NT\CurrentVersion\PeerDist\CacheMgr\Publication [Directory]")</script>
+        </variable>
+      </environment>
+      <rules context="System">
+        <include>
+          <objectSet>
+            <!-- Captures the BranchCache registry tree -->
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\PeerDist\* [*]</pattern>
+            <!-- Captures the start type of the BranchCache service -->
+            <pattern type="Registry">HKLM\System\CurrentControlSet\Services\PeerDistSvc [Start]</pattern>
+          </objectSet>
+        </include>
+        <merge script="MigXmlHelper.DestinationPriority()">
+          <objectSet>
+            <!-- Indicates that we do not want to change the location of the BranchCache cache files on the target machine if a non-default location has already been configured. -->
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\PeerDist\CacheMgr\Republication [Directory]</pattern>
+            <pattern type="Registry">HKLM\Software\Microsoft\Windows NT\CurrentVersion\PeerDist\CacheMgr\Publication [Directory]</pattern>
+            <!-- Indicates we never want to overwrite or duplicate any files or folders on the target machine. -->
+            <pattern type="File">* [*]</pattern>
+          </objectSet>
+        </merge>
+      </rules>
+      <!--
+           Gather the cache directories (only the directory, not the files), if one is specified.
+           
+           The logic here is: If the registry key exists, and is not set to empty string, then gather the cache directory.
+           When applying, if the registry key is configured on the target and has a different, valid value, then change the cache directory location accordingly
+      -->
+      <!-- Primary Republication Cache -->
+      <rules context="System">
+        <detects>
+          <detect>
+            <condition>MigXmlHelper.DoesObjectExist("Registry", "HKLM\Software\Microsoft\Windows NT\CurrentVersion\PeerDist\CacheMgr\Republication [Directory]")</condition>
+          </detect>
+          <detect>
+            <condition negation="Yes">MigXmlHelper.DoesStringContentEqual("Registry", "HKLM\Software\Microsoft\Windows NT\CurrentVersion\PeerDist\CacheMgr\Republication [Directory]", "")</condition>
+          </detect>
+        </detects>
+        <include>
+          <objectSet>
+            <pattern type="File">%CustomRepubCacheDirectory%</pattern>
+          </objectSet>
+        </include>
+        <locationModify script="MigXmlHelper.RelativeMove(&apos;%CustomRepubCacheDirectory%&apos;,&apos;%CustomRepubCacheDirectory%&apos;)">
+          <objectSet>
+            <pattern type="File">%CustomRepubCacheDirectory%</pattern>
+          </objectSet>
+        </locationModify>
+      </rules>
+      <!-- Publication cache -->
+      <rules context="System">
+        <detects>
+          <detect>
+            <condition>MigXmlHelper.DoesObjectExist("Registry", "HKLM\Software\Microsoft\Windows NT\CurrentVersion\PeerDist\CacheMgr\Publication [Directory]")</condition>
+          </detect>
+          <detect>
+            <condition negation="Yes">MigXmlHelper.DoesStringContentEqual("Registry", "HKLM\Software\Microsoft\Windows NT\CurrentVersion\PeerDist\CacheMgr\Publication [Directory]", "")</condition>
+          </detect>
+        </detects>
+        <include>
+          <objectSet>
+            <pattern type="File">%CustomPubCacheDirectory%</pattern>
+          </objectSet>
+        </include>
+        <locationModify script="MigXmlHelper.RelativeMove(&apos;%CustomPubCacheDirectory%&apos;,&apos;%CustomPubCacheDirectory%&apos;)">
+          <objectSet>
+            <pattern type="File">%CustomPubCacheDirectory%</pattern>
+          </objectSet>
+        </locationModify>
+      </rules>
+    </migXml>
+  </migration>
+</assembly>
