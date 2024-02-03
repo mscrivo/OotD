@@ -13,8 +13,6 @@ public class TrackBarMenuItem : ToolStripControlHost
 
     public event EventHandler? ValueChanged;
 
-    public ToolTip ToolTip { get; } = new ToolTip(); // Add ToolTip property
-
     public TrackBarMenuItem() : base(new MACTrackBar())
     {
         TrackBar = (MACTrackBar)Control;
@@ -23,20 +21,17 @@ public class TrackBarMenuItem : ToolStripControlHost
 
     public Point Location
     {
-        get { return TrackBar.Location; }
-        set { TrackBar.Location = value; }
+        set => TrackBar.Location = value;
     }
 
     public int Minimum
     {
-        get { return TrackBar.Minimum; }
-        set { TrackBar.Minimum = value; }
+        set => TrackBar.Minimum = value;
     }
 
     public int Maximum
     {
-        get { return TrackBar.Maximum; }
-        set { TrackBar.Maximum = value; }
+        set => TrackBar.Maximum = value;
     }
 
     public int Value
