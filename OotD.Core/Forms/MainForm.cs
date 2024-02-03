@@ -1260,7 +1260,7 @@ public partial class MainForm : Form
             opacityVal = 0.99;
         }
 
-        OpacityLabel.Text = "Opacity: " + Math.Round(opacityVal * 100) + "%";
+        OpacityLabel.Text = Resources.Opacity + Math.Round(opacityVal * 100) + Resources.Percentage;
 
         // Keep the other slider in sync
         TransparencySlider.Value = (int)(opacityVal * 100);
