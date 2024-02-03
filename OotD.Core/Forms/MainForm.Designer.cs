@@ -25,7 +25,7 @@ namespace OotD.Forms
                 components.Dispose();
 
                 // Ensure we cleanup the Outlook resources, but do not call Quit() on the Outlook
-                // app object or we will inadvertantly close any full blown Outlook instances 
+                // app object or we will inadvertently close any full blown Outlook instances 
                 // that are open.
                 OutlookFolderViews = null;
                 _outlookFolder = null;

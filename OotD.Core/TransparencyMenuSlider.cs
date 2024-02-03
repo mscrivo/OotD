@@ -15,38 +15,38 @@ public class TrackBarMenuItem : ToolStripControlHost
 
     public TrackBarMenuItem() : base(new MACTrackBar())
     {
-        this.TrackBar = (MACTrackBar)this.Control;
-        this.TrackBar.Scroll += TrackBar_Scroll;
+        TrackBar = (MACTrackBar)Control;
+        TrackBar.Scroll += TrackBar_Scroll;
     }
 
     public Point Location
     {
-        get { return this.TrackBar.Location; }
-        set { this.TrackBar.Location = value; }
+        get { return TrackBar.Location; }
+        set { TrackBar.Location = value; }
     }
 
     public int Minimum
     {
-        get { return this.TrackBar.Minimum; }
-        set { this.TrackBar.Minimum = value; }
+        get { return TrackBar.Minimum; }
+        set { TrackBar.Minimum = value; }
     }
 
     public int Maximum
     {
-        get { return this.TrackBar.Maximum; }
-        set { this.TrackBar.Maximum = value; }
+        get { return TrackBar.Maximum; }
+        set { TrackBar.Maximum = value; }
     }
 
     public int Value
     {
-        get { return this.TrackBar.Value; }
-        set { this.TrackBar.Value = value; }
+        get { return TrackBar.Value; }
+        set { TrackBar.Value = value; }
     }
 
     public TickStyle TickStyle
     {
-        get { return this.TrackBar.TickStyle; }
-        set { this.TrackBar.TickStyle = value; }
+        get { return TrackBar.TickStyle; }
+        set { TrackBar.TickStyle = value; }
     }
 
     // Add more properties as needed...

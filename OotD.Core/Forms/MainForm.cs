@@ -1236,7 +1236,7 @@ public partial class MainForm : Form
         return mode;
     }
 
-    private void TransparencySlider_ValueChanged(object _1, EventArgs _2, decimal value)
+    private void TransparencySlider_ValueChanged(object sender, EventArgs args, decimal value)
     {
         var opacityVal = (double)(value / 100);
         if (Math.Abs(opacityVal - 1) < double.Epsilon)
@@ -1246,6 +1246,27 @@ public partial class MainForm : Form
 
         Opacity = opacityVal;
         Preferences.Opacity = opacityVal;
+
+        // Keep the other slider in sync
+        TransparencyMenuSlider.Value = (int)(opacityVal * 100);
+    }
+
+    private void TransparencyMenuSlider_ValueChanged(object sender, EventArgs e)
+    {
+        var trackBar = (TrackBarMenuItem)sender;
+        var opacityVal = (double)trackBar.Value / 100; // Get the value from TransparencyMenuSlider
+        if (Math.Abs(opacityVal - 1) < double.Epsilon)
+        {
+            opacityVal = 0.99;
+        }
+
+        OpacityLabel.Text = "Opacity: " + Math.Round(opacityVal * 100) + "%";
+
+        // Keep the other slider in sync
+        TransparencySlider.Value = (int)(opacityVal * 100);
+
+        // Trigger the ValueChanged event for TransparencySlider to make sure it's persisted
+        TransparencySlider_ValueChanged(TransparencySlider, EventArgs.Empty, (decimal)(opacityVal * 100));
     }
 
     private void WindowMessageTimer_Tick(object sender, EventArgs e)
@@ -1257,7 +1278,7 @@ public partial class MainForm : Form
 
     /// <summary>
     /// Standard windows message handler.  The main reason this exists is to ensure 
-    /// the OotD window always stays behind other windows.  A side affect of that is that even
+    /// the OotD window always stays behind other windows.  A side effect of that is that even
     /// context menus from OotD show up behind the main window, so we have to do some trickery below
     /// to handle that case and make sure that the outlook view control context menu shows up in front of 
     /// the main window.  Since we don't have access to the context menu directly, we have to bring the 
@@ -1311,33 +1332,6 @@ public partial class MainForm : Form
         }
 
         base.WndProc(ref m);
-    }
-
-    private void MenuItem_Click(object sender, EventArgs e)
-    {
-        // Handle the exit menu item click event here
-        Application.Exit();
-    }
-
-    private void TransparencyMenuSlider_ValueChanged(object sender, EventArgs e)
-    {
-        //int transparencyValue = this.TransparencyMenuSlider.Value; // Get the value from TransparencyMenuSlider
-
-        TrackBarMenuItem trackBar = (TrackBarMenuItem)sender;
-        double transparencyValue = (double)trackBar.Value / 100; // Get the value from TransparencyMenuSlider
-
-        if (Math.Abs(transparencyValue - 1) < double.Epsilon)
-        {
-            transparencyValue = 0.99;
-        }
-
-        OpacityLabel.Text = "Opacity: " + Math.Round(transparencyValue * 100) + "%";
-
-        // Apply the value to TransparencySlider
-        this.TransparencySlider.Value = (int)(transparencyValue * 100);
-
-        // Trigger the ValueChanged event for TransparencySlider
-        this.TransparencySlider_ValueChanged(this.TransparencySlider, EventArgs.Empty, (int)(transparencyValue * 100));
     }
 
     #region Properties
