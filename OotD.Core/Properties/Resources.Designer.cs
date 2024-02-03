@@ -19,7 +19,7 @@ namespace OotD.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -850,7 +850,7 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opacity:.
+        ///   Looks up a localized string similar to Opacity: .
         /// </summary>
         internal static string Opacity {
             get {
@@ -896,7 +896,7 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OotD detected that Outlook is not running. Perhaps it crashed or was closed accidentally. OotD cannot run without it, please close OotD and restart it..
+        ///   Looks up a localized string similar to OotD detected that Outlook is not running. Perhaps it crashed or was closed accidentally. OotD cannot run without it and will need to be restarted. OotD will now close. .
         /// </summary>
         internal static string OutlookNotRunning {
             get {
@@ -911,6 +911,15 @@ namespace OotD.Properties {
             get {
                 object obj = ResourceManager.GetObject("PayPal", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to %.
+        /// </summary>
+        internal static string Percentage {
+            get {
+                return ResourceManager.GetString("Percentage", resourceCulture);
             }
         }
         
@@ -1227,7 +1236,7 @@ namespace OotD.Properties {
         ///	&lt;viewname&gt;Calendar&lt;/viewname&gt;
         ///	&lt;mode&gt;4&lt;/mode&gt;
         ///	&lt;showfullweek&gt;0&lt;/showfullweek&gt;
-        ///  &lt;showworkweek&gt;1&lt;/showworkweek&gt;	
+        ///    &lt;showworkweek&gt;1&lt;/showworkweek&gt;	
         ///&lt;/view&gt;.
         /// </summary>
         internal static string WorkWeekXML {
