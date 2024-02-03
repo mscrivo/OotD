@@ -1,2 +1,0 @@
-New-Item -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\EnableOfficeModernAuth" -type Directory
-New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\EnableOfficeModernAuth" -Name "StubPath" -Value "powershell.exe -NoProfile -ExecutionPolicy ByPass -File ""c:\Windows\SFHSScripts\EnableOfficeModernAuth-1.0.ps1"" -PropertyType ExpandString -Force"

@@ -1,2 +1,0 @@
-New-Item -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\RemoveOneDriveShortcut" -type Directory
-New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\RemoveOneDriveShortcut" -Name "StubPath" -Value "powershell.exe -NoProfile -ExecutionPolicy ByPass -File ""c:\Windows\SFHSScripts\RemoveOneDriveStartShortcut-1.0.ps1"" -PropertyType ExpandString -Force"

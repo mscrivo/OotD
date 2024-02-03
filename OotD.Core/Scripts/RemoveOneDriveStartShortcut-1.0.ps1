@@ -1,2 +1,0 @@
-Remove-Item "C:\Users\$env:USERNAME\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk"
-Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" -Name "OneDriveSetup" -Value ([byte[]](0x03,0x00,0x00,0x00,0xD1,0x42,0xD8,0xC3,0x02,0xD0,0xD7,0x01))
