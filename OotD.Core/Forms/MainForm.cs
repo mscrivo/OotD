@@ -347,7 +347,7 @@ public partial class MainForm : Form
 
         TransparencySlider.Value = (int)(Preferences.Opacity * 100);
         TransparencyMenuSlider.Value = (int)(Preferences.Opacity * 100);
-        OpacityLabel.Text = "Opacity: " + Math.Round(Preferences.Opacity * 100) + "%";
+        OpacityLabel.Text = Resources.Opacity + Math.Round(Preferences.Opacity * 100) + Resources.Percentage;
     }
 
     /// <summary>
@@ -1262,8 +1262,6 @@ public partial class MainForm : Form
         {
             opacityVal = 0.99;
         }
-
-
 
         // Keep the other slider in sync
         TransparencySlider.Value = (int)(opacityVal * 100);
