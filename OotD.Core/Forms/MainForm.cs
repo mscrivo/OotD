@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using NLog;
+using OotD.Controls;
 using OotD.Enums;
 using OotD.Events;
 using OotD.Preferences;
@@ -1244,6 +1245,8 @@ public partial class MainForm : Form
             opacityVal = 0.99;
         }
 
+        OpacityLabel.Text = Resources.Opacity + Math.Round(opacityVal * 100) + Resources.Percentage;
+
         Opacity = opacityVal;
         Preferences.Opacity = opacityVal;
 
@@ -1260,7 +1263,7 @@ public partial class MainForm : Form
             opacityVal = 0.99;
         }
 
-        OpacityLabel.Text = Resources.Opacity + Math.Round(opacityVal * 100) + Resources.Percentage;
+
 
         // Keep the other slider in sync
         TransparencySlider.Value = (int)(opacityVal * 100);

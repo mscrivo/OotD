@@ -850,7 +850,7 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opacity:.
+        ///   Looks up a localized string similar to Opacity: .
         /// </summary>
         internal static string Opacity {
             get {

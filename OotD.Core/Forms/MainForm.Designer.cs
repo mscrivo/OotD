@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using AxOLXLib;
 using MACTrackBarLib;
+using OotD.Controls;
 using OotD.Utility;
 
 namespace OotD.Forms
@@ -170,14 +171,14 @@ namespace OotD.Forms
             //
             this.TransparencyMenuSlider.Name = "TransparencyMenuSlider";
             this.TransparencyMenuSlider.AutoSize = false;
-            //this.TransparencyMenuSlider.Location = new System.Drawing.Point(20, 0); // Adjust as needed
+            this.TransparencyMenuSlider.Location = new System.Drawing.Point(20, 0);
             this.TransparencyMenuSlider.Margin = new System.Windows.Forms.Padding(0);
             this.TransparencyMenuSlider.Maximum = 100;
             this.TransparencyMenuSlider.Minimum = 30;
             this.TransparencyMenuSlider.Size = new System.Drawing.Size(150, 25);
             this.TransparencyMenuSlider.Font = new Font(this.TransparencyMenuSlider.Font.FontFamily, 1f);
             this.TransparencyMenuSlider.TrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.TransparencyMenuSlider.Value = 50;            
+            this.TransparencyMenuSlider.Value = 50;
             this.TransparencyMenuSlider.ValueChanged += TransparencyMenuSlider_ValueChanged;
             // 
             // SelectFolderMenu

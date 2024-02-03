@@ -224,7 +224,7 @@
     <value>Width</value>
   </data>
   <data name="Opacity" xml:space="preserve">
-    <value>Opacity:</value>
+    <value>Opacity: </value>
   </data>
   <data name="ErrorSettingFolder" xml:space="preserve">
     <value>There was an error changing to the folder you specified. It may not be compatible with Outlook on the Desktop.</value>

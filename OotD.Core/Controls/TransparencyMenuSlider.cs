@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using MACTrackBarLib;
 
+namespace OotD.Controls;
+
 public class TrackBarMenuItem : ToolStripControlHost
 {
 #pragma warning disable CS3003
