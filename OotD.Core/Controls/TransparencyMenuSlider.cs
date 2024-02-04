@@ -40,12 +40,6 @@ public class TrackBarMenuItem : ToolStripControlHost
         set { TrackBar.Value = value; }
     }
 
-    public TickStyle TickStyle
-    {
-        get { return TrackBar.TickStyle; }
-        set { TrackBar.TickStyle = value; }
-    }
-
     // Add more properties as needed...
 
     private void TrackBar_Scroll(object? sender, EventArgs e)
