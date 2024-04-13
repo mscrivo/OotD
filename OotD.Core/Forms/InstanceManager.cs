@@ -55,13 +55,6 @@ public partial class InstanceManager : Form
         _sparkle.StartLoop(!GlobalPreferences.IsFirstRun, TimeSpan.FromDays(20));
     }
 
-    // ReSharper disable once InconsistentNaming
-    public static float GetDPI()
-    {
-        using var graphics = Graphics.FromHwnd(nint.Zero);
-        return graphics.DpiX;
-    }
-
     private static void OnSparkleOnUpdateWindowDismissed(object? sender, EventArgs args)
     {
         Startup.UpdateDetected = false;
