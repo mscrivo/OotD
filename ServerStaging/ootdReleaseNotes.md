@@ -1,5 +1,11 @@
 # OotD Release Notes
 
+## 4.2.24
+
+* Ability to adjust opacity from tray icon. Thanks @dbzfanatic!
+* Update dependencies
+* Internal development & tooling updates
+
 ## 4.2.3
 * Update to .net 8
 * Fixed issue with checking for updates
