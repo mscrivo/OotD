@@ -24,9 +24,7 @@ public static class Program
     // ReSharper disable once ConvertToConstant.Local
     // ReSharper disable once FieldCanBeMadeReadOnly.Local
     // ReSharper disable once RedundantDefaultMemberInitializer
-#pragma warning disable IDE0044 // Add readonly modifier
     private static bool _isDebug = false;
-#pragma warning restore IDE0044 // Add readonly modifier
 
     [STAThread]
     public static void Main(string[] args)

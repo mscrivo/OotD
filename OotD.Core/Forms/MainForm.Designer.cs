@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using AxOLXLib;
 using MACTrackBarLib;
 using OotD.Controls;
-using OotD.Utility;
 
 namespace OotD.Forms
 {
@@ -318,7 +317,6 @@ namespace OotD.Forms
             this.TransparencySlider.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(125)))), ((int)(((byte)(123)))));
             this.TransparencySlider.IndentHeight = 6;
             this.TransparencySlider.LargeChange = 15;
-            this.TransparencySlider.Location = InstanceManager.GetDPI() > 96 ? new System.Drawing.Point(0, 0) : new System.Drawing.Point(0, -3);
             this.TransparencySlider.Margin = new System.Windows.Forms.Padding(0);
             this.TransparencySlider.Maximum = 100;
             this.TransparencySlider.Minimum = 30;
@@ -332,7 +330,6 @@ namespace OotD.Forms
             this.TransparencySlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.ToolTip.SetToolTip(this.TransparencySlider, global::OotD.Properties.Resources.Transparency_Slider_Help_Message);
             this.TransparencySlider.TrackerColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(130)))), ((int)(((byte)(198)))));
-            this.TransparencySlider.TrackerSize = InstanceManager.GetDPI() > 96 ? new System.Drawing.Size(20, 20) : new System.Drawing.Size(12, 12);
             this.TransparencySlider.TrackLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(93)))), ((int)(((byte)(90)))));
             this.TransparencySlider.TrackLineHeight = 2;
             this.TransparencySlider.Value = 50;
@@ -586,9 +583,9 @@ namespace OotD.Forms
         public ToolStripLabel OpacityLabel;
 #pragma warning disable CS3003 // Type is not CLS-compliant
         public MACTrackBar TransparencySlider;
+#pragma warning restore CS3003 // Type is not CLS-compliant
         private Label LabelBackground;
         private ToolStripMenuItem TodosMenu;
         private Button NewEmailButton;
-#pragma warning restore CS3003 // Type is not CLS-compliant
     }
 }
