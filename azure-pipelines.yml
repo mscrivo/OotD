@@ -18,7 +18,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '8.0.204'
+    version: '9.0.100-rc.1'
     includePreviewVersions: true
 
 - task: DotNetCoreCLI@2
@@ -33,7 +33,7 @@ steps:
     name: 'Sign exe'
     secureFileId: 'ootd.pfx'
     signCertPassword: $(pfx_password)
-    files: 'OotD.Launcher\bin\Release\net8.0-windows7.0\OotD*.exe'
+    files: 'OotD.Launcher\bin\Release\net9.0-windows7.0\OotD*.exe'
     timeServer: 'http://timestamp.digicert.com'
     hashingAlgorithm: 'SHA256'
     signToolLocationMethod: 'latest'
@@ -43,7 +43,7 @@ steps:
     name: 'Sign dlls'
     secureFileId: 'ootd.pfx'
     signCertPassword: $(pfx_password)
-    files: 'OotD.Launcher\bin\Release\net8.0-windows7.0\OotD*.dll'
+    files: 'OotD.Launcher\bin\Release\net9.0-windows7.0\OotD*.dll'
     timeServer: 'http://timestamp.digicert.com'
     hashingAlgorithm: 'SHA256'
     signToolLocationMethod: 'latest'
