@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using MACTrackBarLib;
@@ -19,21 +20,25 @@ public class TrackBarMenuItem : ToolStripControlHost
         TrackBar.Scroll += TrackBar_Scroll;
     }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public Point Location
     {
         set => TrackBar.Location = value;
     }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public int Minimum
     {
         set => TrackBar.Minimum = value;
     }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public int Maximum
     {
         set => TrackBar.Maximum = value;
     }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public int Value
     {
         get { return TrackBar.Value; }

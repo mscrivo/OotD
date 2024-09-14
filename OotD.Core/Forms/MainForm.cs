@@ -5,6 +5,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -1339,6 +1340,7 @@ public partial class MainForm : Form
 
     private ResizeDirection _resizeDir = ResizeDirection.None;
     private List<View>? OutlookFolderViews { get; set; }
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public InstancePreferences Preferences { get; private set; }
     private string InstanceName { get; set; }
 
