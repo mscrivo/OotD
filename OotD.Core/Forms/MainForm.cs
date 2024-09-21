@@ -382,7 +382,7 @@ public partial class MainForm : Form
 
     /// <summary>
     /// This will populate a dropdown off the instance context menu with the available
-    /// views in outlook, it will also associate the menuitem with the event handler. 
+    /// views in outlook, it will also associate the MenuItem with the event handler. 
     /// </summary>
     private void UpdateOutlookViewsList()
     {
@@ -664,7 +664,7 @@ public partial class MainForm : Form
 
         try
         {
-            // Remove old item (selectmenu+1)
+            // Remove old item (SelectMenu+1)
             if (_customMenu != null && TrayMenu.Items.Contains(_customMenu))
             {
                 TrayMenu.Items.Remove(_customMenu);
@@ -1324,7 +1324,7 @@ public partial class MainForm : Form
                      !Startup.UpdateDetected &&
                      !_movingOrResizing:
 
-                var mwp = (UnsafeNativeMethods.WINDOWPOS)Marshal.PtrToStructure(m.LParam, typeof(UnsafeNativeMethods.WINDOWPOS))!;
+                var mwp = Marshal.PtrToStructure<UnsafeNativeMethods.WINDOWPOS>(m.LParam);
                 mwp.flags |= UnsafeNativeMethods.SWP_NOZORDER;
                 Marshal.StructureToPtr(mwp, m.LParam, true);
                 UnsafeNativeMethods.SendWindowToBack(this);
