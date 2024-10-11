@@ -1,0 +1,26 @@
+<Solution>
+  <Folder Name="/Components/">
+    <Project Path="MACTrackBarLib\MACTrackBarLib\MACTrackBarLib.csproj" />
+    <Project Path="NetSparkle\NetSparkle\NetSparkle.csproj" />
+  </Folder>
+  <Folder Name="/Global/">
+    <File Path=".github\workflows\codeql-analysis.yml" />
+    <File Path="azure-pipelines.yml" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+    <File Path="ServerStaging\ootdAppcast.xml" />
+    <File Path="ServerStaging\ootdReleaseNotes.md" />
+    <File Path="Setup Script.iss" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="renovate.json" />
+  </Folder>
+  <Project Path="OotD.Core\OotD.Core.csproj" />
+  <Project Path="OotD.Launcher\OotD.Launcher.csproj" />
+  <Project Path="OotD.x64\OotD.x64.csproj" />
+  <Project Path="OotD.x86\OotD.x86.csproj" />
+  <Properties Name="Visual Studio">
+    <Property Name="OpenWith" Value="Visual Studio Version 17" />
+  </Properties>
+</Solution>
