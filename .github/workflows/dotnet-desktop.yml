@@ -11,7 +11,7 @@ jobs:
   build:
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
 
     runs-on: windows-latest
     
@@ -30,27 +30,17 @@ jobs:
       with:        
         dotnet-version: 9.0.x
 
-    - name: Restore the application
+    - name: Build the app
       run: dotnet build --configuration $env:Configuration
       env:
         Configuration: ${{ matrix.configuration }}
 
-    # Decode the base 64 encoded pfx and save the Signing_Certificate
-    - name: Decode the pfx
-      run: |
-        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
-        $certificatePath = Join-Path -Path . -ChildPath ootd.pfx
-        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
-
-    - name: Signtool Code Sign
+    - name: Sign the application
       uses: GabrielAcostaEngler/signtool-code-sign@1.0.6
       with:
-        # Base64 encoded pfx certificate
-        certificate: 'ootd.pfx'
-        # Certificate password
-        cert-password: '{{ secrets.PFX_PASSWORD }}'
-        # Certificate sha1/thumbprint
-        cert-sha1: 'ED:0B:B3:52:10:CF:BE:8A:04:E7:97:67:D0:2A:1C:9A:51:0C:9C:39'
+        certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
+        cert-password: '${{ secrets.PFX_PASSWORD }}'
+        cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
         # path to folder containing files to sign.
         folder: 'OotD.Launcher\bin\Release\net9.0-windows7.0'
         # Recursively search for supported files.
