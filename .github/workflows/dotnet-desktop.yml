@@ -16,9 +16,16 @@ jobs:
     runs-on: windows-latest
     
     env:
-      Solution_Name: OutlookDesktop.sln
+     VERSION: '4.3.${{ github.run_number }}'
 
     steps:
+    - name: Output Run ID
+      run: echo ${{ github.run_id }}
+    - name: Output Run Number
+      run: echo ${{ github.run_number }}
+    - name: Output Run Attempt
+      run: echo ${{ github.run_attempt }}
+    
     - name: Checkout
       uses: actions/checkout@v4
       with:
@@ -31,7 +38,7 @@ jobs:
         dotnet-version: 9.0.x
 
     - name: Build the app
-      run: dotnet build --configuration $env:Configuration
+      run: dotnet build --configuration $env:Configuration -p:Version=$(MAJOR_MINOR_VERSION);FileVersion=$(MAJOR_MINOR_VERSION)
       env:
         Configuration: ${{ matrix.configuration }}
 
@@ -43,9 +50,7 @@ jobs:
         cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
         # path to folder containing files to sign.
         folder: 'OotD.Launcher\bin\Release\net9.0-windows7.0'
-        # Recursively search for supported files.
         recursive: true
-        # URL of the timestamp server used for the signing
         timestamp-server: 'http://timestamp.digicert.com'
 
     - name: Build Installer
