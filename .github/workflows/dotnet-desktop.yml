@@ -34,6 +34,8 @@ jobs:
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
+      with:
+        vs-prerelease: true
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
@@ -60,7 +62,7 @@ jobs:
         # path to folder containing files to sign.
         folder: 'OotD.Launcher\bin\Release\net9.0-windows7.0'
         # Recursively search for supported files.
-        recursive: 'true'
+        recursive: true
         # URL of the timestamp server used for the signing
         timestamp-server: 'http://timestamp.digicert.com'
               
