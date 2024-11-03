@@ -8,8 +8,9 @@ using System.ComponentModel;
 namespace OotD.Utility;
 
 /// <summary>
-/// Extension method to allow accessing properties and fields in a worker thread without throwing:
-/// "Cross-thread operation not valid: Control 'MainForm' accessed from a thread other than the thread it was created on."
+///     Extension method to allow accessing properties and fields in a worker thread without throwing:
+///     "Cross-thread operation not valid: Control 'MainForm' accessed from a thread other than the thread it was created
+///     on."
 /// </summary>
 public static class SynchronizeInvokeExtensions
 {

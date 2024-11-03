@@ -11,11 +11,13 @@ internal static class RegistryHelper
     // never instantiated, only contains static methods
 
     /// <summary>
-    /// Renames a subkey of the passed in registry key since
-    /// the frame work totally forgot to include such a handy feature.
+    ///     Renames a subkey of the passed in registry key since
+    ///     the frame work totally forgot to include such a handy feature.
     /// </summary>
-    /// <param name="parentKey">The RegistryKey that contains the subkey
-    /// you want to rename (must be writable)</param>
+    /// <param name="parentKey">
+    ///     The RegistryKey that contains the subkey
+    ///     you want to rename (must be writable)
+    /// </param>
     /// <param name="subKeyName">The name of the subkey that you want to rename</param>
     /// <param name="newSubKeyName">The new name of the RegistryKey</param>
     /// <returns>True if succeeds</returns>
@@ -26,7 +28,7 @@ internal static class RegistryHelper
     }
 
     /// <summary>
-    /// Copy a registry key.  The parentKey must be writable.
+    ///     Copy a registry key.  The parentKey must be writable.
     /// </summary>
     /// <param name="parentKey"></param>
     /// <param name="keyNameToCopy"></param>

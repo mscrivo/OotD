@@ -84,6 +84,7 @@
     </Content>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /y $(SolutionDir)\OotD.x86\$(OutDir) $(OutDir)&#xD;&#xA;copy /y $(SolutionDir)\OotD.x64\$(OutDir) $(OutDir)" />
+    <Exec
+      Command="copy /y $(SolutionDir)\OotD.x86\$(OutDir) $(OutDir)&#xD;&#xA;copy /y $(SolutionDir)\OotD.x64\$(OutDir) $(OutDir)" />
   </Target>
 </Project>

@@ -27,8 +27,8 @@ public partial class InstanceManager : Form
     private const string AutoUpdateInstanceName = "AutoUpdate";
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private readonly Dictionary<string, MainForm> _mainFormInstances = [];
     private readonly Graphics _graphics;
+    private readonly Dictionary<string, MainForm> _mainFormInstances = [];
     private readonly Sparkle _sparkle;
 
     public InstanceManager()
@@ -53,23 +53,6 @@ public partial class InstanceManager : Form
 
         // check for updates every 20 days, but don't check on first run because we'll have 2 tooltips popup and will likely confuse the user.
         _sparkle.StartLoop(!GlobalPreferences.IsFirstRun, TimeSpan.FromDays(20));
-    }
-
-    private static void OnSparkleOnUpdateWindowDismissed(object? sender, EventArgs args)
-    {
-        Startup.UpdateDetected = false;
-    }
-
-    private void OnSparkleOnUpdateDetectedShowWithToast(object sender, UpdateDetectedEventArgs args)
-    {
-        Startup.UpdateDetected = true;
-        _sparkle.ShowUpdateNeededUI(args.LatestVersion, true);
-    }
-
-    private void OnSparkleOnUpdateDetectedShowWithoutToast(object sender, UpdateDetectedEventArgs args)
-    {
-        Startup.UpdateDetected = true;
-        _sparkle.ShowUpdateNeededUI(args.LatestVersion, false);
     }
 
     protected override CreateParams CreateParams
@@ -99,6 +82,23 @@ public partial class InstanceManager : Form
 
             return instanceCount;
         }
+    }
+
+    private static void OnSparkleOnUpdateWindowDismissed(object? sender, EventArgs args)
+    {
+        Startup.UpdateDetected = false;
+    }
+
+    private void OnSparkleOnUpdateDetectedShowWithToast(object sender, UpdateDetectedEventArgs args)
+    {
+        Startup.UpdateDetected = true;
+        _sparkle.ShowUpdateNeededUI(args.LatestVersion, true);
+    }
+
+    private void OnSparkleOnUpdateDetectedShowWithoutToast(object sender, UpdateDetectedEventArgs args)
+    {
+        Startup.UpdateDetected = true;
+        _sparkle.ShowUpdateNeededUI(args.LatestVersion, false);
     }
 
     public void LoadInstances()

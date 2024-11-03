@@ -13,11 +13,12 @@ internal static class GlobalPreferences
     // never instantiated, only contains static methods
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    private static bool? _isFirstRun;
 
     /// <summary>
-    /// Returns true if there is a registry entry that makes Outlook on the Desktop start
-    /// when Windows starts. On set, we save or delete that registry value
-    /// accordingly.
+    ///     Returns true if there is a registry entry that makes Outlook on the Desktop start
+    ///     when Windows starts. On set, we save or delete that registry value
+    ///     accordingly.
     /// </summary>
     public static bool StartWithWindows
     {
@@ -39,13 +40,17 @@ internal static class GlobalPreferences
     {
         get
         {
-            using var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
+            using var key =
+                Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
+                                                  Application.ProductName);
             return bool.TryParse(key.GetValue("LockPosition", "false").ToString(), out var lockPositions) &&
                    lockPositions;
         }
         set
         {
-            using var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName);
+            using var key =
+                Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
+                                                  Application.ProductName);
             key.SetValue("LockPosition", value);
         }
     }
@@ -59,7 +64,8 @@ internal static class GlobalPreferences
                 return _isFirstRun.Value;
             }
 
-            using (var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+            using (var key = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
+                                                               Application.ProductName))
             {
                 if (bool.TryParse(key.GetValue("FirstRun", "true").ToString(), out var isFirstRun))
                 {
@@ -71,10 +77,10 @@ internal static class GlobalPreferences
                     }
                 }
             }
+
             _isFirstRun = false;
 
             return _isFirstRun.Value;
         }
     }
-    private static bool? _isFirstRun;
 }

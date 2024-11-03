@@ -36,8 +36,8 @@ internal static class Startup
     private static InstanceManager? _instanceManager;
 
     /// <summary>
-    /// The main entry point for the application.
-    /// We only want one instance of the application to be running.
+    ///     The main entry point for the application.
+    ///     We only want one instance of the application to be running.
     /// </summary>
     [STAThread]
     private static void Main(string[] args)
@@ -92,7 +92,8 @@ internal static class Startup
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(Resources.ErrorInitializingApp + ' ' + ex, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(Resources.ErrorInitializingApp + ' ' + ex, Resources.ErrorCaption,
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -150,8 +151,8 @@ internal static class Startup
     }
 
     /// <summary>
-    /// This method will test that the RPC server is available by calling GetDefaultFolder on the outlook namespace object.
-    /// It will try this for up to 1 minute before giving up and showing the user an error message.
+    ///     This method will test that the RPC server is available by calling GetDefaultFolder on the outlook namespace object.
+    ///     It will try this for up to 1 minute before giving up and showing the user an error message.
     /// </summary>
     /// <param name="outlookNameSpace"></param>
     /// <returns></returns>
@@ -176,7 +177,8 @@ internal static class Startup
             }
         }
 
-        MessageBox.Show(Resources.ErrorInitializingApp + ' ' + Resources.Windows_RPC_Server_is_not_available, Resources.ErrorCaption,
+        MessageBox.Show(Resources.ErrorInitializingApp + ' ' + Resources.Windows_RPC_Server_is_not_available,
+            Resources.ErrorCaption,
             MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         return false;

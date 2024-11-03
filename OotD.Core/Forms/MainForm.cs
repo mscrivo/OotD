@@ -27,29 +27,29 @@ namespace OotD.Forms;
 
 /// <inheritdoc />
 /// <summary>
-/// This is the form that hosts the outlook view control. One of these will exist for each instance.
+///     This is the form that hosts the outlook view control. One of these will exist for each instance.
 /// </summary>
 public partial class MainForm : Form
 {
     private const int ResizeBorderWidth = 4;
-    private string? _customFolder;
-    private ToolStripMenuItem? _customMenu;
-    private MAPIFolder? _outlookFolder;
-    private DateTime _previousDate;
-    private OutlookFolderDefinition _customFolderDefinition;
-    private bool _outlookContextMenuActivated;
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly StickyWindow _stickyWindow;
+    private string? _customFolder;
+    private OutlookFolderDefinition _customFolderDefinition;
+    private ToolStripMenuItem? _customMenu;
 
     // To avoid flicker when moving or resizing, this variable is set when a move or resize is started
     // and then reset when the move or resize is done.  SetWindowPos inside of WndProc will not fire
     // when this is true.
     private bool _movingOrResizing;
+    private bool _outlookContextMenuActivated;
+    private MAPIFolder? _outlookFolder;
+    private DateTime _previousDate;
 
     /// <summary>
-    /// Sets up the form for the current instance.
+    ///     Sets up the form for the current instance.
     /// </summary>
     /// <param name="instanceName">The name of the instance to display.</param>
     public MainForm(string instanceName)
@@ -63,7 +63,8 @@ public partial class MainForm : Form
             _logger.Error("Error initializing main view: {0}", loE);
             if ((uint)loE.ErrorCode == 0x80040154)
             {
-                MessageBox.Show(this, Resources.Incorrect_bittedness_of_OotD, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, Resources.Incorrect_bittedness_of_OotD, Resources.ErrorCaption,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
         }
@@ -102,8 +103,19 @@ public partial class MainForm : Form
         catch (Exception ex)
         {
             _logger.Error(ex, "Error initializing window.");
-            MessageBox.Show(this, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message,
+                Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             throw;
+        }
+    }
+
+    protected override CreateParams CreateParams
+    {
+        get
+        {
+            var cp = base.CreateParams;
+            cp.ExStyle |= 0x80; // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
+            return cp;
         }
     }
 
@@ -124,40 +136,8 @@ public partial class MainForm : Form
         UnsafeNativeMethods.RemoveWindowFromAeroPeek(this);
     }
 
-    protected override CreateParams CreateParams
-    {
-        get
-        {
-            var cp = base.CreateParams;
-            cp.ExStyle |= 0x80;  // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
-            return cp;
-        }
-    }
-
-    #region Events
-
-    // ReSharper disable once InconsistentNaming
-#pragma warning disable IDE1006 // Naming Styles
-    public EventHandler<InstanceRemovedEventArgs>? InstanceRemoved;
-
-    // ReSharper disable once InconsistentNaming
-    public EventHandler<InstanceRenamedEventArgs>? InstanceRenamed;
-#pragma warning restore IDE1006 // Naming Styles
-
-    private void OnInstanceRemoved(object sender, InstanceRemovedEventArgs e)
-    {
-        InstanceRemoved?.Invoke(sender, e);
-    }
-
-    private void OnInstanceRenamed(object sender, InstanceRenamedEventArgs e)
-    {
-        InstanceRenamed?.Invoke(sender, e);
-    }
-
-    #endregion
-
     /// <summary>
-    /// Get the location of the Select folder menu in the tray context menu. 
+    ///     Get the location of the Select folder menu in the tray context menu.
     /// </summary>
     /// <returns></returns>
     private int GetSelectFolderMenuLocation()
@@ -166,7 +146,7 @@ public partial class MainForm : Form
     }
 
     /// <summary>
-    /// Loads user preferences from registry and applies them.
+    ///     Loads user preferences from registry and applies them.
     /// </summary>
     private void LoadSettings()
     {
@@ -352,8 +332,8 @@ public partial class MainForm : Form
     }
 
     /// <summary>
-    /// This will populate the _outlookFolder object with the MapiFolder for the EntryID and StoreId stored
-    /// in the registry. 
+    ///     This will populate the _outlookFolder object with the MapiFolder for the EntryID and StoreId stored
+    ///     in the registry.
     /// </summary>
     private void SetMAPIFolder()
     {
@@ -363,7 +343,8 @@ public partial class MainForm : Form
         {
             try
             {
-                _outlookFolder = Startup.OutlookNameSpace?.GetFolderFromID(Preferences.OutlookFolderEntryId, Preferences.OutlookFolderStoreId);
+                _outlookFolder = Startup.OutlookNameSpace?.GetFolderFromID(Preferences.OutlookFolderEntryId,
+                    Preferences.OutlookFolderStoreId);
                 if (_outlookFolder != null)
                 {
                     ShowToolbarButtonsFor(_outlookFolder.DefaultMessageClass);
@@ -381,8 +362,8 @@ public partial class MainForm : Form
     }
 
     /// <summary>
-    /// This will populate a dropdown off the instance context menu with the available
-    /// views in outlook, it will also associate the MenuItem with the event handler. 
+    ///     This will populate a dropdown off the instance context menu with the available
+    ///     views in outlook, it will also associate the MenuItem with the event handler.
     /// </summary>
     private void UpdateOutlookViewsList()
     {
@@ -413,7 +394,7 @@ public partial class MainForm : Form
     }
 
     /// <summary>
-    /// Will select the passed menu item in the views dropdown list. 
+    ///     Will select the passed menu item in the views dropdown list.
     /// </summary>
     /// <param name="viewItem">ToolStripMenuItem that is to be checked.</param>
     private void CheckSelectedView(ToolStripMenuItem viewItem)
@@ -422,7 +403,6 @@ public partial class MainForm : Form
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="fullPath"></param>
     /// <returns></returns>
@@ -438,7 +418,6 @@ public partial class MainForm : Form
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="oFolder"></param>
     /// <returns></returns>
@@ -508,7 +487,7 @@ public partial class MainForm : Form
     }
 
     /// <summary>
-    /// Returns a MAPI Folder for the passes FolderViewType.
+    ///     Returns a MAPI Folder for the passes FolderViewType.
     /// </summary>
     /// <param name="folderViewType"></param>
     /// <returns></returns>
@@ -527,8 +506,8 @@ public partial class MainForm : Form
     }
 
     /// <summary>
-    /// Checks the passed in menu item and deselects the rest.
-    /// This is used only for the folder types menu. 
+    ///     Checks the passed in menu item and deselects the rest.
+    ///     This is used only for the folder types menu.
     /// </summary>
     /// <param name="itemToCheck"></param>
     private void CheckSelectedMenuItem(ToolStripMenuItem? itemToCheck)
@@ -552,7 +531,7 @@ public partial class MainForm : Form
     }
 
     /// <summary>
-    /// For a given collection of MenuItems this function will iterate through them and then check the passed item. 
+    ///     For a given collection of MenuItems this function will iterate through them and then check the passed item.
     /// </summary>
     /// <param name="itemToCheck">Item to check in the list</param>
     /// <param name="menuItems">List of the menuItems to check</param>
@@ -568,7 +547,7 @@ public partial class MainForm : Form
     }
 
     /// <summary>
-    /// Generic function to deal with menu check items for selecting the folders to view. 
+    ///     Generic function to deal with menu check items for selecting the folders to view.
     /// </summary>
     /// <param name="folderViewType"></param>
     /// <param name="itemToCheck"></param>
@@ -601,7 +580,7 @@ public partial class MainForm : Form
     }
 
     /// <summary>
-    /// Given a defaultMessagePath, show the appropriate buttons in the toolbar for that view.
+    ///     Given a defaultMessagePath, show the appropriate buttons in the toolbar for that view.
     /// </summary>
     /// <param name="defaultMessagePath"></param>
     private void ShowToolbarButtonsFor(string defaultMessagePath)
@@ -686,7 +665,8 @@ public partial class MainForm : Form
             _customFolder = Preferences.OutlookFolderName;
 
             // Update the UI to reflect the new settings. 
-            TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1, new ToolStripMenuItem(oFolder.Name, null, CustomFolderMenu_Click));
+            TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
+                new ToolStripMenuItem(oFolder.Name, null, CustomFolderMenu_Click));
             _customMenu = (ToolStripMenuItem)TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
 
             SetMAPIFolder();
@@ -695,7 +675,8 @@ public partial class MainForm : Form
         }
         catch (Exception)
         {
-            MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, Resources.ErrorSettingFolder, Resources.ErrorCaption, MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
     }
 
@@ -740,14 +721,111 @@ public partial class MainForm : Form
         _movingOrResizing = true;
 
         UnsafeNativeMethods.ReleaseCapture();
-        UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM.WM_NCLBUTTONDOWN, UnsafeNativeMethods.HT.HTCAPTION, nint.Zero);
+        UnsafeNativeMethods.SendMessage(Handle, UnsafeNativeMethods.WM.WM_NCLBUTTONDOWN,
+            UnsafeNativeMethods.HT.HTCAPTION, nint.Zero);
     }
+
+    /// <summary>
+    ///     Standard windows message handler.  The main reason this exists is to ensure
+    ///     the OotD window always stays behind other windows.  A side effect of that is that even
+    ///     context menus from OotD show up behind the main window, so we have to do some trickery below
+    ///     to handle that case and make sure that the outlook view control context menu shows up in front of
+    ///     the main window.  Since we don't have access to the context menu directly, we have to bring the
+    ///     window to the front temporarily while the context menu is visible.  Terrible hack.
+    /// </summary>
+    /// <param name="m"></param>
+    protected override void WndProc(ref Message m)
+    {
+        switch (m.Msg)
+        {
+            case UnsafeNativeMethods.WM_PARENTNOTIFY:
+
+                switch (m.WParam.ToInt32())
+                {
+                    // If we right click on a window, we're bringing up the outlook context menu and
+                    // have to temporarily set the window to top most so the context menu is visible.
+                    case UnsafeNativeMethods.WM_RBUTTONDOWN:
+                        _outlookContextMenuActivated = true;
+                        UnsafeNativeMethods.SendWindowToTop(this);
+                        WindowMessageTimer.Start();
+                        m.Result = nint.Zero;
+                        break;
+                }
+
+                break;
+
+            case UnsafeNativeMethods.WM_NCACTIVATE:
+
+                // after the context menu is gone, we can resend the window to the back.
+                if (m.WParam.ToInt32() == 1 && _outlookContextMenuActivated && !WindowMessageTimer.Enabled)
+                {
+                    _outlookContextMenuActivated = false;
+                    UnsafeNativeMethods.SendWindowToBack(this);
+                    m.Result = nint.Zero;
+                }
+
+                break;
+
+            case UnsafeNativeMethods.WM_WINDOWPOSCHANGING
+                when !_outlookContextMenuActivated &&
+                     !Startup.UpdateDetected &&
+                     !_movingOrResizing:
+
+                var mwp = Marshal.PtrToStructure<UnsafeNativeMethods.WINDOWPOS>(m.LParam);
+                mwp.flags |= UnsafeNativeMethods.SWP_NOZORDER;
+                Marshal.StructureToPtr(mwp, m.LParam, true);
+                UnsafeNativeMethods.SendWindowToBack(this);
+                m.Result = nint.Zero;
+                break;
+        }
+
+        base.WndProc(ref m);
+    }
+
+    #region Nested type: ResizeDirection
+
+    private enum ResizeDirection
+    {
+        None = 0,
+        Left = 1,
+        TopLeft = 2,
+        Top = 3,
+        TopRight = 4,
+        Right = 5,
+        BottomRight = 6,
+        Bottom = 7,
+        BottomLeft = 8
+    }
+
+    #endregion
+
+    #region Events
+
+    // ReSharper disable once InconsistentNaming
+#pragma warning disable IDE1006 // Naming Styles
+    public EventHandler<InstanceRemovedEventArgs>? InstanceRemoved;
+
+    // ReSharper disable once InconsistentNaming
+    public EventHandler<InstanceRenamedEventArgs>? InstanceRenamed;
+#pragma warning restore IDE1006 // Naming Styles
+
+    private void OnInstanceRemoved(object sender, InstanceRemovedEventArgs e)
+    {
+        InstanceRemoved?.Invoke(sender, e);
+    }
+
+    private void OnInstanceRenamed(object sender, InstanceRenamedEventArgs e)
+    {
+        InstanceRenamed?.Invoke(sender, e);
+    }
+
+    #endregion
 
     #region Event Handlers
 
     /// <summary>
-    /// When a view is selected this will change the view control view to it, save it in the 
-    /// preferences and then check the box next to the view in the drop down list. 
+    ///     When a view is selected this will change the view control view to it, save it in the
+    ///     preferences and then check the box next to the view in the drop down list.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -769,7 +847,7 @@ public partial class MainForm : Form
     }
 
     /// <summary>
-    /// This handler will select a custom folder.
+    ///     This handler will select a custom folder.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -844,7 +922,9 @@ public partial class MainForm : Form
             return;
         }
 
-        using (var appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+        using (var appReg =
+               Registry.CurrentUser.CreateSubKey(
+                   "Software\\" + Application.CompanyName + "\\" + Application.ProductName))
         {
             appReg.DeleteSubKeyTree(InstanceName);
         }
@@ -896,7 +976,9 @@ public partial class MainForm : Form
             return;
         }
 
-        using var parentKey = Registry.CurrentUser.OpenSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName, true);
+        using var parentKey =
+            Registry.CurrentUser.OpenSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName,
+                true);
         if (parentKey == null)
         {
             return;
@@ -1167,7 +1249,8 @@ public partial class MainForm : Form
         }
     }
 
-    private static (CurrentCalendarView type, int offset) GetNextPreviousOffsetBasedOnCalendarViewMode(CurrentCalendarView mode)
+    private static (CurrentCalendarView type, int offset) GetNextPreviousOffsetBasedOnCalendarViewMode(
+        CurrentCalendarView mode)
     {
         var offset = mode switch
         {
@@ -1186,7 +1269,8 @@ public partial class MainForm : Form
     // work on the last "active" view of the calendar, which may or may not be the current one.  
     // So to get around that, if the last clicked next button was not this one, we reset the 
     // calendar view to make it active, before using GoToDate.            
-    private void SetCurrentViewControlAsActiveIfNecessary(CurrentCalendarView mode, Control button, ref Guid lastButtonGuidClicked)
+    private void SetCurrentViewControlAsActiveIfNecessary(CurrentCalendarView mode, Control button,
+        ref Guid lastButtonGuidClicked)
     {
         // we don't need to do this if we only have one instance, so bail right away.
         if (InstanceManager.InstanceCount == 1)
@@ -1278,70 +1362,14 @@ public partial class MainForm : Form
 
     #endregion
 
-    /// <summary>
-    /// Standard windows message handler.  The main reason this exists is to ensure 
-    /// the OotD window always stays behind other windows.  A side effect of that is that even
-    /// context menus from OotD show up behind the main window, so we have to do some trickery below
-    /// to handle that case and make sure that the outlook view control context menu shows up in front of 
-    /// the main window.  Since we don't have access to the context menu directly, we have to bring the 
-    /// window to the front temporarily while the context menu is visible.  Terrible hack.
-    /// </summary>
-    /// <param name="m"></param>
-    protected override void WndProc(ref Message m)
-    {
-        switch (m.Msg)
-        {
-            case UnsafeNativeMethods.WM_PARENTNOTIFY:
-
-                switch (m.WParam.ToInt32())
-                {
-                    // If we right click on a window, we're bringing up the outlook context menu and
-                    // have to temporarily set the window to top most so the context menu is visible.
-                    case UnsafeNativeMethods.WM_RBUTTONDOWN:
-                        _outlookContextMenuActivated = true;
-                        UnsafeNativeMethods.SendWindowToTop(this);
-                        WindowMessageTimer.Start();
-                        m.Result = nint.Zero;
-                        break;
-                }
-
-                break;
-
-            case UnsafeNativeMethods.WM_NCACTIVATE:
-
-                // after the context menu is gone, we can resend the window to the back.
-                if (m.WParam.ToInt32() == 1 && _outlookContextMenuActivated && !WindowMessageTimer.Enabled)
-                {
-                    _outlookContextMenuActivated = false;
-                    UnsafeNativeMethods.SendWindowToBack(this);
-                    m.Result = nint.Zero;
-                }
-
-                break;
-
-            case UnsafeNativeMethods.WM_WINDOWPOSCHANGING
-                when !_outlookContextMenuActivated &&
-                     !Startup.UpdateDetected &&
-                     !_movingOrResizing:
-
-                var mwp = Marshal.PtrToStructure<UnsafeNativeMethods.WINDOWPOS>(m.LParam);
-                mwp.flags |= UnsafeNativeMethods.SWP_NOZORDER;
-                Marshal.StructureToPtr(mwp, m.LParam, true);
-                UnsafeNativeMethods.SendWindowToBack(this);
-                m.Result = nint.Zero;
-                break;
-
-        }
-
-        base.WndProc(ref m);
-    }
-
     #region Properties
 
     private ResizeDirection _resizeDir = ResizeDirection.None;
     private List<View>? OutlookFolderViews { get; set; }
+
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public InstancePreferences Preferences { get; private set; }
+
     private string InstanceName { get; set; }
 
     private ResizeDirection ResizeDir
@@ -1364,23 +1392,6 @@ public partial class MainForm : Form
                 _ => Cursors.Default
             };
         }
-    }
-
-    #endregion
-
-    #region Nested type: ResizeDirection
-
-    private enum ResizeDirection
-    {
-        None = 0,
-        Left = 1,
-        TopLeft = 2,
-        Top = 3,
-        TopRight = 4,
-        Right = 5,
-        BottomRight = 6,
-        Bottom = 7,
-        BottomLeft = 8
     }
 
     #endregion

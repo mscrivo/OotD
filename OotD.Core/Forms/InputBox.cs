@@ -11,7 +11,7 @@ using OotD.Events;
 namespace OotD.Forms;
 
 /// <summary>
-/// Delegate used to Validate an InputBox
+///     Delegate used to Validate an InputBox
 /// </summary>
 public delegate void InputBoxValidatingEventHandler(object sender, InputBoxValidatingEventArgs e);
 
@@ -37,7 +37,7 @@ public partial class InputBox : Form
     }
 
     /// <summary>
-    /// Displays an Input Box with validation.
+    ///     Displays an Input Box with validation.
     /// </summary>
     /// <param name="owner">The form's owner.</param>
     /// <param name="instructions">Instructions to present above the input box.</param>
@@ -45,7 +45,8 @@ public partial class InputBox : Form
     /// <param name="defaultValue">The default value to place in the Inbox Box.</param>
     /// <param name="validator">A validator method that performs validation on the user's input.</param>
     /// <returns></returns>
-    public static InputBoxResult Show(Form owner, string instructions, string caption, string defaultValue, InputBoxValidatingEventHandler validator)
+    public static InputBoxResult Show(Form owner, string instructions, string caption, string defaultValue,
+        InputBoxValidatingEventHandler validator)
     {
         using var form = new InputBox();
         form.Owner = owner;

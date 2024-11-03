@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <channel>
-    <title>Outlook on the Desktop</title>
-    <link>https://outlookonthedesktop.com/ootdAppcast.xml</link>
-    <description>Most recent changes with links to updates.</description>
-    <language>en</language>
-    <item>
-      <title>Version 4.2.24</title>
-      <sparkle:releaseNotesLink>
-        https://outlookonthedesktop.com/ootdReleaseNotes.md
-      </sparkle:releaseNotesLink>
-      <pubDate>Sat, 13 Apr 2024 14:40:00 +0000</pubDate>
-      <enclosure url="https://github.com/mscrivo/OotD/releases/download/4.2.24/ootd-4.2.24.0.exe" sparkle:version="4.2.24" length="3874928" type="application/octet-stream" />
-    </item>
-  </channel>
+
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>Outlook on the Desktop</title>
+        <link>https://outlookonthedesktop.com/ootdAppcast.xml</link>
+        <description>Most recent changes with links to updates.</description>
+        <language>en</language>
+        <item>
+            <title>Version 4.2.24</title>
+            <sparkle:releaseNotesLink>
+                https://outlookonthedesktop.com/ootdReleaseNotes.md
+            </sparkle:releaseNotesLink>
+            <pubDate>Sat, 13 Apr 2024 14:40:00 +0000</pubDate>
+            <enclosure url="https://github.com/mscrivo/OotD/releases/download/4.2.24/ootd-4.2.24.0.exe"
+                       sparkle:version="4.2.24" length="3874928" type="application/octet-stream" />
+        </item>
+    </channel>
 </rss>

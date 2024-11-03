@@ -22,9 +22,6 @@ namespace OotD.Utility;
 
 internal static partial class UnsafeNativeMethods
 {
-    private static readonly nint HWND_BOTTOM = new(1);
-    private static readonly nint HWND_TOPMOST = new(-1);
-
     private const int SWP_NOACTIVATE = 0x10;
     private const int SWP_NOMOVE = 0x0002;
     private const int SWP_NOSIZE = 0x0001;
@@ -40,18 +37,8 @@ internal static partial class UnsafeNativeMethods
     internal const int WM_NCACTIVATE = 0x86;
     internal const int WM_RBUTTONDOWN = 0x0204;
     internal const int WM_WINDOWPOSCHANGING = 70;
-
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct WINDOWPOS
-    {
-        internal nint hwnd;
-        internal nint hwndInsertAfter;
-        internal int x;
-        internal int y;
-        internal int cx;
-        internal int cy;
-        internal int flags;
-    }
+    private static readonly nint HWND_BOTTOM = new(1);
+    private static readonly nint HWND_TOPMOST = new(-1);
 
     [LibraryImport("dwmapi.dll")]
     private static partial int DwmSetWindowAttribute(nint hwnd, int attr, ref int attrValue, int attrSize);
@@ -74,8 +61,9 @@ internal static partial class UnsafeNativeMethods
         uint uFlags);
 
     /// <summary>
-    /// This will send the specified window to the bottom of the z-order, so that it's effectively behind every other window.
-    /// This only works for Vista or higher and when Aero is disabled, so the code checks for that condition.
+    ///     This will send the specified window to the bottom of the z-order, so that it's effectively behind every other
+    ///     window.
+    ///     This only works for Vista or higher and when Aero is disabled, so the code checks for that condition.
     /// </summary>
     /// <param name="windowToSendBack">the form to work with</param>
     /// <param name="caller"></param>
@@ -86,7 +74,8 @@ internal static partial class UnsafeNativeMethods
     }
 
     /// <summary>
-    /// This will send the specified window to the top of the z-order, so that it's effectively on top of every other window.
+    ///     This will send the specified window to the top of the z-order, so that it's effectively on top of every other
+    ///     window.
     /// </summary>
     /// <param name="windowToSendToTop">the form to work with</param>
     /// <param name="caller"></param>
@@ -116,15 +105,27 @@ internal static partial class UnsafeNativeMethods
     private static partial IntPtr GetWindow(IntPtr hWnd, uint wCmd);
 
     /// <summary>
-    /// Does not hide the calendar when the user hovers their mouse over the "Show Desktop" button 
-    /// in Windows 7.
+    ///     Does not hide the calendar when the user hovers their mouse over the "Show Desktop" button
+    ///     in Windows 7.
     /// </summary>
     /// <param name="window"></param>
     internal static void RemoveWindowFromAeroPeek(IWin32Window window)
     {
         var renderPolicy = (int)DwmNCRenderingPolicy.Enabled;
         Marshal.ThrowExceptionForHR(
-        DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof(int)));
+            DwmSetWindowAttribute(window.Handle, DWMWA_EXCLUDED_FROM_PEEK, ref renderPolicy, sizeof(int)));
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct WINDOWPOS
+    {
+        internal nint hwnd;
+        internal nint hwndInsertAfter;
+        internal int x;
+        internal int y;
+        internal int cx;
+        internal int cy;
+        internal int flags;
     }
 
     private enum DwmNCRenderingPolicy

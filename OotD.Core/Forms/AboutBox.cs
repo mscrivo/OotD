@@ -28,72 +28,6 @@ public sealed partial class AboutBox : Form
         labelCopyright.Text = CopyRight;
     }
 
-    #region Assembly Attribute Accessors
-
-    private static string Title
-    {
-        get
-        {
-            // Get all Title attributes on this assembly
-            var attributes =
-                Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
-
-            // If there is at least one Title attribute
-            if (attributes.Length <= 0)
-            {
-                return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location);
-            }
-
-            // Select the first one
-            var titleAttribute = (AssemblyTitleAttribute)attributes[0];
-            // If it is not an empty string, return it
-            return !string.IsNullOrEmpty(titleAttribute.Title)
-                ? titleAttribute.Title
-                : Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location);
-            // If there was no Title attribute, or if the Title attribute was the empty string, return the .exe name
-        }
-    }
-
-    private static string Version
-    {
-        get
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-            return $"{fileVersionInfo.ProductMajorPart}.{fileVersionInfo.ProductMinorPart}.{fileVersionInfo.ProductBuildPart}";
-        }
-    }
-
-    private static string Product
-    {
-        get
-        {
-            // Get all Product attributes on this assembly
-            var attributes =
-                Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-            // If there aren't any Product attributes, return an empty string
-            return attributes.Length == 0 ? "" : ((AssemblyProductAttribute)attributes[0]).Product;
-
-            // If there is a Product attribute, return its value
-        }
-    }
-
-    private static string CopyRight
-    {
-        get
-        {
-            // Get all Copyright attributes on this assembly
-            var attributes =
-                Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
-            // If there aren't any Copyright attributes, return an empty string
-            return attributes.Length == 0 ? "" : ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
-
-            // If there is a Copyright attribute, return its value
-        }
-    }
-
-    #endregion
-
     private void OKButton_Click(object sender, EventArgs e)
     {
         Close();
@@ -154,4 +88,71 @@ public sealed partial class AboutBox : Form
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
+
+    #region Assembly Attribute Accessors
+
+    private static string Title
+    {
+        get
+        {
+            // Get all Title attributes on this assembly
+            var attributes =
+                Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
+
+            // If there is at least one Title attribute
+            if (attributes.Length <= 0)
+            {
+                return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location);
+            }
+
+            // Select the first one
+            var titleAttribute = (AssemblyTitleAttribute)attributes[0];
+            // If it is not an empty string, return it
+            return !string.IsNullOrEmpty(titleAttribute.Title)
+                ? titleAttribute.Title
+                : Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location);
+            // If there was no Title attribute, or if the Title attribute was the empty string, return the .exe name
+        }
+    }
+
+    private static string Version
+    {
+        get
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+            return
+                $"{fileVersionInfo.ProductMajorPart}.{fileVersionInfo.ProductMinorPart}.{fileVersionInfo.ProductBuildPart}";
+        }
+    }
+
+    private static string Product
+    {
+        get
+        {
+            // Get all Product attributes on this assembly
+            var attributes =
+                Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+            // If there aren't any Product attributes, return an empty string
+            return attributes.Length == 0 ? "" : ((AssemblyProductAttribute)attributes[0]).Product;
+
+            // If there is a Product attribute, return its value
+        }
+    }
+
+    private static string CopyRight
+    {
+        get
+        {
+            // Get all Copyright attributes on this assembly
+            var attributes =
+                Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+            // If there aren't any Copyright attributes, return an empty string
+            return attributes.Length == 0 ? "" : ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
+
+            // If there is a Copyright attribute, return its value
+        }
+    }
+
+    #endregion
 }

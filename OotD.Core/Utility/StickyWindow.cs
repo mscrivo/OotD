@@ -26,11 +26,6 @@ public sealed class StickyWindow : NativeWindow
     /// </summary>
     private static readonly ArrayList _globalStickyWindows = [];
 
-    // public properties
-
-    public event EventHandler? ResizeEnded;
-    public event EventHandler? MoveEnded;
-
     #region StickyWindow Constructor
 
     /// <summary>
@@ -65,6 +60,11 @@ public sealed class StickyWindow : NativeWindow
     }
 
     #endregion
+
+    // public properties
+
+    public event EventHandler? ResizeEnded;
+    public event EventHandler? MoveEnded;
 
     #region OnHandleChange
 
@@ -117,6 +117,7 @@ public sealed class StickyWindow : NativeWindow
                         m.Result = _resizingForm || _movingForm ? 1 : 0;
                         return true;
                     }
+
                     break;
                 }
         }
@@ -203,6 +204,16 @@ public sealed class StickyWindow : NativeWindow
     }
 
     #endregion
+
+    private void OnResizeEnded()
+    {
+        ResizeEnded?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnMoveEnded()
+    {
+        MoveEnded?.Invoke(this, EventArgs.Empty);
+    }
 
     #region ResizeDir
 
@@ -362,6 +373,7 @@ public sealed class StickyWindow : NativeWindow
                         _originalForm.Bounds = _formOriginalRect; // set back old size
                         Cancel();
                     }
+
                     break;
                 }
         }
@@ -395,6 +407,7 @@ public sealed class StickyWindow : NativeWindow
             _formRect.Width = _formRect.X - p.X + _formRect.Width;
             _formRect.X = iRight - _formRect.Width;
         }
+
         if ((_resizeDirection & ResizeDir.Right) == ResizeDir.Right)
         {
             _formRect.Width = p.X - _formRect.Left;
@@ -405,6 +418,7 @@ public sealed class StickyWindow : NativeWindow
             _formRect.Height = _formRect.Height - p.Y + _formRect.Top;
             _formRect.Y = iBottom - _formRect.Height;
         }
+
         if ((_resizeDirection & ResizeDir.Bottom) == ResizeDir.Bottom)
         {
             _formRect.Height = p.Y - _formRect.Top;
@@ -622,6 +636,7 @@ public sealed class StickyWindow : NativeWindow
                         _originalForm.Bounds = _formOriginalRect; // set back old size
                         Cancel();
                     }
+
                     break;
                 }
         }
@@ -714,6 +729,7 @@ public sealed class StickyWindow : NativeWindow
                     // left 2 right
                     _formOffsetPoint.X = toRect.Right - _formRect.Left;
                 }
+
                 if (Math.Abs(_formRect.Left + _formRect.Width - toRect.Left) <= Math.Abs(_formOffsetPoint.X))
                 {
                     // right 2 left
@@ -726,6 +742,7 @@ public sealed class StickyWindow : NativeWindow
                 // snap left 2 left
                 _formOffsetPoint.X = toRect.Left - _formRect.Left;
             }
+
             if (Math.Abs(_formRect.Left + _formRect.Width - toRect.Left - toRect.Width) <= Math.Abs(_formOffsetPoint.X))
             {
                 // snap right 2 right
@@ -745,6 +762,7 @@ public sealed class StickyWindow : NativeWindow
                 // Stick Top to Bottom
                 _formOffsetPoint.Y = toRect.Bottom - _formRect.Top;
             }
+
             if (Math.Abs(_formRect.Top + _formRect.Height - toRect.Top) <= Math.Abs(_formOffsetPoint.Y))
             {
                 // snap Bottom to Top
@@ -758,6 +776,7 @@ public sealed class StickyWindow : NativeWindow
             // top 2 top
             _formOffsetPoint.Y = toRect.Top - _formRect.Top;
         }
+
         if (Math.Abs(_formRect.Top + _formRect.Height - toRect.Top - toRect.Height) <= Math.Abs(_formOffsetPoint.Y))
         {
             // bottom 2 bottom
@@ -766,14 +785,4 @@ public sealed class StickyWindow : NativeWindow
     }
 
     #endregion
-
-    private void OnResizeEnded()
-    {
-        ResizeEnded?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void OnMoveEnded()
-    {
-        MoveEnded?.Invoke(this, EventArgs.Empty);
-    }
 }

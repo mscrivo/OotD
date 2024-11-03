@@ -46,7 +46,6 @@ internal static class TaskScheduling
             {
                 TaskService.Instance.RootFolder.DeleteTask(OotDSchedTaskDefinitionName);
             }
-
         }
         catch (Exception e)
         {

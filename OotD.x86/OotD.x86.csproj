@@ -77,7 +77,8 @@
     <Compile Include="..\OotD.Core\Utility\OutlookFolderDefinition.cs" Link="Utility\OutlookFolderDefinition.cs" />
     <Compile Include="..\OotD.Core\Utility\RegistryHelper.cs" Link="Utility\RegistryHelper.cs" />
     <Compile Include="..\OotD.Core\Utility\StickyWindow.cs" Link="Utility\StickyWindow.cs" />
-    <Compile Include="..\OotD.Core\Utility\SynchronizeInvokeExtensions.cs" Link="Utility\SynchronizeInvokeExtensions.cs" />
+    <Compile Include="..\OotD.Core\Utility\SynchronizeInvokeExtensions.cs"
+             Link="Utility\SynchronizeInvokeExtensions.cs" />
     <Compile Include="..\OotD.Core\Utility\UnsafeNativeMethods.cs" Link="Utility\UnsafeNativeMethods.cs" />
     <None Include="..\OotD.Core\app.manifest">
       <Link>app.manifest</Link>

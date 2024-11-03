@@ -5,7 +5,7 @@
 namespace OotD.Enums;
 
 /// <summary>
-/// Standard Outlook folder types. 
+///     Standard Outlook folder types.
 /// </summary>
 public enum FolderViewType
 {

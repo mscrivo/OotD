@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
+
 <view type="calendar">
-	<viewname>Calendar</viewname>
-	<mode>2</mode>
+    <viewname>Calendar</viewname>
+    <mode>2</mode>
 </view>

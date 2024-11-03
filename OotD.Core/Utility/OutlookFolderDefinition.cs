@@ -5,7 +5,7 @@
 namespace OotD.Utility;
 
 /// <summary>
-/// Structure to hold the currently selected custom folder details
+///     Structure to hold the currently selected custom folder details
 /// </summary>
 internal struct OutlookFolderDefinition
 {

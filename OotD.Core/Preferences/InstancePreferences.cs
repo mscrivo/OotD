@@ -17,10 +17,12 @@ public class InstancePreferences(string instanceName)
     public const int DefaultTopPosition = 100;
     public const int DefaultWidth = 700;
 
-    private readonly RegistryKey _appReg = Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName + "\\" + instanceName) ?? throw new InvalidOperationException();
+    private readonly RegistryKey _appReg =
+        Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName +
+                                          "\\" + instanceName) ?? throw new InvalidOperationException();
 
     /// <summary>
-    /// Main Window Opacity.
+    ///     Main Window Opacity.
     /// </summary>
     public double Opacity
     {
@@ -38,7 +40,7 @@ public class InstancePreferences(string instanceName)
     }
 
     /// <summary>
-    /// Main Window Left.
+    ///     Main Window Left.
     /// </summary>
     public int Left
     {
@@ -47,7 +49,7 @@ public class InstancePreferences(string instanceName)
     }
 
     /// <summary>
-    /// Main Window Top.
+    ///     Main Window Top.
     /// </summary>
     public int Top
     {
@@ -56,7 +58,7 @@ public class InstancePreferences(string instanceName)
     }
 
     /// <summary>
-    /// Main Window Width.
+    ///     Main Window Width.
     /// </summary>
     public int Width
     {
@@ -65,7 +67,7 @@ public class InstancePreferences(string instanceName)
     }
 
     /// <summary>
-    /// Main Window Height.
+    ///     Main Window Height.
     /// </summary>
     public int Height
     {
