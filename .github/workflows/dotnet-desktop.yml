@@ -35,7 +35,7 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    - name: Sign the application
+    - name: Sign App Files
       uses: GabrielAcostaEngler/signtool-code-sign@1.0.6
       with:
         certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
@@ -50,10 +50,21 @@ jobs:
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
       with:
         path: "Setup Script.iss"
-        options: /O+        
+        options: /O+
+        
+    - name: Sign Installer
+      uses: GabrielAcostaEngler/signtool-code-sign@1.0.6
+      with:
+        certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
+        cert-password: '${{ secrets.PFX_PASSWORD }}'
+        cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
+        # path to folder containing files to sign.
+        folder: 'ServerStaging'
+        recursive: false
+        timestamp-server: 'http://timestamp.digicert.com'        
 
-    #- name: Upload build artifacts
-    #  uses: actions/upload-artifact@v3
-    #  with:
-    #    name: MSIX Package
-    #    path: ${{ env.Wap_Project_Directory }}\AppPackages
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Installer
+        path: ServerStaging
