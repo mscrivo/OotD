@@ -64,7 +64,7 @@ jobs:
         timestamp-server: 'http://timestamp.digicert.com'        
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Installer
         path: ServerStaging
