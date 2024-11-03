@@ -1,0 +1,75 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: windows-latest
+    
+    env:
+      Solution_Name: OutlookDesktop.sln
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: 'true'
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:        
+        dotnet-version: 9.0.x
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v2
+
+    # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Restore the application
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    # Decode the base 64 encoded pfx and save the Signing_Certificate
+    - name: Decode the pfx
+      run: |
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
+        $certificatePath = Join-Path -Path . -ChildPath ootd.pfx
+        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+
+    - name: Signtool Code Sign
+      uses: GabrielAcostaEngler/signtool-code-sign@1.0.6
+      with:
+        # Base64 encoded pfx certificate
+        certificate: 'ootd.pfx'
+        # Certificate password
+        cert-password: '{{ secrets.PFX_PASSWORD }}'
+        # Certificate sha1/thumbprint
+        cert-sha1: 'ED:0B:B3:52:10:CF:BE:8A:04:E7:97:67:D0:2A:1C:9A:51:0C:9C:39'
+        # path to folder containing files to sign.
+        folder: 'OotD.Launcher\bin\Release\net9.0-windows7.0'
+        # Recursively search for supported files.
+        recursive: 'true'
+        # URL of the timestamp server used for the signing
+        timestamp-server: 'http://timestamp.digicert.com'
+              
+    # Remove the pfx
+    - name: Remove the pfx
+      run: Remove-Item -path ootd.pfx
+
+    #- name: Upload build artifacts
+    #  uses: actions/upload-artifact@v3
+    #  with:
+    #    name: MSIX Package
+    #    path: ${{ env.Wap_Project_Directory }}\AppPackages
