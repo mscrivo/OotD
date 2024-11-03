@@ -38,7 +38,7 @@ jobs:
         dotnet-version: 9.0.x
 
     - name: Build the app
-      run: dotnet build --configuration $env:Configuration -p:Version=$(VERSION);FileVersion=$(VERSION)
+      run: dotnet build --configuration $env:Configuration -p:Version=${{ env.VERSION }};FileVersion=${{ env.VERSION }}
       env:
         Configuration: ${{ matrix.configuration }}
 
