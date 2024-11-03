@@ -18,14 +18,7 @@ jobs:
     env:
      VERSION: '4.3.${{ github.run_number }}'
 
-    steps:
-    - name: Output Run ID
-      run: echo ${{ github.run_id }}
-    - name: Output Run Number
-      run: echo ${{ github.run_number }}
-    - name: Output Run Attempt
-      run: echo ${{ github.run_attempt }}
-    
+    steps:    
     - name: Checkout
       uses: actions/checkout@v4
       with:
