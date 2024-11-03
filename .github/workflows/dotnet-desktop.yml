@@ -36,6 +36,7 @@ jobs:
       uses: microsoft/setup-msbuild@v2
       with:
         vs-prerelease: true
+        vs-version: '[17.12]'
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
