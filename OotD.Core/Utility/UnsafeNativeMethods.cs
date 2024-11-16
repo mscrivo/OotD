@@ -85,21 +85,11 @@ internal static partial class UnsafeNativeMethods
         SetWindowPos(windowToSendToTop.Handle, HWND_TOPMOST, 0, 0, 0, 0, ZPOS_FLAGS);
     }
 
-    [LibraryImport("user32.dll", SetLastError = true)]
-    private static partial int GetWindowLong(IntPtr hWnd, int nIndex);
-
-    [LibraryImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial bool IsWindowVisible(IntPtr hWnd);
-
     [LibraryImport("user32.dll")]
     private static partial IntPtr GetShellWindow();
 
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
-
-    [LibraryImport("user32.dll", SetLastError = true)]
-    private static partial uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
     [LibraryImport("user32.dll")]
     private static partial IntPtr GetWindow(IntPtr hWnd, uint wCmd);
