@@ -36,7 +36,7 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     - name: Sign App Files
-      uses: GabrielAcostaEngler/signtool-code-sign@1.0.6
+      uses: mscrivo/signtool-code-sign@1.1.0
       with:
         certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
         cert-password: '${{ secrets.PFX_PASSWORD }}'
@@ -53,7 +53,7 @@ jobs:
         options: /O+
         
     - name: Sign Installer
-      uses: GabrielAcostaEngler/signtool-code-sign@1.0.6
+      uses: mscrivo/signtool-code-sign@1.1.0
       with:
         certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
         cert-password: '${{ secrets.PFX_PASSWORD }}'
