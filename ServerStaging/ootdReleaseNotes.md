@@ -1,5 +1,13 @@
 # OotD Release Notes
 
+## 4.3.19
+
+* Update to .net 9
+* Fixed issue where updater could crash during update
+* Fixed bug where tray Icon would be blurry on HiDPI displays
+* Migrated from Azure DevOps to GitHub Actions for CI/CD
+* Updated tooling & dependencies
+
 ## 4.2.24
 
 * Ability to adjust opacity from tray icon. Thanks @dbzfanatic!
