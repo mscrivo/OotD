@@ -361,7 +361,7 @@ public partial class InstanceManager : Form
         // find the icon for the today's day of the month and replace the tray icon with it, compensate for user's DPI settings.
         var dateIcon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture)!;
 
-        trayIcon.Icon = _graphics.DpiX.Equals(96f)
+        trayIcon.Icon = _graphics.DpiX < 96f
             ? new Icon(dateIcon, new Size(16, 16))
             : new Icon(dateIcon, new Size(32, 32));
     }
