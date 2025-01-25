@@ -1,5 +1,6 @@
 ## Outlook on the Desktop
 
+![Latest Version](https://img.shields.io/github/v/release/mscrivo/OotD)
 [![Build Status](https://github.com/mscrivo/ootd/actions/workflows/build.yml/badge.svg)](https://github.com/mscrivo/OotD/actions/workflows/build.yml) [![CodeQL](https://github.com/mscrivo/OotD/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/mscrivo/OotD/actions/workflows/codeql-analysis.yml) [![GitHub All Releases](https://img.shields.io/github/downloads/mscrivo/OotD/total.svg)]() [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ### Description
