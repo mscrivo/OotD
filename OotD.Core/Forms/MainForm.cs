@@ -155,7 +155,7 @@ public partial class MainForm : Form
         if (string.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
         {
             // Set the MAPI Folder Details and the IDs.
-            Preferences.OutlookFolderName = FolderViewType.Calendar.ToString();
+            Preferences.OutlookFolderName = nameof(FolderViewType.Calendar);
             Preferences.OutlookFolderStoreId = GetFolderFromViewType(FolderViewType.Calendar)?.StoreID;
             Preferences.OutlookFolderEntryId = GetFolderFromViewType(FolderViewType.Calendar)?.EntryID;
         }
