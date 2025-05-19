@@ -34,6 +34,11 @@ public partial class MainForm : Form
     private const int ResizeBorderWidth = 4;
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
+    // Define constants for hotkey registration
+    private const int MOD_WIN = 0x0008;
+    private const int WM_HOTKEY = 0x0312;
+    private static short _hotkeyId;
+
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly StickyWindow _stickyWindow;
     private string? _customFolder;
@@ -57,6 +62,7 @@ public partial class MainForm : Form
         try
         {
             InitializeComponent();
+            RegisterHotkey(); // Register the hotkey
         }
         catch (COMException loE)
         {
@@ -108,6 +114,69 @@ public partial class MainForm : Form
             throw;
         }
     }
+
+    protected override void Dispose(bool disposing)
+    {
+        UnregisterHotkey(); // Unregister the hotkey
+        if (disposing && (components != null))
+        {
+            components.Dispose();
+        }
+        base.Dispose(disposing);
+    }
+
+    private void RegisterHotkey()
+    {
+        _hotkeyId = GlobalAddAtom("OotD_ShowDesktop_Hotkey");
+        if (_hotkeyId == 0)
+        {
+            _logger.Error("Failed to generate a unique hotkey ID.");
+            return;
+        }
+
+        if (!RegisterHotKey(Handle, _hotkeyId, MOD_WIN, (uint)Keys.D))
+        {
+            _logger.Error("Failed to register hotkey Win+D. Error code: " + Marshal.GetLastWin32Error());
+        }
+        else
+        {
+            _logger.Info("Hotkey Win+D registered.");
+        }
+    }
+
+    private void UnregisterHotkey()
+    {
+        if (_hotkeyId != 0)
+        {
+            UnregisterHotKey(Handle, _hotkeyId);
+            GlobalDeleteAtom(_hotkeyId);
+            _hotkeyId = 0;
+            _logger.Info("Hotkey Win+D unregistered.");
+        }
+    }
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, uint vk);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    private static extern short GlobalAddAtom(string lpString);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern short GlobalDeleteAtom(short nAtom);
+
+    [DllImport("user32.dll")]
+    private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+
+    private const byte VK_LWIN = 0x5B;
+    private const byte VK_D = 0x44;
+    private const uint KEYEVENTF_KEYUP = 0x0002;
+
 
     protected override CreateParams CreateParams
     {
@@ -736,6 +805,45 @@ public partial class MainForm : Form
     /// <param name="m"></param>
     protected override void WndProc(ref Message m)
     {
+        if (m.Msg == WM_HOTKEY && m.WParam.ToInt32() == _hotkeyId)
+        {
+            _logger.Info("Win+D hotkey pressed.");
+            // Simulate Win+D to show desktop
+            keybd_event(VK_LWIN, 0, 0, UIntPtr.Zero);
+            keybd_event(VK_D, 0, 0, UIntPtr.Zero);
+            keybd_event(VK_D, 0, KEYEVENTF_KEYUP, UIntPtr.Zero);
+            keybd_event(VK_LWIN, 0, KEYEVENTF_KEYUP, UIntPtr.Zero);
+
+            // Bring the OotD window to the foreground
+            // We need a slight delay to ensure the desktop is shown first
+            var timer = new System.Threading.Timer(_ =>
+            {
+                if (InvokeRequired)
+                {
+                    Invoke(new System.Action(() =>
+                    {
+                        if (!IsDisposed)
+                        {
+                           SetForegroundWindow(Handle);
+                           Activate(); // Also try to activate the form
+                           _logger.Info("OotD window brought to foreground.");
+                        }
+                    }));
+                }
+                else
+                {
+                    if (!IsDisposed)
+                    {
+                        SetForegroundWindow(Handle);
+                        Activate(); // Also try to activate the form
+                        _logger.Info("OotD window brought to foreground.");
+                    }
+                }
+            }, null, 50, System.Threading.Timeout.Infinite); // 50ms delay
+            m.Result = IntPtr.Zero; // Indicate that the message has been handled
+            return;
+        }
+
         switch (m.Msg)
         {
             case UnsafeNativeMethods.WM_PARENTNOTIFY:
