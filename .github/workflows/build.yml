@@ -47,7 +47,7 @@ jobs:
         timestamp-server: 'http://timestamp.digicert.com'
 
     - name: Build Installer
-      uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.6
       with:
         path: "Setup Script.iss"
         options: /O+
