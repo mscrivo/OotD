@@ -81,8 +81,7 @@
     <Compile Include="..\OotD.Core\Utility\OutlookFolderDefinition.cs" Link="Utility\OutlookFolderDefinition.cs" />
     <Compile Include="..\OotD.Core\Utility\RegistryHelper.cs" Link="Utility\RegistryHelper.cs" />
     <Compile Include="..\OotD.Core\Utility\StickyWindow.cs" Link="Utility\StickyWindow.cs" />
-    <Compile Include="..\OotD.Core\Utility\SynchronizeInvokeExtensions.cs"
-             Link="Utility\SynchronizeInvokeExtensions.cs" />
+    <Compile Include="..\OotD.Core\Utility\SynchronizeInvokeExtensions.cs" Link="Utility\SynchronizeInvokeExtensions.cs" />
     <Compile Include="..\OotD.Core\Utility\UnsafeNativeMethods.cs" Link="Utility\UnsafeNativeMethods.cs" />
     <None Include="..\OotD.Core\app.manifest">
       <Link>app.manifest</Link>
@@ -274,7 +273,7 @@
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
-    <PackageReference Include="NLog" Version="5.5.0" />
+    <PackageReference Include="NLog" Version="6.0.0" />
     <PackageReference Include="NLog.Schema" Version="6.0.0" />
     <PackageReference Include="TaskScheduler" Version="2.12.1" />
   </ItemGroup>

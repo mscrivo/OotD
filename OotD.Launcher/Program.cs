@@ -232,7 +232,10 @@ public static class Program
 
     private static string GetLoggerFileName()
     {
-        var fileTarget = (FileTarget)LogManager.Configuration.FindTargetByName("f");
+        if (LogManager.Configuration?.FindTargetByName("f") is not FileTarget fileTarget)
+        {
+            throw new InvalidOperationException("Could not find file logging target");
+        }
         var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
         return fileTarget.FileName.Render(logEventInfo).Replace("/", "\\").Replace("\\\\", "\\");
     }

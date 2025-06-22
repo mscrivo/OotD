@@ -67,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
-    <PackageReference Include="NLog" Version="5.5.0" />
+    <PackageReference Include="NLog" Version="6.0.0" />
     <PackageReference Include="NLog.Schema" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
@@ -84,7 +84,6 @@
     </Content>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec
-      Command="copy /y $(SolutionDir)\OotD.x86\$(OutDir) $(OutDir)&#xD;&#xA;copy /y $(SolutionDir)\OotD.x64\$(OutDir) $(OutDir)" />
+    <Exec Command="copy /y $(SolutionDir)\OotD.x86\$(OutDir) $(OutDir)&#xD;&#xA;copy /y $(SolutionDir)\OotD.x64\$(OutDir) $(OutDir)" />
   </Target>
 </Project>
