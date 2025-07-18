@@ -7,7 +7,6 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
     strategy:
       matrix:
@@ -40,12 +39,29 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
+    - name: Run tests with coverage
+      run: |
+        dotnet test OutlookDesktop.sln --configuration $env:Configuration --collect:"XPlat Code Coverage" --results-directory ./TestResults
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    - name: Generate coverage report
+      run: |
+        dotnet tool install --global dotnet-reportgenerator-globaltool
+        reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"CoverageReport" -reporttypes:"Html;Cobertura"
+
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
       if: always()
       with:
         name: test-results
         path: TestResults
+
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: CoverageReport
 
     - name: Sign App Files
       uses: mscrivo/signtool-code-sign@v1
@@ -80,3 +96,4 @@ jobs:
       with:
         name: Installer
         path: ServerStaging
+
