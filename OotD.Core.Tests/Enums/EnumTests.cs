@@ -92,13 +92,13 @@ public class EnumTests
     {
         // This test ensures enum values don't accidentally change
         // which could break serialization or configuration
-        
+
         // Assert CurrentCalendarView stability
         CurrentCalendarView.Day.Should().Be((CurrentCalendarView)0);
         CurrentCalendarView.Week.Should().Be((CurrentCalendarView)1);
         CurrentCalendarView.Month.Should().Be((CurrentCalendarView)2);
         CurrentCalendarView.WorkWeek.Should().Be((CurrentCalendarView)4);
-        
+
         // Assert FolderViewType names are meaningful
         FolderViewType.Calendar.ToString().Should().Be("Calendar");
         FolderViewType.Contacts.ToString().Should().Be("Contacts");
