@@ -34,11 +34,6 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    - name: Run Tests
-      run: dotnet test OutlookDesktop.sln --configuration $env:Configuration --no-build --verbosity normal --logger trx --results-directory TestResults
-      env:
-        Configuration: ${{ matrix.configuration }}
-
     - name: Run tests with coverage
       run: |
         dotnet test OutlookDesktop.sln --configuration $env:Configuration --collect:"XPlat Code Coverage" --results-directory ./TestResults
