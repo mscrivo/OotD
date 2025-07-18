@@ -20,7 +20,7 @@ public class GlobalPreferencesTests : IDisposable
     {
         // Arrange
         using var testKey = Registry.CurrentUser.CreateSubKey(_testKeyPath);
-        
+
         // We can't directly test GlobalPreferences.LockPosition due to its dependency on Application.CompanyName
         // But we can test the registry behavior it relies on
         var lockPosition = bool.TryParse(testKey.GetValue("LockPosition", "false").ToString(), out var result) && result;
@@ -50,7 +50,7 @@ public class GlobalPreferencesTests : IDisposable
     {
         // Arrange
         using var testKey = Registry.CurrentUser.CreateSubKey(_testKeyPath);
-        
+
         // Act
         var isFirstRun = bool.TryParse(testKey.GetValue("FirstRun", "true").ToString(), out var result) && result;
 
@@ -63,7 +63,7 @@ public class GlobalPreferencesTests : IDisposable
     {
         // Arrange
         using var testKey = Registry.CurrentUser.CreateSubKey(_testKeyPath);
-        
+
         // Simulate first run behavior
         if (bool.TryParse(testKey.GetValue("FirstRun", "true").ToString(), out var isFirstRun) && isFirstRun)
         {
