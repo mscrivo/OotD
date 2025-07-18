@@ -16,6 +16,7 @@
     <File Path=".editorconfig" />
     <File Path="renovate.json" />
   </Folder>
+  <Project Path="OotD.Core.Tests/OotD.Core.Tests.csproj" />
   <Project Path="OotD.Core\OotD.Core.csproj" />
   <Project Path="OotD.Launcher\OotD.Launcher.csproj" />
   <Project Path="OotD.x64\OotD.x64.csproj" />
