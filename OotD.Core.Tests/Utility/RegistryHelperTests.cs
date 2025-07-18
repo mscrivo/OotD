@@ -12,7 +12,7 @@ public class RegistryHelperTests : IDisposable
     {
         // Clean up any existing test keys before starting
         CleanupTestKeys();
-        
+
         // Create a test registry key
         _testKey = Registry.CurrentUser.CreateSubKey(_testKeyPath);
     }
@@ -23,7 +23,7 @@ public class RegistryHelperTests : IDisposable
         // Arrange
         const string originalName = "OriginalKey";
         const string newName = "RenamedKey";
-        
+
         var originalKey = _testKey!.CreateSubKey(originalName);
         originalKey.SetValue("TestValue", "TestData");
         originalKey.Close();
@@ -47,7 +47,7 @@ public class RegistryHelperTests : IDisposable
         // Arrange
         const string originalName = "ParentKey";
         const string newName = "NewParentKey";
-        
+
         var parentKey = _testKey!.CreateSubKey(originalName);
         var childKey = parentKey.CreateSubKey("ChildKey");
         childKey.SetValue("ChildValue", "ChildData");
@@ -64,7 +64,7 @@ public class RegistryHelperTests : IDisposable
         var renamedChild = renamedParent!.OpenSubKey("ChildKey");
         renamedChild.Should().NotBeNull();
         renamedChild!.GetValue("ChildValue").Should().Be("ChildData");
-        
+
         renamedChild.Close();
         renamedParent.Close();
     }
@@ -87,7 +87,7 @@ public class RegistryHelperTests : IDisposable
         // Arrange
         const string originalName = "TypeTestKey";
         const string newName = "NewTypeTestKey";
-        
+
         var originalKey = _testKey!.CreateSubKey(originalName);
         originalKey.SetValue("StringValue", "TestString", RegistryValueKind.String);
         originalKey.SetValue("DWordValue", 42, RegistryValueKind.DWord);
@@ -100,18 +100,18 @@ public class RegistryHelperTests : IDisposable
         // Assert
         var renamedKey = _testKey.OpenSubKey(newName);
         renamedKey.Should().NotBeNull();
-        
+
         renamedKey!.GetValue("StringValue").Should().Be("TestString");
         renamedKey.GetValueKind("StringValue").Should().Be(RegistryValueKind.String);
-        
+
         renamedKey.GetValue("DWordValue").Should().Be(42);
         renamedKey.GetValueKind("DWordValue").Should().Be(RegistryValueKind.DWord);
-        
+
         var binaryValue = renamedKey.GetValue("BinaryValue") as byte[];
         binaryValue.Should().NotBeNull();
         binaryValue.Should().BeEquivalentTo(new byte[] { 1, 2, 3, 4 });
         renamedKey.GetValueKind("BinaryValue").Should().Be(RegistryValueKind.Binary);
-        
+
         renamedKey.Close();
     }
 
@@ -121,7 +121,7 @@ public class RegistryHelperTests : IDisposable
         // Arrange
         const string originalName = "OriginalKey";
         const string newName = " SpaceName ";
-        
+
         var originalKey = _testKey!.CreateSubKey(originalName);
         originalKey.SetValue("TestValue", "TestData");
         originalKey.Close();
@@ -142,7 +142,7 @@ public class RegistryHelperTests : IDisposable
         // Arrange - Registry actually allows empty string as key name
         const string originalName = "OriginalKey";
         const string newName = "";
-        
+
         var originalKey = _testKey!.CreateSubKey(originalName);
         originalKey.SetValue("TestValue", "TestData");
         originalKey.Close();
@@ -168,7 +168,7 @@ public class RegistryHelperTests : IDisposable
         {
             _testKey?.Close();
             _testKey = null;
-            
+
             // Delete individual subkeys first
             using var parentKey = Registry.CurrentUser.OpenSubKey(_testKeyPath, true);
             if (parentKey != null)
@@ -186,7 +186,7 @@ public class RegistryHelperTests : IDisposable
                     }
                 }
             }
-            
+
             // Finally delete the parent key
             Registry.CurrentUser.DeleteSubKeyTree(_testKeyPath, false);
         }

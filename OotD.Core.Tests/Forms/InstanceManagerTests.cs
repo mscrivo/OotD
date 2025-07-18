@@ -11,13 +11,13 @@ public class InstanceManagerTests
     {
         // This test would require mocking the Registry, which is complex
         // For now, we'll test the logic conceptually
-        
+
         // Arrange
         var instanceNames = Array.Empty<string>();
-        
+
         // Act
         var count = instanceNames.Count(name => name != "AutoUpdate");
-        
+
         // Assert
         count.Should().Be(0);
     }
@@ -27,10 +27,10 @@ public class InstanceManagerTests
     {
         // Arrange
         var instanceNames = new[] { "AutoUpdate" };
-        
+
         // Act
         var count = instanceNames.Count(name => name != "AutoUpdate");
-        
+
         // Assert
         count.Should().Be(0);
     }
@@ -40,10 +40,10 @@ public class InstanceManagerTests
     {
         // Arrange
         var instanceNames = new[] { "Instance1", "Instance2", "AutoUpdate", "Instance3" };
-        
+
         // Act
         var count = instanceNames.Count(name => name != "AutoUpdate");
-        
+
         // Assert
         count.Should().Be(3);
     }
@@ -58,7 +58,7 @@ public class InstanceManagerTests
     {
         // Act
         var count = instanceNames.Count(name => name != "AutoUpdate");
-        
+
         // Assert
         count.Should().Be(expectedCount);
     }
