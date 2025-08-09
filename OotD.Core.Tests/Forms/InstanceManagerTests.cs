@@ -1,8 +1,4 @@
-﻿using System.Windows.Forms;
-using NSubstitute;
-using OotD.Forms;
-
-namespace OotD.Core.Tests.Forms;
+﻿namespace OotD.Core.Tests.Forms;
 
 public class InstanceManagerTests
 {

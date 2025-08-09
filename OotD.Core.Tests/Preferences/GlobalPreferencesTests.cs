@@ -1,6 +1,4 @@
 ﻿using Microsoft.Win32;
-using NSubstitute;
-using NLog;
 using OotD.Preferences;
 
 namespace OotD.Core.Tests.Preferences;
@@ -59,22 +57,26 @@ public class GlobalPreferencesTests : IDisposable
     }
 
     [Fact]
-    public void FirstRun_AfterAccess_ShouldSetToFalse()
+    public void FirstRun_Logic_ShouldFollowExpectedPattern()
     {
         // Arrange
         using var testKey = Registry.CurrentUser.CreateSubKey(_testKeyPath);
 
-        // Simulate first run behavior
-        if (bool.TryParse(testKey.GetValue("FirstRun", "true").ToString(), out var isFirstRun) && isFirstRun)
+        // Simulate first run check
+        var firstCheck = bool.TryParse(testKey.GetValue("FirstRun", "true").ToString(), out var isFirstRun) && isFirstRun;
+
+        // Act - Simulate setting FirstRun to false after first access
+        if (firstCheck)
         {
             testKey.SetValue("FirstRun", false);
         }
 
-        // Act
-        var subsequentCheck = bool.TryParse(testKey.GetValue("FirstRun", "true").ToString(), out var result) && result;
+        // Second check should return false
+        var secondCheck = bool.TryParse(testKey.GetValue("FirstRun", "true").ToString(), out var isSecondRun) && isSecondRun;
 
         // Assert
-        subsequentCheck.Should().BeFalse();
+        firstCheck.Should().BeTrue("First access should return true");
+        secondCheck.Should().BeFalse("Second access should return false after setting to false");
     }
 
     [Theory]
@@ -113,6 +115,53 @@ public class GlobalPreferencesTests : IDisposable
 
         // Assert
         lockPosition.Should().Be(expectedResult);
+    }
+
+    [Fact]
+    public void GlobalPreferences_ShouldBeStaticClass()
+    {
+        // Assert
+        var type = typeof(GlobalPreferences);
+        type.IsClass.Should().BeTrue();
+        type.IsAbstract.Should().BeTrue(); // Static classes are abstract and sealed
+        type.IsSealed.Should().BeTrue();
+    }
+
+    [Fact]
+    public void GlobalPreferences_ShouldHaveExpectedProperties()
+    {
+        // Arrange
+        var type = typeof(GlobalPreferences);
+
+        // Act
+        var properties = type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+
+        // Assert
+        properties.Should().Contain(p => p.Name == "StartWithWindows");
+        properties.Should().Contain(p => p.Name == "LockPosition");
+        properties.Should().Contain(p => p.Name == "IsFirstRun");
+    }
+
+    [Fact]
+    public void GlobalPreferences_Properties_ShouldHaveCorrectTypes()
+    {
+        // Arrange
+        var type = typeof(GlobalPreferences);
+
+        // Act
+        var startWithWindowsProperty = type.GetProperty("StartWithWindows");
+        var lockPositionProperty = type.GetProperty("LockPosition");
+        var isFirstRunProperty = type.GetProperty("IsFirstRun");
+
+        // Assert
+        startWithWindowsProperty.Should().NotBeNull();
+        startWithWindowsProperty!.PropertyType.Should().Be<bool>();
+
+        lockPositionProperty.Should().NotBeNull();
+        lockPositionProperty!.PropertyType.Should().Be<bool>();
+
+        isFirstRunProperty.Should().NotBeNull();
+        isFirstRunProperty!.PropertyType.Should().Be<bool>();
     }
 
     public void Dispose()

@@ -33,11 +33,12 @@ public class EventArgsTests
     public void InputBoxValidatingEventArgs_ShouldAllowSettingProperties()
     {
         // Arrange
-        var eventArgs = new InputBoxValidatingEventArgs();
-
-        // Act
-        eventArgs.Message = "Error message";
-        eventArgs.Cancel = true;
+        var eventArgs = new InputBoxValidatingEventArgs
+        {
+            // Act
+            Message = "Error message",
+            Cancel = true
+        };
 
         // Assert
         eventArgs.Message.Should().Be("Error message");

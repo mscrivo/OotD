@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace OotD.Core.Tests.Utility;
+﻿namespace OotD.Core.Tests.Utility;
 
 public class UnsafeNativeMethodsTests
 {
