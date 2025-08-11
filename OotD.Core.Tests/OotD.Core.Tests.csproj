@@ -11,6 +11,13 @@
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
+  <!-- Coverlet exclusions for code coverage -->
+  <PropertyGroup>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <ExcludeByFile>**/NetSparkle/**/*;**/MACTrackBarLib/**/*</ExcludeByFile>
+    <Exclude>[*NetSparkle*]*;[*MACTrackBarLib*]*</Exclude>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4">
       <PrivateAssets>all</PrivateAssets>
