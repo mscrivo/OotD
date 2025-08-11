@@ -6,8 +6,8 @@
   "packageRules": [
     {
       "groupName": "NLog",
-      "groupSlug": "NLog",
-      "matchPackageNames": "NLog"
+      "groupSlug": "nlog",
+      "matchPackagePatterns": [ "^NLog" ]
     }
   ]
 }
