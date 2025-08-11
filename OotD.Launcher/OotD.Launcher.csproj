@@ -68,7 +68,7 @@
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2025.2.0" />
     <PackageReference Include="NLog" Version="6.0.3" />
-    <PackageReference Include="NLog.Schema" Version="6.0.2" />
+    <PackageReference Include="NLog.Schema" Version="6.0.3" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\OotD.Core\Properties\Resources.resx" Link="Properties\Resources.resx">
