@@ -91,10 +91,10 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-  dotnetRuntimex64DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/ae0291d4-bcdc-4e56-a952-4f7d84bf2673/1bc4a93f466aab309776931e5a5c4eb4/windowsdesktop-runtime-9.0.1-win-x64.exe';
-  dotnetRuntimex86DesktopUrl = 'https://download.visualstudio.microsoft.com/download/pr/dcd86c7a-9e55-4cc0-8c71-b99ece1350c4/7cc9c0996933075f56ad69c1169e0c1c/windowsdesktop-runtime-9.0.1-win-x86.exe';
-  dotnetRuntimex64DesktopFilename = 'windowsdesktop-runtime-9.0.1-win-x64.exe';
-  dotnetRuntimex86DesktopFilename = 'windowsdesktop-runtime-9.0.1-win-x86.exe';
+  dotnetRuntimex64DesktopUrl = 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/9.0.8/windowsdesktop-runtime-9.0.8-win-x64.exe';
+  dotnetRuntimex86DesktopUrl = 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/9.0.8/windowsdesktop-runtime-9.0.8-win-x86.exe';
+  dotnetRuntimex64DesktopFilename = 'windowsdesktop-runtime-9.0.8-win-x64.exe';
+  dotnetRuntimex86DesktopFilename = 'windowsdesktop-runtime-9.0.8-win-x86.exe';
 
 procedure InitializeWizard;
 begin
