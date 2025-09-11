@@ -117,8 +117,8 @@
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2025.2.1" />
-    <PackageReference Include="NLog" Version="6.0.3" />
-    <PackageReference Include="NLog.Schema" Version="6.0.3" />
+    <PackageReference Include="NLog" Version="6.0.4" />
+    <PackageReference Include="NLog.Schema" Version="6.0.4" />
     <PackageReference Include="TaskScheduler" Version="2.12.2" />
   </ItemGroup>
   <ItemGroup>
