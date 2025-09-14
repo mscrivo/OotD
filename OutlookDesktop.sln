@@ -6,12 +6,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OotD.x64", "OotD.x64\OotD.x
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{07B2D199-0589-433B-8C1F-A8B3BF22D4E0}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.github\workflows\build.yml = .github\workflows\build.yml
 		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
 		LICENSE = LICENSE
 		ServerStaging\ootdAppcast.xml = ServerStaging\ootdAppcast.xml
 		ServerStaging\ootdReleaseNotes.md = ServerStaging\ootdReleaseNotes.md
 		README.md = README.md
+		renovate.json = renovate.json
 		Setup Script.iss = Setup Script.iss
 	EndProjectSection
 EndProject
@@ -26,12 +28,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MACTrackBarLib", "MACTrackBarLib\MACTrackBarLib\MACTrackBarLib.csproj", "{77A112B1-5440-440B-A0F6-2EDCC5B093CB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetSparkle", "NetSparkle\NetSparkle\NetSparkle.csproj", "{74635A21-2BAD-4522-AB95-E3E5703CD301}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{19CE5627-1B2C-44BE-86A4-CED5B029D570}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-		renovate.json = renovate.json
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OotD.Core.Tests", "OotD.Core.Tests\OotD.Core.Tests.csproj", "{6B082CB7-B2E3-5FBD-0F0D-3C7E30BD8EA1}"
 EndProject

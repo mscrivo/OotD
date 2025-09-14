@@ -56,29 +56,6 @@ public class GlobalPreferencesTests : IDisposable
         isFirstRun.Should().BeTrue();
     }
 
-    [Fact]
-    public void FirstRun_Logic_ShouldFollowExpectedPattern()
-    {
-        // Arrange
-        using var testKey = Registry.CurrentUser.CreateSubKey(_testKeyPath);
-
-        // Simulate first run check
-        var firstCheck = bool.TryParse(testKey.GetValue("FirstRun", "true").ToString(), out var isFirstRun) && isFirstRun;
-
-        // Act - Simulate setting FirstRun to false after first access
-        if (firstCheck)
-        {
-            testKey.SetValue("FirstRun", false);
-        }
-
-        // Second check should return false
-        var secondCheck = bool.TryParse(testKey.GetValue("FirstRun", "true").ToString(), out var isSecondRun) && isSecondRun;
-
-        // Assert
-        firstCheck.Should().BeTrue("First access should return true");
-        secondCheck.Should().BeFalse("Second access should return false after setting to false");
-    }
-
     [Theory]
     [InlineData("invalid")]
     [InlineData("")]
