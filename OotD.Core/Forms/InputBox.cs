@@ -5,7 +5,6 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using JetBrains.Annotations;
 using OotD.Events;
 
 namespace OotD.Forms;
@@ -15,7 +14,6 @@ namespace OotD.Forms;
 /// </summary>
 public delegate void InputBoxValidatingEventHandler(object sender, InputBoxValidatingEventArgs e);
 
-[UsedImplicitly]
 public partial class InputBox : Form
 {
     private InputBox()

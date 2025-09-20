@@ -20,19 +20,6 @@ public class InputBoxTests : IDisposable
     }
 
     [Fact]
-    public void InputBox_ShouldHaveUsedImplicitlyAttribute()
-    {
-        // Arrange
-        var type = typeof(InputBox);
-
-        // Act
-        var attributes = type.GetCustomAttributes(typeof(JetBrains.Annotations.UsedImplicitlyAttribute), false);
-
-        // Assert
-        attributes.Should().NotBeEmpty();
-    }
-
-    [Fact]
     public void InputBoxValidatingEventArgs_ShouldHaveCorrectInitialValues()
     {
         // Act
