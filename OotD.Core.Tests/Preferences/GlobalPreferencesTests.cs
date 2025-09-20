@@ -144,6 +144,7 @@ public class GlobalPreferencesTests : IDisposable
     public void Dispose()
     {
         CleanupTestKeys();
+        GC.SuppressFinalize(this);
     }
 
     private void CleanupTestKeys()

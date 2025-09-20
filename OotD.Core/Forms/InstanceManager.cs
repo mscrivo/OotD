@@ -446,10 +446,7 @@ public partial class InstanceManager : Form
         else
         {
             GlobalPreferences.StartWithWindows = true;
-            if (startWithWindowsMenu != null)
-            {
-                startWithWindowsMenu.Checked = true;
-            }
+            startWithWindowsMenu?.Checked = true;
         }
     }
 
@@ -496,10 +493,7 @@ public partial class InstanceManager : Form
         }
         else
         {
-            if (lockPositionMenu != null)
-            {
-                lockPositionMenu.Checked = true;
-            }
+            lockPositionMenu?.Checked = true;
 
             LockOrUnlock(true);
         }
@@ -550,10 +544,7 @@ public partial class InstanceManager : Form
                 }
             }
 
-            if (disableEditingMenu != null)
-            {
-                disableEditingMenu.Checked = true;
-            }
+            disableEditingMenu?.Checked = true;
         }
     }
 

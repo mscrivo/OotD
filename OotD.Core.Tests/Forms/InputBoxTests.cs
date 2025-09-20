@@ -5,7 +5,7 @@ namespace OotD.Core.Tests.Forms;
 
 public class InputBoxTests : IDisposable
 {
-    private Form? _ownerForm;
+    private readonly Form? _ownerForm;
 
     public InputBoxTests()
     {
@@ -211,5 +211,6 @@ public class InputBoxTests : IDisposable
     public void Dispose()
     {
         _ownerForm?.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

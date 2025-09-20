@@ -277,10 +277,7 @@ public partial class MainForm : Form
             TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
                 new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
             _customMenu = (ToolStripMenuItem)TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
-            if (_customMenu != null)
-            {
-                _customMenu.Checked = true;
-            }
+            _customMenu?.Checked = true;
 
             // store the custom folder definition in case the user wants to switch back to it and we need to reload it.
             _customFolderDefinition.OutlookFolderName = Preferences.OutlookFolderName;
