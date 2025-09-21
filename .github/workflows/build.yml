@@ -59,7 +59,7 @@ jobs:
         path: CoverageReport
 
     - name: Sign App Files
-      uses: mscrivo/signtool-code-sign@main
+      uses: mscrivo/signtool-code-sign@v1
       with:
         certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
         cert-password: '${{ secrets.PFX_PASSWORD }}'
