@@ -6,7 +6,7 @@
     <RootNamespace>OotD</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>OotD.Startup</StartupObject>
-    <TargetFramework>net9.0-windows7.0</TargetFramework>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <AssemblyTitle>Outlook on the Desktop</AssemblyTitle>
