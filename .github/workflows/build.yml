@@ -65,7 +65,7 @@ jobs:
         cert-password: '${{ secrets.PFX_PASSWORD }}'
         cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
         # path to folder containing files to sign.
-        folder: 'OotD.Launcher\bin\Release\net9.0-windows7.0'
+        folder: 'OotD.Launcher\bin\Release\net10.0-windows7.0'
         recursive: true
         timestamp-server: 'http://timestamp.digicert.com'
 
