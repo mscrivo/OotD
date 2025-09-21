@@ -1,7 +1,7 @@
 ﻿#include "Inno Plugins\idp.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion GetVersionNumbersString('OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.Launcher.exe')
+#define MyAppVersion GetVersionNumbersString('OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.Launcher.exe')
 #define MyAppVerName "Outlook on the Desktop {#MyAppVersion}"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "https://outlookonthedesktop.com"
@@ -46,29 +46,29 @@ Filename: "{app}\{#MyAppExeName}"; Parameters: "-s"; WorkingDir: "{app}"; Flags:
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Flags: postinstall skipifsilent nowait runasoriginaluser; Description: "{cm:LaunchProgram,{#MyAppName}}"
 
 [Files]
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\MACTrackBarLib.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\MarkdownSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\Microsoft.Win32.TaskScheduler.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\System.Reflection.MetadataLoadContext.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\NetSparkle.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\NLog.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OLXLib.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.Launcher.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.Launcher.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.Launcher.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.Launcher.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.x64.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.x64.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.x64.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.x64.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.x86.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.x86.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.x86.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotD.x86.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "OotD.Launcher\bin\Release\net9.0-windows7.0\OotDScheduledTaskDefinition.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\AxInterop.Microsoft.Office.Interop.OutlookViewCtl.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\CommandLine.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\MACTrackBarLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\MarkdownSharp.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\Microsoft.Win32.TaskScheduler.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\System.Reflection.MetadataLoadContext.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\NetSparkle.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\NLog.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OLXLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.Launcher.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.Launcher.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.Launcher.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.Launcher.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.x64.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.x64.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.x64.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.x64.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.x86.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.x86.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.x86.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.x86.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotDScheduledTaskDefinition.xml"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
@@ -91,10 +91,10 @@ Filename: "schtasks"; Parameters: "/DELETE /F /TN ""Outlook on the Desktop"""; F
 
 [Code]
 const
-  dotnetRuntimex64DesktopUrl = 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/9.0.8/windowsdesktop-runtime-9.0.8-win-x64.exe';
-  dotnetRuntimex86DesktopUrl = 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/9.0.8/windowsdesktop-runtime-9.0.8-win-x86.exe';
-  dotnetRuntimex64DesktopFilename = 'windowsdesktop-runtime-9.0.8-win-x64.exe';
-  dotnetRuntimex86DesktopFilename = 'windowsdesktop-runtime-9.0.8-win-x86.exe';
+  dotnetRuntimex64DesktopUrl = 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.0-rc.1.25451.107/windowsdesktop-runtime-10.0.0-rc.1.25451.107-win-x64.exe';
+  dotnetRuntimex86DesktopUrl = 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.0-rc.1.25451.107/windowsdesktop-runtime-10.0.0-rc.1.25451.107-win-x86.exe';
+  dotnetRuntimex64DesktopFilename = 'windowsdesktop-runtime-10.0.0-rc.1.25451.107-win-x64.exe';
+  dotnetRuntimex86DesktopFilename = 'windowsdesktop-runtime-10.0.0-rc.1.25451.107-win-x86.exe';
 
 procedure InitializeWizard;
 begin
