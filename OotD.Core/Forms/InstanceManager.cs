@@ -60,7 +60,7 @@ public partial class InstanceManager : Form
         get
         {
             var cp = base.CreateParams;
-            cp.ExStyle |= 0x80; // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
+            //cp.ExStyle |= 0x80; // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
             cp.ExStyle |=
                 0x02000000; // Turn on WS_EX_COMPOSITED to turn on double-buffering for the entire form and controls.
             return cp;
@@ -197,6 +197,17 @@ public partial class InstanceManager : Form
                         value.TrayMenu.Items["CheckForUpdatesMenu"]!.Visible = false;
                     }
 
+                    // Add virtual desktop menu if not already present
+                    if (!value.TrayMenu.Items.ContainsKey("VirtualDesktopMenu"))
+                    {
+                        // Find the position to insert (after DisableEnableEditingMenu or before a separator)
+                        var insertIndex = value.TrayMenu.Items.IndexOfKey("DisableEnableEditingMenu");
+                        if (insertIndex >= 0)
+                        {
+                            value.TrayMenu.Items.Insert(insertIndex + 1, value.BuildVirtualDesktopMenu());
+                        }
+                    }
+
                     value.TrayMenu.Items["Separator6"]!.Visible = false;
                     value.TrayMenu.Items["ExitMenu"]!.Visible = false;
 
@@ -294,6 +305,17 @@ public partial class InstanceManager : Form
                 if (value.TrayMenu.Items.ContainsKey("CheckForUpdatesMenu"))
                 {
                     value.TrayMenu.Items["CheckForUpdatesMenu"]!.Visible = true;
+                }
+
+                // Add virtual desktop menu if not already present
+                if (!trayIcon.ContextMenuStrip.Items.ContainsKey("VirtualDesktopMenu"))
+                {
+                    // Find the position to insert (after DisableEnableEditingMenu or before a separator)
+                    var insertIndex = trayIcon.ContextMenuStrip.Items.IndexOfKey("DisableEnableEditingMenu");
+                    if (insertIndex >= 0)
+                    {
+                        trayIcon.ContextMenuStrip.Items.Insert(insertIndex + 1, value.BuildVirtualDesktopMenu());
+                    }
                 }
 
                 // add global menu items that don't apply to the instance.

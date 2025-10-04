@@ -27,6 +27,7 @@ namespace OotD.Forms;
 
 /// <inheritdoc />
 /// <summary>
+
 ///     This is the form that hosts the outlook view control. One of these will exist for each instance.
 /// </summary>
 public partial class MainForm : Form
@@ -114,7 +115,12 @@ public partial class MainForm : Form
         get
         {
             var cp = base.CreateParams;
-            cp.ExStyle |= 0x80; // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
+
+            cp.ExStyle |= 0x80; // Hide from Alt+Tab
+
+            // Log the window styles for debugging
+            _logger.Debug($"CreateParams - Style: 0x{cp.Style:X}, ExStyle: 0x{cp.ExStyle:X}");
+
             return cp;
         }
     }
@@ -178,6 +184,9 @@ public partial class MainForm : Form
         {
             DisableEnableEditing();
         }
+
+        // Apply virtual desktop assignment if configured
+        ApplyVirtualDesktopAssignment();
     }
 
     private void InitializeViewsFromPreferences()
@@ -957,6 +966,105 @@ public partial class MainForm : Form
         Preferences.Height = Height;
     }
 
+    /// <summary>
+    ///     Applies the saved virtual desktop assignment to this window
+    /// </summary>
+    private void ApplyVirtualDesktopAssignment()
+    {
+        if (!VirtualDesktopManager.IsVirtualDesktopSupported)
+        {
+            _logger.Debug("Virtual Desktop features not supported on this system");
+            return;
+        }
+
+        try
+        {
+            var desktopIdStr = Preferences.VirtualDesktopId;
+            if (string.IsNullOrEmpty(desktopIdStr) || !Guid.TryParse(desktopIdStr, out var desktopId) ||
+                desktopId == Guid.Empty)
+            {
+                _logger.Debug("No virtual desktop assignment for this instance");
+                return;
+            }
+
+            _logger.Info($"Applying virtual desktop assignment: {desktopId}");
+            var success = VirtualDesktopManager.MoveWindowToDesktop(Handle, desktopId);
+
+            if (success)
+            {
+                _logger.Info($"Successfully moved instance '{InstanceName}' to virtual desktop {desktopId}");
+            }
+            else
+            {
+                _logger.Warn($"Failed to move instance '{InstanceName}' to virtual desktop {desktopId}. The desktop may no longer exist.");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to apply virtual desktop assignment");
+        }
+    }
+
+    /// <summary>
+    ///     Moves this instance to the specified virtual desktop
+    /// </summary>
+    private void MoveToVirtualDesktop(Guid desktopId)
+    {
+        if (!VirtualDesktopManager.IsVirtualDesktopSupported)
+        {
+            MessageBox.Show(this, "Virtual Desktop features are not supported on this system.",
+                "Feature Not Available", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        try
+        {
+            // Log the current state
+            _logger.Info($"Attempting to move window {Handle} to virtual desktop {desktopId}");
+            var currentDesktopId = VirtualDesktopManager.GetWindowDesktopId(Handle);
+            _logger.Info($"Window is currently on desktop: {currentDesktopId}");
+
+            if (VirtualDesktopManager.MoveWindowToDesktop(Handle, desktopId))
+            {
+                Preferences.VirtualDesktopId = desktopId.ToString();
+                _logger.Info($"Instance moved to virtual desktop {desktopId}");
+
+                // Verify the move
+                var newDesktopId = VirtualDesktopManager.GetWindowDesktopId(Handle);
+                _logger.Info($"Window is now on desktop: {newDesktopId}");
+
+                if (newDesktopId.HasValue && newDesktopId.Value == desktopId)
+                {
+                    _logger.Info("Move verified successfully");
+                }
+                else
+                {
+                    _logger.Warn($"Move verification failed. Expected {desktopId}, but window is on {newDesktopId}");
+                }
+            }
+            else
+            {
+                MessageBox.Show(this, "Failed to move window to the selected virtual desktop.",
+                    "Operation Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error moving to virtual desktop");
+            MessageBox.Show(this, $"Error moving to virtual desktop: {ex.Message}",
+                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    /// <summary>
+    ///     Clears the virtual desktop assignment for this instance
+    /// </summary>
+    private void ClearVirtualDesktopAssignment()
+    {
+        Preferences.VirtualDesktopId = Guid.Empty.ToString();
+        _logger.Info("Cleared virtual desktop assignment");
+    }
+
     private void ExitMenu_Click(object sender, EventArgs e)
     {
         Dispose();
@@ -1355,6 +1463,72 @@ public partial class MainForm : Form
     private void WindowMessageTimer_Tick(object sender, EventArgs e)
     {
         WindowMessageTimer.Enabled = false;
+    }
+
+    /// <summary>
+    ///     Builds and returns a virtual desktop submenu for the context menu
+    /// </summary>
+    public ToolStripMenuItem BuildVirtualDesktopMenu()
+    {
+        var virtualDesktopMenu = new ToolStripMenuItem("Virtual Desktop", null, null, "VirtualDesktopMenu");
+
+        if (!VirtualDesktopManager.IsVirtualDesktopSupported)
+        {
+            virtualDesktopMenu.Enabled = false;
+            virtualDesktopMenu.ToolTipText = "Virtual Desktops are not supported on this system";
+            return virtualDesktopMenu;
+        }
+
+        // Add "Move to Virtual Desktop..." option
+        var moveToDesktopItem = new ToolStripMenuItem("Move to Virtual Desktop...", null, MoveToVirtualDesktopMenu_Click);
+        virtualDesktopMenu.DropDownItems.Add(moveToDesktopItem);
+
+        virtualDesktopMenu.DropDownItems.Add(new ToolStripSeparator());
+
+        // Add "Clear Assignment" option
+        var clearAssignmentItem = new ToolStripMenuItem("Clear Desktop Assignment", null, ClearDesktopAssignmentMenu_Click);
+        virtualDesktopMenu.DropDownItems.Add(clearAssignmentItem);
+
+        return virtualDesktopMenu;
+    }
+
+    private void MoveToVirtualDesktopMenu_Click(object? sender, EventArgs e)
+    {
+        try
+        {
+            using var dialog = new VirtualDesktopSelectionDialog();
+            if (dialog.ShowDialog(this) == DialogResult.OK && dialog.SelectedDesktopId.HasValue)
+            {
+                MoveToVirtualDesktop(dialog.SelectedDesktopId.Value);
+                MessageBox.Show(this,
+                    "Instance has been assigned to the selected virtual desktop.\n\n" +
+                    "It will only appear on that desktop and has been removed from all others.\n" +
+                    "This setting will be preserved when you restart the application.",
+                    "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error in MoveToVirtualDesktopMenu_Click");
+            MessageBox.Show(this, $"Error: {ex.Message}",
+                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void ClearDesktopAssignmentMenu_Click(object? sender, EventArgs e)
+    {
+        try
+        {
+            ClearVirtualDesktopAssignment();
+            MessageBox.Show(this, "Virtual desktop assignment has been cleared. The instance will appear on all desktops.",
+                "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error in ClearDesktopAssignmentMenu_Click");
+            MessageBox.Show(this, $"Error: {ex.Message}",
+                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     #endregion

@@ -331,6 +331,53 @@ public class InstancePreferencesTests : IDisposable
     }
 
     [Fact]
+    public void VirtualDesktopId_WhenNotSet_ShouldReturnEmptyGuid()
+    {
+        // Arrange
+        var uniqueInstanceName = $"VirtualDesktopTest_{Guid.NewGuid():N}";
+        _preferences = new InstancePreferences(uniqueInstanceName);
+
+        // Act
+        var virtualDesktopId = _preferences.VirtualDesktopId;
+
+        // Assert
+        virtualDesktopId.Should().Be(Guid.Empty.ToString());
+    }
+
+    [Fact]
+    public void VirtualDesktopId_WhenSet_ShouldReturnCorrectValue()
+    {
+        // Arrange
+        var uniqueInstanceName = $"VirtualDesktopSet_{Guid.NewGuid():N}";
+        var expectedGuid = Guid.NewGuid();
+        _preferences = new InstancePreferences(uniqueInstanceName)
+        {
+            // Act
+            VirtualDesktopId = expectedGuid.ToString()
+        };
+        var actualValue = _preferences.VirtualDesktopId;
+
+        // Assert
+        actualValue.Should().Be(expectedGuid.ToString());
+    }
+
+    [Fact]
+    public void VirtualDesktopId_WhenSetToNull_ShouldReturnEmptyGuid()
+    {
+        // Arrange
+        var uniqueInstanceName = $"VirtualDesktopNull_{Guid.NewGuid():N}";
+        _preferences = new InstancePreferences(uniqueInstanceName)
+        {
+            // Act
+            VirtualDesktopId = null
+        };
+        var actualValue = _preferences.VirtualDesktopId;
+
+        // Assert
+        actualValue.Should().Be(Guid.Empty.ToString());
+    }
+
+    [Fact]
     public void NullValues_ShouldBeHandledGracefully()
     {
         // Arrange

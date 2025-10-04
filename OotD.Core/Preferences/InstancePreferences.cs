@@ -139,6 +139,16 @@ public class InstancePreferences(string instanceName)
         set => _appReg.SetValue("ViewXML", value!);
     }
 
+    /// <summary>
+    ///     Virtual Desktop ID (GUID) where this instance should be pinned.
+    ///     Empty GUID means no specific desktop assignment (default behavior).
+    /// </summary>
+    public string? VirtualDesktopId
+    {
+        get => _appReg.GetValue("VirtualDesktopId", Guid.Empty.ToString()).ToString();
+        set => _appReg.SetValue("VirtualDesktopId", value ?? Guid.Empty.ToString());
+    }
+
     ~InstancePreferences()
     {
         _appReg.Close();

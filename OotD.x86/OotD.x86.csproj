@@ -61,6 +61,7 @@
     <Compile Include="..\OotD.Core\Forms\InstanceManager.designer.cs" Link="Forms\InstanceManager.designer.cs" />
     <Compile Include="..\OotD.Core\Forms\MainForm.cs" Link="Forms\MainForm.cs" />
     <Compile Include="..\OotD.Core\Forms\MainForm.designer.cs" Link="Forms\MainForm.designer.cs" />
+    <Compile Include="..\OotD.Core\Forms\VirtualDesktopSelectionDialog.cs" Link="Forms\VirtualDesktopSelectionDialog.cs" />
     <Compile Include="..\OotD.Core\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
     <Compile Include="..\OotD.Core\Options.cs" Link="Options.cs" />
     <Compile Include="..\OotD.Core\Preferences\GlobalPreferences.cs" Link="Preferences\GlobalPreferences.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="..\OotD.Core\Utility\StickyWindow.cs" Link="Utility\StickyWindow.cs" />
     <Compile Include="..\OotD.Core\Utility\SynchronizeInvokeExtensions.cs" Link="Utility\SynchronizeInvokeExtensions.cs" />
     <Compile Include="..\OotD.Core\Utility\UnsafeNativeMethods.cs" Link="Utility\UnsafeNativeMethods.cs" />
+    <Compile Include="..\OotD.Core\Utility\VirtualDesktopManager.cs" Link="Utility\VirtualDesktopManager.cs" />
     <None Include="..\OotD.Core\app.manifest">
       <Link>app.manifest</Link>
     </None>
