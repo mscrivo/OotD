@@ -7,7 +7,9 @@
     {
       "groupName": "NLog",
       "groupSlug": "nlog",
-      "matchPackagePatterns": [ "^NLog" ]
+      "matchPackageNames": [
+        "/^NLog/"
+      ]
     }
   ]
 }
