@@ -46,14 +46,14 @@ jobs:
         reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"CoverageReport" -reporttypes:"Html;Cobertura"
 
     - name: Upload Test Results
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       if: always()
       with:
         name: test-results
         path: TestResults
 
     - name: Upload coverage reports
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: coverage-report
         path: CoverageReport
@@ -87,7 +87,7 @@ jobs:
         timestamp-server: 'http://timestamp.digicert.com'        
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: Installer
         path: ServerStaging
