@@ -61,6 +61,7 @@ namespace OotD.Forms
             this.Separator4 = new System.Windows.Forms.ToolStripSeparator();
             this.HideShowMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.DisableEnableEditingMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.VirtualDesktopMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator5 = new System.Windows.Forms.ToolStripSeparator();
             this.RemoveInstanceMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator6 = new System.Windows.Forms.ToolStripSeparator();
@@ -109,6 +110,7 @@ namespace OotD.Forms
             this.Separator4,
             this.HideShowMenu,
             this.DisableEnableEditingMenu,
+            this.VirtualDesktopMenu,
             this.Separator5,
             this.RemoveInstanceMenu,
             this.Separator7,
@@ -117,7 +119,7 @@ namespace OotD.Forms
             this.Separator6,
             this.ExitMenu});
             this.TrayMenu.Name = "trayMenu";
-            this.TrayMenu.Size = new System.Drawing.Size(187, 326);
+            this.TrayMenu.Size = new System.Drawing.Size(187, 337);
             // 
             // CalendarMenu
             // 
@@ -236,6 +238,13 @@ namespace OotD.Forms
             this.DisableEnableEditingMenu.Size = new System.Drawing.Size(186, 22);
             this.DisableEnableEditingMenu.Text = "Disable Editing";
             this.DisableEnableEditingMenu.Click += new System.EventHandler(this.DisableEnableEditingMenu_Click);
+            // 
+            // VirtualDesktopMenu
+            // 
+            this.VirtualDesktopMenu.Name = "VirtualDesktopMenu";
+            this.VirtualDesktopMenu.Size = new System.Drawing.Size(186, 22);
+            this.VirtualDesktopMenu.Text = "Move to Virtual Desktop";
+            this.VirtualDesktopMenu.Click += new System.EventHandler(this.VirtualDesktopMenu_Click);
             // 
             // Separator5
             // 
@@ -564,6 +573,7 @@ namespace OotD.Forms
         private ToolStripSeparator Separator2;
         private ToolStripSeparator Separator7;
         private ToolStripMenuItem DisableEnableEditingMenu;
+        private ToolStripMenuItem VirtualDesktopMenu;
         private TrackBarMenuItem TransparencyMenuSlider;
         internal Panel HeaderPanel;
         private Panel ViewControlHostPanel;

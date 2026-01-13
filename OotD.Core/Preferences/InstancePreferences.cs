@@ -139,6 +139,16 @@ public class InstancePreferences(string instanceName)
         set => _appReg.SetValue("ViewXML", value!);
     }
 
+    /// <summary>
+    ///     The GUID of the virtual desktop this instance is assigned to.
+    ///     Empty GUID means the instance appears on all desktops.
+    /// </summary>
+    public string VirtualDesktopId
+    {
+        get => _appReg.GetValue("VirtualDesktopId", Guid.Empty.ToString()).ToString() ?? Guid.Empty.ToString();
+        set => _appReg.SetValue("VirtualDesktopId", value ?? Guid.Empty.ToString());
+    }
+
     ~InstancePreferences()
     {
         _appReg.Close();

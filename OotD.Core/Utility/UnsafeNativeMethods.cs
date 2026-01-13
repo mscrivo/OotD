@@ -86,7 +86,7 @@ internal static partial class UnsafeNativeMethods
     }
 
     [LibraryImport("user32.dll")]
-    private static partial IntPtr GetShellWindow();
+    internal static partial IntPtr GetShellWindow();
 
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
@@ -173,5 +173,111 @@ internal static partial class UnsafeNativeMethods
             return iValue & 0xFFFF;
         }
     }
+
+    #region Virtual Desktop Interop
+
+    /// <summary>
+    ///     CLSID for the VirtualDesktopManager COM class.
+    /// </summary>
+    internal static readonly Guid CLSID_VirtualDesktopManager = new("AA509086-5CA9-4C25-8F95-589D3C07B48A");
+
+    /// <summary>
+    ///     CLSID for the ImmersiveShell COM class.
+    /// </summary>
+    internal static readonly Guid CLSID_ImmersiveShell = new("C2F03A33-21F5-47FA-B4BB-156362A2F239");
+
+    /// <summary>
+    ///     Service GUID for IVirtualDesktopManagerInternal.
+    /// </summary>
+    internal static readonly Guid SID_VirtualDesktopManagerInternal = new("C5E0CDCA-7B6E-41B2-9FC4-D93975CC467B");
+
+    // Public Virtual Desktop API
+    [ComImport]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("A5CD92FF-29BE-454C-8D04-D82879FB3F1B")]
+    internal interface IVirtualDesktopManager
+    {
+        [PreserveSig]
+        int IsWindowOnCurrentVirtualDesktop(IntPtr topLevelWindow);
+
+        [PreserveSig]
+        int GetWindowDesktopId(IntPtr topLevelWindow, out Guid desktopId);
+
+        [PreserveSig]
+        int MoveWindowToDesktop(IntPtr topLevelWindow, [MarshalAs(UnmanagedType.LPStruct)] Guid desktopId);
+    }
+
+    // Internal API - Windows 10/11
+    [ComImport]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("6D5140C1-7436-11CE-8034-00AA006009FA")]
+    internal interface IServiceProvider10
+    {
+        [return: MarshalAs(UnmanagedType.IUnknown)]
+        object QueryService(ref Guid guidService, ref Guid riid);
+    }
+
+    [ComImport]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("F31574D6-B682-4CDC-BD56-1827860ABEC6")]
+    internal interface IVirtualDesktopManagerInternal
+    {
+        int GetCount(IntPtr hWndOrMon);
+        void MoveViewToDesktop(IntPtr pView, IVirtualDesktop pDesktop);
+        bool CanViewMoveDesktops(IntPtr pView);
+        IVirtualDesktop GetCurrentDesktop(IntPtr hWndOrMon);
+        IObjectArray GetDesktops(IntPtr hWndOrMon);
+        IVirtualDesktop GetAdjacentDesktop(IVirtualDesktop pDesktopReference, int uDirection);
+        void SwitchDesktop(IntPtr hWndOrMon, IVirtualDesktop pDesktop);
+        IVirtualDesktop CreateDesktop(IntPtr hWndOrMon);
+        void MoveDesktop(IVirtualDesktop pDesktop, IntPtr hWndOrMon, int nIndex);
+        void RemoveDesktop(IVirtualDesktop pRemove, IVirtualDesktop pFallbackDesktop);
+        IVirtualDesktop FindDesktop(ref Guid desktopId);
+        void GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop pDesktop, out IObjectArray ppDesktops1, out IObjectArray ppDesktops2);
+    }
+
+    [ComImport]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("536D3495-B208-4CC9-AE26-DE8111275BF8")]
+    internal interface IVirtualDesktop
+    {
+        bool IsViewVisible(IntPtr pView);
+        void GetID(out Guid pGuid);
+    }
+
+    [ComImport]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("31EBDE3F-6EC3-4CBD-B9FB-0EF6D09B41F4")]
+    internal interface IVirtualDesktop2 : IVirtualDesktop
+    {
+        new bool IsViewVisible(IntPtr pView);
+        new void GetID(out Guid pGuid);
+        [return: MarshalAs(UnmanagedType.HString)]
+        string GetName();
+    }
+
+    [ComImport]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid("92CA9DCD-5622-4BBA-A805-5E9F541BD8C9")]
+    internal interface IObjectArray
+    {
+        void GetCount(out int pctInfo);
+        void GetAt(int iIndex, ref Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvObject);
+    }
+
+    internal delegate bool EnumWindowsProc(IntPtr hwnd, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    internal static extern IntPtr GetForegroundWindow();
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool IsWindowVisible(IntPtr hwnd);
+
+    #endregion
 }
 #pragma warning restore IDE1006 // Naming Styles

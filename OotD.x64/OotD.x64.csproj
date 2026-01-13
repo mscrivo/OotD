@@ -83,6 +83,8 @@
     <Compile Include="..\OotD.Core\Utility\StickyWindow.cs" Link="Utility\StickyWindow.cs" />
     <Compile Include="..\OotD.Core\Utility\SynchronizeInvokeExtensions.cs" Link="Utility\SynchronizeInvokeExtensions.cs" />
     <Compile Include="..\OotD.Core\Utility\UnsafeNativeMethods.cs" Link="Utility\UnsafeNativeMethods.cs" />
+    <Compile Include="..\OotD.Core\Utility\VirtualDesktopManager.cs" Link="Utility\VirtualDesktopManager.cs" />
+    <Compile Include="..\OotD.Core\Forms\VirtualDesktopSelectionDialog.cs" Link="Forms\VirtualDesktopSelectionDialog.cs" />
     <None Include="..\OotD.Core\app.manifest">
       <Link>app.manifest</Link>
     </None>
