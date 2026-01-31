@@ -116,8 +116,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="NLog" Version="6.0.7" />
-    <PackageReference Include="NLog.Schema" Version="6.0.7" />
+    <PackageReference Include="NLog" Version="6.1.0" />
+    <PackageReference Include="NLog.Schema" Version="6.1.0" />
     <PackageReference Include="TaskScheduler" Version="2.12.2" />
   </ItemGroup>
   <ItemGroup>
