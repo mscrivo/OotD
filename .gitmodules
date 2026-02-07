@@ -1,9 +1,9 @@
 [submodule "MACTrackBarLib"]
 	path = MACTrackBarLib
 	url = https://github.com/mscrivo/MACTrackBarLib
+	branch = main
 [submodule "NetSparkle"]
 	path = NetSparkle
 	url = https://github.com/mscrivo/NetSparkle
 	branch = main
-[submodule "MACTrackBarLib/MACTrackBarLib"]
-	branch = main
+
