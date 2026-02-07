@@ -135,6 +135,7 @@ public class PreferencesIntegrationTests : IDisposable
         const int operationsPerThread = 10;
         var tasks = new List<Task>();
         var exceptions = new List<Exception>();
+        var cancellationToken = TestContext.Current.CancellationToken;
 
         // Act
         for (var i = 0; i < numberOfThreads; i++)
@@ -161,11 +162,11 @@ public class PreferencesIntegrationTests : IDisposable
                         exceptions.Add(ex);
                     }
                 }
-            });
+            }, cancellationToken);
             tasks.Add(task);
         }
 
-        Task.WaitAll(tasks.ToArray());
+        Task.WaitAll(tasks.ToArray(), cancellationToken);
 
         // Assert
         exceptions.Should().BeEmpty("No exceptions should occur during concurrent access");
