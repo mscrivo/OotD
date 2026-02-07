@@ -5,3 +5,5 @@
 	path = NetSparkle
 	url = https://github.com/mscrivo/NetSparkle
 	branch = main
+[submodule "MACTrackBarLib/MACTrackBarLib"]
+	branch = main
