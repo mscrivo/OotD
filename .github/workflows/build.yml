@@ -66,16 +66,16 @@ jobs:
         name: coverage-report
         path: CoverageReport
 
-    - name: Sign App Files
-      uses: mscrivo/signtool-code-sign@v1
-      with:
-        certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
-        cert-password: '${{ secrets.PFX_PASSWORD }}'
-        cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
-        # path to folder containing files to sign.
-        folder: 'OotD.Launcher\bin\Release\net10.0-windows7.0'
-        recursive: true
-        timestamp-server: 'http://timestamp.digicert.com'
+#    - name: Sign App Files
+#      uses: mscrivo/signtool-code-sign@v1
+#      with:
+#        certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
+#        cert-password: '${{ secrets.PFX_PASSWORD }}'
+#        cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
+#        # path to folder containing files to sign.
+#        folder: 'OotD.Launcher\bin\Release\net10.0-windows7.0'
+#        recursive: true
+#        timestamp-server: 'http://timestamp.digicert.com'
 
     - name: Build Installer
       uses: Minionguyjpro/Inno-Setup-Action@v1.2.7
@@ -83,16 +83,16 @@ jobs:
         path: "Setup Script.iss"
         options: /O+
         
-    - name: Sign Installer
-      uses: mscrivo/signtool-code-sign@v1
-      with:
-        certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
-        cert-password: '${{ secrets.PFX_PASSWORD }}'
-        cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
-        # path to folder containing files to sign.
-        folder: 'ServerStaging'
-        recursive: false
-        timestamp-server: 'http://timestamp.digicert.com'        
+#    - name: Sign Installer
+#      uses: mscrivo/signtool-code-sign@v1
+#      with:
+#        certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
+#        cert-password: '${{ secrets.PFX_PASSWORD }}'
+#        cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
+#        # path to folder containing files to sign.
+#        folder: 'ServerStaging'
+#        recursive: false
+#        timestamp-server: 'http://timestamp.digicert.com'        
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v6
