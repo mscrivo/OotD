@@ -17,10 +17,18 @@ public class VirtualDesktopManagerTests
         Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != null ||
         Environment.GetEnvironmentVariable("TF_BUILD") != null;
 
-    [SkippableFact]
+    private static void SkipIfCi()
+    {
+        if (IsRunningInCi)
+        {
+            Assert.Skip("Virtual Desktop COM APIs not available in CI environment");
+        }
+    }
+
+    [Fact]
     public void IsVirtualDesktopSupported_ShouldReturnBoolean()
     {
-        Skip.If(IsRunningInCi, "Virtual Desktop COM APIs not available in CI environment");
+        SkipIfCi();
 
         // Act
         var action = () => VirtualDesktopManager.IsVirtualDesktopSupported;
@@ -29,10 +37,10 @@ public class VirtualDesktopManagerTests
         action.Should().NotThrow();
     }
 
-    [SkippableFact]
+    [Fact]
     public void GetWindowDesktopId_WithInvalidHandle_ShouldNotThrow()
     {
-        Skip.If(IsRunningInCi, "Virtual Desktop COM APIs not available in CI environment");
+        SkipIfCi();
 
         // Arrange
         var invalidHandle = IntPtr.Zero;
@@ -44,10 +52,10 @@ public class VirtualDesktopManagerTests
         action.Should().NotThrow();
     }
 
-    [SkippableFact]
+    [Fact]
     public void GetVirtualDesktops_ShouldReturnList()
     {
-        Skip.If(IsRunningInCi, "Virtual Desktop COM APIs not available in CI environment");
+        SkipIfCi();
 
         // Act
         var desktops = VirtualDesktopManager.GetVirtualDesktops();
@@ -57,10 +65,10 @@ public class VirtualDesktopManagerTests
         desktops.Should().BeOfType<List<VirtualDesktopInfo>>();
     }
 
-    [SkippableFact]
+    [Fact]
     public void GetCurrentDesktopId_ShouldNotThrow()
     {
-        Skip.If(IsRunningInCi, "Virtual Desktop COM APIs not available in CI environment");
+        SkipIfCi();
 
         // Act
         var action = () => VirtualDesktopManager.GetCurrentDesktopId();
@@ -69,10 +77,10 @@ public class VirtualDesktopManagerTests
         action.Should().NotThrow();
     }
 
-    [SkippableFact]
+    [Fact]
     public void MoveWindowToDesktop_WithInvalidHandle_ShouldReturnFalse()
     {
-        Skip.If(IsRunningInCi, "Virtual Desktop COM APIs not available in CI environment");
+        SkipIfCi();
 
         // Arrange
         var invalidHandle = IntPtr.Zero;
@@ -85,10 +93,10 @@ public class VirtualDesktopManagerTests
         result.Should().BeFalse();
     }
 
-    [SkippableFact]
+    [Fact]
     public void IsWindowOnCurrentDesktop_WithInvalidHandle_ShouldNotThrow()
     {
-        Skip.If(IsRunningInCi, "Virtual Desktop COM APIs not available in CI environment");
+        SkipIfCi();
 
         // Arrange
         var invalidHandle = IntPtr.Zero;
