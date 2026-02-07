@@ -36,9 +36,15 @@ jobs:
 
     - name: Run tests with coverage
       run: |
-        dotnet test OutlookDesktop.sln --configuration $env:Configuration --collect:"XPlat Code Coverage" --settings coverlet.runsettings --results-directory ./TestResults --logger trx --verbosity normal
+        dotnet test OutlookDesktop.sln --configuration $env:Configuration --collect:"XPlat Code Coverage" --settings coverlet.runsettings --results-directory ./TestResults --logger "trx;LogFileName=test-results.trx" --verbosity normal
       env:
         Configuration: ${{ matrix.configuration }}
+
+    - name: Test Summary
+      uses: test-summary/action@v2
+      if: always()
+      with:
+        paths: "TestResults/**/*.trx"
 
     - name: Generate coverage report
       run: |
