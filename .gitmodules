@@ -4,3 +4,4 @@
 [submodule "NetSparkle"]
 	path = NetSparkle
 	url = https://github.com/mscrivo/NetSparkle
+	branch = main
