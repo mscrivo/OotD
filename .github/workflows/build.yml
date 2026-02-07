@@ -40,11 +40,13 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    - name: Test Summary
-      uses: test-summary/action@v2
+    - name: Test Report
+      uses: dorny/test-reporter@v2
       if: always()
       with:
-        paths: "TestResults/**/*.trx"
+        name: Test Results
+        path: "TestResults/**/*.trx"
+        reporter: dotnet-trx
 
     - name: Generate coverage report
       run: |
