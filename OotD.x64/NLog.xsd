@@ -4569,6 +4569,7 @@
       <xs:extension base="Layout">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="attribute" minOccurs="0" maxOccurs="unbounded" type="NLog.Layouts.JsonAttribute" />
+          <xs:element name="dottedRecursion" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="includeEventProperties" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="includeGdc" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="includeScopeProperties" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
@@ -4582,6 +4583,11 @@
           <xs:element name="state" minOccurs="0" maxOccurs="unbounded" type="NLog.Layouts.JsonAttribute" />
           <xs:element name="timestampFormat" type="xs:string" minOccurs="0" maxOccurs="1" default="o" />
         </xs:choice>
+        <xs:attribute name="dottedRecursion" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Whether to flatten nested object properties using dotted notation</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
         <xs:attribute name="includeEventProperties" type="xs:boolean">
           <xs:annotation>
             <xs:documentation>Option to include all properties from the log event (as JSON)</xs:documentation>
@@ -4652,6 +4658,7 @@
       <xs:extension base="Layout">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
           <xs:element name="attribute" minOccurs="0" maxOccurs="unbounded" type="NLog.Layouts.JsonAttribute" />
+          <xs:element name="dottedRecursion" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="includeGdc" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="indentJson" type="xs:boolean" minOccurs="0" maxOccurs="1" default="false" />
           <xs:element name="maxRecursionLimit" type="xs:integer" minOccurs="0" maxOccurs="1" default="1" />
@@ -4667,6 +4674,11 @@
           <xs:element name="splunkSourceName" type="Layout" minOccurs="0" maxOccurs="1" />
           <xs:element name="splunkSourceType" type="Layout" minOccurs="0" maxOccurs="1" />
         </xs:choice>
+        <xs:attribute name="dottedRecursion" type="xs:boolean">
+          <xs:annotation>
+            <xs:documentation>Whether to flatten nested object properties using dotted notation</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
         <xs:attribute name="includeGdc" type="xs:boolean">
           <xs:annotation>
             <xs:documentation>Indicates whether to include contents of the T:NLog.GlobalDiagnosticsContext dictionary.</xs:documentation>
