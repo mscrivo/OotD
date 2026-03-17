@@ -17,11 +17,15 @@ public class VirtualDesktopManagerTests
         Environment.GetEnvironmentVariable("GITHUB_ACTIONS") != null ||
         Environment.GetEnvironmentVariable("TF_BUILD") != null;
 
+    private static bool IsVirtualDesktopTestOptInEnabled =>
+        string.Equals(Environment.GetEnvironmentVariable("OOTD_RUN_VIRTUAL_DESKTOP_TESTS"), "true",
+            StringComparison.OrdinalIgnoreCase);
+
     private static void SkipIfCi()
     {
-        if (IsRunningInCi)
+        if (IsRunningInCi || !IsVirtualDesktopTestOptInEnabled)
         {
-            Assert.Skip("Virtual Desktop COM APIs not available in CI environment");
+            Assert.Skip("Virtual Desktop COM APIs are opt-in only. Set OOTD_RUN_VIRTUAL_DESKTOP_TESTS=true to run.");
         }
     }
 

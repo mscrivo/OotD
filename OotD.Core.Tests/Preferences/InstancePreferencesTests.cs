@@ -5,7 +5,7 @@ namespace OotD.Core.Tests.Preferences;
 
 public class InstancePreferencesTests : IDisposable
 {
-    private readonly string _baseTestPath = $@"Software\OotDTests";
+    private readonly string _baseTestPath = $@"Software\OotDTests\{Guid.NewGuid():N}";
     private InstancePreferences? _preferences;
 
     [Fact]
@@ -420,6 +420,7 @@ public class InstancePreferencesTests : IDisposable
     {
         _preferences = null;
         CleanupTestKeys();
+        GC.SuppressFinalize(this);
     }
 
     private void CleanupTestKeys()

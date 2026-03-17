@@ -13,21 +13,22 @@ internal static class TaskScheduling
     private const string OotDSchedTaskDefinitionName = "Outlook on the Desktop";
     private const string OotDSchedTaskDefinitionXMLPath = @"OotDScheduledTaskDefinition.xml";
 
+    internal static ITaskServiceAdapter TaskServiceAdapter { get; set; } = new DefaultTaskServiceAdapter();
+
     public static bool OotDScheduledTaskExists()
     {
-        return TaskService.Instance.GetTask(OotDSchedTaskDefinitionName) != null;
+        return TaskServiceAdapter.TaskExists(OotDSchedTaskDefinitionName);
     }
 
     public static void CreateOotDStartupTask(Logger logger)
     {
         try
         {
-            using var ts = new TaskService();
             logger.Info($"Creating {OotDSchedTaskDefinitionName} Scheduled Task");
-            var td = ts.NewTaskFromFile(OotDSchedTaskDefinitionXMLPath);
-            var logonTrigger = (LogonTrigger)td.Triggers[0];
-            logonTrigger.UserId = Environment.UserName;
-            ts.RootFolder.RegisterTaskDefinition(OotDSchedTaskDefinitionName, td);
+            TaskServiceAdapter.CreateStartupTaskDefinition(
+                OotDSchedTaskDefinitionName,
+                OotDSchedTaskDefinitionXMLPath,
+                Environment.UserName);
         }
         catch (Exception e)
         {
@@ -41,16 +42,44 @@ internal static class TaskScheduling
         try
         {
             logger.Info($"Removing {OotDSchedTaskDefinitionName} Scheduled Task");
-            var td = TaskService.Instance.GetTask(OotDSchedTaskDefinitionName);
-            if (td != null)
+            if (TaskServiceAdapter.TaskExists(OotDSchedTaskDefinitionName))
             {
-                TaskService.Instance.RootFolder.DeleteTask(OotDSchedTaskDefinitionName);
+                TaskServiceAdapter.DeleteTask(OotDSchedTaskDefinitionName);
             }
         }
         catch (Exception e)
         {
             logger.Error(e, "Error while trying to remove startup scheduled task.");
             throw;
+        }
+    }
+
+    internal interface ITaskServiceAdapter
+    {
+        bool TaskExists(string taskName);
+        void CreateStartupTaskDefinition(string taskName, string xmlPath, string userName);
+        void DeleteTask(string taskName);
+    }
+
+    private sealed class DefaultTaskServiceAdapter : ITaskServiceAdapter
+    {
+        public bool TaskExists(string taskName)
+        {
+            return TaskService.Instance.GetTask(taskName) != null;
+        }
+
+        public void CreateStartupTaskDefinition(string taskName, string xmlPath, string userName)
+        {
+            using var ts = new TaskService();
+            var taskDefinition = ts.NewTaskFromFile(xmlPath);
+            var logonTrigger = (LogonTrigger)taskDefinition.Triggers[0];
+            logonTrigger.UserId = userName;
+            ts.RootFolder.RegisterTaskDefinition(taskName, taskDefinition);
+        }
+
+        public void DeleteTask(string taskName)
+        {
+            TaskService.Instance.RootFolder.DeleteTask(taskName);
         }
     }
 }

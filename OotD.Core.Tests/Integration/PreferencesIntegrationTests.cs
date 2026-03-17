@@ -4,7 +4,9 @@ namespace OotD.Core.Tests.Integration;
 
 public class PreferencesIntegrationTests : IDisposable
 {
-    private readonly string _testInstanceName = "IntegrationTestInstance";
+    private readonly string _testScope = Guid.NewGuid().ToString("N");
+
+    private string TestInstanceName => $"IntegrationTestInstance_{_testScope}";
 
     [Fact]
     public void InstancePreferences_ShouldPersistValuesAcrossInstances()
@@ -16,7 +18,7 @@ public class PreferencesIntegrationTests : IDisposable
         const string expectedFolderName = "TestFolder";
 
         // Act - Set values in first instance
-        var preferences1 = new InstancePreferences(_testInstanceName)
+        var preferences1 = new InstancePreferences(TestInstanceName)
         {
             Opacity = expectedOpacity,
             Left = expectedLeft,
@@ -26,7 +28,7 @@ public class PreferencesIntegrationTests : IDisposable
         // Note: InstancePreferences doesn't implement IDisposable, so we can't use using
 
         // Act - Read values in second instance
-        var preferences2 = new InstancePreferences(_testInstanceName);
+        var preferences2 = new InstancePreferences(TestInstanceName);
 
         // Assert
         preferences2.Opacity.Should().Be(expectedOpacity);
@@ -39,8 +41,8 @@ public class PreferencesIntegrationTests : IDisposable
     public void MultipleInstancePreferences_ShouldBeIndependent()
     {
         // Arrange
-        const string instance1Name = "Instance1";
-        const string instance2Name = "Instance2";
+        var instance1Name = $"Instance1_{_testScope}";
+        var instance2Name = $"Instance2_{_testScope}";
 
         // Act
         var prefs1 = new InstancePreferences(instance1Name);
@@ -63,7 +65,7 @@ public class PreferencesIntegrationTests : IDisposable
     public void InstancePreferences_WithSpecialCharactersInInstanceName_ShouldWork()
     {
         // Arrange
-        const string specialInstanceName = "Test Instance-Name_With.Special@Characters";
+        var specialInstanceName = $"Special_{_testScope}.Name-With@Chars";
 
         // Act & Assert
         var action = () =>
@@ -83,7 +85,7 @@ public class PreferencesIntegrationTests : IDisposable
     public void InstancePreferences_PropertyRoundTrip_ShouldMaintainDataIntegrity()
     {
         // Arrange
-        var preferences = new InstancePreferences(_testInstanceName);
+        var preferences = new InstancePreferences(TestInstanceName);
 
         var testData = new
         {
@@ -147,7 +149,7 @@ public class PreferencesIntegrationTests : IDisposable
                 {
                     for (var j = 0; j < operationsPerThread; j++)
                     {
-                        var preferences = new InstancePreferences($"ConcurrentTest_{threadId}")
+                        var preferences = new InstancePreferences($"ConcurrentTest_{_testScope}_{threadId}")
                         {
                             Left = threadId * 100 + j
                         };
@@ -176,7 +178,7 @@ public class PreferencesIntegrationTests : IDisposable
     public void InstancePreferences_LargeStringValues_ShouldBeHandled()
     {
         // Arrange
-        var preferences = new InstancePreferences(_testInstanceName);
+        var preferences = new InstancePreferences(TestInstanceName);
         var largeXml = new string('X', 10000); // 10KB string
         var largeFolderName = new string('F', 1000); // 1KB string
 
@@ -201,7 +203,7 @@ public class PreferencesIntegrationTests : IDisposable
     public void InstancePreferences_OpacityEdgeCases_ShouldBeHandled(double opacityValue)
     {
         // Arrange
-        var preferences = new InstancePreferences(_testInstanceName)
+        var preferences = new InstancePreferences(TestInstanceName)
         {
             // Act
             Opacity = opacityValue
@@ -221,7 +223,7 @@ public class PreferencesIntegrationTests : IDisposable
     public void InstancePreferences_IntegerEdgeCases_ShouldBeHandled(int value)
     {
         // Arrange
-        var preferences = new InstancePreferences(_testInstanceName);
+        var preferences = new InstancePreferences(TestInstanceName);
 
         // Act & Assert
         var action = () =>
@@ -242,14 +244,25 @@ public class PreferencesIntegrationTests : IDisposable
 
     public void Dispose()
     {
-        // Clean up test registry keys
         try
         {
-            Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree($@"Software\OotDTests", false);
+            using var appReg = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(
+                $@"Software\{Application.CompanyName}\{Application.ProductName}");
+            appReg?.DeleteSubKeyTree(TestInstanceName, false);
+            appReg?.DeleteSubKeyTree($"Instance1_{_testScope}", false);
+            appReg?.DeleteSubKeyTree($"Instance2_{_testScope}", false);
+            appReg?.DeleteSubKeyTree($"Special_{_testScope}", false);
+
+            for (var i = 0; i < 5; i++)
+            {
+                appReg?.DeleteSubKeyTree($"ConcurrentTest_{_testScope}_{i}", false);
+            }
         }
         catch
         {
             // Cleanup failure is not critical for tests
         }
+
+        GC.SuppressFinalize(this);
     }
 }

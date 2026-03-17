@@ -56,6 +56,52 @@ public class GlobalPreferencesTests : IDisposable
         isFirstRun.Should().BeTrue();
     }
 
+    [Fact]
+    public void IsFirstRun_FirstCallShouldSetRegistryAndSecondCallShouldUseCachedValue()
+    {
+        // Arrange
+        var keyPath = ProductRegistryPath;
+        using (var key = Registry.CurrentUser.CreateSubKey(keyPath))
+        {
+            key.Should().NotBeNull();
+            key!.SetValue("FirstRun", true);
+        }
+
+        ResetIsFirstRunCache();
+
+        // Act
+        var first = GlobalPreferences.IsFirstRun;
+        var second = GlobalPreferences.IsFirstRun;
+
+        using var keyAfter = Registry.CurrentUser.CreateSubKey(keyPath);
+        var storedValue = keyAfter!.GetValue("FirstRun", "true")?.ToString();
+
+        // Assert
+        first.Should().BeTrue();
+        second.Should().BeTrue();
+        storedValue.Should().Be("False");
+    }
+
+    [Fact]
+    public void IsFirstRun_WhenRegistryValueIsFalse_ShouldReturnFalse()
+    {
+        // Arrange
+        var keyPath = ProductRegistryPath;
+        using (var key = Registry.CurrentUser.CreateSubKey(keyPath))
+        {
+            key.Should().NotBeNull();
+            key!.SetValue("FirstRun", false);
+        }
+
+        ResetIsFirstRunCache();
+
+        // Act
+        var isFirstRun = GlobalPreferences.IsFirstRun;
+
+        // Assert
+        isFirstRun.Should().BeFalse();
+    }
+
     [Theory]
     [InlineData("invalid")]
     [InlineData("")]
@@ -152,10 +198,21 @@ public class GlobalPreferencesTests : IDisposable
         try
         {
             Registry.CurrentUser.DeleteSubKeyTree(_testKeyPath, false);
+            Registry.CurrentUser.DeleteSubKeyTree(ProductRegistryPath, false);
         }
         catch
         {
             // Key doesn't exist or can't be deleted, which is fine for cleanup
         }
+    }
+
+    private static string ProductRegistryPath => $@"Software\{Application.CompanyName}\{Application.ProductName}";
+
+    private static void ResetIsFirstRunCache()
+    {
+        var field = typeof(GlobalPreferences).GetField("_isFirstRun",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+        field.Should().NotBeNull();
+        field!.SetValue(null, null);
     }
 }
