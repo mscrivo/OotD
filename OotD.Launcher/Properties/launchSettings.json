@@ -1,0 +1,31 @@
+{
+  "profiles": {
+    "OotD.Launcher": {
+      "commandName": "Project"
+    },
+    "Spanish": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "OOTD_UI_CULTURE": "es-ES"
+      }
+    },
+    "Italian": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "OOTD_UI_CULTURE": "it-IT"
+      }
+    },
+    "German": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "OOTD_UI_CULTURE": "de-DE"
+      }
+    },
+    "French": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "OOTD_UI_CULTURE": "fr-FR"
+      }
+    }
+  }
+}
