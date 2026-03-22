@@ -26,7 +26,6 @@ public partial class InstanceManager : Form
     private const string AppCastUrl = "https://outlookonthedesktop.com/ootdAppcast.xml";
     private const string AutoUpdateInstanceName = "AutoUpdate";
     private const string ResetConfigMenuName = "ResetConfigMenu";
-    private const string ResetConfigMenuText = "Restore Defaults";
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly Graphics _graphics;
@@ -234,7 +233,7 @@ public partial class InstanceManager : Form
                     "AboutMenu"));
                 trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.CheckForUpdates, null,
                     CheckForUpdates_Click, "CheckForUpdatesMenu"));
-                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(ResetConfigMenuText, null,
+                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.RestoreDefaults, null,
                     ResetConfigMenu_Click, ResetConfigMenuName));
 
                 trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
@@ -342,12 +341,12 @@ public partial class InstanceManager : Form
                     if (exitMenuIndex >= 0)
                     {
                         trayIcon.ContextMenuStrip.Items.Insert(exitMenuIndex,
-                            new ToolStripMenuItem(ResetConfigMenuText, null, ResetConfigMenu_Click,
+                            new ToolStripMenuItem(Resources.RestoreDefaults, null, ResetConfigMenu_Click,
                                 ResetConfigMenuName));
                     }
                     else
                     {
-                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(ResetConfigMenuText, null,
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.RestoreDefaults, null,
                             ResetConfigMenu_Click, ResetConfigMenuName));
                     }
                 }
@@ -537,8 +536,7 @@ public partial class InstanceManager : Form
     private void ResetConfigMenu_Click(object? sender, EventArgs e)
     {
         var result = MessageBox.Show(this,
-            "This will remove all saved Outlook on the Desktop settings and instances from the registry.\n\n" +
-            "Do you want to continue?",
+            Resources.RestoreDefaultsConfirmation,
             Resources.ConfirmationCaption,
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Warning,

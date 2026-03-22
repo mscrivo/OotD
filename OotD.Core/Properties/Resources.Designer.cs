@@ -1004,6 +1004,26 @@ namespace OotD.Properties {
                 return ResourceManager.GetString("RightClickToConfigure", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restore Defaults.
+        /// </summary>
+        internal static string RestoreDefaults {
+            get {
+                return ResourceManager.GetString("RestoreDefaults", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This will remove all saved Outlook on the Desktop settings and instances from the registry.
+        ///
+        ///Do you want to continue?.
+        /// </summary>
+        internal static string RestoreDefaultsConfirmation {
+            get {
+                return ResourceManager.GetString("RestoreDefaultsConfirmation", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Select Folder ....

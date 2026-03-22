@@ -495,4 +495,12 @@ If you have 32-bit Office installed, please use the 32-bit Outlook on the Deskto
   <data name="Percentage" xml:space="preserve">
     <value>%</value>
   </data>
+  <data name="RestoreDefaults" xml:space="preserve">
+    <value>Restore Defaults</value>
+  </data>
+  <data name="RestoreDefaultsConfirmation" xml:space="preserve">
+    <value>This will remove all saved Outlook on the Desktop settings and instances from the registry.
+
+Do you want to continue?</value>
+  </data>
 </root>
