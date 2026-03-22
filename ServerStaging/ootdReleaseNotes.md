@@ -2,7 +2,8 @@
 
 ## 5.0.210
 
-!! IMPORTANT !!
+### Important
+
 * Windows SmartScreen will flag this new version as an unknown publisher, because I've given up on code signing since it's become way to expensive and cumbersome to maintain.
 * OotD only works with Outlook Classic, not the "new" Outlook that Microsoft is pushing on everyone. If you have the "new" Outlook, you will need to switch back to the classic version to use OotD.
 
@@ -18,7 +19,7 @@ Features:
 * Reset Config to defaults
   * This will allow you to reset the configuration to the defaults.
 
-Misc Changes and Fixes
+Misc Changes and Fixes:
 * Updated to .net 10
 * Many internal tooling improvements, test harness, CI changes, etc.
 
@@ -37,6 +38,7 @@ Misc Changes and Fixes
 * Internal development & tooling updates
 
 ## 4.2.3
+
 * Update to .net 8
 * Fixed issue with checking for updates
 * Minor fixes, performance improvements and code modernization
@@ -194,7 +196,7 @@ This is normal and expected. It will go away once enough people have downloaded 
 ## 3.0.0
 
 * Added buttons for: Go To Today, Previous and Next to the calendar view.  They are context
-sensitive depending on what view you are looking at.
+  sensitive depending on what view you are looking at.
 * Replaced text on calendar buttons with images to make it more visually appealing and compact.
 * Added currently selected date to the header bar in the calendar view.
 * Made transparency slider bar much easier to use.
