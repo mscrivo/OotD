@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+  -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="About" xml:space="preserve">
+    <value>Acerca de</value>
+  </data>
+  <data name="AboutDialogTitle" xml:space="preserve">
+    <value>Acerca de Outlook on the Desktop</value>
+  </data>
+  <data name="AboutOotD" xml:space="preserve">
+    <value>Acerca de {0}</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>Versión {0}</value>
+  </data>
+  <data name="AddInstance" xml:space="preserve">
+    <value>Agregar instancia</value>
+  </data>
+  <data name="Calendar" xml:space="preserve">
+    <value>Calendario</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Buscar actualizaciones</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Cerrar</value>
+  </data>
+  <data name="ConfirmationCaption" xml:space="preserve">
+    <value>Confirmación</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Contactos</value>
+  </data>
+  <data name="DisableEditing" xml:space="preserve">
+    <value>Deshabilitar edición</value>
+  </data>
+  <data name="EnableEditing" xml:space="preserve">
+    <value>Habilitar edición</value>
+  </data>
+  <data name="ErrorCaption" xml:space="preserve">
+    <value>Error de Outlook on the Desktop</value>
+  </data>
+  <data name="ErrorInitializingApp" xml:space="preserve">
+    <value>Se produjo un error al inicializar la aplicación:</value>
+  </data>
+  <data name="ErrorSettingDimensions" xml:space="preserve">
+    <value>Se produjo un error al establecer las dimensiones. Esto suele ocurrir después de cambiar el tamaño del escritorio. Vuelve a establecer tus dimensiones preferidas.</value>
+  </data>
+  <data name="ErrorSettingFolder" xml:space="preserve">
+    <value>Se produjo un error al cambiar a la carpeta especificada. Puede que no sea compatible con Outlook on the Desktop.</value>
+  </data>
+  <data name="ErrorSettingOpacity" xml:space="preserve">
+    <value>Se produjo un error al establecer la opacidad; se usó el valor predeterminado del 50%. Inténtalo de nuevo.</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Salir</value>
+  </data>
+  <data name="Hide" xml:space="preserve">
+    <value>Ocultar</value>
+  </data>
+  <data name="HideAll" xml:space="preserve">
+    <value>Ocultar todo</value>
+  </data>
+  <data name="Inbox" xml:space="preserve">
+    <value>Bandeja de entrada</value>
+  </data>
+  <data name="LockPosition" xml:space="preserve">
+    <value>Bloquear posición</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Mes</value>
+  </data>
+  <data name="Move_Next" xml:space="preserve">
+    <value>Siguiente</value>
+  </data>
+  <data name="Move_Previous" xml:space="preserve">
+    <value>Anterior</value>
+  </data>
+  <data name="NewInstanceName" xml:space="preserve">
+    <value>Nombre de la nueva instancia</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notas</value>
+  </data>
+  <data name="Opacity" xml:space="preserve">
+    <value>Opacidad: </value>
+  </data>
+  <data name="OotdRunning" xml:space="preserve">
+    <value>Outlook on the Desktop se está ejecutando</value>
+  </data>
+  <data name="Percentage" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="Preferences" xml:space="preserve">
+    <value>Preferencias</value>
+  </data>
+  <data name="ProgramIsAlreadyRunning" xml:space="preserve">
+    <value>Outlook on the Desktop ya se está ejecutando.</value>
+  </data>
+  <data name="ProgramIsAlreadyRunningCaption" xml:space="preserve">
+    <value>Ya en ejecución</value>
+  </data>
+  <data name="RemoveInstanceConfirmation" xml:space="preserve">
+    <value>¿Seguro que quieres eliminar esta instancia?</value>
+  </data>
+  <data name="RestoreDefaults" xml:space="preserve">
+    <value>Restaurar valores predeterminados</value>
+  </data>
+  <data name="RestoreDefaultsConfirmation" xml:space="preserve">
+    <value>Esto eliminará todas las configuraciones e instancias guardadas de Outlook on the Desktop del registro.
+
+¿Quieres continuar?</value>
+  </data>
+  <data name="RightClickToConfigure" xml:space="preserve">
+    <value>Haz clic derecho en este ícono para configurar Outlook on the Desktop.</value>
+  </data>
+  <data name="SelectFolder" xml:space="preserve">
+    <value>Seleccionar carpeta ...</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Mostrar</value>
+  </data>
+  <data name="ShowAll" xml:space="preserve">
+    <value>Mostrar todo</value>
+  </data>
+  <data name="StartWithWindows" xml:space="preserve">
+    <value>Iniciar con Windows</value>
+  </data>
+  <data name="Tasks" xml:space="preserve">
+    <value>Tareas</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Hoy</value>
+  </data>
+  <data name="Toggle_Day_View" xml:space="preserve">
+    <value>Cambiar a vista diaria</value>
+  </data>
+  <data name="Toggle_Full_Week_View" xml:space="preserve">
+    <value>Cambiar a vista semanal completa</value>
+  </data>
+  <data name="Toggle_Month_View" xml:space="preserve">
+    <value>Cambiar a vista mensual</value>
+  </data>
+  <data name="Toggle_Work_Week_View" xml:space="preserve">
+    <value>Cambiar a vista de semana laboral</value>
+  </data>
+  <data name="ViewTypeNotSupported" xml:space="preserve">
+    <value>No se puede establecer la vista. Es posible que tu versión de Outlook no sea compatible.</value>
+  </data>
+</root>

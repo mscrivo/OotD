@@ -362,12 +362,49 @@ public partial class InstanceManager : Form
             }
         }
 
+        ReorderBottomMenuItems();
+
         var startWithWindowsMenu = trayIcon.ContextMenuStrip.Items["StartWithWindows"] as ToolStripMenuItem;
         startWithWindowsMenu!.Checked = GlobalPreferences.StartWithWindows;
 
         var lockPositionMenu = trayIcon.ContextMenuStrip.Items["LockPositionMenu"] as ToolStripMenuItem;
         lockPositionMenu!.Checked = GlobalPreferences.LockPosition;
         LockOrUnlock(GlobalPreferences.LockPosition);
+    }
+
+    private void ReorderBottomMenuItems()
+    {
+        var menu = trayIcon.ContextMenuStrip;
+        if (menu == null)
+        {
+            return;
+        }
+
+        if (menu.Items[ResetConfigMenuName] is not ToolStripMenuItem resetDefaultsMenu)
+        {
+            return;
+        }
+
+        var aboutMenu = menu.Items["AboutMenu"] as ToolStripMenuItem;
+        var checkForUpdatesMenu = menu.Items["CheckForUpdatesMenu"] as ToolStripMenuItem;
+
+        if (aboutMenu != null)
+        {
+            menu.Items.Remove(aboutMenu);
+        }
+
+        if (checkForUpdatesMenu != null)
+        {
+            menu.Items.Remove(checkForUpdatesMenu);
+        }
+
+        aboutMenu ??= new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu");
+        checkForUpdatesMenu ??= new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click,
+            "CheckForUpdatesMenu");
+
+        var resetDefaultsIndex = menu.Items.IndexOf(resetDefaultsMenu);
+        menu.Items.Insert(resetDefaultsIndex, aboutMenu);
+        menu.Items.Insert(resetDefaultsIndex + 1, checkForUpdatesMenu);
     }
 
     private void ChangeTrayIconDate()
