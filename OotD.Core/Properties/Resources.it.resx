@@ -51,4 +51,29 @@ Vuoi continuare?</value></data>
   <data name="Toggle_Month_View" xml:space="preserve"><value>Attiva vista mensile</value></data>
   <data name="Toggle_Work_Week_View" xml:space="preserve"><value>Attiva vista settimana lavorativa</value></data>
   <data name="ViewTypeNotSupported" xml:space="preserve"><value>Impossibile impostare la visualizzazione. La tua versione di Outlook potrebbe non supportarla.</value></data>
+  <data name="Required" xml:space="preserve"><value>Obbligatorio</value></data>
+  <data name="RenameInstance" xml:space="preserve"><value>Rinomina istanza</value></data>
+  <data name="RenameThisInstance" xml:space="preserve"><value>Rinomina questa istanza</value></data>
+  <data name="RemoveThisInstance" xml:space="preserve"><value>Rimuovi questa istanza</value></data>
+  <data name="MoveToVirtualDesktop" xml:space="preserve"><value>Sposta nel desktop virtuale</value></data>
+  <data name="VirtualDesktopFeatureNotSupported" xml:space="preserve"><value>Le funzionalità del desktop virtuale non sono supportate in questo sistema.</value></data>
+  <data name="VirtualDesktopFeatureNotAvailableCaption" xml:space="preserve"><value>Funzionalità non disponibile</value></data>
+  <data name="SuccessCaption" xml:space="preserve"><value>Operazione riuscita</value></data>
+  <data name="VirtualDesktopAssignmentClearedMessage" xml:space="preserve"><value>L'assegnazione al desktop virtuale è stata cancellata.
+
+L'istanza ora apparirà su tutti i desktop e sarà nascosta da Alt+Tab.
+
+Vuoi riavviare l'applicazione ora per assicurarti che tutte le modifiche abbiano effetto?</value></data>
+  <data name="VirtualDesktopAssignmentAppliedMessage" xml:space="preserve"><value>L'istanza è stata spostata nel desktop virtuale selezionato.
+
+Nota: la finestra ora apparirà in Alt+Tab per garantire il corretto comportamento dei desktop virtuali.
+
+Vuoi riavviare l'applicazione ora per assicurarti che tutte le modifiche abbiano effetto?</value></data>
+  <data name="VirtualDesktopMoveFailedMessage" xml:space="preserve"><value>Impossibile spostare la finestra nel desktop virtuale selezionato.</value></data>
+  <data name="OperationFailedCaption" xml:space="preserve"><value>Operazione non riuscita</value></data>
+  <data name="ErrorCaptionShort" xml:space="preserve"><value>Errore</value></data>
+  <data name="ErrorWithDetails" xml:space="preserve"><value>Errore: {0}</value></data>
+  <data name="OutlookViews" xml:space="preserve"><value>Viste di Outlook</value></data>
+  <data name="DefaultView" xml:space="preserve"><value>Vista predefinita</value></data>
+  <data name="TodoList" xml:space="preserve"><value>Elenco attività</value></data>
 </root>

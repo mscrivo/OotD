@@ -474,7 +474,7 @@ public partial class InstanceManager : Form
         }
 
         e.Cancel = true;
-        e.Message = "Required";
+        e.Message = Resources.ResourceManager.GetString("Required")!;
     }
 
     private static void AboutMenu_Click(object? sender, EventArgs e)

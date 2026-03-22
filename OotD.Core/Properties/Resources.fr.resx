@@ -51,4 +51,29 @@ Voulez-vous continuer ?</value></data>
   <data name="Toggle_Month_View" xml:space="preserve"><value>Basculer en vue mois</value></data>
   <data name="Toggle_Work_Week_View" xml:space="preserve"><value>Basculer en vue semaine de travail</value></data>
   <data name="ViewTypeNotSupported" xml:space="preserve"><value>Impossible de définir la vue. Votre version d'Outlook ne la prend peut-être pas en charge.</value></data>
+  <data name="Required" xml:space="preserve"><value>Obligatoire</value></data>
+  <data name="RenameInstance" xml:space="preserve"><value>Renommer l'instance</value></data>
+  <data name="RenameThisInstance" xml:space="preserve"><value>Renommer cette instance</value></data>
+  <data name="RemoveThisInstance" xml:space="preserve"><value>Supprimer cette instance</value></data>
+  <data name="MoveToVirtualDesktop" xml:space="preserve"><value>Déplacer vers un bureau virtuel</value></data>
+  <data name="VirtualDesktopFeatureNotSupported" xml:space="preserve"><value>Les fonctionnalités de bureau virtuel ne sont pas prises en charge sur ce système.</value></data>
+  <data name="VirtualDesktopFeatureNotAvailableCaption" xml:space="preserve"><value>Fonctionnalité non disponible</value></data>
+  <data name="SuccessCaption" xml:space="preserve"><value>Succès</value></data>
+  <data name="VirtualDesktopAssignmentClearedMessage" xml:space="preserve"><value>L'affectation au bureau virtuel a été supprimée.
+
+L'instance apparaîtra désormais sur tous les bureaux et sera masquée d'Alt+Tab.
+
+Souhaitez-vous redémarrer l'application maintenant pour vous assurer que tous les changements prennent effet ?</value></data>
+  <data name="VirtualDesktopAssignmentAppliedMessage" xml:space="preserve"><value>L'instance a été déplacée vers le bureau virtuel sélectionné.
+
+Remarque : la fenêtre apparaîtra maintenant dans Alt+Tab pour garantir un comportement correct avec les bureaux virtuels.
+
+Souhaitez-vous redémarrer l'application maintenant pour vous assurer que tous les changements prennent effet ?</value></data>
+  <data name="VirtualDesktopMoveFailedMessage" xml:space="preserve"><value>Impossible de déplacer la fenêtre vers le bureau virtuel sélectionné.</value></data>
+  <data name="OperationFailedCaption" xml:space="preserve"><value>Échec de l'opération</value></data>
+  <data name="ErrorCaptionShort" xml:space="preserve"><value>Erreur</value></data>
+  <data name="ErrorWithDetails" xml:space="preserve"><value>Erreur : {0}</value></data>
+  <data name="OutlookViews" xml:space="preserve"><value>Vues Outlook</value></data>
+  <data name="DefaultView" xml:space="preserve"><value>Vue par défaut</value></data>
+  <data name="TodoList" xml:space="preserve"><value>Liste des tâches</value></data>
 </root>

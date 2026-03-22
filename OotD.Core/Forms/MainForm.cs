@@ -71,6 +71,8 @@ public partial class MainForm : Form
 
         try
         {
+            ApplyLocalizedMenuText();
+
             InstanceName = instanceName;
             Preferences = new InstancePreferences(InstanceName);
 
@@ -1021,7 +1023,8 @@ public partial class MainForm : Form
 
     private void RenameInstanceMenu_Click(object sender, EventArgs e)
     {
-        var result = InputBox.Show(this, "", "Rename Instance", InstanceName, InputBox_Validating);
+        var title = Resources.ResourceManager.GetString("RenameInstance")!;
+        var result = InputBox.Show(this, "", title, InstanceName, InputBox_Validating);
         if (!result.Ok)
         {
             return;
@@ -1051,7 +1054,7 @@ public partial class MainForm : Form
         }
 
         e.Cancel = true;
-        e.Message = "Required";
+        e.Message = Resources.ResourceManager.GetString("Required")!;
     }
 
     private void MainForm_MouseDown(object sender, MouseEventArgs e)
@@ -1419,8 +1422,8 @@ public partial class MainForm : Form
         if (!VirtualDesktopManager.IsVirtualDesktopSupported)
         {
             MessageBox.Show(this,
-                "Virtual Desktop features are not supported on this system.",
-                "Feature Not Available",
+                Resources.ResourceManager.GetString("VirtualDesktopFeatureNotSupported")!,
+                Resources.ResourceManager.GetString("VirtualDesktopFeatureNotAvailableCaption")!,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
             return;
@@ -1442,10 +1445,8 @@ public partial class MainForm : Form
                     RecreateHandle();
 
                     var restartResult = MessageBox.Show(this,
-                        "Virtual desktop assignment has been cleared.\n\n" +
-                        "The instance will now appear on all desktops and be hidden from Alt+Tab.\n\n" +
-                        "Would you like to restart the application now to ensure all changes take effect?",
-                        "Success",
+                        Resources.ResourceManager.GetString("VirtualDesktopAssignmentClearedMessage")!,
+                        Resources.ResourceManager.GetString("SuccessCaption")!,
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question);
 
@@ -1473,10 +1474,8 @@ public partial class MainForm : Form
                         _logger.Info($"Successfully moved instance '{InstanceName}' to virtual desktop {desktopId}");
 
                         var restartResult = MessageBox.Show(this,
-                            "Instance has been moved to the selected virtual desktop.\n\n" +
-                            "Note: The window will now appear in Alt+Tab to ensure proper virtual desktop behavior.\n\n" +
-                            "Would you like to restart the application now to ensure all changes take effect?",
-                            "Success",
+                            Resources.ResourceManager.GetString("VirtualDesktopAssignmentAppliedMessage")!,
+                            Resources.ResourceManager.GetString("SuccessCaption")!,
                             MessageBoxButtons.YesNo,
                             MessageBoxIcon.Question);
 
@@ -1492,8 +1491,8 @@ public partial class MainForm : Form
                         RecreateHandle();
 
                         MessageBox.Show(this,
-                            "Failed to move the window to the selected virtual desktop.",
-                            "Operation Failed",
+                            Resources.ResourceManager.GetString("VirtualDesktopMoveFailedMessage")!,
+                            Resources.ResourceManager.GetString("OperationFailedCaption")!,
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Warning);
                     }
@@ -1503,12 +1502,32 @@ public partial class MainForm : Form
         catch (Exception ex)
         {
             _logger.Error(ex, "Error in VirtualDesktopMenu_Click");
+            var errorFormat = Resources.ResourceManager.GetString("ErrorWithDetails")!;
             MessageBox.Show(this,
-                $"Error: {ex.Message}",
-                "Error",
+                string.Format(CultureInfo.CurrentCulture, errorFormat, ex.Message),
+                Resources.ResourceManager.GetString("ErrorCaptionShort")!,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
         }
+    }
+
+    private void ApplyLocalizedMenuText()
+    {
+        CalendarMenu.Text = Resources.Calendar;
+        ContactsMenu.Text = Resources.Contacts;
+        InboxMenu.Text = Resources.Inbox;
+        NotesMenu.Text = Resources.Notes;
+        TasksMenu.Text = Resources.Tasks;
+        TodosMenu.Text = Resources.ResourceManager.GetString("TodoList")!;
+        SelectFolderMenu.Text = Resources.SelectFolder;
+        OutlookViewsMenu.Text = Resources.ResourceManager.GetString("OutlookViews")!;
+        DefaultOutlookViewSubMenu.Text = Resources.ResourceManager.GetString("DefaultView")!;
+        RenameInstanceMenu.Text = Resources.ResourceManager.GetString("RenameThisInstance")!;
+        VirtualDesktopMenu.Text = Resources.ResourceManager.GetString("MoveToVirtualDesktop")!;
+        RemoveInstanceMenu.Text = Resources.ResourceManager.GetString("RemoveThisInstance")!;
+        HideShowMenu.Text = Resources.Hide;
+        DisableEnableEditingMenu.Text = Resources.DisableEditing;
+        ExitMenu.Text = Resources.Exit;
     }
 
     /// <summary>

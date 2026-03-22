@@ -503,4 +503,63 @@ If you have 32-bit Office installed, please use the 32-bit Outlook on the Deskto
 
 ¿Quieres continuar?</value>
   </data>
+  <data name="Required" xml:space="preserve">
+    <value>Obligatorio</value>
+  </data>
+  <data name="RenameInstance" xml:space="preserve">
+    <value>Renombrar instancia</value>
+  </data>
+  <data name="RenameThisInstance" xml:space="preserve">
+    <value>Renombrar esta instancia</value>
+  </data>
+  <data name="RemoveThisInstance" xml:space="preserve">
+    <value>Eliminar esta instancia</value>
+  </data>
+  <data name="MoveToVirtualDesktop" xml:space="preserve">
+    <value>Mover al escritorio virtual</value>
+  </data>
+  <data name="VirtualDesktopFeatureNotSupported" xml:space="preserve">
+    <value>Las funciones de escritorios virtuales no son compatibles con este sistema.</value>
+  </data>
+  <data name="VirtualDesktopFeatureNotAvailableCaption" xml:space="preserve">
+    <value>Función no disponible</value>
+  </data>
+  <data name="SuccessCaption" xml:space="preserve">
+    <value>Éxito</value>
+  </data>
+  <data name="VirtualDesktopAssignmentClearedMessage" xml:space="preserve">
+    <value>Se ha borrado la asignación de escritorio virtual.
+
+La instancia ahora aparecerá en todos los escritorios y se ocultará de Alt+Tab.
+
+¿Deseas reiniciar la aplicación ahora para asegurar que todos los cambios surtan efecto?</value>
+  </data>
+  <data name="VirtualDesktopAssignmentAppliedMessage" xml:space="preserve">
+    <value>La instancia se ha movido al escritorio virtual seleccionado.
+
+Nota: La ventana ahora aparecerá en Alt+Tab para garantizar el comportamiento correcto en escritorios virtuales.
+
+¿Deseas reiniciar la aplicación ahora para asegurar que todos los cambios surtan efecto?</value>
+  </data>
+  <data name="VirtualDesktopMoveFailedMessage" xml:space="preserve">
+    <value>No se pudo mover la ventana al escritorio virtual seleccionado.</value>
+  </data>
+  <data name="OperationFailedCaption" xml:space="preserve">
+    <value>Operación fallida</value>
+  </data>
+  <data name="ErrorCaptionShort" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorWithDetails" xml:space="preserve">
+    <value>Error: {0}</value>
+  </data>
+  <data name="OutlookViews" xml:space="preserve">
+    <value>Vistas de Outlook</value>
+  </data>
+  <data name="DefaultView" xml:space="preserve">
+    <value>Vista predeterminada</value>
+  </data>
+  <data name="TodoList" xml:space="preserve">
+    <value>Lista de tareas pendientes</value>
+  </data>
 </root>

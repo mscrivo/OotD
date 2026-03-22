@@ -503,4 +503,63 @@ If you have 32-bit Office installed, please use the 32-bit Outlook on the Deskto
 
 Do you want to continue?</value>
   </data>
+  <data name="Required" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="RenameInstance" xml:space="preserve">
+    <value>Rename Instance</value>
+  </data>
+  <data name="RenameThisInstance" xml:space="preserve">
+    <value>Rename this Instance</value>
+  </data>
+  <data name="RemoveThisInstance" xml:space="preserve">
+    <value>Remove this Instance</value>
+  </data>
+  <data name="MoveToVirtualDesktop" xml:space="preserve">
+    <value>Move to Virtual Desktop</value>
+  </data>
+  <data name="VirtualDesktopFeatureNotSupported" xml:space="preserve">
+    <value>Virtual Desktop features are not supported on this system.</value>
+  </data>
+  <data name="VirtualDesktopFeatureNotAvailableCaption" xml:space="preserve">
+    <value>Feature Not Available</value>
+  </data>
+  <data name="SuccessCaption" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="VirtualDesktopAssignmentClearedMessage" xml:space="preserve">
+    <value>Virtual desktop assignment has been cleared.
+
+The instance will now appear on all desktops and be hidden from Alt+Tab.
+
+Would you like to restart the application now to ensure all changes take effect?</value>
+  </data>
+  <data name="VirtualDesktopAssignmentAppliedMessage" xml:space="preserve">
+    <value>Instance has been moved to the selected virtual desktop.
+
+Note: The window will now appear in Alt+Tab to ensure proper virtual desktop behavior.
+
+Would you like to restart the application now to ensure all changes take effect?</value>
+  </data>
+  <data name="VirtualDesktopMoveFailedMessage" xml:space="preserve">
+    <value>Failed to move the window to the selected virtual desktop.</value>
+  </data>
+  <data name="OperationFailedCaption" xml:space="preserve">
+    <value>Operation Failed</value>
+  </data>
+  <data name="ErrorCaptionShort" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorWithDetails" xml:space="preserve">
+    <value>Error: {0}</value>
+  </data>
+  <data name="OutlookViews" xml:space="preserve">
+    <value>Outlook Views</value>
+  </data>
+  <data name="DefaultView" xml:space="preserve">
+    <value>Default View</value>
+  </data>
+  <data name="TodoList" xml:space="preserve">
+    <value>To-Do List</value>
+  </data>
 </root>

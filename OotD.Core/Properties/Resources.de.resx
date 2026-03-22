@@ -51,4 +51,29 @@ Möchten Sie fortfahren?</value></data>
   <data name="Toggle_Month_View" xml:space="preserve"><value>Monatsansicht umschalten</value></data>
   <data name="Toggle_Work_Week_View" xml:space="preserve"><value>Arbeitswochenansicht umschalten</value></data>
   <data name="ViewTypeNotSupported" xml:space="preserve"><value>Ansicht kann nicht gesetzt werden. Ihre Outlook-Version unterstützt dies möglicherweise nicht.</value></data>
+  <data name="Required" xml:space="preserve"><value>Erforderlich</value></data>
+  <data name="RenameInstance" xml:space="preserve"><value>Instanz umbenennen</value></data>
+  <data name="RenameThisInstance" xml:space="preserve"><value>Diese Instanz umbenennen</value></data>
+  <data name="RemoveThisInstance" xml:space="preserve"><value>Diese Instanz entfernen</value></data>
+  <data name="MoveToVirtualDesktop" xml:space="preserve"><value>Auf virtuellen Desktop verschieben</value></data>
+  <data name="VirtualDesktopFeatureNotSupported" xml:space="preserve"><value>Virtuelle Desktop-Funktionen werden auf diesem System nicht unterstützt.</value></data>
+  <data name="VirtualDesktopFeatureNotAvailableCaption" xml:space="preserve"><value>Funktion nicht verfügbar</value></data>
+  <data name="SuccessCaption" xml:space="preserve"><value>Erfolg</value></data>
+  <data name="VirtualDesktopAssignmentClearedMessage" xml:space="preserve"><value>Die Zuweisung zu einem virtuellen Desktop wurde entfernt.
+
+Die Instanz wird nun auf allen Desktops angezeigt und in Alt+Tab ausgeblendet.
+
+Möchten Sie die Anwendung jetzt neu starten, damit alle Änderungen wirksam werden?</value></data>
+  <data name="VirtualDesktopAssignmentAppliedMessage" xml:space="preserve"><value>Die Instanz wurde auf den ausgewählten virtuellen Desktop verschoben.
+
+Hinweis: Das Fenster wird nun in Alt+Tab angezeigt, um ein korrektes Verhalten virtueller Desktops sicherzustellen.
+
+Möchten Sie die Anwendung jetzt neu starten, damit alle Änderungen wirksam werden?</value></data>
+  <data name="VirtualDesktopMoveFailedMessage" xml:space="preserve"><value>Das Fenster konnte nicht auf den ausgewählten virtuellen Desktop verschoben werden.</value></data>
+  <data name="OperationFailedCaption" xml:space="preserve"><value>Vorgang fehlgeschlagen</value></data>
+  <data name="ErrorCaptionShort" xml:space="preserve"><value>Fehler</value></data>
+  <data name="ErrorWithDetails" xml:space="preserve"><value>Fehler: {0}</value></data>
+  <data name="OutlookViews" xml:space="preserve"><value>Outlook-Ansichten</value></data>
+  <data name="DefaultView" xml:space="preserve"><value>Standardansicht</value></data>
+  <data name="TodoList" xml:space="preserve"><value>Aufgabenliste</value></data>
 </root>
