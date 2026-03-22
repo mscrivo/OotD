@@ -266,7 +266,7 @@ public partial class InstanceManager : Form
 
                 // remove unnecessary menu items
                 while (trayIcon.ContextMenuStrip.Items.Count > 0 &&
-                       trayIcon.ContextMenuStrip.Items[0].Text != Resources.Calendar)
+                       trayIcon.ContextMenuStrip.Items[0].Name != "CalendarMenu")
                 {
                     trayIcon.ContextMenuStrip.Items.RemoveAt(0);
                 }
