@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="About" xml:space="preserve"><value>Informazioni</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>Informazioni su Outlook on the Desktop</value></data>
+  <data name="AboutOotD" xml:space="preserve"><value>Informazioni su {0}</value></data>
+  <data name="AboutVersion" xml:space="preserve"><value>Versione {0}</value></data>
+  <data name="AddInstance" xml:space="preserve"><value>Aggiungi istanza</value></data>
+  <data name="Calendar" xml:space="preserve"><value>Calendario</value></data>
+  <data name="CheckForUpdates" xml:space="preserve"><value>Controlla aggiornamenti</value></data>
+  <data name="Close" xml:space="preserve"><value>Chiudi</value></data>
+  <data name="ConfirmationCaption" xml:space="preserve"><value>Conferma</value></data>
+  <data name="Contacts" xml:space="preserve"><value>Contatti</value></data>
+  <data name="DisableEditing" xml:space="preserve"><value>Disabilita modifica</value></data>
+  <data name="EnableEditing" xml:space="preserve"><value>Abilita modifica</value></data>
+  <data name="ErrorCaption" xml:space="preserve"><value>Errore di Outlook on the Desktop</value></data>
+  <data name="ErrorInitializingApp" xml:space="preserve"><value>Si è verificato un errore durante l'inizializzazione dell'applicazione:</value></data>
+  <data name="ErrorSettingDimensions" xml:space="preserve"><value>Si è verificato un errore durante l'impostazione delle dimensioni. Questo accade spesso dopo il ridimensionamento del desktop. Imposta nuovamente le dimensioni preferite.</value></data>
+  <data name="ErrorSettingFolder" xml:space="preserve"><value>Si è verificato un errore nel passaggio alla cartella specificata. Potrebbe non essere compatibile con Outlook on the Desktop.</value></data>
+  <data name="ErrorSettingOpacity" xml:space="preserve"><value>Si è verificato un errore durante l'impostazione dell'opacità; è stato usato il valore predefinito del 50%. Riprova.</value></data>
+  <data name="Exit" xml:space="preserve"><value>Esci</value></data>
+  <data name="Hide" xml:space="preserve"><value>Nascondi</value></data>
+  <data name="HideAll" xml:space="preserve"><value>Nascondi tutto</value></data>
+  <data name="Inbox" xml:space="preserve"><value>Posta in arrivo</value></data>
+  <data name="LockPosition" xml:space="preserve"><value>Blocca posizione</value></data>
+  <data name="Move_Next" xml:space="preserve"><value>Avanti</value></data>
+  <data name="Move_Previous" xml:space="preserve"><value>Indietro</value></data>
+  <data name="NewInstanceName" xml:space="preserve"><value>Nome nuova istanza</value></data>
+  <data name="Notes" xml:space="preserve"><value>Note</value></data>
+  <data name="Opacity" xml:space="preserve"><value>Opacità: </value></data>
+  <data name="OotdRunning" xml:space="preserve"><value>Outlook on the Desktop è in esecuzione</value></data>
+  <data name="Preferences" xml:space="preserve"><value>Preferenze</value></data>
+  <data name="ProgramIsAlreadyRunning" xml:space="preserve"><value>Outlook on the Desktop è già in esecuzione.</value></data>
+  <data name="ProgramIsAlreadyRunningCaption" xml:space="preserve"><value>Già in esecuzione</value></data>
+  <data name="RemoveInstanceConfirmation" xml:space="preserve"><value>Vuoi davvero rimuovere questa istanza?</value></data>
+  <data name="RestoreDefaults" xml:space="preserve"><value>Ripristina predefiniti</value></data>
+  <data name="RestoreDefaultsConfirmation" xml:space="preserve"><value>Questa operazione rimuoverà tutte le impostazioni e le istanze salvate di Outlook on the Desktop dal registro.
+
+Vuoi continuare?</value></data>
+  <data name="RightClickToConfigure" xml:space="preserve"><value>Fai clic con il tasto destro su questa icona per configurare Outlook on the Desktop.</value></data>
+  <data name="SelectFolder" xml:space="preserve"><value>Seleziona cartella ...</value></data>
+  <data name="Show" xml:space="preserve"><value>Mostra</value></data>
+  <data name="ShowAll" xml:space="preserve"><value>Mostra tutto</value></data>
+  <data name="StartWithWindows" xml:space="preserve"><value>Avvia con Windows</value></data>
+  <data name="Tasks" xml:space="preserve"><value>Attività</value></data>
+  <data name="Toggle_Day_View" xml:space="preserve"><value>Attiva vista giornaliera</value></data>
+  <data name="Toggle_Full_Week_View" xml:space="preserve"><value>Attiva vista settimana completa</value></data>
+  <data name="Toggle_Month_View" xml:space="preserve"><value>Attiva vista mensile</value></data>
+  <data name="Toggle_Work_Week_View" xml:space="preserve"><value>Attiva vista settimana lavorativa</value></data>
+  <data name="ViewTypeNotSupported" xml:space="preserve"><value>Impossibile impostare la visualizzazione. La tua versione di Outlook potrebbe non supportarla.</value></data>
+</root>

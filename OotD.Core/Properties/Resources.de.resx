@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="About" xml:space="preserve"><value>Info</value></data>
+  <data name="AboutDialogTitle" xml:space="preserve"><value>Über Outlook on the Desktop</value></data>
+  <data name="AboutOotD" xml:space="preserve"><value>Über {0}</value></data>
+  <data name="AboutVersion" xml:space="preserve"><value>Version {0}</value></data>
+  <data name="AddInstance" xml:space="preserve"><value>Instanz hinzufügen</value></data>
+  <data name="Calendar" xml:space="preserve"><value>Kalender</value></data>
+  <data name="CheckForUpdates" xml:space="preserve"><value>Nach Updates suchen</value></data>
+  <data name="Close" xml:space="preserve"><value>Schließen</value></data>
+  <data name="ConfirmationCaption" xml:space="preserve"><value>Bestätigung</value></data>
+  <data name="Contacts" xml:space="preserve"><value>Kontakte</value></data>
+  <data name="DisableEditing" xml:space="preserve"><value>Bearbeitung deaktivieren</value></data>
+  <data name="EnableEditing" xml:space="preserve"><value>Bearbeitung aktivieren</value></data>
+  <data name="ErrorCaption" xml:space="preserve"><value>Outlook on the Desktop-Fehler</value></data>
+  <data name="ErrorInitializingApp" xml:space="preserve"><value>Fehler beim Initialisieren der Anwendung:</value></data>
+  <data name="ErrorSettingDimensions" xml:space="preserve"><value>Beim Setzen der Größe ist ein Fehler aufgetreten. Das passiert oft nach einer Änderung der Desktopauflösung. Bitte stellen Sie die gewünschte Größe erneut ein.</value></data>
+  <data name="ErrorSettingFolder" xml:space="preserve"><value>Beim Wechseln zum angegebenen Ordner ist ein Fehler aufgetreten. Er ist möglicherweise nicht mit Outlook on the Desktop kompatibel.</value></data>
+  <data name="ErrorSettingOpacity" xml:space="preserve"><value>Beim Setzen der Transparenz ist ein Fehler aufgetreten. Standardwert 50 % wurde verwendet. Bitte erneut versuchen.</value></data>
+  <data name="Exit" xml:space="preserve"><value>Beenden</value></data>
+  <data name="Hide" xml:space="preserve"><value>Ausblenden</value></data>
+  <data name="HideAll" xml:space="preserve"><value>Alle ausblenden</value></data>
+  <data name="Inbox" xml:space="preserve"><value>Posteingang</value></data>
+  <data name="LockPosition" xml:space="preserve"><value>Position sperren</value></data>
+  <data name="Move_Next" xml:space="preserve"><value>Weiter</value></data>
+  <data name="Move_Previous" xml:space="preserve"><value>Zurück</value></data>
+  <data name="NewInstanceName" xml:space="preserve"><value>Neuer Instanzname</value></data>
+  <data name="Notes" xml:space="preserve"><value>Notizen</value></data>
+  <data name="Opacity" xml:space="preserve"><value>Deckkraft: </value></data>
+  <data name="OotdRunning" xml:space="preserve"><value>Outlook on the Desktop wird ausgeführt</value></data>
+  <data name="Preferences" xml:space="preserve"><value>Einstellungen</value></data>
+  <data name="ProgramIsAlreadyRunning" xml:space="preserve"><value>Outlook on the Desktop wird bereits ausgeführt.</value></data>
+  <data name="ProgramIsAlreadyRunningCaption" xml:space="preserve"><value>Bereits ausgeführt</value></data>
+  <data name="RemoveInstanceConfirmation" xml:space="preserve"><value>Möchten Sie diese Instanz wirklich entfernen?</value></data>
+  <data name="RestoreDefaults" xml:space="preserve"><value>Standardeinstellungen wiederherstellen</value></data>
+  <data name="RestoreDefaultsConfirmation" xml:space="preserve"><value>Dadurch werden alle gespeicherten Outlook on the Desktop-Einstellungen und Instanzen aus der Registrierung entfernt.
+
+Möchten Sie fortfahren?</value></data>
+  <data name="RightClickToConfigure" xml:space="preserve"><value>Klicken Sie mit der rechten Maustaste auf dieses Symbol, um Outlook on the Desktop zu konfigurieren.</value></data>
+  <data name="SelectFolder" xml:space="preserve"><value>Ordner auswählen ...</value></data>
+  <data name="Show" xml:space="preserve"><value>Anzeigen</value></data>
+  <data name="ShowAll" xml:space="preserve"><value>Alle anzeigen</value></data>
+  <data name="StartWithWindows" xml:space="preserve"><value>Mit Windows starten</value></data>
+  <data name="Tasks" xml:space="preserve"><value>Aufgaben</value></data>
+  <data name="Toggle_Day_View" xml:space="preserve"><value>Tagesansicht umschalten</value></data>
+  <data name="Toggle_Full_Week_View" xml:space="preserve"><value>Vollständige Wochenansicht umschalten</value></data>
+  <data name="Toggle_Month_View" xml:space="preserve"><value>Monatsansicht umschalten</value></data>
+  <data name="Toggle_Work_Week_View" xml:space="preserve"><value>Arbeitswochenansicht umschalten</value></data>
+  <data name="ViewTypeNotSupported" xml:space="preserve"><value>Ansicht kann nicht gesetzt werden. Ihre Outlook-Version unterstützt dies möglicherweise nicht.</value></data>
+</root>
