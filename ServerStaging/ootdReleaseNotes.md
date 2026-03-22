@@ -1,5 +1,21 @@
 # OotD Release Notes
 
+## 5.0.209
+
+!! IMPORTANT !!
+* Windows SmartScreen will flag this new version as an unknown publisher, because I've given up on code signing since it's become way to expensive and cumbersome to maintain.
+* OotD only works with Outlook Classic, not the "new" Outlook that Microsoft is pushing on everyone. If you have the "new" Outlook, you will need to switch back to the classic version to use OotD.
+
+* Virtual Desktop support!
+    * You can now assign instances to specific virtual desktops, and they will only show up on those desktops.
+* Localization support. OotD now supports the following languages:
+  * English
+  * French (fr-FR)
+  * Spanish (es-ES)
+  * Italian (it-IT)
+  * German (de-DE)
+* Updated to .net 10
+
 ## 4.3.19
 
 * Update to .net 9

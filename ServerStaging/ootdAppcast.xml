@@ -8,13 +8,13 @@
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
         <item>
-            <title>Version 4.3.19</title>
+            <title>Version 5.0.208</title>
             <sparkle:releaseNotesLink>
                 https://outlookonthedesktop.com/ootdReleaseNotes.md
             </sparkle:releaseNotesLink>
             <pubDate>Sat, 25 Jan 2025 16:27:00 +0000</pubDate>
-            <enclosure url="https://github.com/mscrivo/OotD/releases/download/4.3.19/ootd-4.3.19.0.exe"
-                       sparkle:version="4.3.19" length="3874928" type="application/octet-stream" />
+            <enclosure url="https://github.com/mscrivo/OotD/releases/download/5.0.209/ootd-5.0.209.0.exe"
+                       sparkle:version="5.0.208" length="3752414" type="application/octet-stream" />
         </item>
     </channel>
 </rss>
