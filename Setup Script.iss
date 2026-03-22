@@ -6,7 +6,7 @@
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "https://outlookonthedesktop.com"
 #define MyAppExeName "OotD.Launcher.exe"
-#define MyAppCopyright "©2006-2025 Michael Scrivo"
+#define MyAppCopyright "©2006-2026 Michael Scrivo"
 
 [Setup]
 AppName={#MyAppName}
@@ -69,6 +69,7 @@ Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.x86.dll"; DestDir: "{
 Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.x86.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.x86.deps.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotDScheduledTaskDefinition.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\*.resources.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}

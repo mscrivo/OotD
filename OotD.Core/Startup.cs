@@ -4,6 +4,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -42,6 +43,8 @@ internal static class Startup
     [STAThread]
     private static void Main(string[] args)
     {
+        ApplyUiCultureOverrideFromEnvironment();
+
         Parser.Default.ParseArguments<Options>(args).WithParsed(ProcessCommandLineArgs);
 
         _logger.Debug("Checking to see if there is an instance running.");
@@ -123,6 +126,30 @@ internal static class Startup
                 MessageBox.Show(Resources.ProgramIsAlreadyRunning, Resources.ProgramIsAlreadyRunningCaption,
                     MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
+        }
+    }
+
+    private static void ApplyUiCultureOverrideFromEnvironment()
+    {
+        const string uiCultureEnvVar = "OOTD_UI_CULTURE";
+
+        var cultureName = Environment.GetEnvironmentVariable(uiCultureEnvVar);
+        if (string.IsNullOrWhiteSpace(cultureName))
+        {
+            return;
+        }
+
+        try
+        {
+            var culture = CultureInfo.GetCultureInfo(cultureName);
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+
+            _logger.Info($"Applied UI culture override from {uiCultureEnvVar}: {culture.Name}");
+        }
+        catch (CultureNotFoundException ex)
+        {
+            _logger.Warn(ex, $"Invalid culture value '{cultureName}' in {uiCultureEnvVar}; ignoring override.");
         }
     }
 
