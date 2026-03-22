@@ -25,6 +25,8 @@ public partial class InstanceManager : Form
 {
     private const string AppCastUrl = "https://outlookonthedesktop.com/ootdAppcast.xml";
     private const string AutoUpdateInstanceName = "AutoUpdate";
+    private const string ResetConfigMenuName = "ResetConfigMenu";
+    private const string ResetConfigMenuText = "Restore Defaults";
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly Graphics _graphics;
@@ -232,6 +234,8 @@ public partial class InstanceManager : Form
                     "AboutMenu"));
                 trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(Resources.CheckForUpdates, null,
                     CheckForUpdates_Click, "CheckForUpdatesMenu"));
+                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(ResetConfigMenuText, null,
+                    ResetConfigMenu_Click, ResetConfigMenuName));
 
                 trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
 
@@ -330,6 +334,22 @@ public partial class InstanceManager : Form
                 {
                     trayIcon.ContextMenuStrip.Items.Insert(20,
                         new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu"));
+                }
+
+                if (!trayIcon.ContextMenuStrip.Items.ContainsKey(ResetConfigMenuName))
+                {
+                    var exitMenuIndex = trayIcon.ContextMenuStrip.Items.IndexOfKey("ExitMenu");
+                    if (exitMenuIndex >= 0)
+                    {
+                        trayIcon.ContextMenuStrip.Items.Insert(exitMenuIndex,
+                            new ToolStripMenuItem(ResetConfigMenuText, null, ResetConfigMenu_Click,
+                                ResetConfigMenuName));
+                    }
+                    else
+                    {
+                        trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem(ResetConfigMenuText, null,
+                            ResetConfigMenu_Click, ResetConfigMenuName));
+                    }
                 }
 
                 value.TrayMenu.Items["Separator6"]!.Visible = true;
@@ -514,6 +534,45 @@ public partial class InstanceManager : Form
         DisableEnableAllInstances();
     }
 
+    private void ResetConfigMenu_Click(object? sender, EventArgs e)
+    {
+        var result = MessageBox.Show(this,
+            "This will remove all saved Outlook on the Desktop settings and instances from the registry.\n\n" +
+            "Do you want to continue?",
+            Resources.ConfirmationCaption,
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Warning,
+            MessageBoxDefaultButton.Button2);
+
+        if (result != DialogResult.Yes)
+        {
+            return;
+        }
+
+        try
+        {
+            foreach (var (_, formInstance) in _mainFormInstances)
+            {
+                formInstance.Dispose();
+            }
+
+            _mainFormInstances.Clear();
+
+            Registry.CurrentUser.DeleteSubKeyTree(ProductRegistryPath, false);
+
+            LoadInstances();
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error resetting configuration.");
+            MessageBox.Show(this,
+                Resources.ErrorInitializingApp + Environment.NewLine + ex.Message,
+                Resources.ErrorCaption,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
+    }
+
     private void DisableEnableAllInstances()
     {
         var disableEditingMenu = trayIcon.ContextMenuStrip!.Items["DisableEnableEditingMenu"] as ToolStripMenuItem;
@@ -607,4 +666,7 @@ public partial class InstanceManager : Form
         var item = (ToolStripDropDownItem)e.Argument!;
         FlashForm(item);
     }
+
+    private static string ProductRegistryPath =>
+        "Software\\" + Application.CompanyName + "\\" + Application.ProductName;
 }
