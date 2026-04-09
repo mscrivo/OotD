@@ -260,9 +260,13 @@ public partial class MainForm : Form
         {
             SetViewXMLForType();
         }
-        else
+        else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Calendar)?.Name)
         {
             SetViewXml(Resources.MonthXML);
+        }
+        else
+        {
+            SetViewXml(string.Empty);
         }
     }
 
@@ -282,15 +286,15 @@ public partial class MainForm : Form
         }
         else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Notes)?.Name)
         {
-            OutlookViewControl.ViewXML = Preferences.ViewXml;
+            OutlookViewControl.ViewXML = string.Empty;
         }
         else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Tasks)?.Name)
         {
-            OutlookViewControl.ViewXML = Preferences.ViewXml;
+            OutlookViewControl.ViewXML = string.Empty;
         }
         else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Todo)?.Name)
         {
-            OutlookViewControl.ViewXML = Preferences.ViewXml;
+            OutlookViewControl.ViewXML = string.Empty;
         }
         else
         {
@@ -1222,7 +1226,15 @@ public partial class MainForm : Form
     {
         Preferences.OutlookFolderView = OutlookViewControl.View;
         Preferences.OutlookFolderName = OutlookViewControl.Folder;
-        SetViewXml(OutlookViewControl.ViewXML);
+
+        if (OutlookViewControl.Folder == GetFolderFromViewType(FolderViewType.Calendar)?.Name)
+        {
+            SetViewXml(OutlookViewControl.ViewXML);
+        }
+        else
+        {
+            SetViewXml(string.Empty);
+        }
     }
 
     private void SetViewXml(string value)
