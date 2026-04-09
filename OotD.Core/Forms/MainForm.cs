@@ -260,47 +260,38 @@ public partial class MainForm : Form
         {
             SetViewXMLForType();
         }
-        else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Calendar)?.Name)
-        {
-            SetViewXml(Resources.MonthXML);
-        }
         else
         {
-            SetViewXml(string.Empty);
+            SetViewXml(GetDefaultViewXmlForFolder(Preferences.OutlookFolderName,
+                GetFolderFromViewType(FolderViewType.Calendar)?.Name, Resources.MonthXML));
         }
     }
 
     private void SetViewXMLForType()
     {
-        if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Calendar)?.Name)
+        if (ShouldPersistViewXmlForFolder(Preferences.OutlookFolderName,
+                GetFolderFromViewType(FolderViewType.Calendar)?.Name))
         {
             OutlookViewControl.ViewXML = Preferences.ViewXml;
-        }
-        else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Contacts)?.Name)
-        {
-            OutlookViewControl.ViewXML = string.Empty;
-        }
-        else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Inbox)?.Name)
-        {
-            OutlookViewControl.ViewXML = string.Empty;
-        }
-        else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Notes)?.Name)
-        {
-            OutlookViewControl.ViewXML = string.Empty;
-        }
-        else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Tasks)?.Name)
-        {
-            OutlookViewControl.ViewXML = string.Empty;
-        }
-        else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Todo)?.Name)
-        {
-            OutlookViewControl.ViewXML = string.Empty;
         }
         else
         {
             // custom, don't save the view xml
             OutlookViewControl.ViewXML = string.Empty;
         }
+    }
+
+    internal static bool ShouldPersistViewXmlForFolder(string? folderName, string? calendarFolderName)
+    {
+        return !string.IsNullOrEmpty(folderName) &&
+               !string.IsNullOrEmpty(calendarFolderName) &&
+               string.Equals(folderName, calendarFolderName, StringComparison.Ordinal);
+    }
+
+    internal static string GetDefaultViewXmlForFolder(string? folderName, string? calendarFolderName,
+        string monthXml)
+    {
+        return ShouldPersistViewXmlForFolder(folderName, calendarFolderName) ? monthXml : string.Empty;
     }
 
     private void SetSelectedMenuItem()
@@ -1227,7 +1218,8 @@ public partial class MainForm : Form
         Preferences.OutlookFolderView = OutlookViewControl.View;
         Preferences.OutlookFolderName = OutlookViewControl.Folder;
 
-        if (OutlookViewControl.Folder == GetFolderFromViewType(FolderViewType.Calendar)?.Name)
+        if (ShouldPersistViewXmlForFolder(OutlookViewControl.Folder,
+            GetFolderFromViewType(FolderViewType.Calendar)?.Name))
         {
             SetViewXml(OutlookViewControl.ViewXML);
         }
