@@ -1,0 +1,550 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Position" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="Hide" xml:space="preserve">
+    <value>隐藏</value>
+  </data>
+  <data name="ErrorCaption" xml:space="preserve">
+    <value>Outlook on the Desktop 错误</value>
+  </data>
+  <data name="Opaque" xml:space="preserve">
+    <value>不透明</value>
+  </data>
+  <data name="ErrorLaunchingWebsite" xml:space="preserve">
+    <value>无法启动网站。</value>
+  </data>
+  <data name="PreferencesTitle" xml:space="preserve">
+    <value>Outlook on the Desktop 首选项</value>
+  </data>
+  <data name="Calendar" xml:space="preserve">
+    <value>日历</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>高度</value>
+  </data>
+  <data name="CancelButton" xml:space="preserve">
+    <value>&amp;取消</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\8.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\2.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HideAll" xml:space="preserve">
+    <value>全部隐藏</value>
+  </data>
+  <data name="_29" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\29.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\24.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_22" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\22.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_28" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\28.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AddInstance" xml:space="preserve">
+    <value>添加实例</value>
+  </data>
+  <data name="DisableEditing" xml:space="preserve">
+    <value>禁用编辑</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>显示</value>
+  </data>
+  <data name="SelectFolder" xml:space="preserve">
+    <value>选择文件夹 ...</value>
+  </data>
+  <data name="Wide" xml:space="preserve">
+    <value>宽</value>
+  </data>
+  <data name="ErrorSettingDimensions" xml:space="preserve">
+    <value>设置尺寸时出错。这通常发生在调整桌面大小之后。请重新设置您首选的尺寸。</value>
+  </data>
+  <data name="_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\3.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\20.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ErrorInitializingApp" xml:space="preserve">
+    <value>初始化应用程序时出错:</value>
+  </data>
+  <data name="Transparent" xml:space="preserve">
+    <value>透明</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Outlook on the Desktop</value>
+  </data>
+  <data name="Tasks" xml:space="preserve">
+    <value>任务</value>
+  </data>
+  <data name="AboutDialogTitle" xml:space="preserve">
+    <value>关于 Outlook on the Desktop</value>
+  </data>
+  <data name="_23" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\23.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\16.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_31" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\31.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\4.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OKButton" xml:space="preserve">
+    <value>&amp;确定</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>宽度</value>
+  </data>
+  <data name="Opacity" xml:space="preserve">
+    <value>不透明度:</value>
+  </data>
+  <data name="ErrorSettingFolder" xml:space="preserve">
+    <value>切换到指定文件夹时出错。该文件夹可能与 Outlook on the Desktop 不兼容。</value>
+  </data>
+  <data name="_17" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\17.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>联系人</value>
+  </data>
+  <data name="_11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\11.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NewInstanceName" xml:space="preserve">
+    <value>新实例名称</value>
+  </data>
+  <data name="CancelConfirmation" xml:space="preserve">
+    <value>确定要取消吗?</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>版权</value>
+  </data>
+  <data name="Narrow" xml:space="preserve">
+    <value>窄</value>
+  </data>
+  <data name="ErrorSettingOpacity" xml:space="preserve">
+    <value>设置不透明度时出错，已使用默认值 50%。请重试。</value>
+  </data>
+  <data name="Preferences" xml:space="preserve">
+    <value>首选项</value>
+  </data>
+  <data name="RemoveInstanceConfirmation" xml:space="preserve">
+    <value>确定要删除此实例吗?</value>
+  </data>
+  <data name="ErrorSavingSettings" xml:space="preserve">
+    <value>保存设置时出错</value>
+  </data>
+  <data name="Tall" xml:space="preserve">
+    <value>高</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>便笺</value>
+  </data>
+  <data name="_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\5.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_19" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\19.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Inbox" xml:space="preserve">
+    <value>收件箱</value>
+  </data>
+  <data name="Short" xml:space="preserve">
+    <value>矮</value>
+  </data>
+  <data name="Office2010Requirement" xml:space="preserve">
+    <value>此程序需要 Microsoft Outlook 2010 或更高版本。</value>
+  </data>
+  <data name="_21" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\21.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>版本</value>
+  </data>
+  <data name="ConfirmationCaption" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="ProgramIsAlreadyRunningCaption" xml:space="preserve">
+    <value>已在运行</value>
+  </data>
+  <data name="InstallOutlookMsg" xml:space="preserve">
+    <value>请安装 Microsoft Office 后重试。</value>
+  </data>
+  <data name="_13" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\13.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\10.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\18.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MonthXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\month.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="MissingRequirementsCapation" xml:space="preserve">
+    <value>缺少所需组件</value>
+  </data>
+  <data name="_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\30.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="WeekXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\week.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="WebSite" xml:space="preserve">
+    <value>网站</value>
+  </data>
+  <data name="Separator" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\1.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ShowAll" xml:space="preserve">
+    <value>全部显示</value>
+  </data>
+  <data name="_7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\7.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProgramIsAlreadyRunning" xml:space="preserve">
+    <value>Outlook on the Desktop 已在运行。</value>
+  </data>
+  <data name="_12" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\12.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\6.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_27" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\27.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\9.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DayXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\day.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="StartWithWindows" xml:space="preserve">
+    <value>开机启动</value>
+  </data>
+  <data name="OotdRunning" xml:space="preserve">
+    <value>Outlook on the Desktop 正在运行</value>
+  </data>
+  <data name="WorkWeekXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WorkWeek.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="_26" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\26.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EnableEditing" xml:space="preserve">
+    <value>启用编辑</value>
+  </data>
+  <data name="_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\15.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_14" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\14.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icons\25.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RightClickToConfigure" xml:space="preserve">
+    <value>右键单击此图标以配置 Outlook on the Desktop。</value>
+  </data>
+  <data name="LockPosition" xml:space="preserve">
+    <value>锁定位置</value>
+  </data>
+  <data name="Transparency_Slider_Locked_Message" xml:space="preserve">
+    <value>在尝试更改透明度之前，必须先解锁窗体。</value>
+  </data>
+  <data name="Transparency_Slider_Help_Message" xml:space="preserve">
+    <value>拖动以更改此窗口的透明度</value>
+  </data>
+  <data name="Form_Move_Locked_Message" xml:space="preserve">
+    <value>在尝试移动窗口之前，必须先解锁窗体。</value>
+  </data>
+  <data name="Form_Move_Help_Message" xml:space="preserve">
+    <value>按住此标题可移动窗口</value>
+  </data>
+  <data name="Windows_RPC_Server_is_not_available" xml:space="preserve">
+    <value>Windows RPC 服务器不可用。请稍后几分钟再尝试启动 Outlook on the Desktop。如果仍然出现相同错误，可能是 Windows 安装存在问题。</value>
+  </data>
+  <data name="Incorrect_bittedness_of_OotD" xml:space="preserve">
+    <value>您似乎正在运行错误版本的 Outlook on the Desktop。\\n\\n如果您安装的是 64 位 Office，请使用 64 位 Outlook on the Desktop。\\n\\n如果您安装的是 32 位 Office，请使用 32 位 Outlook on the Desktop。</value>
+  </data>
+  <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icons\appicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>检查更新</value>
+  </data>
+  <data name="Next" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\next.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PayPal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\paypal.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Previous" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\prev.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FiveDays" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\fiveDays.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OneDay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\oneDay.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SevenDays" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\sevenDays.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Today" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\today.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Month" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\month.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Toggle_Day_View" xml:space="preserve">
+    <value>切换到日视图</value>
+  </data>
+  <data name="Move_Previous" xml:space="preserve">
+    <value>上一项</value>
+  </data>
+  <data name="Move_Next" xml:space="preserve">
+    <value>下一项</value>
+  </data>
+  <data name="Go_to_Today" xml:space="preserve">
+    <value>转到今天</value>
+  </data>
+  <data name="Toggle_Work_Week_View" xml:space="preserve">
+    <value>切换到工作周视图</value>
+  </data>
+  <data name="Toggle_Month_View" xml:space="preserve">
+    <value>切换到月视图</value>
+  </data>
+  <data name="Toggle_Full_Week_View" xml:space="preserve">
+    <value>切换到整周视图</value>
+  </data>
+  <data name="ViewTypeNotSupported" xml:space="preserve">
+    <value>无法设置视图。您的 Outlook 版本可能不支持该视图。</value>
+  </data>
+  <data name="NewEmail" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewEmail.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ChildProcessErrorMessage" xml:space="preserve">
+    <value>运行 OotD 时发生未知错误。请在 https://github.com/mscrivo/OotD/issues 提交 bug，并附上位于以下位置的日志文件: {0}</value>
+  </data>
+  <data name="OutlookKeyNotFoundError" xml:space="preserve">
+    <value>找不到 Office 安装信息。请确认已安装 Office。</value>
+  </data>
+  <data name="OutlookExeNotFoundError" xml:space="preserve">
+    <value>在报告的位置找不到 Outlook:\\n{0}</value>
+  </data>
+  <data name="OutlookLocationKeyNotFoundError" xml:space="preserve">
+    <value>无法在系统中定位 Outlook 可执行文件</value>
+  </data>
+  <data name="AboutOotD" xml:space="preserve">
+    <value>关于 {0}</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>版本 {0}</value>
+  </data>
+  <data name="OutlookNotRunning" xml:space="preserve">
+    <value>OotD 检测到 Outlook 未运行。Outlook 可能已崩溃或被意外关闭。没有 Outlook，OotD 无法运行，必须重新启动。OotD 现在将关闭。</value>
+  </data>
+  <data name="Percentage" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="RestoreDefaults" xml:space="preserve">
+    <value>恢复默认值</value>
+  </data>
+  <data name="RestoreDefaultsConfirmation" xml:space="preserve">
+    <value>这将从注册表中删除所有已保存的 Outlook on the Desktop 设置和实例。\\n\\n是否继续?</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>必填</value>
+  </data>
+  <data name="RenameInstance" xml:space="preserve">
+    <value>重命名实例</value>
+  </data>
+  <data name="RenameThisInstance" xml:space="preserve">
+    <value>重命名此实例</value>
+  </data>
+  <data name="RemoveThisInstance" xml:space="preserve">
+    <value>删除此实例</value>
+  </data>
+  <data name="MoveToVirtualDesktop" xml:space="preserve">
+    <value>移动到虚拟桌面</value>
+  </data>
+  <data name="VirtualDesktopFeatureNotSupported" xml:space="preserve">
+    <value>此系统不支持虚拟桌面功能。</value>
+  </data>
+  <data name="VirtualDesktopFeatureNotAvailableCaption" xml:space="preserve">
+    <value>功能不可用</value>
+  </data>
+  <data name="SuccessCaption" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="VirtualDesktopAssignmentClearedMessage" xml:space="preserve">
+    <value>虚拟桌面分配已清除。\\n\\n该实例现在会显示在所有桌面上，并从 Alt+Tab 中隐藏。\\n\\n是否立即重启应用程序以确保更改生效?</value>
+  </data>
+  <data name="VirtualDesktopAssignmentAppliedMessage" xml:space="preserve">
+    <value>实例已移动到所选虚拟桌面。\\n\\n注意: 为确保虚拟桌面行为正常，窗口现在会显示在 Alt+Tab 中。\\n\\n是否立即重启应用程序以确保更改生效?</value>
+  </data>
+  <data name="VirtualDesktopMoveFailedMessage" xml:space="preserve">
+    <value>无法将窗口移动到所选虚拟桌面。</value>
+  </data>
+  <data name="OperationFailedCaption" xml:space="preserve">
+    <value>操作失败</value>
+  </data>
+  <data name="ErrorCaptionShort" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="ErrorWithDetails" xml:space="preserve">
+    <value>错误: {0}</value>
+  </data>
+  <data name="OutlookViews" xml:space="preserve">
+    <value>Outlook 视图</value>
+  </data>
+  <data name="DefaultView" xml:space="preserve">
+    <value>默认视图</value>
+  </data>
+  <data name="TodoList" xml:space="preserve">
+    <value>待办事项列表</value>
+  </data>
+</root>
