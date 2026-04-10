@@ -25,6 +25,7 @@ public partial class InstanceManager : Form
 {
     private const string AppCastUrl = "https://outlookonthedesktop.com/ootdAppcast.xml";
     private const string AutoUpdateInstanceName = "AutoUpdate";
+    private const int CascadeOffset = 30;
     private const string ResetConfigMenuName = "ResetConfigMenu";
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -454,16 +455,143 @@ public partial class InstanceManager : Form
 
         LoadInstances();
 
-        // reposition the newly added instance so that it's not directly on top of the previous one
-        var rnd = new Random();
-        var xLoc = rnd.Next(0, Screen.FromHandle(Handle).WorkingArea.Width - _mainFormInstances[result.Text].Width);
-        var yLoc = rnd.Next(0, Screen.FromHandle(Handle).WorkingArea.Height - _mainFormInstances[result.Text].Height);
-        _mainFormInstances[result.Text].Left = xLoc;
-        _mainFormInstances[result.Text].Top = yLoc;
+        var newInstance = _mainFormInstances[result.Text];
+        var occupiedBounds = _mainFormInstances
+            .Where(instance => instance.Key != result.Text)
+            .Select(instance => instance.Value.Bounds)
+            .ToArray();
+
+        var currentWorkingArea = Screen.FromHandle(Handle).WorkingArea;
+        var orderedWorkingAreas = Screen.AllScreens
+            .Select(screen => screen.WorkingArea)
+            .OrderByDescending(area => area == currentWorkingArea)
+            .ToArray();
+        var preferredStart = GetCascadedStartPoint(currentWorkingArea, newInstance.Size, occupiedBounds);
+
+        Point? selectedLocation = null;
+        foreach (var area in orderedWorkingAreas)
+        {
+            var preferredForArea = area.Contains(preferredStart ?? Point.Empty)
+                ? preferredStart
+                : null;
+
+            var candidate = FindNonOverlappingLocation(area, newInstance.Size, occupiedBounds, preferredForArea);
+            var candidateBounds = new Rectangle(candidate, newInstance.Size);
+            if (occupiedBounds.Any(existing => existing.IntersectsWith(candidateBounds)))
+            {
+                continue;
+            }
+
+            selectedLocation = candidate;
+            break;
+        }
+
+        selectedLocation ??= FindNonOverlappingLocation(currentWorkingArea, newInstance.Size, occupiedBounds,
+            preferredStart);
+
+        newInstance.Left = selectedLocation.Value.X;
+        newInstance.Top = selectedLocation.Value.Y;
+
+        // Make sure the newly added instance is visible above existing windows.
+        newInstance.BringToFront();
+        newInstance.Activate();
 
         // Save the new position so that it's correctly loaded on next run
-        _mainFormInstances[result.Text].Preferences.Left = _mainFormInstances[result.Text].Left;
-        _mainFormInstances[result.Text].Preferences.Top = _mainFormInstances[result.Text].Top;
+        newInstance.Preferences.Left = newInstance.Left;
+        newInstance.Preferences.Top = newInstance.Top;
+    }
+
+    internal static Point FindNonOverlappingLocation(Rectangle workingArea, Size windowSize,
+        IReadOnlyCollection<Rectangle> occupiedBounds, Point? preferredStart = null)
+    {
+        var maxX = Math.Max(workingArea.Left, workingArea.Right - windowSize.Width);
+        var maxY = Math.Max(workingArea.Top, workingArea.Bottom - windowSize.Height);
+
+        const int placementStep = 30;
+
+        var bestLocation = new Point(workingArea.Left, workingArea.Top);
+        var smallestOverlapArea = int.MaxValue;
+
+        if (preferredStart.HasValue)
+        {
+            var preferred = new Point(
+                Math.Min(Math.Max(preferredStart.Value.X, workingArea.Left), maxX),
+                Math.Min(Math.Max(preferredStart.Value.Y, workingArea.Top), maxY));
+
+            if (IsNonOverlappingCandidate(new Rectangle(preferred, windowSize), occupiedBounds, out var overlapArea))
+            {
+                return preferred;
+            }
+
+            smallestOverlapArea = overlapArea;
+            bestLocation = preferred;
+        }
+
+        for (var y = workingArea.Top; y <= maxY; y += placementStep)
+        {
+            for (var x = workingArea.Left; x <= maxX; x += placementStep)
+            {
+                var candidate = new Rectangle(x, y, windowSize.Width, windowSize.Height);
+
+                if (IsNonOverlappingCandidate(candidate, occupiedBounds, out var overlapArea))
+                {
+                    return candidate.Location;
+                }
+
+                if (overlapArea >= smallestOverlapArea)
+                {
+                    continue;
+                }
+
+                smallestOverlapArea = overlapArea;
+                bestLocation = candidate.Location;
+            }
+        }
+
+        return bestLocation;
+    }
+
+    internal static Point? GetCascadedStartPoint(Rectangle workingArea, Size windowSize,
+        IReadOnlyCollection<Rectangle> occupiedBounds)
+    {
+        if (occupiedBounds.Count == 0)
+        {
+            return null;
+        }
+
+        var anchor = occupiedBounds
+            .OrderByDescending(rect => rect.Top)
+            .ThenByDescending(rect => rect.Left)
+            .First();
+
+        var maxX = Math.Max(workingArea.Left, workingArea.Right - windowSize.Width);
+        var maxY = Math.Max(workingArea.Top, workingArea.Bottom - windowSize.Height);
+
+        var x = Math.Min(Math.Max(anchor.Left + CascadeOffset, workingArea.Left), maxX);
+        var y = Math.Min(Math.Max(anchor.Top + CascadeOffset, workingArea.Top), maxY);
+
+        return new Point(x, y);
+    }
+
+    private static bool IsNonOverlappingCandidate(Rectangle candidate, IReadOnlyCollection<Rectangle> occupiedBounds,
+        out int overlapArea)
+    {
+        overlapArea = 0;
+        var intersectsExisting = false;
+
+        foreach (var existing in occupiedBounds)
+        {
+            if (!candidate.IntersectsWith(existing))
+            {
+                continue;
+            }
+
+            intersectsExisting = true;
+            var intersection = Rectangle.Intersect(candidate, existing);
+            overlapArea += intersection.Width * intersection.Height;
+        }
+
+        return !intersectsExisting;
     }
 
     private static void InputBox_Validating(object? sender, InputBoxValidatingEventArgs e)
