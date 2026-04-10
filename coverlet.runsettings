@@ -10,6 +10,12 @@
               <ModulePath>.*MACTrackBarLib.*</ModulePath>
             </Exclude>
           </ModulePaths>
+          <ExcludeByFile>
+            <File>**/*.Designer.cs</File>
+            <File>**/*Resources.Designer.cs</File>
+            <File>**/*LibraryImports.g.cs</File>
+            <File>**/obj/**</File>
+          </ExcludeByFile>
         </Configuration>
       </DataCollector>
     </DataCollectors>
