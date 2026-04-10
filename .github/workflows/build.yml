@@ -2,9 +2,9 @@ name: Build, Sign and Publish
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -13,128 +13,127 @@ jobs:
         configuration: [Release]
 
     runs-on: windows-latest
-    
+
     env:
-     VERSION: '5.0.${{ github.run_number }}'
+      VERSION: "5.0.${{ github.run_number }}"
 
-    steps:    
-    - name: Checkout
-      uses: actions/checkout@v6
-      with:
-        submodules: 'true'
-        fetch-depth: 0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: "true"
+          fetch-depth: 0
 
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v5
-      with:        
-        dotnet-version: 10.0.201
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.201
 
-    - name: Build the app
-      run: dotnet build OutlookDesktop.sln --configuration $env:Configuration -p:Version=${{ env.VERSION }} -p:FileVersion=${{ env.VERSION }}
-      env:
-        Configuration: ${{ matrix.configuration }}
+      - name: Build the app
+        run: dotnet build OutlookDesktop.sln --configuration $env:Configuration -p:Version=${{ env.VERSION }} -p:FileVersion=${{ env.VERSION }}
+        env:
+          Configuration: ${{ matrix.configuration }}
 
-    - name: Run tests with coverage
-      shell: pwsh
-      run: |
-        if (Test-Path "TestResults") { Remove-Item "TestResults" -Recurse -Force }
-        if (Test-Path "CoverageReport") { Remove-Item "CoverageReport" -Recurse -Force }
-        dotnet test OutlookDesktop.sln --configuration $env:Configuration --collect:"XPlat Code Coverage" --settings coverlet.runsettings --results-directory ./TestResults --logger "trx;LogFileName=test-results.trx" --verbosity normal
-      env:
-        Configuration: ${{ matrix.configuration }}
+      - name: Run tests with coverage
+        shell: pwsh
+        run: |
+          if (Test-Path "TestResults") { Remove-Item "TestResults" -Recurse -Force }
+          if (Test-Path "CoverageReport") { Remove-Item "CoverageReport" -Recurse -Force }
+          dotnet test OutlookDesktop.sln --configuration $env:Configuration --collect:"XPlat Code Coverage" --settings coverlet.runsettings --results-directory ./TestResults --logger "trx;LogFileName=test-results.trx" --verbosity normal
+        env:
+          Configuration: ${{ matrix.configuration }}
 
-    - name: Test Report
-      uses: dorny/test-reporter@v3
-      if: always()
-      with:
-        name: Test Results
-        path: "TestResults/**/*.trx"
-        reporter: dotnet-trx
+      - name: Test Report
+        uses: dorny/test-reporter@v3
+        if: always()
+        with:
+          name: Test Results
+          path: "TestResults/**/*.trx"
+          reporter: dotnet-trx
 
-    - name: Generate coverage report
-      run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"CoverageReport" -reporttypes:"Html;Cobertura" -assemblyfilters:"+OotD.*;-NetSparkle*;-MACTrackBarLib*"
+      - name: Generate coverage report
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"CoverageReport" -reporttypes:"Html;Cobertura" -assemblyfilters:"+OotD.*;-NetSparkle*;-MACTrackBarLib*"
 
-    - name: Publish coverage summary
-      if: always()
-      shell: pwsh
-      run: |
-        $coverageFile = "CoverageReport/Cobertura.xml"
-        if (-not (Test-Path $coverageFile)) {
-          "## Code Coverage`n`nCoverage report not found at $coverageFile." | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
-          exit 0
-        }
+      - name: Publish coverage summary
+        if: always()
+        shell: pwsh
+        run: |
+          $coverageFile = "CoverageReport/Cobertura.xml"
+          if (-not (Test-Path $coverageFile)) {
+            "## Code Coverage`n`nCoverage report not found at $coverageFile." | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+            exit 0
+          }
 
-        [xml]$xml = Get-Content $coverageFile
-        $coverage = $xml.coverage
+          [xml]$xml = Get-Content $coverageFile
+          $coverage = $xml.coverage
 
-        $lineRate = [math]::Round(([double]$coverage.'line-rate') * 100, 2)
-        $branchRate = [math]::Round(([double]$coverage.'branch-rate') * 100, 2)
-        $linesCovered = [int]$coverage.'lines-covered'
-        $linesValid = [int]$coverage.'lines-valid'
-        $branchesCovered = [int]$coverage.'branches-covered'
-        $branchesValid = [int]$coverage.'branches-valid'
+          $lineRate = [math]::Round(([double]$coverage.'line-rate') * 100, 2)
+          $branchRate = [math]::Round(([double]$coverage.'branch-rate') * 100, 2)
+          $linesCovered = [int]$coverage.'lines-covered'
+          $linesValid = [int]$coverage.'lines-valid'
+          $branchesCovered = [int]$coverage.'branches-covered'
+          $branchesValid = [int]$coverage.'branches-valid'
 
-        $summaryLines = @(
-          "## Code Coverage",
-          "",
-          "| Metric | Value |",
-          "| --- | ---: |",
-          "| Line Coverage | $lineRate% |",
-          "| Branch Coverage | $branchRate% |",
-          "| Lines Covered | $linesCovered / $linesValid |",
-          "| Branches Covered | $branchesCovered / $branchesValid |",
-          "",
-          "Detailed HTML coverage is also uploaded as the coverage-report artifact."
-        )
+          $summaryLines = @(
+            "## Code Coverage",
+            "",
+            "| Metric | Value |",
+            "| --- | ---: |",
+            "| Line Coverage | $lineRate% |",
+            "| Branch Coverage | $branchRate% |",
+            "| Lines Covered | $linesCovered / $linesValid |",
+            "| Branches Covered | $branchesCovered / $branchesValid |",
+            "",
+            "Detailed HTML coverage is also uploaded as the coverage-report artifact."
+          )
 
-        ($summaryLines -join "`n") | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+          ($summaryLines -join "`n") | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
 
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v7
-      if: always()
-      with:
-        name: test-results
-        path: TestResults
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: test-results
+          path: TestResults
 
-    - name: Upload coverage reports
-      uses: actions/upload-artifact@v7
-      with:
-        name: coverage-report
-        path: CoverageReport
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report
+          path: CoverageReport
 
-#    - name: Sign App Files
-#      uses: mscrivo/signtool-code-sign@v1
-#      with:
-#        certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
-#        cert-password: '${{ secrets.PFX_PASSWORD }}'
-#        cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
-#        # path to folder containing files to sign.
-#        folder: 'OotD.Launcher\bin\Release\net10.0-windows7.0'
-#        recursive: true
-#        timestamp-server: 'http://timestamp.digicert.com'
+      #    - name: Sign App Files
+      #      uses: mscrivo/signtool-code-sign@v1
+      #      with:
+      #        certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
+      #        cert-password: '${{ secrets.PFX_PASSWORD }}'
+      #        cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
+      #        # path to folder containing files to sign.
+      #        folder: 'OotD.Launcher\bin\Release\net10.0-windows7.0'
+      #        recursive: true
+      #        timestamp-server: 'http://timestamp.digicert.com'
 
-    - name: Build Installer
-      uses: Minionguyjpro/Inno-Setup-Action@v1.2.7
-      with:
-        path: "Setup Script.iss"
-        options: /O+
-        
-#    - name: Sign Installer
-#      uses: mscrivo/signtool-code-sign@v1
-#      with:
-#        certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
-#        cert-password: '${{ secrets.PFX_PASSWORD }}'
-#        cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
-#        # path to folder containing files to sign.
-#        folder: 'ServerStaging'
-#        recursive: false
-#        timestamp-server: 'http://timestamp.digicert.com'        
+      - name: Build Installer
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.7
+        with:
+          path: "Setup Script.iss"
+          options: /O+
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v7
-      with:
-        name: Installer
-        path: ServerStaging
+      #    - name: Sign Installer
+      #      uses: mscrivo/signtool-code-sign@v1
+      #      with:
+      #        certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
+      #        cert-password: '${{ secrets.PFX_PASSWORD }}'
+      #        cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
+      #        # path to folder containing files to sign.
+      #        folder: 'ServerStaging'
+      #        recursive: false
+      #        timestamp-server: 'http://timestamp.digicert.com'
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: Installer
+          path: ServerStaging
