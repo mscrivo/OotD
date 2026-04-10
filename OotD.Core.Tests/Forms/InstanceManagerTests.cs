@@ -205,6 +205,126 @@ public class InstanceManagerTests : IDisposable
         result.Should().Be(new Point(250, 150));
     }
 
+    [Fact]
+    public void FindNonOverlappingLocation_WhenScreenIsSaturated_ShouldReturnInBoundsBestFallback()
+    {
+        // Arrange
+        var workingArea = new Rectangle(0, 0, 300, 300);
+        var size = new Size(200, 200);
+        var occupied = new[]
+        {
+            new Rectangle(0, 0, 200, 200),
+            new Rectangle(100, 0, 200, 200),
+            new Rectangle(0, 100, 200, 200),
+            new Rectangle(100, 100, 200, 200)
+        };
+
+        // Act
+        var location = InstanceManager.FindNonOverlappingLocation(workingArea, size, occupied);
+        var placed = new Rectangle(location, size);
+
+        // Assert
+        workingArea.Contains(placed).Should().BeTrue();
+    }
+
+    [Theory]
+    [InlineData(0, 0, 600, 400, 200, 120)]
+    [InlineData(100, 50, 800, 600, 250, 200)]
+    [InlineData(1920, 0, 700, 500, 300, 180)]
+    public void FindNonOverlappingLocation_WithVariousBounds_ShouldRespectPlacementInvariants(
+        int left,
+        int top,
+        int width,
+        int height,
+        int windowWidth,
+        int windowHeight)
+    {
+        // Arrange
+        var workingArea = new Rectangle(left, top, width, height);
+        var size = new Size(windowWidth, windowHeight);
+        var occupied = new[]
+        {
+            new Rectangle(left, top, windowWidth, windowHeight),
+            new Rectangle(left + Math.Min(120, Math.Max(0, width - windowWidth)), top,
+                windowWidth, windowHeight)
+        };
+
+        // Act
+        var location1 = InstanceManager.FindNonOverlappingLocation(workingArea, size, occupied);
+        var location2 = InstanceManager.FindNonOverlappingLocation(workingArea, size, occupied);
+        var placed = new Rectangle(location1, size);
+
+        // Assert
+        // Deterministic for same inputs.
+        location1.Should().Be(location2);
+
+        // Always remain in working area.
+        workingArea.Contains(placed).Should().BeTrue();
+
+        // If there exists at least one valid non-overlapping slot, result should not overlap.
+        var hasFreeSlot = HasNonOverlappingCandidate(workingArea, size, occupied);
+        if (hasFreeSlot)
+        {
+            occupied.Any(existing => existing.IntersectsWith(placed)).Should().BeFalse();
+        }
+    }
+
+    [Fact]
+    public void OrderWorkingAreas_WhenCurrentAreaPresent_ShouldPlaceCurrentAreaFirst()
+    {
+        // Arrange
+        var current = new Rectangle(1920, 0, 800, 600);
+        var areas = new[]
+        {
+            new Rectangle(0, 0, 1920, 1080),
+            current,
+            new Rectangle(2720, 0, 800, 600)
+        };
+
+        // Act
+        var ordered = InstanceManager.OrderWorkingAreas(current, areas);
+
+        // Assert
+        ordered[0].Should().Be(current);
+    }
+
+    [Fact]
+    public void OrderWorkingAreas_WhenCurrentAreaMissing_ShouldPreserveOriginalOrder()
+    {
+        // Arrange
+        var current = new Rectangle(999, 999, 100, 100);
+        var area1 = new Rectangle(0, 0, 1000, 800);
+        var area2 = new Rectangle(1000, 0, 1000, 800);
+        var areas = new[] { area1, area2 };
+
+        // Act
+        var ordered = InstanceManager.OrderWorkingAreas(current, areas);
+
+        // Assert
+        ordered.Should().Equal(area1, area2);
+    }
+
+    private static bool HasNonOverlappingCandidate(Rectangle workingArea, Size windowSize,
+        IReadOnlyCollection<Rectangle> occupied)
+    {
+        var maxX = Math.Max(workingArea.Left, workingArea.Right - windowSize.Width);
+        var maxY = Math.Max(workingArea.Top, workingArea.Bottom - windowSize.Height);
+
+        for (var y = workingArea.Top; y <= maxY; y += 30)
+        {
+            for (var x = workingArea.Left; x <= maxX; x += 30)
+            {
+                var candidate = new Rectangle(x, y, windowSize.Width, windowSize.Height);
+                if (!occupied.Any(existing => existing.IntersectsWith(candidate)))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public void Dispose()
     {
         try

@@ -462,10 +462,8 @@ public partial class InstanceManager : Form
             .ToArray();
 
         var currentWorkingArea = Screen.FromHandle(Handle).WorkingArea;
-        var orderedWorkingAreas = Screen.AllScreens
-            .Select(screen => screen.WorkingArea)
-            .OrderByDescending(area => area == currentWorkingArea)
-            .ToArray();
+        var orderedWorkingAreas = OrderWorkingAreas(currentWorkingArea,
+            Screen.AllScreens.Select(screen => screen.WorkingArea));
         var preferredStart = GetCascadedStartPoint(currentWorkingArea, newInstance.Size, occupiedBounds);
 
         Point? selectedLocation = null;
@@ -549,6 +547,14 @@ public partial class InstanceManager : Form
         }
 
         return bestLocation;
+    }
+
+    internal static IReadOnlyList<Rectangle> OrderWorkingAreas(Rectangle currentWorkingArea,
+        IEnumerable<Rectangle> allWorkingAreas)
+    {
+        return allWorkingAreas
+            .OrderByDescending(area => area == currentWorkingArea)
+            .ToArray();
     }
 
     internal static Point? GetCascadedStartPoint(Rectangle workingArea, Size windowSize,
