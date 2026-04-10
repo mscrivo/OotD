@@ -76,18 +76,20 @@ jobs:
         $branchesCovered = [int]$coverage.'branches-covered'
         $branchesValid = [int]$coverage.'branches-valid'
 
-        @"
-## Code Coverage
+        $summaryLines = @(
+          "## Code Coverage",
+          "",
+          "| Metric | Value |",
+          "| --- | ---: |",
+          "| Line Coverage | $lineRate% |",
+          "| Branch Coverage | $branchRate% |",
+          "| Lines Covered | $linesCovered / $linesValid |",
+          "| Branches Covered | $branchesCovered / $branchesValid |",
+          "",
+          "Detailed HTML coverage is also uploaded as the coverage-report artifact."
+        )
 
-| Metric | Value |
-| --- | ---: |
-| Line Coverage | $lineRate% |
-| Branch Coverage | $branchRate% |
-| Lines Covered | $linesCovered / $linesValid |
-| Branches Covered | $branchesCovered / $branchesValid |
-
-Detailed HTML coverage is also uploaded as the `coverage-report` artifact.
-"@ | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+        ($summaryLines -join "`n") | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
 
     - name: Upload Test Results
       uses: actions/upload-artifact@v7
