@@ -1,5 +1,20 @@
 # OotD Release Notes
 
+## 5.0.229
+
+### Important
+
+* Windows SmartScreen will flag this new version as an unknown publisher, because I've given up on code signing since it's become way to expensive and cumbersome to maintain.
+* OotD only works with Outlook Classic, not the "new" Outlook that Microsoft is pushing on everyone. If you have the "new" Outlook, you will need to switch back to the classic version to use OotD.
+
+Features:
+
+* Three new languages added: Simplified Chinese (zh-CN), Japanese (ja-JP) and Portuguese (Brazil) (pt-BR)
+
+Fixes:
+
+* Fixed issue where certain view types were reset to the default calendar view when restarting the app.
+
 ## 5.0.210
 
 ### Important
