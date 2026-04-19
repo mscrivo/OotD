@@ -454,7 +454,7 @@ public partial class MainForm : Form
     /// </summary>
     /// <param name="fullPath"></param>
     /// <returns></returns>
-    private static string GetFolderNameFromFullPath(string? fullPath)
+    internal static string GetFolderNameFromFullPath(string? fullPath)
     {
         if (fullPath != null)
         {
@@ -499,7 +499,7 @@ public partial class MainForm : Form
         return fullFolderPath;
     }
 
-    private static string GetFolderPath(string folderPath)
+    internal static string GetFolderPath(string folderPath)
     {
         return folderPath.Replace("\\\\Personal Folders\\", "");
     }
@@ -1307,7 +1307,7 @@ public partial class MainForm : Form
         }
     }
 
-    private static (CurrentCalendarView type, int offset) GetNextPreviousOffsetBasedOnCalendarViewMode(
+    internal static (CurrentCalendarView type, int offset) GetNextPreviousOffsetBasedOnCalendarViewMode(
         CurrentCalendarView mode)
     {
         var offset = mode switch
