@@ -16,11 +16,11 @@ public class MainFormCalendarNavigationTests
         int expectedOffset)
     {
         // Act
-        var result = MainForm.GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
+        var (type, offset) = MainForm.GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
 
         // Assert
-        result.type.Should().Be(expectedType);
-        result.offset.Should().Be(expectedOffset);
+        type.Should().Be(expectedType);
+        offset.Should().Be(expectedOffset);
     }
 
     [Fact]

@@ -112,7 +112,7 @@ public class InstanceManagerTests : IDisposable
         var size = new Size(300, 200);
 
         // Act
-        var location = InstanceManager.FindNonOverlappingLocation(workingArea, size, Array.Empty<Rectangle>());
+        var location = InstanceManager.FindNonOverlappingLocation(workingArea, size, []);
 
         // Assert
         location.Should().Be(new Point(100, 100));
@@ -179,7 +179,7 @@ public class InstanceManagerTests : IDisposable
         var size = new Size(100, 100);
 
         // Act
-        var result = InstanceManager.GetCascadedStartPoint(workingArea, size, Array.Empty<Rectangle>());
+        var result = InstanceManager.GetCascadedStartPoint(workingArea, size, []);
 
         // Assert
         result.Should().BeNull();
@@ -304,6 +304,132 @@ public class InstanceManagerTests : IDisposable
         ordered.Should().Equal(area1, area2);
     }
 
+    [Fact]
+    public void FilterInstanceNames_ShouldExcludeAutoUpdate()
+    {
+        // Arrange
+        var subKeyNames = new[] { "AutoUpdate", "Default Instance", "Work", "Home" };
+
+        // Act
+        var result = InstanceManager.FilterInstanceNames(subKeyNames).ToArray();
+
+        // Assert
+        result.Should().Equal("Default Instance", "Work", "Home");
+    }
+
+    [Theory]
+    [InlineData(0, new string[0], "Default Instance", "Default Instance")]
+    [InlineData(1, new[] { "Default Instance" }, "Fallback", "Default Instance")]
+    [InlineData(1, new[] { "AutoUpdate" }, "Default Instance", "Default Instance")]
+    [InlineData(2, new[] { "AutoUpdate", "Instance1" }, "Default Instance", "Default Instance")]
+    public void ResolveSingleInstanceName_WithVariousInputs_ReturnsExpectedName(int instanceCount,
+        string[] subKeyNames,
+        string defaultInstanceName,
+        string expected)
+    {
+        // Act
+        var result = InstanceManager.ResolveSingleInstanceName(instanceCount, subKeyNames, defaultInstanceName);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
+    [Fact]
+    public void TrimSingleInstanceMenuItems_ShouldRemoveItemsBeforeCalendarMenu()
+    {
+        // Arrange
+        using var menu = new ContextMenuStrip();
+        menu.Items.Add(new ToolStripMenuItem("Add") { Name = "AddInstanceMenu" });
+        menu.Items.Add(new ToolStripMenuItem("About") { Name = "AboutMenu" });
+        menu.Items.Add(new ToolStripMenuItem("Calendar") { Name = "CalendarMenu" });
+        menu.Items.Add(new ToolStripMenuItem("Inbox") { Name = "InboxMenu" });
+
+        // Act
+        InstanceManager.TrimSingleInstanceMenuItems(menu);
+
+        // Assert
+        menu.Items.Cast<ToolStripItem>().Select(item => item.Name)
+            .Should().Equal("CalendarMenu", "InboxMenu");
+    }
+
+    [Fact]
+    public void TrimSingleInstanceMenuItems_WhenCalendarMenuMissing_ShouldClearMenu()
+    {
+        // Arrange
+        using var menu = new ContextMenuStrip();
+        menu.Items.Add(new ToolStripMenuItem("Add") { Name = "AddInstanceMenu" });
+        menu.Items.Add(new ToolStripMenuItem("About") { Name = "AboutMenu" });
+
+        // Act
+        InstanceManager.TrimSingleInstanceMenuItems(menu);
+
+        // Assert
+        menu.Items.Count.Should().Be(0);
+    }
+
+    [Fact]
+    public void ReorderBottomMenuItems_ShouldMoveExistingAboutAndCheckForUpdatesAboveRestoreDefaults()
+    {
+        // Arrange
+        using var menu = new ContextMenuStrip();
+        menu.Items.Add(new ToolStripMenuItem("Start") { Name = "StartWithWindows" });
+        menu.Items.Add(new ToolStripMenuItem("Restore") { Name = "ResetConfigMenu" });
+        menu.Items.Add(new ToolStripMenuItem("Exit") { Name = "ExitMenu" });
+        menu.Items.Add(new ToolStripMenuItem("About") { Name = "AboutMenu" });
+        menu.Items.Add(new ToolStripMenuItem("Updates") { Name = "CheckForUpdatesMenu" });
+
+        // Act
+        InstanceManager.ReorderBottomMenuItems(
+            menu,
+            () => throw new InvalidOperationException("About should already exist"),
+            () => throw new InvalidOperationException("Check for updates should already exist"));
+
+        // Assert
+        menu.Items.Cast<ToolStripItem>().Select(item => item.Name)
+            .Should().Equal("StartWithWindows", "AboutMenu", "CheckForUpdatesMenu", "ResetConfigMenu",
+                "ExitMenu");
+    }
+
+    [Fact]
+    public void ReorderBottomMenuItems_ShouldCreateMissingSharedItemsBeforeRestoreDefaults()
+    {
+        // Arrange
+        using var menu = new ContextMenuStrip();
+        menu.Items.Add(new ToolStripMenuItem("Start") { Name = "StartWithWindows" });
+        menu.Items.Add(new ToolStripMenuItem("Restore") { Name = "ResetConfigMenu" });
+        menu.Items.Add(new ToolStripMenuItem("Exit") { Name = "ExitMenu" });
+
+        // Act
+        InstanceManager.ReorderBottomMenuItems(
+            menu,
+            () => new ToolStripMenuItem("About") { Name = "AboutMenu" },
+            () => new ToolStripMenuItem("Updates") { Name = "CheckForUpdatesMenu" });
+
+        // Assert
+        menu.Items.Cast<ToolStripItem>().Select(item => item.Name)
+            .Should().Equal("StartWithWindows", "AboutMenu", "CheckForUpdatesMenu", "ResetConfigMenu",
+                "ExitMenu");
+    }
+
+    [Fact]
+    public void ReorderBottomMenuItems_WhenRestoreDefaultsMissing_ShouldLeaveMenuUnchanged()
+    {
+        // Arrange
+        using var menu = new ContextMenuStrip();
+        menu.Items.Add(new ToolStripMenuItem("Start") { Name = "StartWithWindows" });
+        menu.Items.Add(new ToolStripMenuItem("Exit") { Name = "ExitMenu" });
+
+        // Act
+        InstanceManager.ReorderBottomMenuItems(
+            menu,
+            () => new ToolStripMenuItem("About") { Name = "AboutMenu" },
+            () => new ToolStripMenuItem("Updates") { Name = "CheckForUpdatesMenu" });
+
+        // Assert
+        menu.Items.Cast<ToolStripItem>().Select(item => item.Name)
+            .Should().Equal("StartWithWindows", "ExitMenu");
+    }
+
     private static bool HasNonOverlappingCandidate(Rectangle workingArea, Size windowSize,
         IReadOnlyCollection<Rectangle> occupied)
     {
@@ -338,6 +464,8 @@ public class InstanceManagerTests : IDisposable
         {
             // ignore cleanup failures
         }
+
+        GC.SuppressFinalize(this);
     }
 
     private static string ProductRegistryPath => $@"Software\{Application.CompanyName}\{Application.ProductName}";

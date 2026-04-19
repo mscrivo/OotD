@@ -6,8 +6,8 @@ using OotD.Properties;
 
 public class ResourceLocalizationSmokeTests
 {
-    private static readonly string[] SupportedCultures = ["en-US", "es-ES", "de-DE", "fr-FR", "it-IT"];
-    private static readonly string[] RequiredStringKeys =
+    private static readonly string[] _supportedCultures = ["en-US", "es-ES", "de-DE", "fr-FR", "it-IT"];
+    private static readonly string[] _requiredStringKeys =
     [
         "RestoreDefaults",
         "RestoreDefaultsConfirmation",
@@ -27,7 +27,7 @@ public class ResourceLocalizationSmokeTests
     {
         var culture = CultureInfo.GetCultureInfo(cultureName);
 
-        foreach (var key in RequiredStringKeys)
+        foreach (var key in _requiredStringKeys)
         {
             var value = Resources.ResourceManager.GetString(key, culture);
             value.Should().NotBeNullOrWhiteSpace($"resource '{key}' should exist for culture {cultureName}");
@@ -48,7 +48,7 @@ public class ResourceLocalizationSmokeTests
     public static TheoryData<string> GetSupportedCultures()
     {
         var data = new TheoryData<string>();
-        foreach (var culture in SupportedCultures)
+        foreach (var culture in _supportedCultures)
         {
             data.Add(culture);
         }
@@ -59,7 +59,7 @@ public class ResourceLocalizationSmokeTests
     public static TheoryData<string> GetNonStringResourceCultures()
     {
         var data = new TheoryData<string>();
-        foreach (var culture in SupportedCultures.Where(c => c != "en-US"))
+        foreach (var culture in _supportedCultures.Where(c => c != "en-US"))
         {
             data.Add(culture);
         }

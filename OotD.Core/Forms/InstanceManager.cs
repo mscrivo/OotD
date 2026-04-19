@@ -26,6 +26,9 @@ public partial class InstanceManager : Form
     private const string AppCastUrl = "https://outlookonthedesktop.com/ootdAppcast.xml";
     private const string AutoUpdateInstanceName = "AutoUpdate";
     private const int CascadeOffset = 30;
+    private const string CalendarMenuName = "CalendarMenu";
+    private const string AboutMenuName = "AboutMenu";
+    private const string CheckForUpdatesMenuName = "CheckForUpdatesMenu";
     private const string ResetConfigMenuName = "ResetConfigMenu";
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -129,14 +132,8 @@ public partial class InstanceManager : Form
                 var count = 0;
 
                 // each instance will get it's own submenu in the main context menu.
-                foreach (var instanceName in appReg.GetSubKeyNames())
+                foreach (var instanceName in FilterInstanceNames(appReg.GetSubKeyNames()))
                 {
-                    // Skip the key named "AutoUpdate" since it's the settings for the updater component
-                    if (instanceName == AutoUpdateInstanceName)
-                    {
-                        continue;
-                    }
-
                     var newlyAdded = false;
                     if (!_mainFormInstances.TryGetValue(instanceName, out var value))
                     {
@@ -247,12 +244,8 @@ public partial class InstanceManager : Form
                 // this is a first run, or there is only 1 instance defined.
                 const string DefaultInstanceName = "Default Instance";
 
-                var instanceName = InstanceCount == 1 ? appReg.GetSubKeyNames()[0] : DefaultInstanceName;
-
-                if (instanceName == AutoUpdateInstanceName)
-                {
-                    instanceName = DefaultInstanceName;
-                }
+                var instanceName = ResolveSingleInstanceName(InstanceCount, appReg.GetSubKeyNames(),
+                    DefaultInstanceName);
 
                 // create our instance and set the context menu to one defined in the form instance.
                 var newlyAdded = false;
@@ -266,11 +259,7 @@ public partial class InstanceManager : Form
                 trayIcon.ContextMenuStrip = value.TrayMenu;
 
                 // remove unnecessary menu items
-                while (trayIcon.ContextMenuStrip.Items.Count > 0 &&
-                       trayIcon.ContextMenuStrip.Items[0].Name != "CalendarMenu")
-                {
-                    trayIcon.ContextMenuStrip.Items.RemoveAt(0);
-                }
+                TrimSingleInstanceMenuItems(trayIcon.ContextMenuStrip);
 
                 trayIcon.ContextMenuStrip.Items["RemoveInstanceMenu"]!.Visible = false;
                 trayIcon.ContextMenuStrip.Items["RenameInstanceMenu"]!.Visible = false;
@@ -375,7 +364,42 @@ public partial class InstanceManager : Form
 
     private void ReorderBottomMenuItems()
     {
-        var menu = trayIcon.ContextMenuStrip;
+        ReorderBottomMenuItems(
+            trayIcon.ContextMenuStrip,
+            () => new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, AboutMenuName),
+            () => new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click,
+                CheckForUpdatesMenuName));
+    }
+
+    internal static IEnumerable<string> FilterInstanceNames(IEnumerable<string> subKeyNames)
+    {
+        return subKeyNames.Where(instanceName => instanceName != AutoUpdateInstanceName);
+    }
+
+    internal static string ResolveSingleInstanceName(int instanceCount, IReadOnlyList<string> subKeyNames,
+        string defaultInstanceName)
+    {
+        if (instanceCount != 1 || subKeyNames.Count == 0)
+        {
+            return defaultInstanceName;
+        }
+
+        var instanceName = subKeyNames[0];
+        return instanceName == AutoUpdateInstanceName ? defaultInstanceName : instanceName;
+    }
+
+    internal static void TrimSingleInstanceMenuItems(ContextMenuStrip menu)
+    {
+        while (menu.Items.Count > 0 && menu.Items[0].Name != CalendarMenuName)
+        {
+            menu.Items.RemoveAt(0);
+        }
+    }
+
+    internal static void ReorderBottomMenuItems(ContextMenuStrip? menu,
+        Func<ToolStripMenuItem> createAboutMenu,
+        Func<ToolStripMenuItem> createCheckForUpdatesMenu)
+    {
         if (menu == null)
         {
             return;
@@ -386,8 +410,8 @@ public partial class InstanceManager : Form
             return;
         }
 
-        var aboutMenu = menu.Items["AboutMenu"] as ToolStripMenuItem;
-        var checkForUpdatesMenu = menu.Items["CheckForUpdatesMenu"] as ToolStripMenuItem;
+        var aboutMenu = menu.Items[AboutMenuName] as ToolStripMenuItem;
+        var checkForUpdatesMenu = menu.Items[CheckForUpdatesMenuName] as ToolStripMenuItem;
 
         if (aboutMenu != null)
         {
@@ -399,9 +423,8 @@ public partial class InstanceManager : Form
             menu.Items.Remove(checkForUpdatesMenu);
         }
 
-        aboutMenu ??= new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, "AboutMenu");
-        checkForUpdatesMenu ??= new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click,
-            "CheckForUpdatesMenu");
+        aboutMenu ??= createAboutMenu();
+        checkForUpdatesMenu ??= createCheckForUpdatesMenu();
 
         var resetDefaultsIndex = menu.Items.IndexOf(resetDefaultsMenu);
         menu.Items.Insert(resetDefaultsIndex, aboutMenu);
@@ -505,7 +528,7 @@ public partial class InstanceManager : Form
         var maxX = Math.Max(workingArea.Left, workingArea.Right - windowSize.Width);
         var maxY = Math.Max(workingArea.Top, workingArea.Bottom - windowSize.Height);
 
-        const int placementStep = 30;
+        const int PlacementStep = 30;
 
         var bestLocation = new Point(workingArea.Left, workingArea.Top);
         var smallestOverlapArea = int.MaxValue;
@@ -525,9 +548,9 @@ public partial class InstanceManager : Form
             bestLocation = preferred;
         }
 
-        for (var y = workingArea.Top; y <= maxY; y += placementStep)
+        for (var y = workingArea.Top; y <= maxY; y += PlacementStep)
         {
-            for (var x = workingArea.Left; x <= maxX; x += placementStep)
+            for (var x = workingArea.Left; x <= maxX; x += PlacementStep)
             {
                 var candidate = new Rectangle(x, y, windowSize.Width, windowSize.Height);
 
@@ -552,9 +575,7 @@ public partial class InstanceManager : Form
     internal static IReadOnlyList<Rectangle> OrderWorkingAreas(Rectangle currentWorkingArea,
         IEnumerable<Rectangle> allWorkingAreas)
     {
-        return allWorkingAreas
-            .OrderByDescending(area => area == currentWorkingArea)
-            .ToArray();
+        return [.. allWorkingAreas.OrderByDescending(area => area == currentWorkingArea)];
     }
 
     internal static Point? GetCascadedStartPoint(Rectangle workingArea, Size windowSize,
