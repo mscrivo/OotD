@@ -2,9 +2,11 @@ name: Build, Sign and Publish
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+    branches: ["**"]
+
+permissions:
+  actions: read
+  contents: read
 
 jobs:
   build:
@@ -15,6 +17,11 @@ jobs:
     runs-on: windows-latest
 
     env:
+      APP_OUTPUT_DIR: OotD.Launcher\bin\Release\net10.0-windows7.0
+      APP_SIGNING_STAGING_DIR: signing\app
+      INSTALLER_OUTPUT_DIR: ServerStaging
+      INSTALLER_SIGNING_STAGING_DIR: signing\installer
+      SIGNPATH_SIGNING_POLICY_SLUG: ${{ vars.SIGNPATH_TEST_SIGNING_POLICY_SLUG }}
       VERSION: "5.0.${{ github.run_number }}"
 
     steps:
@@ -104,16 +111,70 @@ jobs:
           name: coverage-report
           path: CoverageReport
 
-      #    - name: Sign App Files
-      #      uses: mscrivo/signtool-code-sign@v1
-      #      with:
-      #        certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
-      #        cert-password: '${{ secrets.PFX_PASSWORD }}'
-      #        cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
-      #        # path to folder containing files to sign.
-      #        folder: 'OotD.Launcher\bin\Release\net10.0-windows7.0'
-      #        recursive: true
-      #        timestamp-server: 'http://timestamp.digicert.com'
+      - name: Stage app files for signing
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        shell: pwsh
+        run: |
+          if (Test-Path $env:APP_SIGNING_STAGING_DIR) {
+            Remove-Item $env:APP_SIGNING_STAGING_DIR -Recurse -Force
+          }
+
+          New-Item -ItemType Directory -Path $env:APP_SIGNING_STAGING_DIR -Force | Out-Null
+
+          @(
+            'OotD.Launcher.exe'
+            'OotD.Launcher.dll'
+            'OotD.x64.exe'
+            'OotD.x64.dll'
+            'OotD.x86.exe'
+            'OotD.x86.dll'
+          ) | ForEach-Object {
+            Copy-Item -Path (Join-Path $env:APP_OUTPUT_DIR $_) -Destination $env:APP_SIGNING_STAGING_DIR -Force
+          }
+
+      - name: Upload unsigned app payload
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        id: upload-unsigned-app
+        uses: actions/upload-artifact@v7
+        with:
+          name: unsigned-app-${{ github.run_id }}
+          path: ${{ env.APP_SIGNING_STAGING_DIR }}\*
+
+      - name: Sign app payload
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        id: sign-app
+        uses: SignPath/github-action-submit-signing-request@v2
+        with:
+          api-token: "${{ secrets.SIGNPATH_API_TOKEN }}"
+          organization-id: "${{ secrets.SIGNPATH_ORGANIZATION_ID }}"
+          project-slug: "${{ vars.SIGNPATH_PROJECT_SLUG }}"
+          signing-policy-slug: "${{ env.SIGNPATH_SIGNING_POLICY_SLUG }}"
+          artifact-configuration-slug: "ootd-app"
+          github-artifact-id: "${{ steps.upload-unsigned-app.outputs.artifact-id }}"
+          wait-for-completion: true
+          output-artifact-directory: "signed-app"
+
+      - name: Replace app payload with signed files
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        shell: pwsh
+        run: |
+          $signedFiles = @(
+            'OotD.Launcher.exe'
+            'OotD.Launcher.dll'
+            'OotD.x64.exe'
+            'OotD.x64.dll'
+            'OotD.x86.exe'
+            'OotD.x86.dll'
+          )
+
+          foreach ($fileName in $signedFiles) {
+            $signedFile = Get-ChildItem -Path 'signed-app' -Recurse -File -Filter $fileName | Select-Object -First 1
+            if (-not $signedFile) {
+              throw "Signed app payload did not contain $fileName."
+            }
+
+            Copy-Item -Path $signedFile.FullName -Destination (Join-Path $env:APP_OUTPUT_DIR $fileName) -Force
+          }
 
       - name: Build Installer
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.8
@@ -121,16 +182,59 @@ jobs:
           path: "Setup Script.iss"
           options: /O+
 
-      #    - name: Sign Installer
-      #      uses: mscrivo/signtool-code-sign@v1
-      #      with:
-      #        certificate: '${{ secrets.BASE64_ENCODED_PFX }}'
-      #        cert-password: '${{ secrets.PFX_PASSWORD }}'
-      #        cert-sha1: '${{ secrets.CERT_HASH_SHA1 }}'
-      #        # path to folder containing files to sign.
-      #        folder: 'ServerStaging'
-      #        recursive: false
-      #        timestamp-server: 'http://timestamp.digicert.com'
+      - name: Stage installer for signing
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        id: stage-installer
+        shell: pwsh
+        run: |
+          if (Test-Path $env:INSTALLER_SIGNING_STAGING_DIR) {
+            Remove-Item $env:INSTALLER_SIGNING_STAGING_DIR -Recurse -Force
+          }
+
+          New-Item -ItemType Directory -Path $env:INSTALLER_SIGNING_STAGING_DIR -Force | Out-Null
+          Copy-Item -Path (Join-Path $env:INSTALLER_OUTPUT_DIR '*.exe') -Destination $env:INSTALLER_SIGNING_STAGING_DIR -Force
+
+          $installer = Get-ChildItem -Path $env:INSTALLER_SIGNING_STAGING_DIR -Filter '*.exe' -File | Select-Object -First 1
+          if (-not $installer) {
+            throw 'Installer staging did not produce an .exe file.'
+          }
+
+          "installer-path=$($installer.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Upload unsigned installer
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        id: upload-unsigned-installer
+        uses: actions/upload-artifact@v7
+        with:
+          name: unsigned-installer-${{ github.run_id }}
+          path: ${{ steps.stage-installer.outputs.installer-path }}
+          archive: false
+
+      - name: Sign installer
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        id: sign-installer
+        uses: SignPath/github-action-submit-signing-request@v2
+        with:
+          api-token: "${{ secrets.SIGNPATH_API_TOKEN }}"
+          organization-id: "${{ secrets.SIGNPATH_ORGANIZATION_ID }}"
+          project-slug: "${{ vars.SIGNPATH_PROJECT_SLUG }}"
+          signing-policy-slug: "${{ env.SIGNPATH_SIGNING_POLICY_SLUG }}"
+          artifact-configuration-slug: "ootd-installer"
+          github-artifact-id: "${{ steps.upload-unsigned-installer.outputs.artifact-id }}"
+          wait-for-completion: true
+          output-artifact-directory: "signed-installer"
+          skip-decompress: true
+
+      - name: Replace installer with signed output
+        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        shell: pwsh
+        run: |
+          $signedInstaller = Get-ChildItem -Path 'signed-installer' -Recurse -File -Filter '*.exe' | Select-Object -First 1
+          if (-not $signedInstaller) {
+            throw 'Signed installer payload did not contain an .exe file.'
+          }
+
+          Copy-Item -Path $signedInstaller.FullName -Destination $env:INSTALLER_OUTPUT_DIR -Force
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v7
