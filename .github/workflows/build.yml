@@ -177,7 +177,7 @@ jobs:
           }
 
       - name: Build Installer
-        uses: Minionguyjpro/Inno-Setup-Action@v1.2.7
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.8
         with:
           path: "Setup Script.iss"
           options: /O+
