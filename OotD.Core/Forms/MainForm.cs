@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -210,10 +211,8 @@ public partial class MainForm : Form
 
         try
         {
-            var desktopIdStr = Preferences.VirtualDesktopId;
-            if (string.IsNullOrEmpty(desktopIdStr) ||
-                !Guid.TryParse(desktopIdStr, out var desktopId) ||
-                desktopId == Guid.Empty)
+            var desktopId = GetAssignedVirtualDesktopId(Preferences.VirtualDesktopId);
+            if (!desktopId.HasValue)
             {
                 _logger.Debug("No virtual desktop assignment for this instance");
                 return;
@@ -221,7 +220,7 @@ public partial class MainForm : Form
 
             _logger.Info($"Applying virtual desktop assignment: {desktopId}");
 
-            if (VirtualDesktopManager.MoveWindowToDesktop(Handle, desktopId))
+            if (VirtualDesktopManager.MoveWindowToDesktop(Handle, desktopId.Value))
             {
                 _logger.Info($"Successfully moved instance '{InstanceName}' to virtual desktop {desktopId}");
             }
@@ -234,6 +233,15 @@ public partial class MainForm : Form
         {
             _logger.Error(ex, "Failed to apply virtual desktop assignment");
         }
+    }
+
+    internal static Guid? GetAssignedVirtualDesktopId(string? virtualDesktopId)
+    {
+        return !string.IsNullOrEmpty(virtualDesktopId) &&
+               Guid.TryParse(virtualDesktopId, out var desktopId) &&
+               desktopId != Guid.Empty
+            ? desktopId
+            : null;
     }
 
     private void InitializeViewsFromPreferences()
@@ -816,7 +824,7 @@ public partial class MainForm : Form
     internal readonly record struct ToolbarButtonVisibility(bool CalendarNavigationVisible,
         bool NewEmailButtonVisible);
 
-    private enum ResizeDirection
+    internal enum ResizeDirection
     {
         None = 0,
         Left = 1,
@@ -1056,47 +1064,57 @@ public partial class MainForm : Form
 
     private void MainForm_MouseMove(object sender, MouseEventArgs e)
     {
-        if (GlobalPreferences.LockPosition)
+        ResizeDir = GetResizeDirection(e.Location, new Size(Width, Height), GlobalPreferences.LockPosition);
+    }
+
+    internal static ResizeDirection GetResizeDirection(Point location, Size formSize, bool lockPosition)
+    {
+        if (lockPosition)
         {
-            return;
+            return ResizeDirection.None;
         }
 
-        if (e.Location is { X: < ResizeBorderWidth, Y: < ResizeBorderWidth })
+        if (location is { X: < ResizeBorderWidth, Y: < ResizeBorderWidth })
         {
-            ResizeDir = ResizeDirection.TopLeft;
+            return ResizeDirection.TopLeft;
         }
-        else if (e.Location.X < ResizeBorderWidth && e.Location.Y > Height - ResizeBorderWidth)
+
+        if (location.X < ResizeBorderWidth && location.Y > formSize.Height - ResizeBorderWidth)
         {
-            ResizeDir = ResizeDirection.BottomLeft;
+            return ResizeDirection.BottomLeft;
         }
-        else if (e.Location.X > Width - ResizeBorderWidth && e.Location.Y > Height - ResizeBorderWidth)
+
+        if (location.X > formSize.Width - ResizeBorderWidth && location.Y > formSize.Height - ResizeBorderWidth)
         {
-            ResizeDir = ResizeDirection.BottomRight;
+            return ResizeDirection.BottomRight;
         }
-        else if (e.Location.X > Width - ResizeBorderWidth && e.Location.Y < ResizeBorderWidth)
+
+        if (location.X > formSize.Width - ResizeBorderWidth && location.Y < ResizeBorderWidth)
         {
-            ResizeDir = ResizeDirection.TopRight;
+            return ResizeDirection.TopRight;
         }
-        else if (e.Location.X < ResizeBorderWidth)
+
+        if (location.X < ResizeBorderWidth)
         {
-            ResizeDir = ResizeDirection.Left;
+            return ResizeDirection.Left;
         }
-        else if (e.Location.X > Width - ResizeBorderWidth)
+
+        if (location.X > formSize.Width - ResizeBorderWidth)
         {
-            ResizeDir = ResizeDirection.Right;
+            return ResizeDirection.Right;
         }
-        else if (e.Location.Y < ResizeBorderWidth)
+
+        if (location.Y < ResizeBorderWidth)
         {
-            ResizeDir = ResizeDirection.Top;
+            return ResizeDirection.Top;
         }
-        else if (e.Location.Y > Height - ResizeBorderWidth)
+
+        if (location.Y > formSize.Height - ResizeBorderWidth)
         {
-            ResizeDir = ResizeDirection.Bottom;
+            return ResizeDirection.Bottom;
         }
-        else
-        {
-            ResizeDir = ResizeDirection.None;
-        }
+
+        return ResizeDirection.None;
     }
 
     private void HeaderPanel_MouseDown(object sender, MouseEventArgs e)
@@ -1371,11 +1389,7 @@ public partial class MainForm : Form
 
     private void TransparencySlider_ValueChanged(object sender, EventArgs args, decimal value)
     {
-        var opacityVal = (double)(value / 100);
-        if (Math.Abs(opacityVal - 1) < double.Epsilon)
-        {
-            opacityVal = 0.99;
-        }
+        var opacityVal = NormalizeOpacityPercentage(value);
 
         OpacityLabel.Text = Resources.Opacity + Math.Round(opacityVal * 100) + Resources.Percentage;
 
@@ -1389,17 +1403,19 @@ public partial class MainForm : Form
     private void TransparencyMenuSlider_ValueChanged(object sender, EventArgs e)
     {
         var trackBar = (TrackBarMenuItem)sender;
-        var opacityVal = (double)trackBar.Value / 100; // Get the value from TransparencyMenuSlider
-        if (Math.Abs(opacityVal - 1) < double.Epsilon)
-        {
-            opacityVal = 0.99;
-        }
+        var opacityVal = NormalizeOpacityPercentage(trackBar.Value);
 
         // Keep the other slider in sync
         TransparencySlider.Value = (int)(opacityVal * 100);
 
         // Trigger the ValueChanged event for TransparencySlider to make sure it's persisted
         TransparencySlider_ValueChanged(TransparencySlider, EventArgs.Empty, (decimal)(opacityVal * 100));
+    }
+
+    internal static double NormalizeOpacityPercentage(decimal percentage)
+    {
+        var opacityVal = (double)(percentage / 100);
+        return Math.Abs(opacityVal - 1) < double.Epsilon ? 0.99 : opacityVal;
     }
 
     private void WindowMessageTimer_Tick(object sender, EventArgs e)
@@ -1552,19 +1568,24 @@ public partial class MainForm : Form
         {
             _resizeDir = value;
 
-            Cursor = value switch
-            {
-                ResizeDirection.Left => Cursors.SizeWE,
-                ResizeDirection.Right => Cursors.SizeWE,
-                ResizeDirection.Top => Cursors.SizeNS,
-                ResizeDirection.Bottom => Cursors.SizeNS,
-                ResizeDirection.BottomLeft => Cursors.SizeNESW,
-                ResizeDirection.TopRight => Cursors.SizeNESW,
-                ResizeDirection.BottomRight => Cursors.SizeNWSE,
-                ResizeDirection.TopLeft => Cursors.SizeNWSE,
-                _ => Cursors.Default
-            };
+            Cursor = GetCursorForResizeDirection(value);
         }
+    }
+
+    internal static Cursor GetCursorForResizeDirection(ResizeDirection resizeDirection)
+    {
+        return resizeDirection switch
+        {
+            ResizeDirection.Left => Cursors.SizeWE,
+            ResizeDirection.Right => Cursors.SizeWE,
+            ResizeDirection.Top => Cursors.SizeNS,
+            ResizeDirection.Bottom => Cursors.SizeNS,
+            ResizeDirection.BottomLeft => Cursors.SizeNESW,
+            ResizeDirection.TopRight => Cursors.SizeNESW,
+            ResizeDirection.BottomRight => Cursors.SizeNWSE,
+            ResizeDirection.TopLeft => Cursors.SizeNWSE,
+            _ => Cursors.Default
+        };
     }
 
     #endregion
