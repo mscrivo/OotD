@@ -634,52 +634,33 @@ public partial class MainForm : Form
     private void ShowToolbarButtonsFor(string defaultMessagePath)
     {
         _logger.Info($"Outlook folder path: {defaultMessagePath}");
-        switch (defaultMessagePath)
+        var toolbarState = GetToolbarButtonVisibilityFor(defaultMessagePath);
+
+        TodayButton.Visible = toolbarState.CalendarNavigationVisible;
+        DayButton.Visible = toolbarState.CalendarNavigationVisible;
+        WeekButton.Visible = toolbarState.CalendarNavigationVisible;
+        WorkWeekButton.Visible = toolbarState.CalendarNavigationVisible;
+        MonthButton.Visible = toolbarState.CalendarNavigationVisible;
+        ButtonPrevious.Visible = toolbarState.CalendarNavigationVisible;
+        ButtonNext.Visible = toolbarState.CalendarNavigationVisible;
+        LabelCurrentDate.Visible = toolbarState.CalendarNavigationVisible;
+
+        if (toolbarState.NewEmailButtonVisible)
         {
-            case "IPM.Appointment":
-                {
-                    TodayButton.Visible = true;
-                    DayButton.Visible = true;
-                    WeekButton.Visible = true;
-                    WorkWeekButton.Visible = true;
-                    MonthButton.Visible = true;
-                    ButtonPrevious.Visible = true;
-                    ButtonNext.Visible = true;
-                    LabelCurrentDate.Visible = true;
-
-                    NewEmailButton.Visible = false;
-                    break;
-                }
-            case "IPM.Note":
-                {
-                    TodayButton.Visible = false;
-                    DayButton.Visible = false;
-                    WeekButton.Visible = false;
-                    WorkWeekButton.Visible = false;
-                    MonthButton.Visible = false;
-                    ButtonPrevious.Visible = false;
-                    ButtonNext.Visible = false;
-                    LabelCurrentDate.Visible = false;
-
-                    NewEmailButton.Left = ButtonNext.Left;
-                    NewEmailButton.Visible = true;
-                    break;
-                }
-            default:
-                {
-                    TodayButton.Visible = false;
-                    DayButton.Visible = false;
-                    WeekButton.Visible = false;
-                    WorkWeekButton.Visible = false;
-                    MonthButton.Visible = false;
-                    ButtonPrevious.Visible = false;
-                    ButtonNext.Visible = false;
-                    LabelCurrentDate.Visible = false;
-
-                    NewEmailButton.Visible = false;
-                    break;
-                }
+            NewEmailButton.Left = ButtonNext.Left;
         }
+
+        NewEmailButton.Visible = toolbarState.NewEmailButtonVisible;
+    }
+
+    internal static ToolbarButtonVisibility GetToolbarButtonVisibilityFor(string? defaultMessagePath)
+    {
+        return defaultMessagePath switch
+        {
+            "IPM.Appointment" => new ToolbarButtonVisibility(true, false),
+            "IPM.Note" => new ToolbarButtonVisibility(false, true),
+            _ => new ToolbarButtonVisibility(false, false)
+        };
     }
 
     private void UpdateCustomFolder(MAPIFolder? oFolder)
@@ -831,6 +812,9 @@ public partial class MainForm : Form
     }
 
     #region Nested type: ResizeDirection
+
+    internal readonly record struct ToolbarButtonVisibility(bool CalendarNavigationVisible,
+        bool NewEmailButtonVisible);
 
     private enum ResizeDirection
     {
