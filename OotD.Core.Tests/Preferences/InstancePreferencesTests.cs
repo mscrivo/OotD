@@ -6,6 +6,7 @@ namespace OotD.Core.Tests.Preferences;
 public class InstancePreferencesTests : IDisposable
 {
     private readonly string _baseTestPath = $@"Software\OotDTests\{Guid.NewGuid():N}";
+    private readonly List<string> _createdProductInstanceNames = [];
     private InstancePreferences? _preferences;
 
     [Fact]
@@ -403,9 +404,7 @@ public class InstancePreferencesTests : IDisposable
     {
         // Arrange
         var uniqueInstanceName = $"InvalidOpacityTest_{Guid.NewGuid():N}";
-        var testKeyPath = $@"{_baseTestPath}\TestProduct\{uniqueInstanceName}";
-
-        using var testKey = Registry.CurrentUser.CreateSubKey(testKeyPath);
+        using var testKey = CreateProductInstanceKey(uniqueInstanceName);
         testKey.SetValue("Opacity", "invalid_value");
         _preferences = new InstancePreferences(uniqueInstanceName);
 
@@ -414,6 +413,82 @@ public class InstancePreferencesTests : IDisposable
 
         // Assert
         opacity.Should().Be(InstancePreferences.DefaultOpacity);
+    }
+
+    [Theory]
+    [InlineData("invalid")]
+    [InlineData(1)]
+    [InlineData("")]
+    public void DisableEditing_WithInvalidRegistryValue_ShouldReturnFalse(object invalidValue)
+    {
+        // Arrange
+        var uniqueInstanceName = $"InvalidDisableEditing_{Guid.NewGuid():N}";
+        using var testKey = CreateProductInstanceKey(uniqueInstanceName);
+        testKey.SetValue("DisableEditing", invalidValue);
+        _preferences = new InstancePreferences(uniqueInstanceName);
+
+        // Act
+        var disableEditing = _preferences.DisableEditing;
+
+        // Assert
+        disableEditing.Should().BeFalse();
+    }
+
+    [Theory]
+    [InlineData("Left")]
+    [InlineData("Top")]
+    [InlineData("Width")]
+    [InlineData("Height")]
+    public void IntegerLayoutPreference_WithStringRegistryValue_ShouldThrowInvalidCastException(string valueName)
+    {
+        // Arrange
+        var uniqueInstanceName = $"InvalidLayout_{Guid.NewGuid():N}";
+        using var testKey = CreateProductInstanceKey(uniqueInstanceName);
+        testKey.SetValue(valueName, "not_an_integer");
+        _preferences = new InstancePreferences(uniqueInstanceName);
+
+        // Act
+        Action action = valueName switch
+        {
+            "Left" => () => _ = _preferences.Left,
+            "Top" => () => _ = _preferences.Top,
+            "Width" => () => _ = _preferences.Width,
+            "Height" => () => _ = _preferences.Height,
+            _ => throw new ArgumentOutOfRangeException(nameof(valueName), valueName, null)
+        };
+
+        // Assert
+        action.Should().Throw<InvalidCastException>();
+    }
+
+    [Fact]
+    public void VirtualDesktopId_WhenRegistryValueIsEmptyString_ShouldReturnEmptyString()
+    {
+        // Arrange
+        var uniqueInstanceName = $"VirtualDesktopEmpty_{Guid.NewGuid():N}";
+        using var testKey = CreateProductInstanceKey(uniqueInstanceName);
+        testKey.SetValue("VirtualDesktopId", string.Empty);
+        _preferences = new InstancePreferences(uniqueInstanceName);
+
+        // Act
+        var actualValue = _preferences.VirtualDesktopId;
+
+        // Assert
+        actualValue.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ViewXml_WhenSetToNull_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        var uniqueInstanceName = $"ViewXmlNull_{Guid.NewGuid():N}";
+        _preferences = new InstancePreferences(uniqueInstanceName);
+
+        // Act
+        var action = () => _preferences.ViewXml = null;
+
+        // Assert
+        action.Should().Throw<ArgumentNullException>();
     }
 
     public void Dispose()
@@ -428,10 +503,22 @@ public class InstancePreferencesTests : IDisposable
         try
         {
             Registry.CurrentUser.DeleteSubKeyTree(_baseTestPath, false);
+            foreach (var instanceName in _createdProductInstanceNames)
+            {
+                Registry.CurrentUser.DeleteSubKeyTree($@"{ProductRegistryPath}\{instanceName}", false);
+            }
         }
         catch
         {
             // Key doesn't exist or can't be deleted, which is fine for cleanup
         }
     }
+
+    private RegistryKey CreateProductInstanceKey(string instanceName)
+    {
+        _createdProductInstanceNames.Add(instanceName);
+        return Registry.CurrentUser.CreateSubKey($@"{ProductRegistryPath}\{instanceName}")!;
+    }
+
+    private static string ProductRegistryPath => $@"Software\{Application.CompanyName}\{Application.ProductName}";
 }

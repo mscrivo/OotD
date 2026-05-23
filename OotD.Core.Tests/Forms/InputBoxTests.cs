@@ -1,5 +1,6 @@
 ﻿using OotD.Events;
 using OotD.Forms;
+using System.Reflection;
 
 namespace OotD.Core.Tests.Forms;
 
@@ -208,9 +209,118 @@ public class InputBoxTests : IDisposable
         textProperty!.PropertyType.Should().Be<string>();
     }
 
+    [Fact]
+    public void InputTextBox_Validating_WhenValidatorCancels_ShouldCancelAndSetErrorMessage()
+    {
+        // Arrange
+        using var inputBox = CreateInputBox();
+        var inputTextBox = GetPrivateField<TextBox>(inputBox, "InputTextBox");
+        var errorProvider = GetPrivateField<ErrorProvider>(inputBox, "_errorProviderText");
+        inputTextBox.Text = "Rejected";
+        SetValidator(inputBox, (_, e) =>
+        {
+            e.Text.Should().Be("Rejected");
+            e.Cancel = true;
+            e.Message = "Nope";
+        });
+        var validatingArgs = new System.ComponentModel.CancelEventArgs();
+
+        // Act
+        InvokePrivateMethod(inputBox, "InputTextBox_Validating", inputTextBox, validatingArgs);
+
+        // Assert
+        validatingArgs.Cancel.Should().BeTrue();
+        errorProvider.GetError(inputTextBox).Should().Be("Nope");
+    }
+
+    [Fact]
+    public void InputTextBox_Validating_WhenValidatorAccepts_ShouldNotCancel()
+    {
+        // Arrange
+        using var inputBox = CreateInputBox();
+        var inputTextBox = GetPrivateField<TextBox>(inputBox, "InputTextBox");
+        inputTextBox.Text = "Accepted";
+        SetValidator(inputBox, (_, e) => e.Cancel = false);
+        var validatingArgs = new System.ComponentModel.CancelEventArgs();
+
+        // Act
+        InvokePrivateMethod(inputBox, "InputTextBox_Validating", inputTextBox, validatingArgs);
+
+        // Assert
+        validatingArgs.Cancel.Should().BeFalse();
+    }
+
+    [Fact]
+    public void InputTextBox_TextChanged_ShouldClearExistingError()
+    {
+        // Arrange
+        using var inputBox = CreateInputBox();
+        var inputTextBox = GetPrivateField<TextBox>(inputBox, "InputTextBox");
+        var errorProvider = GetPrivateField<ErrorProvider>(inputBox, "_errorProviderText");
+        errorProvider.SetError(inputTextBox, "Existing error");
+
+        // Act
+        InvokePrivateMethod(inputBox, "InputTextBox_TextChanged", inputTextBox, EventArgs.Empty);
+
+        // Assert
+        errorProvider.GetError(inputTextBox).Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ButtonCancel_Click_ShouldClearValidator()
+    {
+        // Arrange
+        using var inputBox = CreateInputBox();
+        SetValidator(inputBox, (_, _) => { });
+
+        // Act
+        InvokePrivateMethod(inputBox, "ButtonCancel_Click", inputBox, EventArgs.Empty);
+
+        // Assert
+        GetValidator(inputBox).Should().BeNull();
+    }
+
     public void Dispose()
     {
         _ownerForm?.Dispose();
         GC.SuppressFinalize(this);
+    }
+
+    private static InputBox CreateInputBox()
+    {
+        var constructor = typeof(InputBox).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic,
+            binder: null,
+            Type.EmptyTypes,
+            modifiers: null);
+        constructor.Should().NotBeNull();
+        return (InputBox)constructor!.Invoke(null);
+    }
+
+    private static T GetPrivateField<T>(InputBox inputBox, string fieldName) where T : class
+    {
+        var field = typeof(InputBox).GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+        field.Should().NotBeNull();
+        return (T)field!.GetValue(inputBox)!;
+    }
+
+    private static void SetValidator(InputBox inputBox, InputBoxValidatingEventHandler validator)
+    {
+        var property = typeof(InputBox).GetProperty("Validator", BindingFlags.Instance | BindingFlags.NonPublic);
+        property.Should().NotBeNull();
+        property!.SetValue(inputBox, validator);
+    }
+
+    private static InputBoxValidatingEventHandler? GetValidator(InputBox inputBox)
+    {
+        var property = typeof(InputBox).GetProperty("Validator", BindingFlags.Instance | BindingFlags.NonPublic);
+        property.Should().NotBeNull();
+        return (InputBoxValidatingEventHandler?)property!.GetValue(inputBox);
+    }
+
+    private static void InvokePrivateMethod(InputBox inputBox, string methodName, params object[] args)
+    {
+        var method = typeof(InputBox).GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
+        method.Should().NotBeNull();
+        method!.Invoke(inputBox, args);
     }
 }

@@ -1,7 +1,55 @@
-﻿namespace OotD.Core.Tests.Core;
+﻿using CommandLine;
+
+namespace OotD.Core.Tests.Core;
 
 public class OptionsTests
 {
+    [Theory]
+    [InlineData("-d", true, false, false)]
+    [InlineData("--debug", true, false, false)]
+    [InlineData("-s", false, true, false)]
+    [InlineData("--createStartupEntry", false, true, false)]
+    [InlineData("-r", false, false, true)]
+    [InlineData("--removeStartupEntry", false, false, true)]
+    public void ParseArguments_WithKnownSwitches_ShouldSetExpectedOption(
+        string argument,
+        bool expectedStartDebugger,
+        bool expectedCreateStartupEntry,
+        bool expectedRemoveStartupEntry)
+    {
+        // Act
+        var options = ParseOptions(argument);
+
+        // Assert
+        options.StartDebugger.Should().Be(expectedStartDebugger);
+        options.CreateStartupEntry.Should().Be(expectedCreateStartupEntry);
+        options.RemoveStartupEntry.Should().Be(expectedRemoveStartupEntry);
+    }
+
+    [Fact]
+    public void ParseArguments_WithNoArguments_ShouldUseDefaultValues()
+    {
+        // Act
+        var options = ParseOptions();
+
+        // Assert
+        options.StartDebugger.Should().BeFalse();
+        options.CreateStartupEntry.Should().BeFalse();
+        options.RemoveStartupEntry.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ParseArguments_WithMultipleSwitches_ShouldSetAllProvidedOptions()
+    {
+        // Act
+        var options = ParseOptions("--debug", "--createStartupEntry", "--removeStartupEntry");
+
+        // Assert
+        options.StartDebugger.Should().BeTrue();
+        options.CreateStartupEntry.Should().BeTrue();
+        options.RemoveStartupEntry.Should().BeTrue();
+    }
+
     [Fact]
     public void Options_ShouldHaveCorrectDefaultValues()
     {
@@ -208,5 +256,13 @@ public class OptionsTests
         // Assert
         optionAttribute.Should().NotBeNull();
         optionAttribute!.Default.Should().Be(false);
+    }
+
+    private static Options ParseOptions(params string[] args)
+    {
+        var result = Parser.Default.ParseArguments<Options>(args);
+
+        result.Tag.Should().Be(ParserResultType.Parsed);
+        return ((Parsed<Options>)result).Value;
     }
 }

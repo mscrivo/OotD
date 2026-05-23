@@ -1368,9 +1368,14 @@ public partial class MainForm : Form
 
     private CurrentCalendarView GetCurrentCalendarViewMode()
     {
+        return GetCalendarViewModeFromViewXml(OutlookViewControl.ViewXML);
+    }
+
+    internal static CurrentCalendarView GetCalendarViewModeFromViewXml(string viewXml)
+    {
         var mode = CurrentCalendarView.Day;
 
-        var xElement = XDocument.Parse(OutlookViewControl.ViewXML).Element("view");
+        var xElement = XDocument.Parse(viewXml).Element("view");
         var element = xElement?.Element("mode");
         if (element != null)
         {
