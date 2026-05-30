@@ -121,11 +121,7 @@ public partial class MainForm : Form
             // Only apply WS_EX_TOOLWINDOW (hide from Alt+Tab) if NOT assigned to a specific virtual desktop.
             // Tool windows don't properly respect virtual desktop assignments in Windows,
             // so we need to use a regular window style when virtual desktop pinning is desired.
-            var hasVirtualDesktopAssignment = !string.IsNullOrEmpty(Preferences?.VirtualDesktopId) &&
-                                               Guid.TryParse(Preferences.VirtualDesktopId, out var desktopId) &&
-                                               desktopId != Guid.Empty;
-
-            if (!hasVirtualDesktopAssignment)
+            if (ShouldHideFromAltTab(Preferences?.VirtualDesktopId))
             {
                 cp.ExStyle |= 0x80; // Turn on WS_EX_TOOLWINDOW style bit to hide window from alt-tab
             }
@@ -242,6 +238,11 @@ public partial class MainForm : Form
                desktopId != Guid.Empty
             ? desktopId
             : null;
+    }
+
+    internal static bool ShouldHideFromAltTab(string? virtualDesktopId)
+    {
+        return !GetAssignedVirtualDesktopId(virtualDesktopId).HasValue;
     }
 
     private void InitializeViewsFromPreferences()
@@ -514,32 +515,32 @@ public partial class MainForm : Form
 
     private void ShowHideDesktopComponent()
     {
-        if (Visible)
-        {
-            HideShowMenu.Text = Resources.Show;
-            Visible = false;
-        }
-        else
-        {
-            HideShowMenu.Text = Resources.Hide;
-            Visible = true;
-        }
+        var nextState = GetNextVisibilityState(Visible, Resources.Show, Resources.Hide);
+        HideShowMenu.Text = nextState.MenuText;
+        Visible = nextState.Visible;
+    }
+
+    internal static VisibilityToggleState GetNextVisibilityState(bool currentlyVisible, string showText,
+        string hideText)
+    {
+        return currentlyVisible
+            ? new VisibilityToggleState(false, showText)
+            : new VisibilityToggleState(true, hideText);
     }
 
     private void DisableEnableEditing()
     {
-        if (Enabled)
-        {
-            DisableEnableEditingMenu.Checked = true;
-            Preferences.DisableEditing = true;
-            Enabled = false;
-        }
-        else
-        {
-            DisableEnableEditingMenu.Checked = false;
-            Preferences.DisableEditing = false;
-            Enabled = true;
-        }
+        var nextState = GetNextEditingState(Enabled);
+        DisableEnableEditingMenu.Checked = nextState.MenuChecked;
+        Preferences.DisableEditing = nextState.DisableEditingPreference;
+        Enabled = nextState.Enabled;
+    }
+
+    internal static EditingToggleState GetNextEditingState(bool currentlyEnabled)
+    {
+        return currentlyEnabled
+            ? new EditingToggleState(false, true, true)
+            : new EditingToggleState(true, false, false);
     }
 
     /// <summary>
@@ -823,6 +824,13 @@ public partial class MainForm : Form
 
     internal readonly record struct ToolbarButtonVisibility(bool CalendarNavigationVisible,
         bool NewEmailButtonVisible);
+
+    internal readonly record struct VisibilityToggleState(bool Visible, string MenuText);
+
+    internal readonly record struct EditingToggleState(bool Enabled, bool MenuChecked, bool DisableEditingPreference);
+
+    internal readonly record struct SavedViewSettings(string? OutlookFolderView, string? OutlookFolderName,
+        string ViewXml);
 
     internal enum ResizeDirection
     {
@@ -1217,18 +1225,19 @@ public partial class MainForm : Form
 
     public void SaveCurrentViewSettings()
     {
-        Preferences.OutlookFolderView = OutlookViewControl.View;
-        Preferences.OutlookFolderName = OutlookViewControl.Folder;
+        var settings = GetSavedViewSettings(OutlookViewControl.View, OutlookViewControl.Folder,
+            OutlookViewControl.ViewXML, GetFolderFromViewType(FolderViewType.Calendar)?.Name);
 
-        if (ShouldPersistViewXmlForFolder(OutlookViewControl.Folder,
-            GetFolderFromViewType(FolderViewType.Calendar)?.Name))
-        {
-            SetViewXml(OutlookViewControl.ViewXML);
-        }
-        else
-        {
-            SetViewXml(string.Empty);
-        }
+        Preferences.OutlookFolderView = settings.OutlookFolderView;
+        Preferences.OutlookFolderName = settings.OutlookFolderName;
+        SetViewXml(settings.ViewXml);
+    }
+
+    internal static SavedViewSettings GetSavedViewSettings(string? view, string? folder, string? viewXml,
+        string? calendarFolderName)
+    {
+        return new SavedViewSettings(view, folder,
+            ShouldPersistViewXmlForFolder(folder, calendarFolderName) ? viewXml ?? string.Empty : string.Empty);
     }
 
     private void SetViewXml(string value)
@@ -1275,17 +1284,8 @@ public partial class MainForm : Form
         SetCurrentViewControlAsActiveIfNecessary(mode, ButtonPrevious, ref Startup.LastPreviousButtonClicked);
 
         var (type, offset) = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
-
-        if (type == CurrentCalendarView.Month)
-        {
-            OutlookViewControl.GoToDate(OutlookViewControl.SelectedDate
-                .AddMonths(offset * -1).ToString(CultureInfo.CurrentCulture));
-        }
-        else
-        {
-            OutlookViewControl.GoToDate(OutlookViewControl.SelectedDate.AddDays(offset * -1)
-                .ToString(CultureInfo.CurrentCulture));
-        }
+        var targetDate = GetCalendarNavigationTargetDate(OutlookViewControl.SelectedDate, type, offset * -1);
+        OutlookViewControl.GoToDate(targetDate.ToString(CultureInfo.CurrentCulture));
     }
 
     private void ButtonNext_Click(object sender, EventArgs e)
@@ -1296,17 +1296,16 @@ public partial class MainForm : Form
         SetCurrentViewControlAsActiveIfNecessary(mode, ButtonNext, ref Startup.LastNextButtonClicked);
 
         var (type, offset) = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
+        var targetDate = GetCalendarNavigationTargetDate(OutlookViewControl.SelectedDate, type, offset);
+        OutlookViewControl.GoToDate(targetDate.ToString(CultureInfo.CurrentCulture));
+    }
 
-        if (type == CurrentCalendarView.Month)
-        {
-            OutlookViewControl.GoToDate(OutlookViewControl.SelectedDate
-                .AddMonths(offset).ToString(CultureInfo.CurrentCulture));
-        }
-        else
-        {
-            OutlookViewControl.GoToDate(OutlookViewControl.SelectedDate.AddDays(offset)
-                .ToString(CultureInfo.CurrentCulture));
-        }
+    internal static DateTime GetCalendarNavigationTargetDate(DateTime selectedDate, CurrentCalendarView mode,
+        int offset)
+    {
+        return mode == CurrentCalendarView.Month
+            ? selectedDate.AddMonths(offset)
+            : selectedDate.AddDays(offset);
     }
 
     internal static (CurrentCalendarView type, int offset) GetNextPreviousOffsetBasedOnCalendarViewMode(
@@ -1332,14 +1331,7 @@ public partial class MainForm : Form
     private void SetCurrentViewControlAsActiveIfNecessary(CurrentCalendarView mode, Control button,
         ref Guid lastButtonGuidClicked)
     {
-        // we don't need to do this if we only have one instance, so bail right away.
-        if (InstanceManager.InstanceCount == 1)
-        {
-            return;
-        }
-
-        // we can bail if we know the last button clicked was the one on this form.
-        if ((Guid)button.Tag! == lastButtonGuidClicked)
+        if (!ShouldReactivateViewControl(InstanceManager.InstanceCount, (Guid)button.Tag!, lastButtonGuidClicked))
         {
             return;
         }
@@ -1366,6 +1358,11 @@ public partial class MainForm : Form
 
         OutlookViewControl.GoToDate(currentDate.ToString(CultureInfo.InvariantCulture));
         lastButtonGuidClicked = (Guid)button.Tag;
+    }
+
+    internal static bool ShouldReactivateViewControl(int instanceCount, Guid buttonId, Guid lastButtonGuidClicked)
+    {
+        return instanceCount != 1 && buttonId != lastButtonGuidClicked;
     }
 
     private CurrentCalendarView GetCurrentCalendarViewMode()

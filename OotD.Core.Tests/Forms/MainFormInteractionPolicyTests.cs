@@ -92,6 +92,120 @@ public class MainFormInteractionPolicyTests
         result.Should().BeNull();
     }
 
+    [Theory]
+    [InlineData(null, true)]
+    [InlineData("", true)]
+    [InlineData("not-a-guid", true)]
+    [InlineData("00000000-0000-0000-0000-000000000000", true)]
+    public void ShouldHideFromAltTab_WithMissingInvalidOrEmptyDesktopId_ReturnsTrue(
+        string? virtualDesktopId,
+        bool expected)
+    {
+        // Act
+        var result = MainForm.ShouldHideFromAltTab(virtualDesktopId);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
+    [Fact]
+    public void ShouldHideFromAltTab_WithAssignedVirtualDesktop_ReturnsFalse()
+    {
+        // Act
+        var result = MainForm.ShouldHideFromAltTab(Guid.NewGuid().ToString());
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Theory]
+    [InlineData(true, false, "Show")]
+    [InlineData(false, true, "Hide")]
+    public void GetNextVisibilityState_WithCurrentVisibility_ReturnsExpectedState(
+        bool currentlyVisible,
+        bool expectedVisible,
+        string expectedMenuText)
+    {
+        // Act
+        var result = MainForm.GetNextVisibilityState(currentlyVisible, "Show", "Hide");
+
+        // Assert
+        result.Visible.Should().Be(expectedVisible);
+        result.MenuText.Should().Be(expectedMenuText);
+    }
+
+    [Theory]
+    [InlineData(true, false, true, true)]
+    [InlineData(false, true, false, false)]
+    public void GetNextEditingState_WithCurrentEnabledState_ReturnsExpectedState(
+        bool currentlyEnabled,
+        bool expectedEnabled,
+        bool expectedMenuChecked,
+        bool expectedPreference)
+    {
+        // Act
+        var result = MainForm.GetNextEditingState(currentlyEnabled);
+
+        // Assert
+        result.Enabled.Should().Be(expectedEnabled);
+        result.MenuChecked.Should().Be(expectedMenuChecked);
+        result.DisableEditingPreference.Should().Be(expectedPreference);
+    }
+
+    [Theory]
+    [InlineData("Day", "Calendar", "<view />", "Calendar", "<view />")]
+    [InlineData("Day", "Inbox", "<view />", "Calendar", "")]
+    [InlineData("Day", null, "<view />", "Calendar", "")]
+    [InlineData("Day", "Calendar", null, "Calendar", "")]
+    public void GetSavedViewSettings_WithFolderAndCalendarName_ReturnsExpectedSettings(
+        string? view,
+        string? folder,
+        string? viewXml,
+        string? calendarFolderName,
+        string expectedViewXml)
+    {
+        // Act
+        var result = MainForm.GetSavedViewSettings(view, folder, viewXml, calendarFolderName);
+
+        // Assert
+        result.OutlookFolderView.Should().Be(view);
+        result.OutlookFolderName.Should().Be(folder);
+        result.ViewXml.Should().Be(expectedViewXml);
+    }
+
+    [Fact]
+    public void ShouldReactivateViewControl_WithSingleInstance_ReturnsFalse()
+    {
+        // Act
+        var result = MainForm.ShouldReactivateViewControl(1, Guid.NewGuid(), Guid.NewGuid());
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ShouldReactivateViewControl_WithMultipleInstancesAndSameButton_ReturnsFalse()
+    {
+        // Arrange
+        var buttonId = Guid.NewGuid();
+
+        // Act
+        var result = MainForm.ShouldReactivateViewControl(2, buttonId, buttonId);
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ShouldReactivateViewControl_WithMultipleInstancesAndDifferentButton_ReturnsTrue()
+    {
+        // Act
+        var result = MainForm.ShouldReactivateViewControl(2, Guid.NewGuid(), Guid.NewGuid());
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
     public static TheoryData<int, Cursor> CursorMappings => new()
     {
         { 1, Cursors.SizeWE },

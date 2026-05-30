@@ -79,6 +79,26 @@ public class MainFormCalendarNavigationTests
         offset.Should().Be(expectedOffset);
     }
 
+    [Theory]
+    [InlineData("2026-05-15", CurrentCalendarView.Day, 1, "2026-05-16")]
+    [InlineData("2026-05-15", CurrentCalendarView.Day, -1, "2026-05-14")]
+    [InlineData("2026-05-15", CurrentCalendarView.Week, 7, "2026-05-22")]
+    [InlineData("2026-05-15", CurrentCalendarView.WorkWeek, -7, "2026-05-08")]
+    [InlineData("2026-01-31", CurrentCalendarView.Month, 1, "2026-02-28")]
+    [InlineData("2026-03-31", CurrentCalendarView.Month, -1, "2026-02-28")]
+    public void GetCalendarNavigationTargetDate_WithModeAndOffset_ReturnsExpectedDate(
+        string selectedDate,
+        CurrentCalendarView mode,
+        int offset,
+        string expectedDate)
+    {
+        // Act
+        var result = MainForm.GetCalendarNavigationTargetDate(DateTime.Parse(selectedDate), mode, offset);
+
+        // Assert
+        result.Should().Be(DateTime.Parse(expectedDate));
+    }
+
     [Fact]
     public void GetNextPreviousOffsetBasedOnCalendarViewMode_WithUnsupportedMode_ThrowsArgumentOutOfRangeException()
     {
