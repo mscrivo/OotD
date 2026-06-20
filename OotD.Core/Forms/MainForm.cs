@@ -530,10 +530,10 @@ public partial class MainForm : Form
 
     private void DisableEnableEditing()
     {
-        var nextState = GetNextEditingState(Enabled);
+        var nextState = GetNextEditingState(OutlookViewControl.Enabled);
         DisableEnableEditingMenu.Checked = nextState.MenuChecked;
         Preferences.DisableEditing = nextState.DisableEditingPreference;
-        Enabled = nextState.Enabled;
+        OutlookViewControl.Enabled = nextState.Enabled;
     }
 
     internal static EditingToggleState GetNextEditingState(bool currentlyEnabled)
