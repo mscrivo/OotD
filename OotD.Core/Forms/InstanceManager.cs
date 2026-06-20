@@ -813,9 +813,12 @@ public partial class InstanceManager : Form
 
     private void InstanceRenamedEventHandler(object? sender, InstanceRenamedEventArgs e)
     {
-        // remove the menu item for the removed instance.
-        trayIcon.ContextMenuStrip!.Items[e.OldInstanceName]!.Text = e.NewInstanceName;
-        trayIcon.ContextMenuStrip.Items[e.OldInstanceName]!.Name = e.NewInstanceName;
+        var menuItem = trayIcon.ContextMenuStrip?.Items[e.OldInstanceName];
+        if (menuItem != null)
+        {
+            menuItem.Text = e.NewInstanceName;
+            menuItem.Name = e.NewInstanceName;
+        }
     }
 
     private void InstanceContextMenu_DropDownOpened(object? sender, EventArgs e)
