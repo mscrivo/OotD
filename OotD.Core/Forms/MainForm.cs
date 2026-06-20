@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -350,16 +351,28 @@ public partial class MainForm : Form
     {
         try
         {
-            Left = Preferences.Left;
-            Top = Preferences.Top;
-            Width = Preferences.Width;
-            Height = Preferences.Height;
+            var savedBounds = new Rectangle(Preferences.Left, Preferences.Top, Preferences.Width, Preferences.Height);
+            var isOnScreen = Screen.AllScreens.Any(s => s.WorkingArea.IntersectsWith(savedBounds));
+
+            if (isOnScreen)
+            {
+                Left = Preferences.Left;
+                Top = Preferences.Top;
+                Width = Preferences.Width;
+                Height = Preferences.Height;
+            }
+            else
+            {
+                Left = InstancePreferences.DefaultLeftPosition;
+                Top = InstancePreferences.DefaultTopPosition;
+                Width = Preferences.Width;
+                Height = Preferences.Height;
+            }
         }
         catch (Exception ex)
         {
-            // use defaults if there was a problem
-            Left = InstancePreferences.DefaultTopPosition;
-            Top = InstancePreferences.DefaultLeftPosition;
+            Left = InstancePreferences.DefaultLeftPosition;
+            Top = InstancePreferences.DefaultTopPosition;
             Width = InstancePreferences.DefaultWidth;
             Height = InstancePreferences.DefaultHeight;
             _logger.Error(ex, "Error setting window position.");
