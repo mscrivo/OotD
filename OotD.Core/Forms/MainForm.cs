@@ -363,7 +363,8 @@ public partial class MainForm : Form
         try
         {
             var savedBounds = new Rectangle(Preferences.Left, Preferences.Top, Preferences.Width, Preferences.Height);
-            var isOnScreen = Screen.AllScreens.Any(s => s.WorkingArea.IntersectsWith(savedBounds));
+            var screenAreas = Screen.AllScreens.Select(s => s.WorkingArea).ToArray();
+            var isOnScreen = IsWindowOnAnyScreen(savedBounds, screenAreas);
 
             if (isOnScreen)
             {
@@ -565,6 +566,11 @@ public partial class MainForm : Form
         return currentlyEnabled
             ? new EditingToggleState(false, true, true)
             : new EditingToggleState(true, false, false);
+    }
+
+    internal static bool IsWindowOnAnyScreen(Rectangle windowBounds, IEnumerable<Rectangle> screenAreas)
+    {
+        return screenAreas.Any(area => area.IntersectsWith(windowBounds));
     }
 
     /// <summary>
