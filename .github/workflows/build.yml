@@ -22,7 +22,6 @@ jobs:
       INSTALLER_OUTPUT_DIR: ServerStaging
       INSTALLER_SIGNING_STAGING_DIR: signing\installer
       SIGNPATH_SIGNING_POLICY_SLUG: ${{ vars.SIGNPATH_TEST_SIGNING_POLICY_SLUG }}
-      VERSION: "5.0.${{ github.run_number }}"
 
     steps:
       - name: Checkout
@@ -31,13 +30,21 @@ jobs:
           submodules: "true"
           fetch-depth: 0
 
+      - name: Read version
+        id: version
+        shell: pwsh
+        run: |
+          $ver = (Get-Content version.txt -Raw).Trim()
+          "VERSION=$ver" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "FILE_VERSION=$ver.${{ github.run_number }}" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
       - name: Install .NET Core
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.301
 
       - name: Build the app
-        run: dotnet build OutlookDesktop.sln --configuration $env:Configuration -p:Version=${{ env.VERSION }} -p:FileVersion=${{ env.VERSION }}
+        run: dotnet build OutlookDesktop.sln --configuration $env:Configuration -p:Version=${{ env.VERSION }} -p:FileVersion=${{ env.FILE_VERSION }}
         env:
           Configuration: ${{ matrix.configuration }}
 
