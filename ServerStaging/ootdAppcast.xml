@@ -12,9 +12,9 @@
             <sparkle:releaseNotesLink>
                 https://outlookonthedesktop.com/ootdReleaseNotes.md
             </sparkle:releaseNotesLink>
-            <pubDate>Sat, 20 June 2026 15:10:00 +0000</pubDate>
-            <enclosure url="https://github.com/mscrivo/OotD/releases/download/5.1.0/ootd-5.1.0.0.exe"
-                       sparkle:version="5.1.0" length="3752414" type="application/octet-stream" />
+            <pubDate>Sat, 20 June 2026 15:30:00 +0000</pubDate>
+            <enclosure url="https://github.com/mscrivo/OotD/releases/download/5.1.0/ootd-5.1.0.exe"
+                       sparkle:version="5.1.0" length="4284347" type="application/octet-stream" />
         </item>
     </channel>
 </rss>

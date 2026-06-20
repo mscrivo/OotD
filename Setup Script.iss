@@ -1,7 +1,8 @@
 ﻿#include "Inno Plugins\idp.iss"
 
 #define MyAppName "Outlook on the Desktop"
-#define MyAppVersion GetVersionNumbersString('OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.Launcher.exe')
+#define MyAppVersion GetStringFileInfo('OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.Launcher.exe', 'ProductVersion')
+#define MyAppFileVersion GetVersionNumbersString('OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.Launcher.exe')
 #define MyAppVerName "Outlook on the Desktop {#MyAppVersion}"
 #define MyAppPublisher "Michael Scrivo"
 #define MyAppURL "https://outlookonthedesktop.com"
@@ -22,7 +23,7 @@ VersionInfoCopyright={#MyAppCopyright}
 AppCopyright={#MyAppCopyright}
 OutputBaseFilename=ootd-{#MyAppVersion}
 SolidCompression=true
-VersionInfoVersion={#MyAppVersion}
+VersionInfoVersion={#MyAppFileVersion}
 VersionInfoDescription={#MyAppName}
 AppID={{6D9785D9-FF53-4C06-9C2A-E4173D41A2FD}
 ShowLanguageDialog=yes
