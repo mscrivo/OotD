@@ -286,8 +286,19 @@ public partial class MainForm : Form
         }
         else
         {
-            // custom, don't save the view xml
             OutlookViewControl.ViewXML = string.Empty;
+
+            if (!string.IsNullOrEmpty(Preferences.OutlookFolderView))
+            {
+                try
+                {
+                    OutlookViewControl.View = Preferences.OutlookFolderView;
+                }
+                catch
+                {
+                    Preferences.OutlookFolderView = string.Empty;
+                }
+            }
         }
     }
 
