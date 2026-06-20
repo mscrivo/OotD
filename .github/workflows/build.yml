@@ -44,7 +44,7 @@ jobs:
           dotnet-version: 10.0.301
 
       - name: Build the app
-        run: dotnet build OutlookDesktop.sln --configuration $env:Configuration -p:Version=${{ env.VERSION }} -p:FileVersion=${{ env.FILE_VERSION }} -p:InformationalVersion=${{ env.VERSION }}
+        run: dotnet build OutlookDesktop.sln --configuration $env:Configuration -p:Version=${{ env.VERSION }} -p:FileVersion=${{ env.FILE_VERSION }} -p:IncludeSourceRevisionInInformationalVersion=false
         env:
           Configuration: ${{ matrix.configuration }}
 
