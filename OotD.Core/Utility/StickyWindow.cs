@@ -181,7 +181,10 @@ public sealed class StickyWindow : NativeWindow
 
     #region Utilities
 
-    private static int NormalizeInside(int iP1, int iM1, int iM2)
+    /// <summary>
+    ///     Clamps <paramref name="iP1" /> into the closed range [<paramref name="iM1" />, <paramref name="iM2" />].
+    /// </summary>
+    internal static int NormalizeInside(int iP1, int iM1, int iM2)
     {
         if (iP1 <= iM1)
         {
@@ -218,7 +221,7 @@ public sealed class StickyWindow : NativeWindow
     #region ResizeDir
 
     [Flags]
-    private enum ResizeDir
+    internal enum ResizeDir
     {
         Top = 2,
         Bottom = 4,
@@ -530,62 +533,84 @@ public sealed class StickyWindow : NativeWindow
 
     private void Resize_Stick(Rectangle toRect, bool bInsideStick)
     {
-        if (_formRect.Right >= toRect.Left - StickGap && _formRect.Left <= toRect.Right + StickGap)
+        _formOffsetRect = ComputeResizeSnap(_formRect, toRect, _formOffsetRect, _resizeDirection, StickGap, bInsideStick);
+    }
+
+    /// <summary>
+    ///     Pure computation of the resize snap offsets for a single reference rectangle.
+    ///     Given the current form bounds and the rectangle to snap against, returns the updated
+    ///     offset rectangle (X/Width adjust the left/right edges, Y/Height adjust the top/bottom edges).
+    ///     The edges considered are limited to those in <paramref name="resizeDirection" />.
+    /// </summary>
+    /// <param name="formRect">Current (already stretched) form bounds.</param>
+    /// <param name="toRect">Rectangle to try to snap to.</param>
+    /// <param name="formOffsetRect">Accumulated offsets so far (seeded with StickGap + 1 in the edges to snap).</param>
+    /// <param name="resizeDirection">Which edges are being resized.</param>
+    /// <param name="stickGap">Snap distance in pixels.</param>
+    /// <param name="bInsideStick">Allow snapping on the inside (eg: form to another form).</param>
+    internal static Rectangle ComputeResizeSnap(Rectangle formRect, Rectangle toRect, Rectangle formOffsetRect,
+        ResizeDir resizeDirection, int stickGap, bool bInsideStick)
+    {
+        var offset = formOffsetRect;
+
+        if (formRect.Right >= toRect.Left - stickGap && formRect.Left <= toRect.Right + stickGap)
         {
-            if ((_resizeDirection & ResizeDir.Top) == ResizeDir.Top)
+            if ((resizeDirection & ResizeDir.Top) == ResizeDir.Top)
             {
-                if (Math.Abs(_formRect.Top - toRect.Bottom) <= Math.Abs(_formOffsetRect.Top) && bInsideStick)
+                if (Math.Abs(formRect.Top - toRect.Bottom) <= Math.Abs(offset.Top) && bInsideStick)
                 {
-                    _formOffsetRect.Y = _formRect.Top - toRect.Bottom; // snap top to bottom
+                    offset.Y = formRect.Top - toRect.Bottom; // snap top to bottom
                 }
-                else if (Math.Abs(_formRect.Top - toRect.Top) <= Math.Abs(_formOffsetRect.Top))
+                else if (Math.Abs(formRect.Top - toRect.Top) <= Math.Abs(offset.Top))
                 {
-                    _formOffsetRect.Y = _formRect.Top - toRect.Top; // snap top to top
+                    offset.Y = formRect.Top - toRect.Top; // snap top to top
                 }
             }
 
-            if ((_resizeDirection & ResizeDir.Bottom) == ResizeDir.Bottom)
+            if ((resizeDirection & ResizeDir.Bottom) == ResizeDir.Bottom)
             {
-                if (Math.Abs(_formRect.Bottom - toRect.Top) <= Math.Abs(_formOffsetRect.Bottom) && bInsideStick)
+                if (Math.Abs(formRect.Bottom - toRect.Top) <= Math.Abs(offset.Bottom) && bInsideStick)
                 {
-                    _formOffsetRect.Height = toRect.Top - _formRect.Bottom; // snap Bottom to top
+                    offset.Height = toRect.Top - formRect.Bottom; // snap Bottom to top
                 }
-                else if (Math.Abs(_formRect.Bottom - toRect.Bottom) <= Math.Abs(_formOffsetRect.Bottom))
+                else if (Math.Abs(formRect.Bottom - toRect.Bottom) <= Math.Abs(offset.Bottom))
                 {
-                    _formOffsetRect.Height = toRect.Bottom - _formRect.Bottom; // snap bottom to bottom
+                    offset.Height = toRect.Bottom - formRect.Bottom; // snap bottom to bottom
                 }
             }
         }
 
-        if (_formRect.Bottom < toRect.Top - StickGap || _formRect.Top > toRect.Bottom + StickGap)
+        if (formRect.Bottom < toRect.Top - stickGap || formRect.Top > toRect.Bottom + stickGap)
         {
-            return;
+            return offset;
         }
 
-        if ((_resizeDirection & ResizeDir.Right) == ResizeDir.Right)
+        if ((resizeDirection & ResizeDir.Right) == ResizeDir.Right)
         {
-            if (Math.Abs(_formRect.Right - toRect.Left) <= Math.Abs(_formOffsetRect.Right) && bInsideStick)
+            if (Math.Abs(formRect.Right - toRect.Left) <= Math.Abs(offset.Right) && bInsideStick)
             {
-                _formOffsetRect.Width = toRect.Left - _formRect.Right; // Stick right to left
+                offset.Width = toRect.Left - formRect.Right; // Stick right to left
             }
-            else if (Math.Abs(_formRect.Right - toRect.Right) <= Math.Abs(_formOffsetRect.Right))
+            else if (Math.Abs(formRect.Right - toRect.Right) <= Math.Abs(offset.Right))
             {
-                _formOffsetRect.Width = toRect.Right - _formRect.Right; // Stick right to right
+                offset.Width = toRect.Right - formRect.Right; // Stick right to right
             }
         }
 
         // ReSharper disable once InvertIf
-        if ((_resizeDirection & ResizeDir.Left) == ResizeDir.Left)
+        if ((resizeDirection & ResizeDir.Left) == ResizeDir.Left)
         {
-            if (Math.Abs(_formRect.Left - toRect.Right) <= Math.Abs(_formOffsetRect.Left) && bInsideStick)
+            if (Math.Abs(formRect.Left - toRect.Right) <= Math.Abs(offset.Left) && bInsideStick)
             {
-                _formOffsetRect.X = _formRect.Left - toRect.Right; // Stick left to right
+                offset.X = formRect.Left - toRect.Right; // Stick left to right
             }
-            else if (Math.Abs(_formRect.Left - toRect.Left) <= Math.Abs(_formOffsetRect.Left))
+            else if (Math.Abs(formRect.Left - toRect.Left) <= Math.Abs(offset.Left))
             {
-                _formOffsetRect.X = _formRect.Left - toRect.Left; // Stick left to left
+                offset.X = formRect.Left - toRect.Left; // Stick left to left
             }
         }
+
+        return offset;
     }
 
     #endregion
@@ -718,70 +743,90 @@ public sealed class StickyWindow : NativeWindow
     /// <param name="bInsideStick">Allow snapping on the inside (eg: window to screen)</param>
     private void Move_Stick(Rectangle toRect, bool bInsideStick)
     {
+        _formOffsetPoint = ComputeMoveSnap(_formRect, toRect, _formOffsetPoint, StickGap, bInsideStick);
+    }
+
+    /// <summary>
+    ///     Pure computation of the move snap offset for a single reference rectangle.
+    ///     Given the tentative form position and a rectangle to snap against, returns the updated
+    ///     offset point that should be added to the form position.
+    /// </summary>
+    /// <param name="formRect">Tentative form bounds at the new (unsnapped) location.</param>
+    /// <param name="toRect">Rectangle to try to snap to.</param>
+    /// <param name="formOffsetPoint">Accumulated offset so far (seeded with StickGap + 1 in each axis).</param>
+    /// <param name="stickGap">Snap distance in pixels.</param>
+    /// <param name="bInsideStick">Allow snapping on the inside (eg: window to screen).</param>
+    internal static Point ComputeMoveSnap(Rectangle formRect, Rectangle toRect, Point formOffsetPoint, int stickGap,
+        bool bInsideStick)
+    {
+        var offset = formOffsetPoint;
+
         // compare distance from toRect to formRect
         // and then with the found distances, compare the most closed position
-        if (_formRect.Bottom >= toRect.Top - StickGap && _formRect.Top <= toRect.Bottom + StickGap)
+        if (formRect.Bottom >= toRect.Top - stickGap && formRect.Top <= toRect.Bottom + stickGap)
         {
             if (bInsideStick)
             {
-                if (Math.Abs(_formRect.Left - toRect.Right) <= Math.Abs(_formOffsetPoint.X))
+                if (Math.Abs(formRect.Left - toRect.Right) <= Math.Abs(offset.X))
                 {
                     // left 2 right
-                    _formOffsetPoint.X = toRect.Right - _formRect.Left;
+                    offset.X = toRect.Right - formRect.Left;
                 }
 
-                if (Math.Abs(_formRect.Left + _formRect.Width - toRect.Left) <= Math.Abs(_formOffsetPoint.X))
+                if (Math.Abs(formRect.Left + formRect.Width - toRect.Left) <= Math.Abs(offset.X))
                 {
                     // right 2 left
-                    _formOffsetPoint.X = toRect.Left - _formRect.Width - _formRect.Left;
+                    offset.X = toRect.Left - formRect.Width - formRect.Left;
                 }
             }
 
-            if (Math.Abs(_formRect.Left - toRect.Left) <= Math.Abs(_formOffsetPoint.X))
+            if (Math.Abs(formRect.Left - toRect.Left) <= Math.Abs(offset.X))
             {
                 // snap left 2 left
-                _formOffsetPoint.X = toRect.Left - _formRect.Left;
+                offset.X = toRect.Left - formRect.Left;
             }
 
-            if (Math.Abs(_formRect.Left + _formRect.Width - toRect.Left - toRect.Width) <= Math.Abs(_formOffsetPoint.X))
+            if (Math.Abs(formRect.Left + formRect.Width - toRect.Left - toRect.Width) <= Math.Abs(offset.X))
             {
                 // snap right 2 right
-                _formOffsetPoint.X = toRect.Left + toRect.Width - _formRect.Width - _formRect.Left;
+                offset.X = toRect.Left + toRect.Width - formRect.Width - formRect.Left;
             }
         }
 
-        if (_formRect.Right < toRect.Left - StickGap || _formRect.Left > toRect.Right + StickGap)
+        if (formRect.Right < toRect.Left - stickGap || formRect.Left > toRect.Right + stickGap)
         {
-            return;
+            return offset;
         }
 
         if (bInsideStick)
         {
-            if (Math.Abs(_formRect.Top - toRect.Bottom) <= Math.Abs(_formOffsetPoint.Y))
+            if (Math.Abs(formRect.Top - toRect.Bottom) <= Math.Abs(offset.Y))
             {
                 // Stick Top to Bottom
-                _formOffsetPoint.Y = toRect.Bottom - _formRect.Top;
+                offset.Y = toRect.Bottom - formRect.Top;
             }
 
-            if (Math.Abs(_formRect.Top + _formRect.Height - toRect.Top) <= Math.Abs(_formOffsetPoint.Y))
+            if (Math.Abs(formRect.Top + formRect.Height - toRect.Top) <= Math.Abs(offset.Y))
             {
                 // snap Bottom to Top
-                _formOffsetPoint.Y = toRect.Top - _formRect.Height - _formRect.Top;
+                offset.Y = toRect.Top - formRect.Height - formRect.Top;
             }
         }
 
         // try to snap top 2 top also
-        if (Math.Abs(_formRect.Top - toRect.Top) <= Math.Abs(_formOffsetPoint.Y))
+        if (Math.Abs(formRect.Top - toRect.Top) <= Math.Abs(offset.Y))
         {
             // top 2 top
-            _formOffsetPoint.Y = toRect.Top - _formRect.Top;
+            offset.Y = toRect.Top - formRect.Top;
         }
 
-        if (Math.Abs(_formRect.Top + _formRect.Height - toRect.Top - toRect.Height) <= Math.Abs(_formOffsetPoint.Y))
+        if (Math.Abs(formRect.Top + formRect.Height - toRect.Top - toRect.Height) <= Math.Abs(offset.Y))
         {
             // bottom 2 bottom
-            _formOffsetPoint.Y = toRect.Top + toRect.Height - _formRect.Height - _formRect.Top;
+            offset.Y = toRect.Top + toRect.Height - formRect.Height - formRect.Top;
         }
+
+        return offset;
     }
 
     #endregion
