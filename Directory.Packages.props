@@ -1,0 +1,30 @@
+<Project>
+
+  <!--
+    Central Package Management for the OotD application projects only.
+
+    It is disabled for the MACTrackBarLib / NetSparkle submodules because they
+    pin their own package versions directly on their PackageReference items,
+    which is incompatible with central management (NU1008).
+  -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally Condition="$(MSBuildProjectName.StartsWith('OotD'))">true</ManagePackageVersionsCentrally>
+    <ManagePackageVersionsCentrally Condition="!$(MSBuildProjectName.StartsWith('OotD'))">false</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup Condition="$(MSBuildProjectName.StartsWith('OotD'))">
+    <!-- Application -->
+    <PackageVersion Include="CommandLineParser" Version="2.9.1" />
+    <PackageVersion Include="NLog" Version="6.1.3" />
+    <PackageVersion Include="NLog.Schema" Version="6.1.3" />
+    <PackageVersion Include="TaskScheduler" Version="2.12.2" />
+
+    <!-- Test -->
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+    <PackageVersion Include="xunit.v3" Version="3.2.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageVersion Include="FluentAssertions" Version="8.10.0" />
+  </ItemGroup>
+
+</Project>

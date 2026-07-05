@@ -1,0 +1,47 @@
+<Project>
+
+  <!--
+    Shared MSBuild settings for the OotD application projects.
+
+    Everything here is scoped by project-name prefix so that the MACTrackBarLib
+    and NetSparkle git submodules (which live under this directory tree and are
+    maintained as separate repositories) do NOT inherit OotD's metadata,
+    versioning, or analyzer policy.
+  -->
+  <!-- Toolchain / analyzer policy: all OotD projects, including the test project. -->
+  <PropertyGroup Condition="$(MSBuildProjectName.StartsWith('OotD'))">
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
+    <RootNamespace>OotD</RootNamespace>
+    <Nullable>enable</Nullable>
+    <LangVersion>default</LangVersion>
+    <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
+
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+  </PropertyGroup>
+
+  <!--
+    Product metadata: shipping projects only, NOT the test project.
+
+    Company/Product flow into AssemblyCompany/AssemblyProduct, which is what
+    Application.CompanyName / Application.ProductName read at runtime. The app
+    stores its settings under HKCU\Software\{CompanyName}\{ProductName}, so if
+    the test assembly carried this identity its registry writes would land in
+    the real app's settings (see InstancePreferences). Leaving it off keeps the
+    test assembly on its own default (assembly-name) path.
+  -->
+  <PropertyGroup Condition="$(MSBuildProjectName.StartsWith('OotD')) And !$(MSBuildProjectName.EndsWith('Tests'))">
+    <Company>SMR Computer Services</Company>
+    <Product>Outlook on the Desktop</Product>
+    <AssemblyTitle>Outlook on the Desktop</AssemblyTitle>
+    <Description>Places Microsoft Outlook Components on your Windows Desktop.</Description>
+    <Copyright>Copyright 2006-2026 Michael Scrivo</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+</Project>
