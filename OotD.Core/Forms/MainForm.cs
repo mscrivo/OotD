@@ -1000,9 +1000,7 @@ public partial class MainForm : Form
             return;
         }
 
-        using (var appReg =
-               Registry.CurrentUser.CreateSubKey(
-                   "Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+        using (var appReg = Registry.CurrentUser.CreateSubKey(PreferencesRegistry.RootPath))
         {
             appReg.DeleteSubKeyTree(InstanceName);
         }
@@ -1055,9 +1053,7 @@ public partial class MainForm : Form
             return;
         }
 
-        using var parentKey =
-            Registry.CurrentUser.OpenSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName,
-                true);
+        using var parentKey = Registry.CurrentUser.OpenSubKey(PreferencesRegistry.RootPath, true);
         if (parentKey == null)
         {
             return;

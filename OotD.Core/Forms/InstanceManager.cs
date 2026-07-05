@@ -78,9 +78,7 @@ public partial class InstanceManager : Form
         {
             var instanceCount = 0;
 
-            using var appReg =
-                Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" +
-                                                  Application.ProductName);
+            using var appReg = Registry.CurrentUser.CreateSubKey(PreferencesRegistry.RootPath);
 
             // ReSharper disable once UselessBinaryOperation
             instanceCount += appReg.GetSubKeyNames().Count(instanceName => instanceName != AutoUpdateInstanceName);
@@ -112,9 +110,7 @@ public partial class InstanceManager : Form
 
         // Each subkey in our main registry key represents an instance. 
         // Read each subkey and load the instance.
-        using (var appReg =
-               Registry.CurrentUser.CreateSubKey(
-                   "Software\\" + Application.CompanyName + "\\" + Application.ProductName))
+        using (var appReg = Registry.CurrentUser.CreateSubKey(PreferencesRegistry.RootPath))
         {
             _logger.Debug("Settings Found.");
 
@@ -860,6 +856,5 @@ public partial class InstanceManager : Form
         FlashForm(item);
     }
 
-    private static string ProductRegistryPath =>
-        "Software\\" + Application.CompanyName + "\\" + Application.ProductName;
+    private static string ProductRegistryPath => PreferencesRegistry.RootPath;
 }

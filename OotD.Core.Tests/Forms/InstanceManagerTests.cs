@@ -2,10 +2,19 @@
 
 using Microsoft.Win32;
 using OotD.Forms;
+using OotD.Preferences;
 
 public class InstanceManagerTests : IDisposable
 {
-    private readonly List<string> _createdSubKeys = [];
+    private readonly string _originalRootPath = PreferencesRegistry.RootPath;
+    private readonly string _testRootPath = $@"Software\OotDTests\{Guid.NewGuid():N}";
+
+    public InstanceManagerTests()
+    {
+        // Redirect InstanceManager's registry reads to a throwaway key so tests are isolated
+        // from (and never pollute) the real application's settings.
+        PreferencesRegistry.RootPath = _testRootPath;
+    }
 
     [Fact]
     public void InstanceCount_WithNoRegistryEntries_ShouldReturnZero()
@@ -93,9 +102,6 @@ public class InstanceManagerTests : IDisposable
         productKey!.CreateSubKey("AutoUpdate")!.Dispose();
         productKey.CreateSubKey(key1)!.Dispose();
         productKey.CreateSubKey(key2)!.Dispose();
-
-        _createdSubKeys.Add(key1);
-        _createdSubKeys.Add(key2);
 
         // Act
         var count = InstanceManager.InstanceCount;
@@ -453,12 +459,10 @@ public class InstanceManagerTests : IDisposable
 
     public void Dispose()
     {
+        PreferencesRegistry.RootPath = _originalRootPath;
         try
         {
-            foreach (var subKey in _createdSubKeys)
-            {
-                Registry.CurrentUser.DeleteSubKeyTree($"{ProductRegistryPath}\\{subKey}", false);
-            }
+            Registry.CurrentUser.DeleteSubKeyTree(_testRootPath, false);
         }
         catch
         {
@@ -468,5 +472,5 @@ public class InstanceManagerTests : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    private static string ProductRegistryPath => $@"Software\{Application.CompanyName}\{Application.ProductName}";
+    private string ProductRegistryPath => _testRootPath;
 }

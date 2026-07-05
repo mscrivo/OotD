@@ -5,6 +5,16 @@ namespace OotD.Core.Tests.Integration;
 public class PreferencesIntegrationTests : IDisposable
 {
     private readonly string _testScope = Guid.NewGuid().ToString("N");
+    private readonly string _originalRootPath = PreferencesRegistry.RootPath;
+    private readonly string _testRootPath;
+
+    public PreferencesIntegrationTests()
+    {
+        // Redirect all preference storage to a throwaway key so tests never touch the real
+        // application's settings.
+        _testRootPath = $@"Software\OotDTests\{_testScope}";
+        PreferencesRegistry.RootPath = _testRootPath;
+    }
 
     private string TestInstanceName => $"IntegrationTestInstance_{_testScope}";
 
@@ -244,19 +254,11 @@ public class PreferencesIntegrationTests : IDisposable
 
     public void Dispose()
     {
+        PreferencesRegistry.RootPath = _originalRootPath;
         try
         {
-            using var appReg = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(
-                $@"Software\{Application.CompanyName}\{Application.ProductName}");
-            appReg?.DeleteSubKeyTree(TestInstanceName, false);
-            appReg?.DeleteSubKeyTree($"Instance1_{_testScope}", false);
-            appReg?.DeleteSubKeyTree($"Instance2_{_testScope}", false);
-            appReg?.DeleteSubKeyTree($"Special_{_testScope}", false);
-
-            for (var i = 0; i < 5; i++)
-            {
-                appReg?.DeleteSubKeyTree($"ConcurrentTest_{_testScope}_{i}", false);
-            }
+            // Everything this test created lives under the redirected root, so one delete suffices.
+            Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree(_testRootPath, false);
         }
         catch
         {

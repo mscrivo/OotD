@@ -5,9 +5,16 @@ namespace OotD.Core.Tests.Preferences;
 
 public class InstancePreferencesTests : IDisposable
 {
-    private readonly string _baseTestPath = $@"Software\OotDTests\{Guid.NewGuid():N}";
-    private readonly List<string> _createdProductInstanceNames = [];
+    private readonly string _originalRootPath = PreferencesRegistry.RootPath;
+    private readonly string _testRootPath = $@"Software\OotDTests\{Guid.NewGuid():N}";
     private InstancePreferences? _preferences;
+
+    public InstancePreferencesTests()
+    {
+        // Redirect all preference storage to a throwaway key so tests never touch the real
+        // application's settings, regardless of the assembly's product identity.
+        PreferencesRegistry.RootPath = _testRootPath;
+    }
 
     [Fact]
     public void Constructor_ShouldCreateWithInstanceName()
@@ -494,6 +501,7 @@ public class InstancePreferencesTests : IDisposable
     public void Dispose()
     {
         _preferences = null;
+        PreferencesRegistry.RootPath = _originalRootPath;
         CleanupTestKeys();
         GC.SuppressFinalize(this);
     }
@@ -502,11 +510,8 @@ public class InstancePreferencesTests : IDisposable
     {
         try
         {
-            Registry.CurrentUser.DeleteSubKeyTree(_baseTestPath, false);
-            foreach (var instanceName in _createdProductInstanceNames)
-            {
-                Registry.CurrentUser.DeleteSubKeyTree($@"{ProductRegistryPath}\{instanceName}", false);
-            }
+            // The entire test run lives under _testRootPath, so one delete removes everything.
+            Registry.CurrentUser.DeleteSubKeyTree(_testRootPath, false);
         }
         catch
         {
@@ -516,9 +521,6 @@ public class InstancePreferencesTests : IDisposable
 
     private RegistryKey CreateProductInstanceKey(string instanceName)
     {
-        _createdProductInstanceNames.Add(instanceName);
-        return Registry.CurrentUser.CreateSubKey($@"{ProductRegistryPath}\{instanceName}")!;
+        return Registry.CurrentUser.CreateSubKey($@"{_testRootPath}\{instanceName}")!;
     }
-
-    private static string ProductRegistryPath => $@"Software\{Application.CompanyName}\{Application.ProductName}";
 }

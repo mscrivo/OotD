@@ -6,9 +6,15 @@ namespace OotD.Core.Tests.Preferences;
 public class GlobalPreferencesTests : IDisposable
 {
     private readonly string _testKeyPath = @"Software\OotDTests\TestProduct";
+    private readonly string _originalRootPath = PreferencesRegistry.RootPath;
+    private readonly string _testRootPath = $@"Software\OotDTests\{Guid.NewGuid():N}";
 
     public GlobalPreferencesTests()
     {
+        // Redirect GlobalPreferences' storage to a throwaway key so tests never touch the real
+        // application's settings, regardless of the assembly's product identity.
+        PreferencesRegistry.RootPath = _testRootPath;
+
         // Clean up any existing test keys
         CleanupTestKeys();
     }
@@ -189,6 +195,7 @@ public class GlobalPreferencesTests : IDisposable
 
     public void Dispose()
     {
+        PreferencesRegistry.RootPath = _originalRootPath;
         CleanupTestKeys();
         GC.SuppressFinalize(this);
     }
@@ -198,7 +205,7 @@ public class GlobalPreferencesTests : IDisposable
         try
         {
             Registry.CurrentUser.DeleteSubKeyTree(_testKeyPath, false);
-            Registry.CurrentUser.DeleteSubKeyTree(ProductRegistryPath, false);
+            Registry.CurrentUser.DeleteSubKeyTree(_testRootPath, false);
         }
         catch
         {
@@ -206,7 +213,7 @@ public class GlobalPreferencesTests : IDisposable
         }
     }
 
-    private static string ProductRegistryPath => $@"Software\{Application.CompanyName}\{Application.ProductName}";
+    private string ProductRegistryPath => _testRootPath;
 
     private static void ResetIsFirstRunCache()
     {

@@ -18,8 +18,8 @@ public class InstancePreferences(string instanceName)
     public const int DefaultWidth = 700;
 
     private readonly RegistryKey _appReg =
-        Registry.CurrentUser.CreateSubKey("Software\\" + Application.CompanyName + "\\" + Application.ProductName +
-                                          "\\" + instanceName) ?? throw new InvalidOperationException();
+        Registry.CurrentUser.CreateSubKey($@"{PreferencesRegistry.RootPath}\{instanceName}")
+        ?? throw new InvalidOperationException();
 
     /// <summary>
     ///     Main Window Opacity.
