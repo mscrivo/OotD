@@ -1,9 +1,25 @@
 namespace OotD.Core.Tests.Forms;
 
+using OotD.Enums;
 using OotD.Forms;
 
 public class MainFormViewXmlPolicyTests
 {
+    [Theory]
+    [InlineData(FolderViewType.Calendar, false)] // the Calendar keeps its custom month/day ViewXML
+    [InlineData(FolderViewType.Inbox, true)]
+    [InlineData(FolderViewType.Contacts, true)]
+    [InlineData(FolderViewType.Notes, true)]
+    [InlineData(FolderViewType.Tasks, true)]
+    [InlineData(FolderViewType.Todo, true)]
+    public void ShouldClearViewXmlForFolderType_ClearsForEveryNonCalendarFolder(
+        FolderViewType folderViewType,
+        bool expected)
+    {
+        MainForm.ShouldClearViewXmlForFolderType(folderViewType).Should().Be(expected);
+    }
+
+
     [Theory]
     [InlineData("Calendar", "Calendar", true)]
     [InlineData("Tasks", "Calendar", false)]

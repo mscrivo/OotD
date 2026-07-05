@@ -315,6 +315,17 @@ public partial class MainForm : Form
         return ShouldPersistViewXmlForFolder(folderName, calendarFolderName) ? monthXml : string.Empty;
     }
 
+    /// <summary>
+    ///     Only the Calendar keeps a custom ViewXML (its month/day view); every other folder uses the
+    ///     default view. A stale calendar ViewXML left applied when switching to another folder stops the
+    ///     Outlook View Control from switching on the first attempt, so it must be cleared for any
+    ///     non-Calendar view.
+    /// </summary>
+    internal static bool ShouldClearViewXmlForFolderType(FolderViewType folderViewType)
+    {
+        return folderViewType != FolderViewType.Calendar;
+    }
+
     private void SetSelectedMenuItem()
     {
         if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Calendar)?.Name)
@@ -640,11 +651,7 @@ public partial class MainForm : Form
     /// <param name="itemToCheck"></param>
     private void DefaultFolderTypesClicked(FolderViewType folderViewType, ToolStripMenuItem itemToCheck)
     {
-        // Only the Calendar keeps a custom ViewXML (its month/day view); every other folder uses the
-        // default view (see ShouldPersistViewXmlForFolder). A stale calendar ViewXML left applied when
-        // switching to another folder stops the Outlook View Control from switching on the first
-        // attempt, so clear it for any non-Calendar view.
-        if (folderViewType != FolderViewType.Calendar)
+        if (ShouldClearViewXmlForFolderType(folderViewType))
         {
             SetViewXml(string.Empty);
         }
