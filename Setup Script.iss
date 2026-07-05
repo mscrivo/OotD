@@ -57,6 +57,7 @@ Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\NetSparkle.dll"; DestDir: 
 Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\NLog.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\NLog.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OLXLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.Launcher.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.Launcher.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "OotD.Launcher\bin\Release\net10.0-windows7.0\OotD.Launcher.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion

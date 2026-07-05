@@ -20,28 +20,27 @@ using Timer = System.Timers.Timer;
 
 namespace OotD;
 
-internal static class Startup
+public static class Startup
 {
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-    public static Guid LastNextButtonClicked;
-    public static Guid LastPreviousButtonClicked;
+    internal static Guid LastNextButtonClicked;
+    internal static Guid LastPreviousButtonClicked;
 
     private static Application? _outlookApp;
-    public static NameSpace? OutlookNameSpace;
+    internal static NameSpace? OutlookNameSpace;
     private static MAPIFolder? _outlookFolder;
     private static Explorer? _outlookExplorer;
     private static readonly Timer _checkIfOutlookIsRunningTimer = new() { Interval = 3000 };
 
-    public static bool UpdateDetected;
+    internal static bool UpdateDetected;
     private static InstanceManager? _instanceManager;
 
     /// <summary>
-    ///     The main entry point for the application.
-    ///     We only want one instance of the application to be running.
+    ///     The main entry point for the application, invoked by the thin platform-specific launchers
+    ///     (OotD.x64 / OotD.x86). We only want one instance of the application to be running.
     /// </summary>
-    [STAThread]
-    private static void Main(string[] args)
+    public static void Run(string[] args)
     {
         Parser.Default.ParseArguments<Options>(args).WithParsed(ProcessCommandLineArgs);
 
@@ -211,7 +210,7 @@ internal static class Startup
         return false;
     }
 
-    public static void DisposeOutlookObjects()
+    internal static void DisposeOutlookObjects()
     {
         try
         {
