@@ -328,45 +328,80 @@ public partial class MainForm : Form
 
     private void SetSelectedMenuItem()
     {
-        if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Calendar)?.Name)
-        {
-            CalendarMenu.Checked = true;
-        }
-        else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Contacts)?.Name)
-        {
-            ContactsMenu.Checked = true;
-        }
-        else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Inbox)?.Name)
-        {
-            InboxMenu.Checked = true;
-        }
-        else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Notes)?.Name)
-        {
-            NotesMenu.Checked = true;
-        }
-        else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Tasks)?.Name)
-        {
-            TasksMenu.Checked = true;
-        }
-        else if (Preferences.OutlookFolderName == GetFolderFromViewType(FolderViewType.Todo)?.Name)
-        {
-            TodosMenu.Checked = true;
-        }
-        else
-        {
-            // custom folder
-            _customFolder = Preferences.OutlookFolderName;
-            var folderName = GetFolderNameFromFullPath(_customFolder);
-            TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
-                new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
-            _customMenu = (ToolStripMenuItem)TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
-            _customMenu?.Checked = true;
+        var knownFolderNames = _defaultFolderViewTypes.ToDictionary(
+            type => type,
+            type => GetFolderFromViewType(type)?.Name);
 
-            // store the custom folder definition in case the user wants to switch back to it and we need to reload it.
-            _customFolderDefinition.OutlookFolderName = Preferences.OutlookFolderName;
-            _customFolderDefinition.OutlookFolderStoreId = Preferences.OutlookFolderStoreId;
-            _customFolderDefinition.OutlookFolderEntryId = Preferences.OutlookFolderEntryId;
+        switch (MatchFolderViewTypeByName(Preferences.OutlookFolderName, knownFolderNames))
+        {
+            case FolderViewType.Calendar:
+                CalendarMenu.Checked = true;
+                break;
+            case FolderViewType.Contacts:
+                ContactsMenu.Checked = true;
+                break;
+            case FolderViewType.Inbox:
+                InboxMenu.Checked = true;
+                break;
+            case FolderViewType.Notes:
+                NotesMenu.Checked = true;
+                break;
+            case FolderViewType.Tasks:
+                TasksMenu.Checked = true;
+                break;
+            case FolderViewType.Todo:
+                TodosMenu.Checked = true;
+                break;
+            default:
+                SelectCustomFolder();
+                break;
         }
+    }
+
+    /// <summary>The default folder view types, in the precedence used when matching a folder by name.</summary>
+    private static readonly FolderViewType[] _defaultFolderViewTypes =
+    [
+        FolderViewType.Calendar,
+        FolderViewType.Contacts,
+        FolderViewType.Inbox,
+        FolderViewType.Notes,
+        FolderViewType.Tasks,
+        FolderViewType.Todo
+    ];
+
+    /// <summary>
+    ///     Returns the <see cref="FolderViewType" /> whose default folder name matches
+    ///     <paramref name="folderName" /> (checked in <see cref="_defaultFolderViewTypes" /> order), or null
+    ///     when it matches none -- i.e. the selected folder is a custom folder.
+    /// </summary>
+    internal static FolderViewType? MatchFolderViewTypeByName(
+        string? folderName, IReadOnlyDictionary<FolderViewType, string?> knownFolderNames)
+    {
+        foreach (var type in _defaultFolderViewTypes)
+        {
+            if (knownFolderNames.TryGetValue(type, out var name) &&
+                string.Equals(folderName, name, StringComparison.Ordinal))
+            {
+                return type;
+            }
+        }
+
+        return null;
+    }
+
+    private void SelectCustomFolder()
+    {
+        _customFolder = Preferences.OutlookFolderName;
+        var folderName = GetFolderNameFromFullPath(_customFolder);
+        TrayMenu.Items.Insert(GetSelectFolderMenuLocation() + 1,
+            new ToolStripMenuItem(folderName, null, CustomFolderMenu_Click));
+        _customMenu = (ToolStripMenuItem)TrayMenu.Items[GetSelectFolderMenuLocation() + 1];
+        _customMenu?.Checked = true;
+
+        // store the custom folder definition in case the user wants to switch back to it and we need to reload it.
+        _customFolderDefinition.OutlookFolderName = Preferences.OutlookFolderName;
+        _customFolderDefinition.OutlookFolderStoreId = Preferences.OutlookFolderStoreId;
+        _customFolderDefinition.OutlookFolderEntryId = Preferences.OutlookFolderEntryId;
     }
 
     private void SetInitialPosition()
