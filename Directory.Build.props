@@ -10,6 +10,7 @@
   -->
   <!-- Toolchain / analyzer policy: all OotD projects, including the test project. -->
   <PropertyGroup Condition="$(MSBuildProjectName.StartsWith('OotD'))">
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <TargetFramework>net10.0-windows7.0</TargetFramework>
     <RootNamespace>OotD</RootNamespace>
     <Nullable>enable</Nullable>
