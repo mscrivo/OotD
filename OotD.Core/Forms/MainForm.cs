@@ -640,7 +640,11 @@ public partial class MainForm : Form
     /// <param name="itemToCheck"></param>
     private void DefaultFolderTypesClicked(FolderViewType folderViewType, ToolStripMenuItem itemToCheck)
     {
-        if (folderViewType is FolderViewType.Notes or FolderViewType.Tasks or FolderViewType.Todo)
+        // Only the Calendar keeps a custom ViewXML (its month/day view); every other folder uses the
+        // default view (see ShouldPersistViewXmlForFolder). A stale calendar ViewXML left applied when
+        // switching to another folder stops the Outlook View Control from switching on the first
+        // attempt, so clear it for any non-Calendar view.
+        if (folderViewType != FolderViewType.Calendar)
         {
             SetViewXml(string.Empty);
         }
