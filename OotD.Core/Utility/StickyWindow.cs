@@ -304,7 +304,6 @@ public sealed class StickyWindow : NativeWindow
     ///     window
     /// </summary>
     /// <param name="frmExternal">External window that will be used as reference</param>
-    // ReSharper disable once UnusedMember.Global
     public static void RegisterExternalReferenceForm(Form frmExternal)
     {
         _globalStickyWindows.Add(frmExternal);
@@ -315,7 +314,6 @@ public sealed class StickyWindow : NativeWindow
     ///     <see cref="RegisterExternalReferenceForm" />
     /// </summary>
     /// <param name="frmExternal">External window that will was used as reference</param>
-    // ReSharper disable once UnusedMember.Global
     public static void UnregisterExternalReferenceForm(Form frmExternal)
     {
         _globalStickyWindows.Remove(frmExternal);
@@ -597,7 +595,6 @@ public sealed class StickyWindow : NativeWindow
             }
         }
 
-        // ReSharper disable once InvertIf
         if ((resizeDirection & ResizeDir.Left) == ResizeDir.Left)
         {
             if (Math.Abs(formRect.Left - toRect.Right) <= Math.Abs(offset.Left) && bInsideStick)

@@ -9,13 +9,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Local
-// ReSharper disable InconsistentNaming
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable UnusedMethodReturnValue.Global
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable IdentifierTypo
 #pragma warning disable IDE1006 // Naming Styles
 
 namespace OotD.Utility;

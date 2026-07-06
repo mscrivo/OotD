@@ -45,7 +45,6 @@ public partial class MainForm : Form
 {
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-    // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
     private readonly StickyWindow _stickyWindow;
     private string? _customFolder;
     private OutlookFolderDefinition _customFolderDefinition;
@@ -802,11 +801,9 @@ public partial class MainForm : Form
 
     #region Events
 
-    // ReSharper disable once InconsistentNaming
 #pragma warning disable IDE1006 // Naming Styles
     public EventHandler<InstanceRemovedEventArgs>? InstanceRemoved;
 
-    // ReSharper disable once InconsistentNaming
     public EventHandler<InstanceRenamedEventArgs>? InstanceRenamed;
 #pragma warning restore IDE1006 // Naming Styles
 

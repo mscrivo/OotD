@@ -7,7 +7,6 @@ using CommandLine;
 
 namespace OotD;
 
-// ReSharper disable once ClassNeverInstantiated.Global
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 #pragma warning restore IDE0079 // Remove unnecessary suppression

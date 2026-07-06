@@ -18,13 +18,9 @@ namespace OotD;
 
 public static class Program
 {
-    // ReSharper disable once UnusedMember.Local
     private const string DebugArg = " -d";
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-    // ReSharper disable once ConvertToConstant.Local
-    // ReSharper disable once FieldCanBeMadeReadOnly.Local
-    // ReSharper disable once RedundantDefaultMemberInitializer
     private static bool _isDebug = false;
 
     [STAThread]

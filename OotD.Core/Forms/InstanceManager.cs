@@ -80,7 +80,6 @@ public partial class InstanceManager : Form
 
             using var appReg = Registry.CurrentUser.CreateSubKey(PreferencesRegistry.RootPath);
 
-            // ReSharper disable once UselessBinaryOperation
             instanceCount += appReg.GetSubKeyNames().Count(instanceName => instanceName != AutoUpdateInstanceName);
 
             return instanceCount;
