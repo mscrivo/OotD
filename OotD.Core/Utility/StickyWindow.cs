@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -15,10 +14,6 @@ namespace OotD.Utility;
 ///     You get a nice way of organizing multiple top-level windows.
 ///     Quite similar with WinAmp 2.x style of sticking the windows
 /// </summary>
-#pragma warning disable IDE0079 // Remove unnecessary suppression
-[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
-[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-#pragma warning restore IDE0079 // Remove unnecessary suppression
 public sealed class StickyWindow : NativeWindow
 {
     /// <summary>
