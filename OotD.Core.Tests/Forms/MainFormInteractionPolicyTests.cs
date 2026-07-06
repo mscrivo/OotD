@@ -21,20 +21,20 @@ public class MainFormInteractionPolicyTests
         int expectedDirection)
     {
         // Act
-        var result = MainForm.GetResizeDirection(new Point(x, y), new Size(100, 100), lockPosition: false);
+        var result = MainFormWindowPolicy.GetResizeDirection(new Point(x, y), new Size(100, 100), lockPosition: false);
 
         // Assert
-        result.Should().Be((MainForm.ResizeDirection)expectedDirection);
+        result.Should().Be((MainFormWindowPolicy.ResizeDirection)expectedDirection);
     }
 
     [Fact]
     public void GetResizeDirection_WhenPositionIsLocked_ReturnsNoneEvenAtResizeBorder()
     {
         // Act
-        var result = MainForm.GetResizeDirection(new Point(0, 0), new Size(100, 100), lockPosition: true);
+        var result = MainFormWindowPolicy.GetResizeDirection(new Point(0, 0), new Size(100, 100), lockPosition: true);
 
         // Assert
-        result.Should().Be(MainForm.ResizeDirection.None);
+        result.Should().Be(MainFormWindowPolicy.ResizeDirection.None);
     }
 
     [Theory]
@@ -44,7 +44,7 @@ public class MainFormInteractionPolicyTests
         Cursor expectedCursor)
     {
         // Act
-        var result = MainForm.GetCursorForResizeDirection((MainForm.ResizeDirection)direction);
+        var result = MainFormWindowPolicy.GetCursorForResizeDirection((MainFormWindowPolicy.ResizeDirection)direction);
 
         // Assert
         result.Should().BeSameAs(expectedCursor);
@@ -59,7 +59,7 @@ public class MainFormInteractionPolicyTests
     public void NormalizeOpacityPercentage_WithPercentage_ReturnsExpectedOpacity(int percentage, double expectedOpacity)
     {
         // Act
-        var result = MainForm.NormalizeOpacityPercentage(percentage);
+        var result = MainFormWindowPolicy.NormalizeOpacityPercentage(percentage);
 
         // Assert
         result.Should().Be(expectedOpacity);
@@ -72,7 +72,7 @@ public class MainFormInteractionPolicyTests
         var desktopId = Guid.NewGuid();
 
         // Act
-        var result = MainForm.GetAssignedVirtualDesktopId(desktopId.ToString());
+        var result = MainFormVirtualDesktopPolicy.GetAssignedVirtualDesktopId(desktopId.ToString());
 
         // Assert
         result.Should().Be(desktopId);
@@ -86,7 +86,7 @@ public class MainFormInteractionPolicyTests
     public void GetAssignedVirtualDesktopId_WithMissingInvalidOrEmptyGuid_ReturnsNull(string? virtualDesktopId)
     {
         // Act
-        var result = MainForm.GetAssignedVirtualDesktopId(virtualDesktopId);
+        var result = MainFormVirtualDesktopPolicy.GetAssignedVirtualDesktopId(virtualDesktopId);
 
         // Assert
         result.Should().BeNull();
@@ -102,7 +102,7 @@ public class MainFormInteractionPolicyTests
         bool expected)
     {
         // Act
-        var result = MainForm.ShouldHideFromAltTab(virtualDesktopId);
+        var result = MainFormVirtualDesktopPolicy.ShouldHideFromAltTab(virtualDesktopId);
 
         // Assert
         result.Should().Be(expected);
@@ -112,7 +112,7 @@ public class MainFormInteractionPolicyTests
     public void ShouldHideFromAltTab_WithAssignedVirtualDesktop_ReturnsFalse()
     {
         // Act
-        var result = MainForm.ShouldHideFromAltTab(Guid.NewGuid().ToString());
+        var result = MainFormVirtualDesktopPolicy.ShouldHideFromAltTab(Guid.NewGuid().ToString());
 
         // Assert
         result.Should().BeFalse();
@@ -127,7 +127,7 @@ public class MainFormInteractionPolicyTests
         string expectedMenuText)
     {
         // Act
-        var result = MainForm.GetNextVisibilityState(currentlyVisible, "Show", "Hide");
+        var result = MainFormMenuPolicy.GetNextVisibilityState(currentlyVisible, "Show", "Hide");
 
         // Assert
         result.Visible.Should().Be(expectedVisible);
@@ -144,7 +144,7 @@ public class MainFormInteractionPolicyTests
         bool expectedPreference)
     {
         // Act
-        var result = MainForm.GetNextEditingState(currentlyEnabled);
+        var result = MainFormMenuPolicy.GetNextEditingState(currentlyEnabled);
 
         // Assert
         result.Enabled.Should().Be(expectedEnabled);
@@ -165,7 +165,7 @@ public class MainFormInteractionPolicyTests
         string expectedViewXml)
     {
         // Act
-        var result = MainForm.GetSavedViewSettings(view, folder, viewXml, calendarFolderName);
+        var result = MainFormViewXmlPolicy.GetSavedViewSettings(view, folder, viewXml, calendarFolderName);
 
         // Assert
         result.OutlookFolderView.Should().Be(view);
@@ -177,7 +177,7 @@ public class MainFormInteractionPolicyTests
     public void ShouldReactivateViewControl_WithSingleInstance_ReturnsFalse()
     {
         // Act
-        var result = MainForm.ShouldReactivateViewControl(1, Guid.NewGuid(), Guid.NewGuid());
+        var result = MainFormCalendarNavigation.ShouldReactivateViewControl(1, Guid.NewGuid(), Guid.NewGuid());
 
         // Assert
         result.Should().BeFalse();
@@ -190,7 +190,7 @@ public class MainFormInteractionPolicyTests
         var buttonId = Guid.NewGuid();
 
         // Act
-        var result = MainForm.ShouldReactivateViewControl(2, buttonId, buttonId);
+        var result = MainFormCalendarNavigation.ShouldReactivateViewControl(2, buttonId, buttonId);
 
         // Assert
         result.Should().BeFalse();
@@ -200,7 +200,7 @@ public class MainFormInteractionPolicyTests
     public void ShouldReactivateViewControl_WithMultipleInstancesAndDifferentButton_ReturnsTrue()
     {
         // Act
-        var result = MainForm.ShouldReactivateViewControl(2, Guid.NewGuid(), Guid.NewGuid());
+        var result = MainFormCalendarNavigation.ShouldReactivateViewControl(2, Guid.NewGuid(), Guid.NewGuid());
 
         // Assert
         result.Should().BeTrue();

@@ -21,7 +21,7 @@ public class MainFormInitialViewXmlPolicyTests
         string expected)
     {
         // Act
-        var result = MainForm.GetDefaultViewXmlForFolder(folderName, calendarFolderName, monthXml);
+        var result = MainFormViewXmlPolicy.GetDefaultViewXmlForFolder(folderName, calendarFolderName, monthXml);
 
         // Assert
         result.Should().Be(expected);

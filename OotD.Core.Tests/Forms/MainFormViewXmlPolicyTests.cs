@@ -16,7 +16,7 @@ public class MainFormViewXmlPolicyTests
         FolderViewType folderViewType,
         bool expected)
     {
-        MainForm.ShouldClearViewXmlForFolderType(folderViewType).Should().Be(expected);
+        MainFormViewXmlPolicy.ShouldClearViewXmlForFolderType(folderViewType).Should().Be(expected);
     }
 
 
@@ -39,7 +39,7 @@ public class MainFormViewXmlPolicyTests
         bool expected)
     {
         // Act
-        var result = MainForm.ShouldPersistViewXmlForFolder(folderName, calendarFolderName);
+        var result = MainFormViewXmlPolicy.ShouldPersistViewXmlForFolder(folderName, calendarFolderName);
 
         // Assert
         result.Should().Be(expected);

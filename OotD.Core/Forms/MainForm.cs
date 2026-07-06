@@ -21,19 +21,28 @@ using OotD.Events;
 using OotD.Preferences;
 using OotD.Properties;
 using OotD.Utility;
+using System.Diagnostics.CodeAnalysis;
 using Application = System.Windows.Forms.Application;
 using Exception = System.Exception;
 using View = Microsoft.Office.Interop.Outlook.View;
 
 namespace OotD.Forms;
 
+using static OotD.Forms.MainFormViewXmlPolicy;
+using static OotD.Forms.MainFormFolderPolicy;
+using static OotD.Forms.MainFormWindowPolicy;
+using static OotD.Forms.MainFormCalendarNavigation;
+using static OotD.Forms.MainFormToolbarPolicy;
+using static OotD.Forms.MainFormMenuPolicy;
+using static OotD.Forms.MainFormVirtualDesktopPolicy;
+
 /// <inheritdoc />
 /// <summary>
 ///     This is the form that hosts the outlook view control. One of these will exist for each instance.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public partial class MainForm : Form
 {
-    private const int ResizeBorderWidth = 4;
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
     // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
@@ -232,19 +241,7 @@ public partial class MainForm : Form
         }
     }
 
-    internal static Guid? GetAssignedVirtualDesktopId(string? virtualDesktopId)
-    {
-        return !string.IsNullOrEmpty(virtualDesktopId) &&
-               Guid.TryParse(virtualDesktopId, out var desktopId) &&
-               desktopId != Guid.Empty
-            ? desktopId
-            : null;
-    }
 
-    internal static bool ShouldHideFromAltTab(string? virtualDesktopId)
-    {
-        return !GetAssignedVirtualDesktopId(virtualDesktopId).HasValue;
-    }
 
     private void InitializeViewsFromPreferences()
     {
@@ -302,33 +299,12 @@ public partial class MainForm : Form
         }
     }
 
-    internal static bool ShouldPersistViewXmlForFolder(string? folderName, string? calendarFolderName)
-    {
-        return !string.IsNullOrEmpty(folderName) &&
-               !string.IsNullOrEmpty(calendarFolderName) &&
-               string.Equals(folderName, calendarFolderName, StringComparison.Ordinal);
-    }
 
-    internal static string GetDefaultViewXmlForFolder(string? folderName, string? calendarFolderName,
-        string monthXml)
-    {
-        return ShouldPersistViewXmlForFolder(folderName, calendarFolderName) ? monthXml : string.Empty;
-    }
 
-    /// <summary>
-    ///     Only the Calendar keeps a custom ViewXML (its month/day view); every other folder uses the
-    ///     default view. A stale calendar ViewXML left applied when switching to another folder stops the
-    ///     Outlook View Control from switching on the first attempt, so it must be cleared for any
-    ///     non-Calendar view.
-    /// </summary>
-    internal static bool ShouldClearViewXmlForFolderType(FolderViewType folderViewType)
-    {
-        return folderViewType != FolderViewType.Calendar;
-    }
 
     private void SetSelectedMenuItem()
     {
-        var knownFolderNames = _defaultFolderViewTypes.ToDictionary(
+        var knownFolderNames = DefaultFolderViewTypes.ToDictionary(
             type => type,
             type => GetFolderFromViewType(type)?.Name);
 
@@ -358,36 +334,7 @@ public partial class MainForm : Form
         }
     }
 
-    /// <summary>The default folder view types, in the precedence used when matching a folder by name.</summary>
-    private static readonly FolderViewType[] _defaultFolderViewTypes =
-    [
-        FolderViewType.Calendar,
-        FolderViewType.Contacts,
-        FolderViewType.Inbox,
-        FolderViewType.Notes,
-        FolderViewType.Tasks,
-        FolderViewType.Todo
-    ];
 
-    /// <summary>
-    ///     Returns the <see cref="FolderViewType" /> whose default folder name matches
-    ///     <paramref name="folderName" /> (checked in <see cref="_defaultFolderViewTypes" /> order), or null
-    ///     when it matches none -- i.e. the selected folder is a custom folder.
-    /// </summary>
-    internal static FolderViewType? MatchFolderViewTypeByName(
-        string? folderName, IReadOnlyDictionary<FolderViewType, string?> knownFolderNames)
-    {
-        foreach (var type in _defaultFolderViewTypes)
-        {
-            if (knownFolderNames.TryGetValue(type, out var name) &&
-                string.Equals(folderName, name, StringComparison.Ordinal))
-            {
-                return type;
-            }
-        }
-
-        return null;
-    }
 
     private void SelectCustomFolder()
     {
@@ -530,20 +477,6 @@ public partial class MainForm : Form
         CheckSelectedMenuItemInCollection(viewItem, OutlookViewsMenu.DropDownItems);
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="fullPath"></param>
-    /// <returns></returns>
-    internal static string GetFolderNameFromFullPath(string? fullPath)
-    {
-        if (fullPath != null)
-        {
-            return fullPath.Substring(fullPath.LastIndexOf('\\') + 1,
-                fullPath.Length - fullPath.LastIndexOf('\\') - 1);
-        }
-
-        return string.Empty;
-    }
 
     /// <summary>
     /// </summary>
@@ -579,10 +512,6 @@ public partial class MainForm : Form
         return fullFolderPath;
     }
 
-    internal static string GetFolderPath(string folderPath)
-    {
-        return folderPath.Replace("\\\\Personal Folders\\", "");
-    }
 
     private void ShowHideDesktopComponent()
     {
@@ -591,13 +520,6 @@ public partial class MainForm : Form
         Visible = nextState.Visible;
     }
 
-    internal static VisibilityToggleState GetNextVisibilityState(bool currentlyVisible, string showText,
-        string hideText)
-    {
-        return currentlyVisible
-            ? new VisibilityToggleState(false, showText)
-            : new VisibilityToggleState(true, hideText);
-    }
 
     private void DisableEnableEditing()
     {
@@ -607,17 +529,7 @@ public partial class MainForm : Form
         OutlookViewControl.Enabled = nextState.Enabled;
     }
 
-    internal static EditingToggleState GetNextEditingState(bool currentlyEnabled)
-    {
-        return currentlyEnabled
-            ? new EditingToggleState(false, true, true)
-            : new EditingToggleState(true, false, false);
-    }
 
-    internal static bool IsWindowOnAnyScreen(Rectangle windowBounds, IEnumerable<Rectangle> screenAreas)
-    {
-        return screenAreas.Any(area => area.IntersectsWith(windowBounds));
-    }
 
     /// <summary>
     ///     Returns a MAPI Folder for the passes FolderViewType.
@@ -738,15 +650,6 @@ public partial class MainForm : Form
         NewEmailButton.Visible = toolbarState.NewEmailButtonVisible;
     }
 
-    internal static ToolbarButtonVisibility GetToolbarButtonVisibilityFor(string? defaultMessagePath)
-    {
-        return defaultMessagePath switch
-        {
-            "IPM.Appointment" => new ToolbarButtonVisibility(true, false),
-            "IPM.Note" => new ToolbarButtonVisibility(false, true),
-            _ => new ToolbarButtonVisibility(false, false)
-        };
-    }
 
     private void UpdateCustomFolder(MAPIFolder? oFolder)
     {
@@ -896,32 +799,6 @@ public partial class MainForm : Form
         base.WndProc(ref m);
     }
 
-    #region Nested type: ResizeDirection
-
-    internal readonly record struct ToolbarButtonVisibility(bool CalendarNavigationVisible,
-        bool NewEmailButtonVisible);
-
-    internal readonly record struct VisibilityToggleState(bool Visible, string MenuText);
-
-    internal readonly record struct EditingToggleState(bool Enabled, bool MenuChecked, bool DisableEditingPreference);
-
-    internal readonly record struct SavedViewSettings(string? OutlookFolderView, string? OutlookFolderName,
-        string ViewXml);
-
-    internal enum ResizeDirection
-    {
-        None = 0,
-        Left = 1,
-        TopLeft = 2,
-        Top = 3,
-        TopRight = 4,
-        Right = 5,
-        BottomRight = 6,
-        Bottom = 7,
-        BottomLeft = 8
-    }
-
-    #endregion
 
     #region Events
 
@@ -1147,55 +1024,6 @@ public partial class MainForm : Form
         ResizeDir = GetResizeDirection(e.Location, new Size(Width, Height), GlobalPreferences.LockPosition);
     }
 
-    internal static ResizeDirection GetResizeDirection(Point location, Size formSize, bool lockPosition)
-    {
-        if (lockPosition)
-        {
-            return ResizeDirection.None;
-        }
-
-        if (location is { X: < ResizeBorderWidth, Y: < ResizeBorderWidth })
-        {
-            return ResizeDirection.TopLeft;
-        }
-
-        if (location.X < ResizeBorderWidth && location.Y > formSize.Height - ResizeBorderWidth)
-        {
-            return ResizeDirection.BottomLeft;
-        }
-
-        if (location.X > formSize.Width - ResizeBorderWidth && location.Y > formSize.Height - ResizeBorderWidth)
-        {
-            return ResizeDirection.BottomRight;
-        }
-
-        if (location.X > formSize.Width - ResizeBorderWidth && location.Y < ResizeBorderWidth)
-        {
-            return ResizeDirection.TopRight;
-        }
-
-        if (location.X < ResizeBorderWidth)
-        {
-            return ResizeDirection.Left;
-        }
-
-        if (location.X > formSize.Width - ResizeBorderWidth)
-        {
-            return ResizeDirection.Right;
-        }
-
-        if (location.Y < ResizeBorderWidth)
-        {
-            return ResizeDirection.Top;
-        }
-
-        if (location.Y > formSize.Height - ResizeBorderWidth)
-        {
-            return ResizeDirection.Bottom;
-        }
-
-        return ResizeDirection.None;
-    }
 
     private void HeaderPanel_MouseDown(object sender, MouseEventArgs e)
     {
@@ -1305,12 +1133,6 @@ public partial class MainForm : Form
         SetViewXml(settings.ViewXml);
     }
 
-    internal static SavedViewSettings GetSavedViewSettings(string? view, string? folder, string? viewXml,
-        string? calendarFolderName)
-    {
-        return new SavedViewSettings(view, folder,
-            ShouldPersistViewXmlForFolder(folder, calendarFolderName) ? viewXml ?? string.Empty : string.Empty);
-    }
 
     private void SetViewXml(string value)
     {
@@ -1372,28 +1194,7 @@ public partial class MainForm : Form
         OutlookViewControl.GoToDate(targetDate.ToString(CultureInfo.CurrentCulture));
     }
 
-    internal static DateTime GetCalendarNavigationTargetDate(DateTime selectedDate, CurrentCalendarView mode,
-        int offset)
-    {
-        return mode == CurrentCalendarView.Month
-            ? selectedDate.AddMonths(offset)
-            : selectedDate.AddDays(offset);
-    }
 
-    internal static (CurrentCalendarView type, int offset) GetNextPreviousOffsetBasedOnCalendarViewMode(
-        CurrentCalendarView mode)
-    {
-        var offset = mode switch
-        {
-            CurrentCalendarView.Day => (CurrentCalendarView.Day, 1),
-            CurrentCalendarView.Week => (CurrentCalendarView.Week, 7),
-            CurrentCalendarView.WorkWeek => (CurrentCalendarView.WorkWeek, 7),
-            CurrentCalendarView.Month => (CurrentCalendarView.Month, 1),
-            _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
-        };
-
-        return offset;
-    }
 
     // Terrible hack to get around a bug in the Outlook View Control where if you have more than one
     // calendar view active, GoToDate will not work on the instance it's called on, instead it will 
@@ -1432,29 +1233,12 @@ public partial class MainForm : Form
         lastButtonGuidClicked = (Guid)button.Tag;
     }
 
-    internal static bool ShouldReactivateViewControl(int instanceCount, Guid buttonId, Guid lastButtonGuidClicked)
-    {
-        return instanceCount != 1 && buttonId != lastButtonGuidClicked;
-    }
 
     private CurrentCalendarView GetCurrentCalendarViewMode()
     {
         return GetCalendarViewModeFromViewXml(OutlookViewControl.ViewXML);
     }
 
-    internal static CurrentCalendarView GetCalendarViewModeFromViewXml(string viewXml)
-    {
-        var mode = CurrentCalendarView.Day;
-
-        var xElement = XDocument.Parse(viewXml).Element("view");
-        var element = xElement?.Element("mode");
-        if (element != null)
-        {
-            mode = (CurrentCalendarView)Convert.ToInt32(element.Value);
-        }
-
-        return mode;
-    }
 
     private void TransparencySlider_ValueChanged(object sender, EventArgs args, decimal value)
     {
@@ -1481,11 +1265,6 @@ public partial class MainForm : Form
         TransparencySlider_ValueChanged(TransparencySlider, EventArgs.Empty, (decimal)(opacityVal * 100));
     }
 
-    internal static double NormalizeOpacityPercentage(decimal percentage)
-    {
-        var opacityVal = (double)(percentage / 100);
-        return Math.Abs(opacityVal - 1) < double.Epsilon ? 0.99 : opacityVal;
-    }
 
     private void WindowMessageTimer_Tick(object sender, EventArgs e)
     {
@@ -1641,21 +1420,6 @@ public partial class MainForm : Form
         }
     }
 
-    internal static Cursor GetCursorForResizeDirection(ResizeDirection resizeDirection)
-    {
-        return resizeDirection switch
-        {
-            ResizeDirection.Left => Cursors.SizeWE,
-            ResizeDirection.Right => Cursors.SizeWE,
-            ResizeDirection.Top => Cursors.SizeNS,
-            ResizeDirection.Bottom => Cursors.SizeNS,
-            ResizeDirection.BottomLeft => Cursors.SizeNESW,
-            ResizeDirection.TopRight => Cursors.SizeNESW,
-            ResizeDirection.BottomRight => Cursors.SizeNWSE,
-            ResizeDirection.TopLeft => Cursors.SizeNWSE,
-            _ => Cursors.Default
-        };
-    }
 
     #endregion
 }

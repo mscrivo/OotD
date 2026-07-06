@@ -15,7 +15,7 @@ public class MainFormCalendarNavigationTests
         CurrentCalendarView expectedMode)
     {
         // Act
-        var result = MainForm.GetCalendarViewModeFromViewXml(viewXml);
+        var result = MainFormCalendarNavigation.GetCalendarViewModeFromViewXml(viewXml);
 
         // Assert
         result.Should().Be(expectedMode);
@@ -25,7 +25,7 @@ public class MainFormCalendarNavigationTests
     public void GetCalendarViewModeFromViewXml_WhenModeElementMissing_ReturnsDay()
     {
         // Act
-        var result = MainForm.GetCalendarViewModeFromViewXml("<view />");
+        var result = MainFormCalendarNavigation.GetCalendarViewModeFromViewXml("<view />");
 
         // Assert
         result.Should().Be(CurrentCalendarView.Day);
@@ -35,7 +35,7 @@ public class MainFormCalendarNavigationTests
     public void GetCalendarViewModeFromViewXml_WithUnsupportedNumericMode_ReturnsUnsupportedMode()
     {
         // Act
-        var result = MainForm.GetCalendarViewModeFromViewXml("<view><mode>999</mode></view>");
+        var result = MainFormCalendarNavigation.GetCalendarViewModeFromViewXml("<view><mode>999</mode></view>");
 
         // Assert
         result.Should().Be((CurrentCalendarView)999);
@@ -45,7 +45,7 @@ public class MainFormCalendarNavigationTests
     public void GetCalendarViewModeFromViewXml_WithMalformedXml_ThrowsXmlException()
     {
         // Act
-        var action = () => MainForm.GetCalendarViewModeFromViewXml("<view><mode>1</view>");
+        var action = () => MainFormCalendarNavigation.GetCalendarViewModeFromViewXml("<view><mode>1</view>");
 
         // Assert
         action.Should().Throw<System.Xml.XmlException>();
@@ -55,7 +55,7 @@ public class MainFormCalendarNavigationTests
     public void GetCalendarViewModeFromViewXml_WithNonNumericMode_ThrowsFormatException()
     {
         // Act
-        var action = () => MainForm.GetCalendarViewModeFromViewXml("<view><mode>week</mode></view>");
+        var action = () => MainFormCalendarNavigation.GetCalendarViewModeFromViewXml("<view><mode>week</mode></view>");
 
         // Assert
         action.Should().Throw<FormatException>();
@@ -72,7 +72,7 @@ public class MainFormCalendarNavigationTests
         int expectedOffset)
     {
         // Act
-        var (type, offset) = MainForm.GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
+        var (type, offset) = MainFormCalendarNavigation.GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
 
         // Assert
         type.Should().Be(expectedType);
@@ -93,7 +93,7 @@ public class MainFormCalendarNavigationTests
         string expectedDate)
     {
         // Act
-        var result = MainForm.GetCalendarNavigationTargetDate(DateTime.Parse(selectedDate), mode, offset);
+        var result = MainFormCalendarNavigation.GetCalendarNavigationTargetDate(DateTime.Parse(selectedDate), mode, offset);
 
         // Assert
         result.Should().Be(DateTime.Parse(expectedDate));
@@ -103,7 +103,7 @@ public class MainFormCalendarNavigationTests
     public void GetNextPreviousOffsetBasedOnCalendarViewMode_WithUnsupportedMode_ThrowsArgumentOutOfRangeException()
     {
         // Act
-        Action act = () => MainForm.GetNextPreviousOffsetBasedOnCalendarViewMode((CurrentCalendarView)999);
+        Action act = () => MainFormCalendarNavigation.GetNextPreviousOffsetBasedOnCalendarViewMode((CurrentCalendarView)999);
 
         // Assert
         act.Should().Throw<ArgumentOutOfRangeException>();

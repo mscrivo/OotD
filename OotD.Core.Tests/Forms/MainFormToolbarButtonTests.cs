@@ -17,7 +17,7 @@ public class MainFormToolbarButtonTests
         bool expectedNewEmailButtonVisible)
     {
         // Act
-        var result = MainForm.GetToolbarButtonVisibilityFor(messageClass);
+        var result = MainFormToolbarPolicy.GetToolbarButtonVisibilityFor(messageClass);
 
         // Assert
         result.CalendarNavigationVisible.Should().Be(expectedCalendarNavigationVisible);

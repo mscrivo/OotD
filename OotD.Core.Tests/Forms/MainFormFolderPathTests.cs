@@ -13,7 +13,7 @@ public class MainFormFolderPathTests
     public void GetFolderNameFromFullPath_WithVariousInputs_ReturnsExpectedFolderName(string? fullPath, string expected)
     {
         // Act
-        var result = MainForm.GetFolderNameFromFullPath(fullPath);
+        var result = MainFormFolderPolicy.GetFolderNameFromFullPath(fullPath);
 
         // Assert
         result.Should().Be(expected);
@@ -27,7 +27,7 @@ public class MainFormFolderPathTests
     public void GetFolderPath_WithVariousInputs_ReturnsExpectedPath(string folderPath, string expected)
     {
         // Act
-        var result = MainForm.GetFolderPath(folderPath);
+        var result = MainFormFolderPolicy.GetFolderPath(folderPath);
 
         // Assert
         result.Should().Be(expected);

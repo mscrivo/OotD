@@ -26,27 +26,27 @@ public class MainFormFolderSelectionTests
     public void MatchFolderViewTypeByName_WhenNameMatchesADefaultFolder_ReturnsThatType(
         string folderName, FolderViewType expected)
     {
-        MainForm.MatchFolderViewTypeByName(folderName, DefaultNames()).Should().Be(expected);
+        MainFormFolderPolicy.MatchFolderViewTypeByName(folderName, DefaultNames()).Should().Be(expected);
     }
 
     [Fact]
     public void MatchFolderViewTypeByName_WhenNameMatchesNoDefaultFolder_ReturnsNull()
     {
         // A custom folder the user picked.
-        MainForm.MatchFolderViewTypeByName("Project X", DefaultNames()).Should().BeNull();
+        MainFormFolderPolicy.MatchFolderViewTypeByName("Project X", DefaultNames()).Should().BeNull();
     }
 
     [Fact]
     public void MatchFolderViewTypeByName_IsCaseSensitive()
     {
         // Ordinal comparison: casing must match exactly.
-        MainForm.MatchFolderViewTypeByName("inbox", DefaultNames()).Should().BeNull();
+        MainFormFolderPolicy.MatchFolderViewTypeByName("inbox", DefaultNames()).Should().BeNull();
     }
 
     [Fact]
     public void MatchFolderViewTypeByName_WhenFolderNameIsNull_ReturnsNull()
     {
-        MainForm.MatchFolderViewTypeByName(null, DefaultNames()).Should().BeNull();
+        MainFormFolderPolicy.MatchFolderViewTypeByName(null, DefaultNames()).Should().BeNull();
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class MainFormFolderSelectionTests
             [FolderViewType.Contacts] = "Shared"
         };
 
-        MainForm.MatchFolderViewTypeByName("Shared", names).Should().Be(FolderViewType.Calendar);
+        MainFormFolderPolicy.MatchFolderViewTypeByName("Shared", names).Should().Be(FolderViewType.Calendar);
     }
 
     [Fact]
@@ -71,7 +71,7 @@ public class MainFormFolderSelectionTests
             [FolderViewType.Inbox] = "Inbox"
         };
 
-        MainForm.MatchFolderViewTypeByName("Inbox", names).Should().Be(FolderViewType.Inbox);
-        MainForm.MatchFolderViewTypeByName("Calendar", names).Should().BeNull();
+        MainFormFolderPolicy.MatchFolderViewTypeByName("Inbox", names).Should().Be(FolderViewType.Inbox);
+        MainFormFolderPolicy.MatchFolderViewTypeByName("Calendar", names).Should().BeNull();
     }
 }

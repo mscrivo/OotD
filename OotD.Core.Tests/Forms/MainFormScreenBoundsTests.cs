@@ -11,7 +11,7 @@ public class MainFormScreenBoundsTests
         var window = new Rectangle(100, 100, 300, 200);
         var screens = new[] { new Rectangle(0, 0, 1920, 1080) };
 
-        MainForm.IsWindowOnAnyScreen(window, screens).Should().BeTrue();
+        MainFormWindowPolicy.IsWindowOnAnyScreen(window, screens).Should().BeTrue();
     }
 
     [Fact]
@@ -20,7 +20,7 @@ public class MainFormScreenBoundsTests
         var window = new Rectangle(-100, -50, 300, 200);
         var screens = new[] { new Rectangle(0, 0, 1920, 1080) };
 
-        MainForm.IsWindowOnAnyScreen(window, screens).Should().BeTrue();
+        MainFormWindowPolicy.IsWindowOnAnyScreen(window, screens).Should().BeTrue();
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class MainFormScreenBoundsTests
         var window = new Rectangle(3000, 2000, 300, 200);
         var screens = new[] { new Rectangle(0, 0, 1920, 1080) };
 
-        MainForm.IsWindowOnAnyScreen(window, screens).Should().BeFalse();
+        MainFormWindowPolicy.IsWindowOnAnyScreen(window, screens).Should().BeFalse();
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class MainFormScreenBoundsTests
             new Rectangle(1920, 0, 1920, 1080)
         };
 
-        MainForm.IsWindowOnAnyScreen(window, screens).Should().BeTrue();
+        MainFormWindowPolicy.IsWindowOnAnyScreen(window, screens).Should().BeTrue();
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class MainFormScreenBoundsTests
         var window = new Rectangle(2000, 100, 300, 200);
         var screens = new[] { new Rectangle(0, 0, 1920, 1080) };
 
-        MainForm.IsWindowOnAnyScreen(window, screens).Should().BeFalse();
+        MainFormWindowPolicy.IsWindowOnAnyScreen(window, screens).Should().BeFalse();
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class MainFormScreenBoundsTests
     {
         var window = new Rectangle(100, 100, 300, 200);
 
-        MainForm.IsWindowOnAnyScreen(window, []).Should().BeFalse();
+        MainFormWindowPolicy.IsWindowOnAnyScreen(window, []).Should().BeFalse();
     }
 
     [Theory]
@@ -72,6 +72,6 @@ public class MainFormScreenBoundsTests
         var window = new Rectangle(left, top, width, height);
         var screens = new[] { new Rectangle(0, 0, 1920, 1080) };
 
-        MainForm.IsWindowOnAnyScreen(window, screens).Should().BeFalse();
+        MainFormWindowPolicy.IsWindowOnAnyScreen(window, screens).Should().BeFalse();
     }
 }
