@@ -4,6 +4,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -12,6 +13,8 @@ using OotD.Properties;
 
 namespace OotD.Forms;
 
+// Pure WinForms dialog with no testable logic; excluded from coverage like the generated designer code.
+[ExcludeFromCodeCoverage]
 public sealed partial class AboutBox : Form
 {
     public AboutBox()

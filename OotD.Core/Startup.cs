@@ -4,6 +4,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -20,6 +21,9 @@ using Timer = System.Timers.Timer;
 
 namespace OotD;
 
+// Application composition root: Outlook COM bootstrap, single-instance mutex and WinForms message
+// loop. No unit-testable logic (command-line parsing is covered via Options), so excluded from coverage.
+[ExcludeFromCodeCoverage]
 public static class Startup
 {
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
