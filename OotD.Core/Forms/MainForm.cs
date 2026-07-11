@@ -1176,7 +1176,7 @@ public partial class MainForm : Form
 
         var (type, offset) = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
         var targetDate = GetCalendarNavigationTargetDate(OutlookViewControl.SelectedDate, type, offset * -1);
-        OutlookViewControl.GoToDate(targetDate.ToString(CultureInfo.CurrentCulture));
+        OutlookViewControl.GoToDate(targetDate.ToString(CultureInfo.InvariantCulture));
     }
 
     private void ButtonNext_Click(object sender, EventArgs e)
@@ -1188,7 +1188,7 @@ public partial class MainForm : Form
 
         var (type, offset) = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
         var targetDate = GetCalendarNavigationTargetDate(OutlookViewControl.SelectedDate, type, offset);
-        OutlookViewControl.GoToDate(targetDate.ToString(CultureInfo.CurrentCulture));
+        OutlookViewControl.GoToDate(targetDate.ToString(CultureInfo.InvariantCulture));
     }
 
 
