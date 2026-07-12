@@ -958,6 +958,9 @@ public partial class MainForm : Form
 
     private void ExitMenu_Click(object sender, EventArgs e)
     {
+        // persist the latest view state, matching the InstanceManager exit path.
+        SaveCurrentViewSettings();
+
         Dispose();
         Startup.DisposeOutlookObjects();
 
@@ -982,6 +985,7 @@ public partial class MainForm : Form
         RegistryHelper.RenameSubKey(parentKey, InstanceName, result.Text);
         var oldInstanceName = InstanceName;
         InstanceName = result.Text;
+        Preferences.Dispose();
         Preferences = new InstancePreferences(InstanceName);
 
         OnInstanceRenamed(this, new InstanceRenamedEventArgs(oldInstanceName, InstanceName));

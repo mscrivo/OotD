@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using System.Globalization;
+using Microsoft.Win32;
 using OotD.Preferences;
 
 namespace OotD.Core.Tests.Preferences;
@@ -404,6 +405,62 @@ public class InstancePreferencesTests : IDisposable
         action2.Should().NotThrow();
         action3.Should().NotThrow();
         action4.Should().NotThrow();
+    }
+
+    [Fact]
+    public void Opacity_WhenSet_ShouldStoreCultureInvariantValue()
+    {
+        // Arrange
+        var uniqueInstanceName = $"OpacityInvariant_{Guid.NewGuid():N}";
+        var originalCulture = CultureInfo.CurrentCulture;
+
+        try
+        {
+            // A culture that uses ',' as the decimal separator.
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
+
+            // Act
+            _preferences = new InstancePreferences(uniqueInstanceName)
+            {
+                Opacity = 0.75
+            };
+
+            // Assert - the raw registry value must be invariant ("0.75", not "0,75").
+            using var testKey = CreateProductInstanceKey(uniqueInstanceName);
+            testKey.GetValue("Opacity").Should().Be("0.75");
+            _preferences.Opacity.Should().Be(0.75);
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = originalCulture;
+        }
+    }
+
+    [Fact]
+    public void Opacity_WithLegacyCurrentCultureValue_ShouldStillParse()
+    {
+        // Arrange - older versions persisted Opacity using the current culture (e.g. "0,75" under de-DE).
+        var uniqueInstanceName = $"OpacityLegacy_{Guid.NewGuid():N}";
+        var originalCulture = CultureInfo.CurrentCulture;
+
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
+
+            using var testKey = CreateProductInstanceKey(uniqueInstanceName);
+            testKey.SetValue("Opacity", "0,75");
+            _preferences = new InstancePreferences(uniqueInstanceName);
+
+            // Act
+            var opacity = _preferences.Opacity;
+
+            // Assert
+            opacity.Should().Be(0.75);
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = originalCulture;
+        }
     }
 
     [Fact]

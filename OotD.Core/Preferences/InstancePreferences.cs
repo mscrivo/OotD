@@ -8,7 +8,7 @@ using Microsoft.Win32;
 
 namespace OotD.Preferences;
 
-public class InstancePreferences(string instanceName)
+public class InstancePreferences(string instanceName) : IDisposable
 {
     public const int DefaultHeight = 500;
     public const int DefaultLeftPosition = 100;
@@ -21,21 +21,25 @@ public class InstancePreferences(string instanceName)
         ?? throw new InvalidOperationException();
 
     /// <summary>
-    ///     Main Window Opacity.
+    ///     Main Window Opacity. Stored culture-invariant; values written by older versions used the
+    ///     current culture (e.g. "0,5" under a German locale), so reading falls back to that format.
     /// </summary>
     public double Opacity
     {
         get
         {
-            var opacity = DefaultOpacity;
+            var storedValue = _appReg.GetValue("Opacity", DefaultOpacity.ToString(CultureInfo.InvariantCulture))
+                .ToString();
 
-            return double.TryParse(
-                _appReg.GetValue("Opacity", opacity.ToString("G", CultureInfo.CurrentCulture)).ToString(),
-                out opacity)
-                ? opacity
-                : DefaultOpacity;
+            if (double.TryParse(storedValue, NumberStyles.Float, CultureInfo.InvariantCulture, out var opacity) ||
+                double.TryParse(storedValue, NumberStyles.Float, CultureInfo.CurrentCulture, out opacity))
+            {
+                return opacity;
+            }
+
+            return DefaultOpacity;
         }
-        set => _appReg.SetValue("Opacity", value);
+        set => _appReg.SetValue("Opacity", value.ToString(CultureInfo.InvariantCulture));
     }
 
     /// <summary>
@@ -148,8 +152,9 @@ public class InstancePreferences(string instanceName)
         set => _appReg.SetValue("VirtualDesktopId", value ?? Guid.Empty.ToString());
     }
 
-    ~InstancePreferences()
+    public void Dispose()
     {
         _appReg.Close();
+        GC.SuppressFinalize(this);
     }
 }

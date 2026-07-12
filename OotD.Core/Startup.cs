@@ -15,6 +15,7 @@ using NLog;
 using OotD.Forms;
 using OotD.Preferences;
 using OotD.Properties;
+using OotD.Utility;
 using Application = Microsoft.Office.Interop.Outlook.Application;
 using Exception = System.Exception;
 using Timer = System.Timers.Timer;
@@ -50,9 +51,23 @@ public static class Startup
 
         _logger.Debug("Checking to see if there is an instance running.");
 
-        using (new Mutex(true, AppDomain.CurrentDomain.FriendlyName, out var createdNew))
+        using (var singleInstanceMutex = new Mutex(false, AppDomain.CurrentDomain.FriendlyName))
         {
-            if (createdNew)
+            bool acquired;
+            try
+            {
+                // Wait a few seconds instead of failing immediately so that a restart
+                // (new process launched while the old one is still shutting down and
+                // releasing the mutex) doesn't get rejected as "already running".
+                acquired = singleInstanceMutex.WaitOne(TimeSpan.FromSeconds(5));
+            }
+            catch (AbandonedMutexException)
+            {
+                // The previous instance died without releasing the mutex; we own it now.
+                acquired = true;
+            }
+
+            if (acquired)
             {
                 try
                 {
@@ -76,20 +91,42 @@ public static class Startup
 
                     _checkIfOutlookIsRunningTimer.Elapsed += (_, _) =>
                     {
+                        // capture the field so a concurrent DisposeOutlookObjects (which nulls it
+                        // during normal shutdown) isn't mistaken for a dead Outlook.
+                        var outlookExplorer = _outlookExplorer;
+                        if (outlookExplorer == null)
+                        {
+                            return;
+                        }
+
                         try
                         {
-                            // try to access _outlookExplorer and if it throws that means
+                            // try to access the explorer and if it throws that means
                             // Outlook is dead.
-                            _ = _outlookExplorer.CurrentView;
+                            _ = outlookExplorer.CurrentView;
                         }
                         catch
                         {
                             _checkIfOutlookIsRunningTimer.Stop();
 
-                            MessageBox.Show(Resources.OutlookNotRunning, Resources.ErrorCaption,
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            // System.Timers.Timer fires on a thread-pool thread; marshal the
+                            // message box and shutdown onto the UI thread when we have one.
+                            static void NotifyAndExit()
+                            {
+                                MessageBox.Show(Resources.OutlookNotRunning, Resources.ErrorCaption,
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                            Environment.Exit(-1);
+                                Environment.Exit(-1);
+                            }
+
+                            if (_instanceManager is { IsHandleCreated: true })
+                            {
+                                _instanceManager.InvokeEx(_ => NotifyAndExit());
+                            }
+                            else
+                            {
+                                NotifyAndExit();
+                            }
                         }
                     };
                     _checkIfOutlookIsRunningTimer.Start();
@@ -197,12 +234,11 @@ public static class Startup
             }
             catch (COMException loE)
             {
-                if ((uint)loE.ErrorCode == 0x80010001)
-                {
-                    retryCount++;
-                    // RPC_E_CALL_REJECTED - sleep half a second then try again
-                    Thread.Sleep(500);
-                }
+                // Count and pace every failure, not just RPC_E_CALL_REJECTED (0x80010001),
+                // so an unexpected repeating COM error can't spin this loop forever.
+                retryCount++;
+                _logger.Debug($"RPC server not available yet (0x{(uint)loE.ErrorCode:X8}), attempt {retryCount}.");
+                Thread.Sleep(500);
             }
         }
 

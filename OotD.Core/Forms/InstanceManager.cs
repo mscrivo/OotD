@@ -35,6 +35,7 @@ public partial class InstanceManager : Form
     private readonly Graphics _graphics;
     private readonly Dictionary<string, MainForm> _mainFormInstances = [];
     private readonly Sparkle _sparkle;
+    private int _currentTrayIconDay;
 
     public InstanceManager()
     {
@@ -428,17 +429,29 @@ public partial class InstanceManager : Form
 
     private void ChangeTrayIconDate()
     {
+        var today = DateTime.Now;
+
+        // the timer ticks every second; only rebuild the icon when the day actually changes.
+        if (_currentTrayIconDay == today.Day)
+        {
+            return;
+        }
+
         // get new instance of the resource manager.  This will allow us to look up a resource by name.
         var resourceManager = new ResourceManager("OotD.Properties.Resources", typeof(Resources).Assembly);
 
-        var today = DateTime.Now;
-
         // find the icon for the today's day of the month and replace the tray icon with it, compensate for user's DPI settings.
-        var dateIcon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture)!;
+        using var dateIcon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture)!;
+
+        // dispose the outgoing icon so its GDI handle isn't leaked.
+        var previousIcon = trayIcon.Icon;
 
         trayIcon.Icon = _graphics.DpiX < 96f
             ? new Icon(dateIcon, new Size(16, 16))
             : new Icon(dateIcon, new Size(32, 32));
+
+        previousIcon?.Dispose();
+        _currentTrayIconDay = today.Day;
     }
 
     private void UpdateTimer_Tick(object sender, EventArgs e)
@@ -829,10 +842,14 @@ public partial class InstanceManager : Form
 
     private void FlashForm(ToolStripDropDownItem dropDownItem)
     {
+        // the instance may have been renamed or removed since the flash was queued.
+        if (!_mainFormInstances.TryGetValue(dropDownItem.DropDownItems[0].Text!, out var formInstance))
+        {
+            return;
+        }
+
         for (var i = 0; i < 2; i++)
         {
-            var formInstance = _mainFormInstances[dropDownItem.DropDownItems[0].Text!];
-
             var currentOpacity = formInstance.Opacity;
             formInstance.InvokeEx(_ => formInstance.Opacity = .3);
             Thread.Sleep(250);
