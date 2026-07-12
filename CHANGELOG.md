@@ -7,6 +7,8 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+## [5.2.0] - 2026-07-12
+
 ### Fixed
 
 - Startup could hang in a busy loop if Outlook's RPC server returned an unexpected COM error; every failure now counts against the ~1 minute retry window.
