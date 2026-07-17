@@ -21,7 +21,7 @@ jobs:
       APP_SIGNING_STAGING_DIR: signing\app
       INSTALLER_OUTPUT_DIR: ServerStaging
       INSTALLER_SIGNING_STAGING_DIR: signing\installer
-      SIGNPATH_SIGNING_POLICY_SLUG: ${{ vars.SIGNPATH_TEST_SIGNING_POLICY_SLUG }}
+      SIGNPATH_SIGNING_POLICY_SLUG: ${{ github.ref == 'refs/heads/main' && vars.SIGNPATH_RELEASE_SIGNING_POLICY_SLUG || vars.SIGNPATH_TEST_SIGNING_POLICY_SLUG }}
 
     steps:
       - name: Checkout
@@ -119,7 +119,7 @@ jobs:
           path: CoverageReport
 
       - name: Stage app files for signing
-        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        if: github.event_name == 'push'
         shell: pwsh
         run: |
           if (Test-Path $env:APP_SIGNING_STAGING_DIR) {
@@ -140,7 +140,7 @@ jobs:
           }
 
       - name: Upload unsigned app payload
-        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        if: github.event_name == 'push'
         id: upload-unsigned-app
         uses: actions/upload-artifact@v7
         with:
@@ -148,7 +148,7 @@ jobs:
           path: ${{ env.APP_SIGNING_STAGING_DIR }}\*
 
       - name: Sign app payload
-        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        if: github.event_name == 'push'
         id: sign-app
         uses: SignPath/github-action-submit-signing-request@v2
         with:
@@ -162,7 +162,7 @@ jobs:
           output-artifact-directory: "signed-app"
 
       - name: Replace app payload with signed files
-        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        if: github.event_name == 'push'
         shell: pwsh
         run: |
           $signedFiles = @(
@@ -190,7 +190,7 @@ jobs:
           options: /O+
 
       - name: Stage installer for signing
-        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        if: github.event_name == 'push'
         id: stage-installer
         shell: pwsh
         run: |
@@ -209,7 +209,7 @@ jobs:
           "installer-path=$($installer.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
       - name: Upload unsigned installer
-        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        if: github.event_name == 'push'
         id: upload-unsigned-installer
         uses: actions/upload-artifact@v7
         with:
@@ -218,7 +218,7 @@ jobs:
           archive: false
 
       - name: Sign installer
-        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        if: github.event_name == 'push'
         id: sign-installer
         uses: SignPath/github-action-submit-signing-request@v2
         with:
@@ -233,7 +233,7 @@ jobs:
           skip-decompress: true
 
       - name: Replace installer with signed output
-        if: github.event_name == 'push' && github.ref != 'refs/heads/main'
+        if: github.event_name == 'push'
         shell: pwsh
         run: |
           $signedInstaller = Get-ChildItem -Path 'signed-installer' -Recurse -File -Filter '*.exe' | Select-Object -First 1
