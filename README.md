@@ -75,3 +75,12 @@ Issues and pull requests are welcome. If you are changing runtime behavior, UI f
 ## License
 
 This project is released under the MIT License. See [LICENSE](LICENSE) for details.
+
+## Sponsors
+
+<table>
+  <tr>
+    <td><a href="https://signpath.io/"><img src="https://signpath.org/assets/favicon-50x50.png" alt="SignPath logo" width="40" /></a></td>
+    <td>Free code signing on Windows provided by <a href="https://signpath.io/">SignPath.io</a>, certificate by <a href="https://signpath.org/">SignPath Foundation</a></td>
+  </tr>
+</table>
