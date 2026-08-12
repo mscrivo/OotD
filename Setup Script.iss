@@ -97,7 +97,7 @@ const
   dotnetRuntimex64DesktopUrl = 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.11/windowsdesktop-runtime-10.0.11-win-x64.exe';
   dotnetRuntimex86DesktopUrl = 'https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/10.0.11/windowsdesktop-runtime-10.0.11-win-x86.exe';
   dotnetRuntimex64DesktopFilename = 'windowsdesktop-runtime-10.0.11-win-x64.exe';
-  dotnetRuntimex86DesktopFilename = 'windowsdesktop-runtime-10.0.11-win-x86.exe';
+  dotnetRuntimex86DesktopFilename = 'windowsdesktop-runtime-10.0.11-win-x86.exegit ';
 
 procedure InitializeWizard;
 begin
