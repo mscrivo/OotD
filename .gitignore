@@ -29,5 +29,5 @@ _ReSharper*/
 packages/*
 README.html
 /.vs
-CoverageReport/Cobertura.xml
+CoverageReport/
 *.csproj.lscache
