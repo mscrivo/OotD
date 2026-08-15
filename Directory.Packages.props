@@ -19,11 +19,10 @@
     <PackageVersion Include="NLog.Schema" Version="6.1.4" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
 
-    <!-- Test -->
-    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
-    <PackageVersion Include="xunit.v3" Version="3.2.2" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <!-- Test (Microsoft.Testing.Platform) -->
+    <PackageVersion Include="coverlet.MTP" Version="10.0.1" />
+    <PackageVersion Include="xunit.v3" Version="4.0.0" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.TrxReport" Version="2.3.3" />
     <PackageVersion Include="AwesomeAssertions" Version="9.5.0" />
   </ItemGroup>
 

@@ -53,7 +53,7 @@ jobs:
         run: |
           if (Test-Path "TestResults") { Remove-Item "TestResults" -Recurse -Force }
           if (Test-Path "CoverageReport") { Remove-Item "CoverageReport" -Recurse -Force }
-          dotnet test OutlookDesktop.sln --configuration $env:Configuration --collect:"XPlat Code Coverage" --settings coverlet.runsettings --results-directory ./TestResults --logger "trx;LogFileName=test-results.trx" --verbosity normal
+          dotnet test --project OotD.Core.Tests/OotD.Core.Tests.csproj --configuration $env:Configuration --report-trx --results-directory ./TestResults --coverlet --coverlet-output-format cobertura --coverlet-exclude-by-file "**/NetSparkle/**/*" --coverlet-exclude-by-file "**/MACTrackBarLib/**/*" --verbosity normal
         env:
           Configuration: ${{ matrix.configuration }}
 
@@ -68,7 +68,7 @@ jobs:
       - name: Generate coverage report
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
-          reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"CoverageReport" -reporttypes:"Html;Cobertura" -assemblyfilters:"+OotD.*;-NetSparkle*;-MACTrackBarLib*" -filefilters:"-*.Designer.cs;-*Resources.Designer.cs;-*LibraryImports.g.cs;-*\\obj\\*"
+          reportgenerator -reports:"TestResults/**/coverage.cobertura*.xml" -targetdir:"CoverageReport" -reporttypes:"Html;Cobertura" -assemblyfilters:"+OotD.*;-NetSparkle*;-MACTrackBarLib*" -filefilters:"-*.Designer.cs;-*Resources.Designer.cs;-*LibraryImports.g.cs;-*\\obj\\*"
 
       - name: Publish coverage summary
         if: always()
