@@ -7,6 +7,12 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+## [5.3.0] - 2026-08-15
+
+### Changed
+
+- Windows are now pinned to the desktop so they stay behind other applications instead of floating above them.
+
 ## [5.2.0] - 2026-07-12
 
 ### Fixed
