@@ -68,7 +68,7 @@ jobs:
       - name: Generate coverage report
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
-          reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"CoverageReport" -reporttypes:"Html;Cobertura" -assemblyfilters:"+OotD.*;-NetSparkle*;-MACTrackBarLib*" -filefilters:"-*.Designer.cs;-*Resources.Designer.cs;-*LibraryImports.g.cs;-*\\obj\\*"
+          reportgenerator -reports:"TestResults/**/coverage.cobertura*.xml" -targetdir:"CoverageReport" -reporttypes:"Html;Cobertura" -assemblyfilters:"+OotD.*;-NetSparkle*;-MACTrackBarLib*" -filefilters:"-*.Designer.cs;-*Resources.Designer.cs;-*LibraryImports.g.cs;-*\\obj\\*"
 
       - name: Publish coverage summary
         if: always()
