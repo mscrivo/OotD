@@ -30,8 +30,15 @@ internal static partial class UnsafeNativeMethods
     internal const int WM_NCACTIVATE = 0x86;
     internal const int WM_RBUTTONDOWN = 0x0204;
     internal const int WM_WINDOWPOSCHANGING = 70;
+
     private static readonly nint HWND_BOTTOM = new(1);
     private static readonly nint HWND_TOPMOST = new(-1);
+
+    // Window style / class constants used to create the hidden desktop anchor helper window.
+    internal const uint WS_EX_TOOLWINDOW = 0x80;
+    internal const uint WS_POPUP = 0x80000000;
+    internal const uint WS_DISABLED = 0x1;
+    internal const int CW_USEDEFAULT = unchecked((int)0x80000000);
 
     [LibraryImport("dwmapi.dll")]
     private static partial int DwmSetWindowAttribute(nint hwnd, int attr, ref int attrValue, int attrSize);
@@ -44,8 +51,7 @@ internal static partial class UnsafeNativeMethods
     internal static partial nint SendMessage(nint hWnd, uint Msg, nint wParam, nint lParam);
 
     [LibraryImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static partial void SetWindowPos(IntPtr hWnd,
+    internal static partial void SetWindowPos(IntPtr hWnd,
         IntPtr hWndInsertAfter,
         int X,
         int Y,
@@ -55,15 +61,20 @@ internal static partial class UnsafeNativeMethods
 
     /// <summary>
     ///     This will send the specified window to the bottom of the z-order, so that it's effectively behind every other
-    ///     window.
-    ///     This only works for Vista or higher and when Aero is disabled, so the code checks for that condition.
+    ///     window. The window is inserted directly behind the hidden desktop anchor helper (which sits at the very
+    ///     bottom of the stack), keeping it pinned below all other application windows.
     /// </summary>
     /// <param name="windowToSendBack">the form to work with</param>
     /// <param name="caller"></param>
     internal static void SendWindowToBack(Form windowToSendBack, [CallerMemberName] string? caller = null)
     {
         Debug.WriteLine($"Sending to bottom from {caller}");
-        SetWindowPos(windowToSendBack.Handle, HWND_BOTTOM, 0, 0, 0, 0, ZPOS_FLAGS);
+
+        // Ensure the helper window exists before we try to pin behind it.
+        DesktopPinning.Initialize();
+
+        var anchor = DesktopPinning.GetPinnedAnchorWindow();
+        SetWindowPos(windowToSendBack.Handle, anchor == IntPtr.Zero ? HWND_BOTTOM : anchor, 0, 0, 0, 0, ZPOS_FLAGS);
     }
 
     /// <summary>
@@ -81,11 +92,38 @@ internal static partial class UnsafeNativeMethods
     [LibraryImport("user32.dll")]
     internal static partial IntPtr GetShellWindow();
 
+    [LibraryImport("user32.dll", EntryPoint = "FindWindowExA", StringMarshalling = StringMarshalling.Utf8)]
+    internal static partial IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter,
+        string? lpClassName, string? lpWindowName);
+
+    [LibraryImport("user32.dll", EntryPoint = "GetAncestor")]
+    internal static partial IntPtr GetAncestor(IntPtr hWnd, uint gaFlags);
+
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+    internal static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
+    [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf8)]
+    internal static partial IntPtr GetModuleHandle(string? lpModuleName);
+
+    [LibraryImport("kernel32.dll", EntryPoint = "GetProcAddress", StringMarshalling = StringMarshalling.Utf8)]
+    internal static partial IntPtr GetProcAddress(IntPtr hModule, string procName);
 
     [LibraryImport("user32.dll")]
-    private static partial IntPtr GetWindow(IntPtr hWnd, uint wCmd);
+    internal static partial uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+    [LibraryImport("user32.dll", EntryPoint = "CreateWindowExA", StringMarshalling = StringMarshalling.Utf8)]
+    internal static partial IntPtr CreateWindowEx(uint dwExStyle, string lpClassName, string? lpWindowName,
+        uint dwStyle, int x, int y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu,
+        IntPtr hInstance, IntPtr lpParam);
+
+    [DllImport("user32.dll", EntryPoint = "RegisterClassExA", SetLastError = true)]
+    internal static extern ushort RegisterClassEx(ref WNDCLASSEX lpwcx);
+
+    [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf8)]
+    internal static partial IntPtr GetModuleHandleA(string? lpModuleName);
+
+    [LibraryImport("user32.dll")]
+    internal static partial nint DefWindowProc(IntPtr hWnd, uint uMsg, nint wParam, nint lParam);
 
     /// <summary>
     ///     Does not hide the calendar when the user hovers their mouse over the "Show Desktop" button
@@ -109,6 +147,25 @@ internal static partial class UnsafeNativeMethods
         internal int cx;
         internal int cy;
         internal int flags;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    internal struct WNDCLASSEX
+    {
+        internal uint cbSize;
+        internal uint style;
+        internal nint lpfnWndProc;
+        internal int cbClsExtra;
+        internal int cbWndExtra;
+        internal IntPtr hInstance;
+        internal IntPtr hIcon;
+        internal IntPtr hCursor;
+        internal IntPtr hbrBackground;
+        [MarshalAs(UnmanagedType.LPStr)]
+        internal string? lpszMenuName;
+        [MarshalAs(UnmanagedType.LPStr)]
+        internal string? lpszClassName;
+        internal IntPtr hIconSm;
     }
 
     private enum DwmNCRenderingPolicy
