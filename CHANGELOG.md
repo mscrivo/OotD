@@ -11,7 +11,10 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ### Changed
 
-- Windows are now pinned to the desktop so they stay behind other applications instead of floating above them.
+- Windows are now properly pinned to the desktop so they stay behind other applications always
+  - Note: Win-D (Show Desktop) will still hide the windows, but they will reappear when you restore the desktop
+- Re-added code signing thanks to signpath.io!
+- Updated to latest dotnet SDK & Runtimes
 
 ## [5.2.0] - 2026-07-12
 

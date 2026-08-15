@@ -4,17 +4,14 @@
     <Project Path="NetSparkle\NetSparkle\NetSparkle.csproj" />
   </Folder>
   <Folder Name="/Global/">
+    <File Path=".editorconfig" />
     <File Path=".github/workflows/build.yml" />
     <File Path=".github\workflows\codeql-analysis.yml" />
+    <File Path="CHANGELOG.md" />
     <File Path="LICENSE" />
     <File Path="README.md" />
-    <File Path="ServerStaging\ootdAppcast.xml" />
-    <File Path="ServerStaging\ootdReleaseNotes.md" />
-    <File Path="Setup Script.iss" />
-  </Folder>
-  <Folder Name="/Solution Items/">
-    <File Path=".editorconfig" />
     <File Path="renovate.json" />
+    <File Path="Setup Script.iss" />
   </Folder>
   <Project Path="OotD.Core.Tests/OotD.Core.Tests.csproj" />
   <Project Path="OotD.Core\OotD.Core.csproj" />
