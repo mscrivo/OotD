@@ -6,12 +6,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.Win32;
 using NLog;
@@ -21,20 +21,19 @@ using OotD.Events;
 using OotD.Preferences;
 using OotD.Properties;
 using OotD.Utility;
-using System.Diagnostics.CodeAnalysis;
 using Application = System.Windows.Forms.Application;
 using Exception = System.Exception;
 using View = Microsoft.Office.Interop.Outlook.View;
 
 namespace OotD.Forms;
 
-using static OotD.Forms.MainFormViewXmlPolicy;
-using static OotD.Forms.MainFormFolderPolicy;
-using static OotD.Forms.MainFormWindowPolicy;
 using static OotD.Forms.MainFormCalendarNavigation;
-using static OotD.Forms.MainFormToolbarPolicy;
+using static OotD.Forms.MainFormFolderPolicy;
 using static OotD.Forms.MainFormMenuPolicy;
+using static OotD.Forms.MainFormToolbarPolicy;
+using static OotD.Forms.MainFormViewXmlPolicy;
 using static OotD.Forms.MainFormVirtualDesktopPolicy;
+using static OotD.Forms.MainFormWindowPolicy;
 
 /// <inheritdoc />
 /// <summary>

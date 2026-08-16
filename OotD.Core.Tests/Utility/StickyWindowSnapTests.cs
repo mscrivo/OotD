@@ -1,5 +1,4 @@
-using System.Drawing;
-using OotD.Utility;
+﻿using OotD.Utility;
 
 namespace OotD.Core.Tests.Utility;
 

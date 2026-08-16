@@ -1,6 +1,6 @@
-﻿using OotD.Events;
+﻿using System.Reflection;
+using OotD.Events;
 using OotD.Forms;
-using System.Reflection;
 
 namespace OotD.Core.Tests.Forms;
 

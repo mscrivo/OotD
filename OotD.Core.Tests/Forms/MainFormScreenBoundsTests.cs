@@ -1,5 +1,4 @@
-using System.Drawing;
-using OotD.Forms;
+﻿using OotD.Forms;
 
 namespace OotD.Core.Tests.Forms;
 
