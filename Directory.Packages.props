@@ -15,8 +15,8 @@
   <ItemGroup Condition="$(MSBuildProjectName.StartsWith('OotD'))">
     <!-- Application -->
     <PackageVersion Include="CommandLineParser" Version="2.9.1" />
-    <PackageVersion Include="NLog" Version="6.1.4" />
-    <PackageVersion Include="NLog.Schema" Version="6.1.4" />
+    <PackageVersion Include="NLog" Version="6.2.0" />
+    <PackageVersion Include="NLog.Schema" Version="6.2.0" />
     <PackageVersion Include="TaskScheduler" Version="2.12.2" />
 
     <!-- Test (Microsoft.Testing.Platform) -->
