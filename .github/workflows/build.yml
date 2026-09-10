@@ -150,7 +150,7 @@ jobs:
       - name: Sign app payload
         if: github.event_name == 'push'
         id: sign-app
-        uses: SignPath/github-action-submit-signing-request@v2
+        uses: SignPath/github-action-submit-signing-request@v3
         with:
           api-token: "${{ secrets.SIGNPATH_API_TOKEN }}"
           organization-id: "${{ secrets.SIGNPATH_ORGANIZATION_ID }}"
@@ -220,7 +220,7 @@ jobs:
       - name: Sign installer
         if: github.event_name == 'push'
         id: sign-installer
-        uses: SignPath/github-action-submit-signing-request@v2
+        uses: SignPath/github-action-submit-signing-request@v3
         with:
           api-token: "${{ secrets.SIGNPATH_API_TOKEN }}"
           organization-id: "${{ secrets.SIGNPATH_ORGANIZATION_ID }}"
