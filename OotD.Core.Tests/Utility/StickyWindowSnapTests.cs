@@ -37,6 +37,60 @@ public class StickyWindowSnapTests
 
     #region ComputeMoveSnap
 
+    [Theory]
+    [InlineData(UnsafeNativeMethods.HT.HTTOPLEFT, 10)]
+    [InlineData(UnsafeNativeMethods.HT.HTTOP, 2)]
+    [InlineData(UnsafeNativeMethods.HT.HTTOPRIGHT, 18)]
+    [InlineData(UnsafeNativeMethods.HT.HTRIGHT, 16)]
+    [InlineData(UnsafeNativeMethods.HT.HTBOTTOMRIGHT, 20)]
+    [InlineData(UnsafeNativeMethods.HT.HTBOTTOM, 4)]
+    [InlineData(UnsafeNativeMethods.HT.HTBOTTOMLEFT, 12)]
+    [InlineData(UnsafeNativeMethods.HT.HTLEFT, 8)]
+    [InlineData(UnsafeNativeMethods.HT.HTCAPTION, 0)]
+    [InlineData(-1, 0)]
+    public void GetResizeDirection_MapsOnlyResizeTargets(int hitTest, int expected)
+    {
+        StickyWindow.GetResizeDirection(hitTest).Should().Be((StickyWindow.ResizeDir)expected);
+    }
+
+    [Theory]
+    [InlineData(-2100, -100, -1925, -7)]
+    [InlineData(100, 1200, -5, 1073)]
+    [InlineData(-1000, 500, -1005, 493)]
+    public void ComputeMoveBounds_ClampsCursorBeforeSubtractingDragOffset(int mouseX, int mouseY,
+        int expectedX, int expectedY)
+    {
+        var result = StickyWindow.ComputeMoveBounds(new Rectangle(0, 0, 300, 200), new Point(mouseX, mouseY),
+            new Point(5, 7), new Rectangle(-1920, 0, 1920, 1080), [], Gap, false, false);
+
+        result.Should().Be(new Rectangle(expectedX, expectedY, 300, 200));
+    }
+
+    [Theory]
+    [InlineData(false, false, 7)]
+    [InlineData(true, false, 0)]
+    [InlineData(false, true, 5)]
+    [InlineData(true, true, 5)]
+    public void ComputeMoveBounds_HonorsSnapOptionsAndClosestTarget(bool stickToScreen, bool stickToOther,
+        int expectedX)
+    {
+        var otherWindows = new[] { new Rectangle(-295, 450, 300, 400), new Rectangle(-299, 450, 300, 400) };
+
+        var result = StickyWindow.ComputeMoveBounds(new Rectangle(0, 0, 300, 200), new Point(7, 500),
+            Point.Empty, Screen, otherWindows, Gap, stickToScreen, stickToOther);
+
+        result.Should().Be(new Rectangle(expectedX, 500, 300, 200));
+    }
+
+    [Fact]
+    public void ComputeMoveBounds_NoNearbyTargetsPreservesUnsnappedPosition()
+    {
+        var result = StickyWindow.ComputeMoveBounds(new Rectangle(0, 0, 300, 200), new Point(500, 500),
+            Point.Empty, Screen, [], Gap, true, true);
+
+        result.Should().Be(new Rectangle(500, 500, 300, 200));
+    }
+
     [Fact]
     public void ComputeMoveSnap_WhenLeftEdgeWithinGapOfScreenLeft_SnapsLeftToLeft()
     {
@@ -99,6 +153,113 @@ public class StickyWindowSnapTests
     #endregion
 
     #region ComputeResizeSnap
+
+    [Theory]
+    [InlineData(false, false, 0, 0)]
+    [InlineData(true, false, 5, 6)]
+    [InlineData(false, true, 4, 0)]
+    [InlineData(true, true, 4, 6)]
+    public void ComputeResizeOffsets_PreservesSnapOptionsAndTargetOrder(bool stickToScreen, bool stickToOther,
+        int expectedWidthOffset, int expectedHeightOffset)
+    {
+        var otherWindows = new[] { new Rectangle(1918, 1000, 300, 100), new Rectangle(1919, 1000, 300, 100) };
+
+        var result = StickyWindow.ComputeResizeOffsets(new Rectangle(1000, 800, 915, 274), Screen, otherWindows,
+            StickyWindow.ResizeDir.Right | StickyWindow.ResizeDir.Bottom, Gap, stickToScreen, stickToOther);
+
+        result.Should().Be(new Rectangle(11, 11, expectedWidthOffset, expectedHeightOffset));
+    }
+
+    [Fact]
+    public void ComputeResizeOffsets_NoNearbyTargetsPreservesSeed()
+    {
+        var result = StickyWindow.ComputeResizeOffsets(new Rectangle(500, 500, 300, 200), Screen, [],
+            StickyWindow.ResizeDir.Top | StickyWindow.ResizeDir.Left, Gap, true, true);
+
+        result.Should().Be(ResizeSeed);
+    }
+
+    [Theory]
+    [InlineData(8, 80, 100, 320, 200)]
+    [InlineData(16, 100, 100, -20, 200)]
+    [InlineData(2, 100, 70, 300, 230)]
+    [InlineData(4, 100, 100, 300, -30)]
+    [InlineData(10, 80, 70, 320, 230)]
+    [InlineData(18, 100, 70, -20, 230)]
+    [InlineData(12, 80, 100, 320, -30)]
+    [InlineData(20, 100, 100, -20, -30)]
+    [InlineData(0, 100, 100, 300, 200)]
+    public void StretchResizeBounds_ChangesOnlyDraggedEdges(int direction, int left, int top, int width, int height)
+    {
+        var result = StickyWindow.StretchResizeBounds(new Rectangle(100, 100, 300, 200), new Point(80, 70),
+            (StickyWindow.ResizeDir)direction);
+
+        result.Should().Be(new Rectangle(left, top, width, height));
+    }
+
+    [Theory]
+    [InlineData(50, 100, 0, 80, 1000, 100)]
+    [InlineData(50, 60, 0, 80, 1000, 80)]
+    [InlineData(1200, 100, 0, 80, 1000, 1000)]
+    [InlineData(1200, 100, 500, 80, 1000, 500)]
+    [InlineData(300, 100, 500, 80, 1000, 300)]
+    [InlineData(300, 100, 50, 80, 1000, 100)]
+    public void ConstrainResizeDimension_RespectsLimitPrecedence(int value, int minimum, int maximum,
+        int minimumTrack, int maximumTrack, int expected)
+    {
+        StickyWindow.ConstrainResizeDimension(value, minimum, maximum, minimumTrack, maximumTrack)
+            .Should().Be(expected);
+    }
+
+    [Theory]
+    [InlineData(11, 0)]
+    [InlineData(10, 10)]
+    [InlineData(-10, -10)]
+    [InlineData(0, 0)]
+    public void ClearSnapSentinel_OnlyClearsUnchangedOffsets(int offset, int expected)
+    {
+        StickyWindow.ClearSnapSentinel(offset, Gap).Should().Be(expected);
+    }
+
+    [Fact]
+    public void ApplyResizeOffsets_TopLeftLimitsKeepOppositeCornerFixed()
+    {
+        var original = new Rectangle(100, 100, 300, 200);
+        var stretched = StickyWindow.StretchResizeBounds(original, new Point(390, 290),
+            StickyWindow.ResizeDir.Top | StickyWindow.ResizeDir.Left);
+
+        var result = StickyWindow.ApplyResizeOffsets(original, stretched, ResizeSeed,
+            StickyWindow.ResizeDir.Top | StickyWindow.ResizeDir.Left, Gap,
+            new Size(100, 80), Size.Empty, new Size(40, 30), new Size(1000, 1000));
+
+        result.Should().Be(new Rectangle(300, 220, 100, 80));
+    }
+
+    [Theory]
+    [InlineData(10, 96, 96, 304, 204)]
+    [InlineData(20, 100, 100, 304, 204)]
+    public void ApplyResizeOffsets_CombinesOffsetsAndPreservesAnchors(int direction, int left, int top,
+        int width, int height)
+    {
+        var bounds = new Rectangle(100, 100, 300, 200);
+
+        var result = StickyWindow.ApplyResizeOffsets(bounds, bounds, new Rectangle(7, -2, -3, 6),
+            (StickyWindow.ResizeDir)direction, Gap, Size.Empty, Size.Empty, Size.Empty, new Size(1000, 1000));
+
+        result.Should().Be(new Rectangle(left, top, width, height));
+    }
+
+    [Fact]
+    public void ApplyResizeOffsets_ClearsSentinelsInEveryComponent()
+    {
+        var bounds = new Rectangle(100, 100, 300, 200);
+
+        var result = StickyWindow.ApplyResizeOffsets(bounds, bounds, new Rectangle(11, 11, 11, 11),
+            StickyWindow.ResizeDir.Bottom | StickyWindow.ResizeDir.Right, Gap,
+            new Size(500, 500), new Size(600, 600), Size.Empty, new Size(1000, 1000));
+
+        result.Should().Be(bounds);
+    }
 
     [Fact]
     public void ComputeResizeSnap_WhenRightEdgeWithinGapOfScreenRight_SnapsRightToRight()

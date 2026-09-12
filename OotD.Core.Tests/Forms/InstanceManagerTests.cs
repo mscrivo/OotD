@@ -3,6 +3,7 @@
 using Microsoft.Win32;
 using OotD.Forms;
 using OotD.Preferences;
+using OotD.Properties;
 
 public class InstanceManagerTests : IDisposable
 {
@@ -16,61 +17,22 @@ public class InstanceManagerTests : IDisposable
         PreferencesRegistry.RootPath = _testRootPath;
     }
 
-    [Fact]
-    public void InstanceCount_WithNoRegistryEntries_ShouldReturnZero()
-    {
-        // This test would require mocking the Registry, which is complex
-        // For now, we'll test the logic conceptually
-
-        // Arrange
-        var instanceNames = Array.Empty<string>();
-
-        // Act
-        var count = instanceNames.Count(name => name != "AutoUpdate");
-
-        // Assert
-        count.Should().Be(0);
-    }
-
-    [Fact]
-    public void InstanceCount_WithAutoUpdateOnly_ShouldReturnZero()
-    {
-        // Arrange
-        var instanceNames = new[] { "AutoUpdate" };
-
-        // Act
-        var count = instanceNames.Count(name => name != "AutoUpdate");
-
-        // Assert
-        count.Should().Be(0);
-    }
-
-    [Fact]
-    public void InstanceCount_WithValidInstances_ShouldReturnCorrectCount()
-    {
-        // Arrange
-        var instanceNames = new[] { "Instance1", "Instance2", "AutoUpdate", "Instance3" };
-
-        // Act
-        var count = instanceNames.Count(name => name != "AutoUpdate");
-
-        // Assert
-        count.Should().Be(3);
-    }
-
     [Theory]
     [InlineData(new string[] { }, 0)]
     [InlineData(new[] { "AutoUpdate" }, 0)]
     [InlineData(new[] { "Instance1" }, 1)]
     [InlineData(new[] { "Instance1", "Instance2" }, 2)]
     [InlineData(new[] { "Instance1", "AutoUpdate", "Instance2" }, 2)]
+    [InlineData(new[] { "Instance1", "Instance2", "AutoUpdate", "Instance3" }, 3)]
     public void InstanceCount_WithVariousScenarios_ShouldReturnExpectedCount(string[] instanceNames, int expectedCount)
     {
-        // Act
-        var count = instanceNames.Count(name => name != "AutoUpdate");
+        using var productKey = Registry.CurrentUser.CreateSubKey(ProductRegistryPath);
+        foreach (var instanceName in instanceNames)
+        {
+            productKey.CreateSubKey(instanceName).Dispose();
+        }
 
-        // Assert
-        count.Should().Be(expectedCount);
+        InstanceManager.InstanceCount.Should().Be(expectedCount);
     }
 
     [Fact]
@@ -356,6 +318,158 @@ public class InstanceManagerTests : IDisposable
         // Assert
         menu.Items.Cast<ToolStripItem>().Select(item => item.Name)
             .Should().Equal("CalendarMenu", "InboxMenu");
+    }
+
+    [Fact]
+    public void ConfigureSingleInstanceMenu_RepeatedTransitionsPreserveItemsAndHandlers()
+    {
+        using var menu = CreateInstanceMenu();
+        var clicked = new List<string>();
+        var handlers = new[] { "AddInstanceMenu", "StartWithWindows", "LockPositionMenu", "CheckForUpdatesMenu",
+            "AboutMenu", "ResetConfigMenu" }.ToDictionary(name => name,
+            name => new EventHandler((_, _) => clicked.Add(name)));
+
+        InstanceManager.ConfigureSingleInstanceMenu(menu, handlers);
+        var originalOrder = menu.Items.Cast<ToolStripItem>().Select(item => item.Name).ToArray();
+
+        using var firstSubmenu = InstanceManager.CreateInstanceSubmenu(menu, "Work");
+        using var secondSubmenu = InstanceManager.CreateInstanceSubmenu(menu, "Work");
+        menu.Items.Cast<ToolStripItem>().Count(item => item.Name == "Work").Should().Be(1);
+        menu.Items.Cast<ToolStripItem>().Count(item => item.Name == "AddInstanceSeparator").Should().Be(1);
+        menu.Items["RemoveInstanceMenu"]!.Available.Should().BeTrue();
+        menu.Items["RenameInstanceMenu"]!.Available.Should().BeTrue();
+        menu.Items["ExitMenu"]!.Available.Should().BeFalse();
+        menu.Items["Separator6"]!.Available.Should().BeFalse();
+        menu.Items["Work"]!.BackColor.Should().Be(Color.Gainsboro);
+        secondSubmenu.DropDown.Should().BeSameAs(menu);
+        foreach (var name in handlers.Keys.Where(name => name != "ResetConfigMenu"))
+        {
+            menu.Items[name]!.Available.Should().BeFalse();
+        }
+
+        InstanceManager.ConfigureSingleInstanceMenu(menu, handlers);
+        InstanceManager.ConfigureSingleInstanceMenu(menu, handlers);
+
+        menu.Items.Cast<ToolStripItem>().Select(item => item.Name).Should().Equal(originalOrder);
+        menu.Items["RemoveInstanceMenu"]!.Available.Should().BeFalse();
+        menu.Items["RenameInstanceMenu"]!.Available.Should().BeFalse();
+        menu.Items["ExitMenu"]!.Available.Should().BeTrue();
+        menu.Items["Separator6"]!.Available.Should().BeTrue();
+        foreach (var name in handlers.Keys)
+        {
+            menu.Items[name]!.Available.Should().BeTrue();
+            menu.Items[name]!.PerformClick();
+        }
+
+        clicked.Should().Equal(handlers.Keys);
+    }
+
+    [Fact]
+    public void ConfigureSingleInstanceMenu_PreservesExistingAddItemAndSeparator()
+    {
+        using var menu = CreateInstanceMenu();
+        var clicks = 0;
+        var addItem = new ToolStripMenuItem("Add", null, (_, _) => clicks++, "AddInstanceMenu");
+        var separator = new ToolStripSeparator { Name = "AddInstanceSeparator" };
+        menu.Items.Insert(1, addItem);
+        menu.Items.Insert(2, separator);
+        var handlers = new[] { "StartWithWindows", "LockPositionMenu", "CheckForUpdatesMenu", "AboutMenu",
+            "ResetConfigMenu" }.ToDictionary(name => name, _ => new EventHandler((_, _) => { }));
+
+        InstanceManager.ConfigureSingleInstanceMenu(menu, handlers);
+        InstanceManager.ConfigureSingleInstanceMenu(menu, handlers);
+
+        menu.Items["AddInstanceMenu"].Should().BeSameAs(addItem);
+        menu.Items["AddInstanceSeparator"].Should().BeSameAs(separator);
+        menu.Items.Cast<ToolStripItem>().Count(item => item.Name == "AddInstanceSeparator").Should().Be(1);
+        addItem.PerformClick();
+        clicks.Should().Be(1);
+    }
+
+    [Fact]
+    public void CreateInstanceSubmenu_WithoutSharedItemsAddsHeaderAndSeparatorOnce()
+    {
+        using var menu = CreateInstanceMenu();
+
+        using var submenu = InstanceManager.CreateInstanceSubmenu(menu, "Home");
+        using var repeatedSubmenu = InstanceManager.CreateInstanceSubmenu(menu, "Home");
+
+        menu.Items[0].Name.Should().Be("Home");
+        menu.Items[1].Name.Should().Be("AddInstanceSeparator");
+        menu.Items.Cast<ToolStripItem>().Count(item => item.Name == "Home").Should().Be(1);
+        menu.Items.Cast<ToolStripItem>().Count(item => item.Name == "AddInstanceSeparator").Should().Be(1);
+        repeatedSubmenu.Text.Should().Be("Home");
+    }
+
+    [Theory]
+    [InlineData(true, 1)]
+    [InlineData(false, 1)]
+    [InlineData(true, 2)]
+    [InlineData(false, 2)]
+    public void ShowHideInstances_UpdatesEveryWindowAndMenu(bool initiallyVisible, int instanceCount)
+    {
+        using var firstForm = new VisibilityTestForm();
+        using var secondForm = new VisibilityTestForm();
+        using var firstMenu = CreateInstanceMenu();
+        using var secondMenu = CreateInstanceMenu();
+        using var globalMenu = CreateInstanceMenu();
+        var menu = instanceCount == 1 ? firstMenu : globalMenu;
+        menu.Items["HideShowMenu"]!.Text = initiallyVisible
+            ? instanceCount == 1 ? Resources.Hide : Resources.HideAll
+            : instanceCount == 1 ? Resources.Show : Resources.ShowAll;
+        var instances = new List<(Form Form, ContextMenuStrip Menu)> { (firstForm, firstMenu) };
+        if (instanceCount == 2)
+        {
+            instances.Add((secondForm, secondMenu));
+        }
+
+        InstanceManager.ShowHideInstances(menu, instances);
+
+        firstForm.RequestedVisibility.Should().Be(!initiallyVisible);
+        firstMenu.Items["HideShowMenu"]!.Text.Should().Be(initiallyVisible ? Resources.Show : Resources.Hide);
+        if (instanceCount == 2)
+        {
+            secondForm.RequestedVisibility.Should().Be(!initiallyVisible);
+            secondMenu.Items["HideShowMenu"]!.Text.Should().Be(initiallyVisible ? Resources.Show : Resources.Hide);
+            menu.Items["HideShowMenu"]!.Text.Should().Be(initiallyVisible ? Resources.ShowAll : Resources.HideAll);
+        }
+    }
+
+    [Fact]
+    public void ShowHideInstances_UnknownLabelDoesNothing()
+    {
+        using var form = new VisibilityTestForm();
+        using var menu = CreateInstanceMenu();
+        menu.Items["HideShowMenu"]!.Text = "Unknown";
+
+        InstanceManager.ShowHideInstances(menu, new[] { ((Form)form, menu) });
+
+        form.RequestedVisibility.Should().BeNull();
+        menu.Items["HideShowMenu"]!.Text.Should().Be("Unknown");
+    }
+
+    private sealed class VisibilityTestForm : Form
+    {
+        public bool? RequestedVisibility { get; private set; }
+
+        protected override void SetVisibleCore(bool value)
+        {
+            RequestedVisibility = value;
+        }
+    }
+
+    private static ContextMenuStrip CreateInstanceMenu()
+    {
+        var menu = new ContextMenuStrip();
+        foreach (var name in new[] { "CalendarMenu", "InboxMenu", "ContactsMenu", "TasksMenu", "NotesMenu",
+                     "Separator1", "DateMenu", "Separator2", "PreferencesMenu", "Separator3", "HideShowMenu",
+                     "DisableEnableEditingMenu", "Separator4", "OpacityMenu", "Separator5", "RemoveInstanceMenu",
+                     "RenameInstanceMenu", "Separator6", "ExitMenu" })
+        {
+            menu.Items.Add(new ToolStripMenuItem(name) { Name = name });
+        }
+
+        return menu;
     }
 
     [Fact]
