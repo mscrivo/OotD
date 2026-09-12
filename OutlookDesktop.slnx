@@ -8,6 +8,7 @@
     <File Path=".github/workflows/build.yml" />
     <File Path=".github\workflows\codeql-analysis.yml" />
     <File Path="CHANGELOG.md" />
+    <File Path="global.json" />
     <File Path="LICENSE" />
     <File Path="README.md" />
     <File Path="renovate.json" />
