@@ -52,7 +52,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.0.400
+          global-json-file: global.json
       - run: dotnet build OutlookDesktop.slnx
 
       - name: Perform CodeQL Analysis
