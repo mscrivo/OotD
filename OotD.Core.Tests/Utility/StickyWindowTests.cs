@@ -263,6 +263,49 @@ public class StickyWindowTests : IDisposable
         _stickyWindow.StickToOther.Should().BeFalse();
     }
 
+    [Theory]
+    [InlineData(UnsafeNativeMethods.HT.HTTOPLEFT)]
+    [InlineData(UnsafeNativeMethods.HT.HTTOP)]
+    [InlineData(UnsafeNativeMethods.HT.HTTOPRIGHT)]
+    [InlineData(UnsafeNativeMethods.HT.HTRIGHT)]
+    [InlineData(UnsafeNativeMethods.HT.HTBOTTOMRIGHT)]
+    [InlineData(UnsafeNativeMethods.HT.HTBOTTOM)]
+    [InlineData(UnsafeNativeMethods.HT.HTBOTTOMLEFT)]
+    [InlineData(UnsafeNativeMethods.HT.HTLEFT)]
+    public void OnNCLButtonDown_ResizeTargetsRespectStickOnResize(int hitTest)
+    {
+        _stickyWindow = new StickyWindow(_testForm!) { StickOnResize = false };
+        var method = typeof(StickyWindow).GetMethod("OnNCLButtonDown",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
+
+        method.Invoke(_stickyWindow, [hitTest, Point.Empty]).Should().Be(false);
+        _stickyWindow.StickOnResize = true;
+        method.Invoke(_stickyWindow, [hitTest, Point.Empty]).Should().Be(true);
+        method.Invoke(_stickyWindow, [hitTest, Point.Empty]).Should().Be(true);
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void OnNCLButtonDown_CaptionRespectsStickOnMove(bool stickOnMove)
+    {
+        _stickyWindow = new StickyWindow(_testForm!) { StickOnMove = stickOnMove };
+        var method = typeof(StickyWindow).GetMethod("OnNCLButtonDown",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
+
+        method.Invoke(_stickyWindow, [UnsafeNativeMethods.HT.HTCAPTION, Point.Empty]).Should().Be(stickOnMove);
+    }
+
+    [Fact]
+    public void OnNCLButtonDown_UnknownTargetIsNotHandled()
+    {
+        _stickyWindow = new StickyWindow(_testForm!);
+        var method = typeof(StickyWindow).GetMethod("OnNCLButtonDown",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
+
+        method.Invoke(_stickyWindow, [-1, Point.Empty]).Should().Be(false);
+    }
+
     public void Dispose()
     {
         _stickyWindow?.ReleaseHandle();

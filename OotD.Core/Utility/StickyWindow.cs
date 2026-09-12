@@ -4,7 +4,9 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace OotD.Utility;
@@ -35,9 +37,7 @@ public sealed class StickyWindow : NativeWindow
         _originalForm = form;
 
         _formRect = Rectangle.Empty;
-        _formOffsetRect = Rectangle.Empty;
 
-        _formOffsetPoint = Point.Empty;
         _offsetPoint = Point.Empty;
         _mousePoint = Point.Empty;
 
@@ -134,42 +134,37 @@ public sealed class StickyWindow : NativeWindow
     {
         _offsetPoint = point;
 
-        switch (iHitTest)
+        if (iHitTest == UnsafeNativeMethods.HT.HTCAPTION)
         {
-            case UnsafeNativeMethods.HT.HTCAPTION:
-                {
-                    // request for move
-                    if (!StickOnMove)
-                    {
-                        return false; // leave default processing
-                    }
+            if (!StickOnMove)
+            {
+                return false;
+            }
 
-                    var pointInApp = _originalForm.PointToClient(Cursor.Position);
-                    _offsetPoint.Offset(pointInApp.X, pointInApp.Y);
-                    StartMove();
-                    return true;
-                }
-
-            // requests for resize
-            case UnsafeNativeMethods.HT.HTTOPLEFT:
-                return StartResize(ResizeDir.Top | ResizeDir.Left);
-            case UnsafeNativeMethods.HT.HTTOP:
-                return StartResize(ResizeDir.Top);
-            case UnsafeNativeMethods.HT.HTTOPRIGHT:
-                return StartResize(ResizeDir.Top | ResizeDir.Right);
-            case UnsafeNativeMethods.HT.HTRIGHT:
-                return StartResize(ResizeDir.Right);
-            case UnsafeNativeMethods.HT.HTBOTTOMRIGHT:
-                return StartResize(ResizeDir.Bottom | ResizeDir.Right);
-            case UnsafeNativeMethods.HT.HTBOTTOM:
-                return StartResize(ResizeDir.Bottom);
-            case UnsafeNativeMethods.HT.HTBOTTOMLEFT:
-                return StartResize(ResizeDir.Bottom | ResizeDir.Left);
-            case UnsafeNativeMethods.HT.HTLEFT:
-                return StartResize(ResizeDir.Left);
+            var pointInApp = _originalForm.PointToClient(Cursor.Position);
+            _offsetPoint.Offset(pointInApp.X, pointInApp.Y);
+            StartMove();
+            return true;
         }
 
-        return false;
+        var direction = GetResizeDirection(iHitTest);
+        return direction != 0 && StartResize(direction);
+    }
+
+    internal static ResizeDir GetResizeDirection(int hitTest)
+    {
+        return hitTest switch
+        {
+            UnsafeNativeMethods.HT.HTTOPLEFT => ResizeDir.Top | ResizeDir.Left,
+            UnsafeNativeMethods.HT.HTTOP => ResizeDir.Top,
+            UnsafeNativeMethods.HT.HTTOPRIGHT => ResizeDir.Top | ResizeDir.Right,
+            UnsafeNativeMethods.HT.HTRIGHT => ResizeDir.Right,
+            UnsafeNativeMethods.HT.HTBOTTOMRIGHT => ResizeDir.Bottom | ResizeDir.Right,
+            UnsafeNativeMethods.HT.HTBOTTOM => ResizeDir.Bottom,
+            UnsafeNativeMethods.HT.HTBOTTOMLEFT => ResizeDir.Bottom | ResizeDir.Left,
+            UnsafeNativeMethods.HT.HTLEFT => ResizeDir.Left,
+            _ => 0
+        };
     }
 
     #endregion
@@ -244,13 +239,11 @@ public sealed class StickyWindow : NativeWindow
 
     // Move stuff
     private bool _movingForm;
-    private Point _formOffsetPoint; // calculated offset rect to be added !! (min distances in all directions!!)
     private Point _offsetPoint; // primary offset
 
     // Resize stuff
     private bool _resizingForm;
     private ResizeDir _resizeDirection;
-    private Rectangle _formOffsetRect; // calculated rect to fix the size
     private Point _mousePoint; // mouse position
 
     // General Stuff
@@ -391,142 +384,99 @@ public sealed class StickyWindow : NativeWindow
     {
         p = _originalForm.PointToScreen(p);
         var activeScr = Screen.FromPoint(p);
-        _formRect = _originalForm.Bounds;
+        var originalBounds = _originalForm.Bounds;
+        _formRect = StretchResizeBounds(originalBounds, p, _resizeDirection);
 
-        var iRight = _formRect.Right;
-        var iBottom = _formRect.Bottom;
-
-        // no normalize required
-        // first stretch the window to the new position
-        if ((_resizeDirection & ResizeDir.Left) == ResizeDir.Left)
-        {
-            _formRect.Width = _formRect.X - p.X + _formRect.Width;
-            _formRect.X = iRight - _formRect.Width;
-        }
-
-        if ((_resizeDirection & ResizeDir.Right) == ResizeDir.Right)
-        {
-            _formRect.Width = p.X - _formRect.Left;
-        }
-
-        if ((_resizeDirection & ResizeDir.Top) == ResizeDir.Top)
-        {
-            _formRect.Height = _formRect.Height - p.Y + _formRect.Top;
-            _formRect.Y = iBottom - _formRect.Height;
-        }
-
-        if ((_resizeDirection & ResizeDir.Bottom) == ResizeDir.Bottom)
-        {
-            _formRect.Height = p.Y - _formRect.Top;
-        }
-
-        // this is the real new position
-        // now, try to snap it to different objects (first to screen)
-
-        // CARE !!! We use "Width" and "Height" as Bottom & Right!! (C++ style)
-        //formOffsetRect = new Rectangle ( stickGap + 1, stickGap + 1, 0, 0 );
-        _formOffsetRect.X = StickGap + 1;
-        _formOffsetRect.Y = StickGap + 1;
-        _formOffsetRect.Height = 0;
-        _formOffsetRect.Width = 0;
-
-        if (StickToScreen)
-        {
-            Resize_Stick(activeScr.WorkingArea, false);
-        }
-
-        if (StickToOther)
-        {
-            // now try to stick to other forms
-            foreach (var sw in _globalStickyWindows)
-            {
-                var form = sw as Form;
-                if (form == _originalForm)
-                {
-                    continue;
-                }
-
-                if (form != null)
-                {
-                    Resize_Stick(form.Bounds, true);
-                }
-            }
-        }
-
-        // Fix (clear) the values that were not updated to stick
-        if (_formOffsetRect.X == StickGap + 1)
-        {
-            _formOffsetRect.X = 0;
-        }
-
-        if (_formOffsetRect.Width == StickGap + 1)
-        {
-            _formOffsetRect.Width = 0;
-        }
-
-        if (_formOffsetRect.Y == StickGap + 1)
-        {
-            _formOffsetRect.Y = 0;
-        }
-
-        if (_formOffsetRect.Height == StickGap + 1)
-        {
-            _formOffsetRect.Height = 0;
-        }
-
-        // compute the new form size
-        if ((_resizeDirection & ResizeDir.Left) == ResizeDir.Left)
-        {
-            // left resize requires special handling of X & Width according to MinSize and MinWindowTrackSize
-            var iNewWidth = _formRect.Width + _formOffsetRect.Width + _formOffsetRect.X;
-
-            if (_originalForm.MaximumSize.Width != 0)
-            {
-                iNewWidth = Math.Min(iNewWidth, _originalForm.MaximumSize.Width);
-            }
-
-            iNewWidth = Math.Min(iNewWidth, SystemInformation.MaxWindowTrackSize.Width);
-            iNewWidth = Math.Max(iNewWidth, _originalForm.MinimumSize.Width);
-            iNewWidth = Math.Max(iNewWidth, SystemInformation.MinWindowTrackSize.Width);
-
-            _formRect.X = iRight - iNewWidth;
-            _formRect.Width = iNewWidth;
-        }
-        else
-        {
-            // other resizes
-            _formRect.Width += _formOffsetRect.Width + _formOffsetRect.X;
-        }
-
-        if ((_resizeDirection & ResizeDir.Top) == ResizeDir.Top)
-        {
-            var iNewHeight = _formRect.Height + _formOffsetRect.Height + _formOffsetRect.Y;
-
-            if (_originalForm.MaximumSize.Height != 0)
-            {
-                iNewHeight = Math.Min(iNewHeight, _originalForm.MaximumSize.Height);
-            }
-
-            iNewHeight = Math.Min(iNewHeight, SystemInformation.MaxWindowTrackSize.Height);
-            iNewHeight = Math.Max(iNewHeight, _originalForm.MinimumSize.Height);
-            iNewHeight = Math.Max(iNewHeight, SystemInformation.MinWindowTrackSize.Height);
-
-            _formRect.Y = iBottom - iNewHeight;
-            _formRect.Height = iNewHeight;
-        }
-        else
-        {
-            // all other resizing are fine 
-            _formRect.Height += _formOffsetRect.Height + _formOffsetRect.Y;
-        }
-
-        // Done !!
+        var offsets = ComputeResizeOffsets(_formRect, activeScr.WorkingArea, GetOtherWindowBounds(),
+            _resizeDirection, StickGap, StickToScreen, StickToOther);
+        _formRect = ApplyResizeOffsets(originalBounds, _formRect, offsets, _resizeDirection,
+            StickGap, _originalForm.MinimumSize, _originalForm.MaximumSize,
+            SystemInformation.MinWindowTrackSize, SystemInformation.MaxWindowTrackSize);
         _originalForm.Bounds = _formRect;
     }
 
-    private void Resize_Stick(Rectangle toRect, bool bInsideStick)
+    internal static Rectangle StretchResizeBounds(Rectangle bounds, Point mousePoint, ResizeDir direction)
     {
-        _formOffsetRect = ComputeResizeSnap(_formRect, toRect, _formOffsetRect, _resizeDirection, StickGap, bInsideStick);
+        if ((direction & ResizeDir.Left) != 0)
+        {
+            bounds.Width = bounds.Right - mousePoint.X;
+            bounds.X = mousePoint.X;
+        }
+
+        if ((direction & ResizeDir.Right) != 0)
+        {
+            bounds.Width = mousePoint.X - bounds.Left;
+        }
+
+        if ((direction & ResizeDir.Top) != 0)
+        {
+            bounds.Height = bounds.Bottom - mousePoint.Y;
+            bounds.Y = mousePoint.Y;
+        }
+
+        if ((direction & ResizeDir.Bottom) != 0)
+        {
+            bounds.Height = mousePoint.Y - bounds.Top;
+        }
+
+        return bounds;
+    }
+
+    internal static Rectangle ApplyResizeOffsets(Rectangle originalBounds, Rectangle bounds, Rectangle offsets,
+        ResizeDir direction, int stickGap, Size minimumSize, Size maximumSize, Size minimumTrackSize,
+        Size maximumTrackSize)
+    {
+        bounds.Width += ClearSnapSentinel(offsets.X, stickGap) + ClearSnapSentinel(offsets.Width, stickGap);
+        bounds.Height += ClearSnapSentinel(offsets.Y, stickGap) + ClearSnapSentinel(offsets.Height, stickGap);
+
+        if ((direction & ResizeDir.Left) != 0)
+        {
+            bounds.Width = ConstrainResizeDimension(bounds.Width, minimumSize.Width, maximumSize.Width,
+                minimumTrackSize.Width, maximumTrackSize.Width);
+            bounds.X = originalBounds.Right - bounds.Width;
+        }
+
+        if ((direction & ResizeDir.Top) != 0)
+        {
+            bounds.Height = ConstrainResizeDimension(bounds.Height, minimumSize.Height, maximumSize.Height,
+                minimumTrackSize.Height, maximumTrackSize.Height);
+            bounds.Y = originalBounds.Bottom - bounds.Height;
+        }
+
+        return bounds;
+    }
+
+    internal static int ClearSnapSentinel(int offset, int stickGap) => offset == stickGap + 1 ? 0 : offset;
+
+    internal static int ConstrainResizeDimension(int value, int minimum, int maximum, int minimumTrack,
+        int maximumTrack)
+    {
+        if (maximum != 0)
+        {
+            value = Math.Min(value, maximum);
+        }
+
+        return Math.Max(Math.Max(Math.Min(value, maximumTrack), minimum), minimumTrack);
+    }
+
+    internal static Rectangle ComputeResizeOffsets(Rectangle bounds, Rectangle workingArea,
+        IEnumerable<Rectangle> otherWindows, ResizeDir direction, int stickGap, bool stickToScreen, bool stickToOther)
+    {
+        var offsets = new Rectangle(stickGap + 1, stickGap + 1, 0, 0);
+        if (stickToScreen)
+        {
+            offsets = ComputeResizeSnap(bounds, workingArea, offsets, direction, stickGap, false);
+        }
+
+        if (stickToOther)
+        {
+            foreach (var otherBounds in otherWindows)
+            {
+                offsets = ComputeResizeSnap(bounds, otherBounds, offsets, direction, stickGap, true);
+            }
+        }
+
+        return offsets;
     }
 
     /// <summary>
@@ -674,68 +624,39 @@ public sealed class StickyWindow : NativeWindow
     private void Move(Point p)
     {
         p = _originalForm.PointToScreen(p);
-        var activeScr = Screen.FromPoint(p); // get the screen from the point !!
-
-        if (!activeScr.WorkingArea.Contains(p))
-        {
-            p.X = NormalizeInside(p.X, activeScr.WorkingArea.Left, activeScr.WorkingArea.Right);
-            p.Y = NormalizeInside(p.Y, activeScr.WorkingArea.Top, activeScr.WorkingArea.Bottom);
-        }
-
-        p.Offset(-_offsetPoint.X, -_offsetPoint.Y);
-
-        // p is the exact location of the frame - so we can play with it
-        // to detect the new position according to different bounds
-        _formRect.Location = p; // this is the new position of the form
-
-        _formOffsetPoint.X = StickGap + 1; // (more than) maximum gaps
-        _formOffsetPoint.Y = StickGap + 1;
-
-        if (StickToScreen)
-        {
-            Move_Stick(activeScr.WorkingArea, false);
-        }
-
-        // Now try to snap to other windows
-        if (StickToOther)
-        {
-            foreach (var sw in _globalStickyWindows)
-            {
-                var form = sw as Form;
-                if (form == _originalForm)
-                {
-                    continue;
-                }
-
-                if (form != null)
-                {
-                    Move_Stick(form.Bounds, true);
-                }
-            }
-        }
-
-        if (_formOffsetPoint.X == StickGap + 1)
-        {
-            _formOffsetPoint.X = 0;
-        }
-
-        if (_formOffsetPoint.Y == StickGap + 1)
-        {
-            _formOffsetPoint.Y = 0;
-        }
-
-        _formRect.Offset(_formOffsetPoint);
-
+        _formRect = ComputeMoveBounds(_formRect, p, _offsetPoint, Screen.FromPoint(p).WorkingArea,
+            GetOtherWindowBounds(), StickGap, StickToScreen, StickToOther);
         _originalForm.Bounds = _formRect;
     }
 
-    /// <summary>
-    /// </summary>
-    /// <param name="toRect">Rect to try to snap to</param>
-    /// <param name="bInsideStick">Allow snapping on the inside (eg: window to screen)</param>
-    private void Move_Stick(Rectangle toRect, bool bInsideStick)
+    private IEnumerable<Rectangle> GetOtherWindowBounds() => _globalStickyWindows.OfType<Form>()
+        .Where(form => form != _originalForm).Select(form => form.Bounds);
+
+    internal static Rectangle ComputeMoveBounds(Rectangle bounds, Point mousePoint, Point mouseOffset,
+        Rectangle workingArea, IEnumerable<Rectangle> otherWindows, int stickGap, bool stickToScreen, bool stickToOther)
     {
-        _formOffsetPoint = ComputeMoveSnap(_formRect, toRect, _formOffsetPoint, StickGap, bInsideStick);
+        mousePoint.X = NormalizeInside(mousePoint.X, workingArea.Left, workingArea.Right);
+        mousePoint.Y = NormalizeInside(mousePoint.Y, workingArea.Top, workingArea.Bottom);
+        mousePoint.Offset(-mouseOffset.X, -mouseOffset.Y);
+        bounds.Location = mousePoint;
+
+        var offset = new Point(stickGap + 1, stickGap + 1);
+
+        if (stickToScreen)
+        {
+            offset = ComputeMoveSnap(bounds, workingArea, offset, stickGap, false);
+        }
+
+        if (stickToOther)
+        {
+            foreach (var otherBounds in otherWindows)
+            {
+                offset = ComputeMoveSnap(bounds, otherBounds, offset, stickGap, true);
+            }
+        }
+
+        bounds.Offset(ClearSnapSentinel(offset.X, stickGap), ClearSnapSentinel(offset.Y, stickGap));
+        return bounds;
     }
 
     /// <summary>
