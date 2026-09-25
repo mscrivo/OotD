@@ -380,15 +380,6 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About Outlook on the Desktop.
-        /// </summary>
-        internal static string AboutDialogTitle {
-            get {
-                return ResourceManager.GetString("AboutDialogTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to About {0}.
         /// </summary>
         internal static string AboutOotD {
@@ -435,24 +426,6 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &amp;Cancel.
-        /// </summary>
-        internal static string CancelButton {
-            get {
-                return ResourceManager.GetString("CancelButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to cancel?.
-        /// </summary>
-        internal static string CancelConfirmation {
-            get {
-                return ResourceManager.GetString("CancelConfirmation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Check for updates.
         /// </summary>
         internal static string CheckForUpdates {
@@ -480,15 +453,6 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close.
-        /// </summary>
-        internal static string Close {
-            get {
-                return ResourceManager.GetString("Close", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Confirmation.
         /// </summary>
         internal static string ConfirmationCaption {
@@ -503,15 +467,6 @@ namespace OotD.Properties {
         internal static string Contacts {
             get {
                 return ResourceManager.GetString("Contacts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Copyright.
-        /// </summary>
-        internal static string Copyright {
-            get {
-                return ResourceManager.GetString("Copyright", resourceCulture);
             }
         }
         
@@ -539,15 +494,6 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable Editing.
-        /// </summary>
-        internal static string EnableEditing {
-            get {
-                return ResourceManager.GetString("EnableEditing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Outlook on the Desktop Error.
         /// </summary>
         internal static string ErrorCaption {
@@ -571,15 +517,6 @@ namespace OotD.Properties {
         internal static string ErrorLaunchingWebsite {
             get {
                 return ResourceManager.GetString("ErrorLaunchingWebsite", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error Saving Settings.
-        /// </summary>
-        internal static string ErrorSavingSettings {
-            get {
-                return ResourceManager.GetString("ErrorSavingSettings", resourceCulture);
             }
         }
         
@@ -639,29 +576,11 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You must unlock the form before attempting to move the window..
-        /// </summary>
-        internal static string Form_Move_Locked_Message {
-            get {
-                return ResourceManager.GetString("Form_Move_Locked_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Go to Today.
         /// </summary>
         internal static string Go_to_Today {
             get {
                 return ResourceManager.GetString("Go_to_Today", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Height.
-        /// </summary>
-        internal static string Height {
-            get {
-                return ResourceManager.GetString("Height", resourceCulture);
             }
         }
         
@@ -762,15 +681,6 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Narrow.
-        /// </summary>
-        internal static string Narrow {
-            get {
-                return ResourceManager.GetString("Narrow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap NewEmail {
@@ -864,15 +774,6 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opaque.
-        /// </summary>
-        internal static string Opaque {
-            get {
-                return ResourceManager.GetString("Opaque", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The Outlook components that Outlook on the Desktop needs are not registered on this PC.[rest of string was truncated]&quot;;.
         /// </summary>
         internal static string OutlookClassNotRegistered {
@@ -956,48 +857,12 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position.
-        /// </summary>
-        internal static string Position {
-            get {
-                return ResourceManager.GetString("Position", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Preferences.
-        /// </summary>
-        internal static string Preferences {
-            get {
-                return ResourceManager.GetString("Preferences", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook on the Desktop Preferences.
-        /// </summary>
-        internal static string PreferencesTitle {
-            get {
-                return ResourceManager.GetString("PreferencesTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Previous {
             get {
                 object obj = ResourceManager.GetObject("Previous", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Outlook on the Desktop.
-        /// </summary>
-        internal static string ProductName {
-            get {
-                return ResourceManager.GetString("ProductName", resourceCulture);
             }
         }
         
@@ -1067,30 +932,12 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -.
-        /// </summary>
-        internal static string Separator {
-            get {
-                return ResourceManager.GetString("Separator", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap SevenDays {
             get {
                 object obj = ResourceManager.GetObject("SevenDays", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Short.
-        /// </summary>
-        internal static string Short {
-            get {
-                return ResourceManager.GetString("Short", resourceCulture);
             }
         }
         
@@ -1118,15 +965,6 @@ namespace OotD.Properties {
         internal static string StartWithWindows {
             get {
                 return ResourceManager.GetString("StartWithWindows", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tall.
-        /// </summary>
-        internal static string Tall {
-            get {
-                return ResourceManager.GetString("Tall", resourceCulture);
             }
         }
         
@@ -1195,47 +1033,11 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You must unlock the form before attempting to change the transparency level..
-        /// </summary>
-        internal static string Transparency_Slider_Locked_Message {
-            get {
-                return ResourceManager.GetString("Transparency_Slider_Locked_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Transparent.
-        /// </summary>
-        internal static string Transparent {
-            get {
-                return ResourceManager.GetString("Transparent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Version.
-        /// </summary>
-        internal static string Version {
-            get {
-                return ResourceManager.GetString("Version", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Unable to set view.  Your version of Outlook may not support it..
         /// </summary>
         internal static string ViewTypeNotSupported {
             get {
                 return ResourceManager.GetString("ViewTypeNotSupported", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Web Site.
-        /// </summary>
-        internal static string WebSite {
-            get {
-                return ResourceManager.GetString("WebSite", resourceCulture);
             }
         }
         
@@ -1252,24 +1054,6 @@ namespace OotD.Properties {
         internal static string WeekXML {
             get {
                 return ResourceManager.GetString("WeekXML", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wide.
-        /// </summary>
-        internal static string Wide {
-            get {
-                return ResourceManager.GetString("Wide", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Width.
-        /// </summary>
-        internal static string Width {
-            get {
-                return ResourceManager.GetString("Width", resourceCulture);
             }
         }
         
