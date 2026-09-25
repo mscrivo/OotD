@@ -191,7 +191,7 @@
     <value>..\Resources\Icons\20.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ErrorInitializingApp" xml:space="preserve">
-    <value>初始化应用程序时出错:</value>
+    <value>初始化应用程序时出错：</value>
   </data>
   <data name="Transparent" xml:space="preserve">
     <value>透明</value>
@@ -224,7 +224,7 @@
     <value>宽度</value>
   </data>
   <data name="Opacity" xml:space="preserve">
-    <value>不透明度:</value>
+    <value>不透明度：</value>
   </data>
   <data name="ErrorSettingFolder" xml:space="preserve">
     <value>切换到指定文件夹时出错。该文件夹可能与 Outlook on the Desktop 不兼容。</value>
@@ -242,7 +242,7 @@
     <value>新实例名称</value>
   </data>
   <data name="CancelConfirmation" xml:space="preserve">
-    <value>确定要取消吗?</value>
+    <value>确定要取消吗？</value>
   </data>
   <data name="Copyright" xml:space="preserve">
     <value>版权</value>
@@ -257,7 +257,7 @@
     <value>首选项</value>
   </data>
   <data name="RemoveInstanceConfirmation" xml:space="preserve">
-    <value>确定要删除此实例吗?</value>
+    <value>确定要删除此实例吗？</value>
   </data>
   <data name="ErrorSavingSettings" xml:space="preserve">
     <value>保存设置时出错</value>
@@ -464,13 +464,14 @@
     <value>..\Resources\NewEmail.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ChildProcessErrorMessage" xml:space="preserve">
-    <value>运行 OotD 时发生未知错误。请在 https://github.com/mscrivo/OotD/issues 提交 bug，并附上位于以下位置的日志文件: {0}</value>
+    <value>运行 OotD 时发生未知错误。请在 https://github.com/mscrivo/OotD/issues 提交 bug，并附上位于以下位置的日志文件：{0}</value>
   </data>
   <data name="OutlookKeyNotFoundError" xml:space="preserve">
     <value>找不到 Office 安装信息。请确认已安装 Office。</value>
   </data>
   <data name="OutlookExeNotFoundError" xml:space="preserve">
-    <value>在报告的位置找不到 Outlook:\\n{0}</value>
+    <value>在报告的位置找不到 Outlook：
+{0}</value>
   </data>
   <data name="OutlookLocationKeyNotFoundError" xml:space="preserve">
     <value>无法在系统中定位 Outlook 可执行文件</value>
@@ -491,7 +492,9 @@
     <value>恢复默认值</value>
   </data>
   <data name="RestoreDefaultsConfirmation" xml:space="preserve">
-    <value>这将从注册表中删除所有已保存的 Outlook on the Desktop 设置和实例。\\n\\n是否继续?</value>
+    <value>这将从注册表中删除所有已保存的 Outlook on the Desktop 设置和实例。
+
+是否继续？</value>
   </data>
   <data name="Required" xml:space="preserve">
     <value>必填</value>
@@ -518,10 +521,18 @@
     <value>成功</value>
   </data>
   <data name="VirtualDesktopAssignmentClearedMessage" xml:space="preserve">
-    <value>虚拟桌面分配已清除。\\n\\n该实例现在会显示在所有桌面上，并从 Alt+Tab 中隐藏。\\n\\n是否立即重启应用程序以确保更改生效?</value>
+    <value>虚拟桌面分配已清除。
+
+该实例现在会显示在所有桌面上，并从 Alt+Tab 中隐藏。
+
+是否立即重启应用程序以确保所有更改生效？</value>
   </data>
   <data name="VirtualDesktopAssignmentAppliedMessage" xml:space="preserve">
-    <value>实例已移动到所选虚拟桌面。\\n\\n注意: 为确保虚拟桌面行为正常，窗口现在会显示在 Alt+Tab 中。\\n\\n是否立即重启应用程序以确保更改生效?</value>
+    <value>实例已移动到所选虚拟桌面。
+
+注意：为确保虚拟桌面行为正常，窗口现在会显示在 Alt+Tab 中。
+
+是否立即重启应用程序以确保所有更改生效？</value>
   </data>
   <data name="VirtualDesktopMoveFailedMessage" xml:space="preserve">
     <value>无法将窗口移动到所选虚拟桌面。</value>
@@ -533,7 +544,7 @@
     <value>错误</value>
   </data>
   <data name="ErrorWithDetails" xml:space="preserve">
-    <value>错误: {0}</value>
+    <value>错误：{0}</value>
   </data>
   <data name="OutlookViews" xml:space="preserve">
     <value>Outlook 视图</value>

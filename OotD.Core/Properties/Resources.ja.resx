@@ -136,7 +136,7 @@
     <value>Outlook on the Desktop の設定</value>
   </data>
   <data name="Calendar" xml:space="preserve">
-    <value>カレンダー</value>
+    <value>予定表</value>
   </data>
   <data name="Height" xml:space="preserve">
     <value>高さ</value>
@@ -224,7 +224,7 @@
     <value>幅</value>
   </data>
   <data name="Opacity" xml:space="preserve">
-    <value>不透明度:</value>
+    <value>不透明度: </value>
   </data>
   <data name="ErrorSettingFolder" xml:space="preserve">
     <value>指定したフォルダーへの変更中にエラーが発生しました。Outlook on the Desktop と互換性がない可能性があります。</value>
@@ -470,7 +470,8 @@
     <value>Office インストール情報が見つかりません。Office がインストールされていることを確認してください。</value>
   </data>
   <data name="OutlookExeNotFoundError" xml:space="preserve">
-    <value>報告された次の場所に Outlook が見つかりませんでした:\\n{0}</value>
+    <value>報告された次の場所に Outlook が見つかりませんでした:
+{0}</value>
   </data>
   <data name="OutlookLocationKeyNotFoundError" xml:space="preserve">
     <value>システム上で Outlook 実行ファイルの場所を特定できませんでした</value>
@@ -491,7 +492,9 @@
     <value>既定値に戻す</value>
   </data>
   <data name="RestoreDefaultsConfirmation" xml:space="preserve">
-    <value>保存されている Outlook on the Desktop の設定とインスタンスをレジストリからすべて削除します。\\n\\n続行しますか?</value>
+    <value>保存されている Outlook on the Desktop の設定とインスタンスをレジストリからすべて削除します。
+
+続行しますか?</value>
   </data>
   <data name="Required" xml:space="preserve">
     <value>必須</value>
@@ -518,10 +521,18 @@
     <value>成功</value>
   </data>
   <data name="VirtualDesktopAssignmentClearedMessage" xml:space="preserve">
-    <value>仮想デスクトップの割り当てを解除しました。\\n\\nこのインスタンスはすべてのデスクトップに表示され、Alt+Tab には表示されません。\\n\\nすべての変更を反映するため、今すぐアプリを再起動しますか?</value>
+    <value>仮想デスクトップの割り当てを解除しました。
+
+このインスタンスはすべてのデスクトップに表示され、Alt+Tab には表示されません。
+
+すべての変更を反映するため、今すぐアプリを再起動しますか?</value>
   </data>
   <data name="VirtualDesktopAssignmentAppliedMessage" xml:space="preserve">
-    <value>インスタンスを選択した仮想デスクトップへ移動しました。\\n\\n注: 正しい動作のため、このウィンドウは Alt+Tab に表示されます。\\n\\nすべての変更を反映するため、今すぐアプリを再起動しますか?</value>
+    <value>インスタンスを選択した仮想デスクトップへ移動しました。
+
+注: 仮想デスクトップで正しく動作させるため、このウィンドウは Alt+Tab に表示されます。
+
+すべての変更を反映するため、今すぐアプリを再起動しますか?</value>
   </data>
   <data name="VirtualDesktopMoveFailedMessage" xml:space="preserve">
     <value>選択した仮想デスクトップへウィンドウを移動できませんでした。</value>

@@ -37,7 +37,7 @@
   <data name="ProgramIsAlreadyRunningCaption" xml:space="preserve"><value>Déjà en cours d'exécution</value></data>
   <data name="RemoveInstanceConfirmation" xml:space="preserve"><value>Voulez-vous vraiment supprimer cette instance ?</value></data>
   <data name="RestoreDefaults" xml:space="preserve"><value>Restaurer les valeurs par défaut</value></data>
-  <data name="RestoreDefaultsConfirmation" xml:space="preserve"><value>Cela supprimera toutes les configurations et instances Outlook on the Desktop enregistrées dans le registre.
+  <data name="RestoreDefaultsConfirmation" xml:space="preserve"><value>Cela supprimera du registre tous les paramètres et toutes les instances enregistrés d'Outlook on the Desktop.
 
 Voulez-vous continuer ?</value></data>
   <data name="RightClickToConfigure" xml:space="preserve"><value>Cliquez avec le bouton droit sur cette icône pour configurer Outlook on the Desktop.</value></data>
@@ -58,7 +58,7 @@ Voulez-vous continuer ?</value></data>
   <data name="MoveToVirtualDesktop" xml:space="preserve"><value>Déplacer vers un bureau virtuel</value></data>
   <data name="VirtualDesktopFeatureNotSupported" xml:space="preserve"><value>Les fonctionnalités de bureau virtuel ne sont pas prises en charge sur ce système.</value></data>
   <data name="VirtualDesktopFeatureNotAvailableCaption" xml:space="preserve"><value>Fonctionnalité non disponible</value></data>
-  <data name="SuccessCaption" xml:space="preserve"><value>Succès</value></data>
+  <data name="SuccessCaption" xml:space="preserve"><value>Opération réussie</value></data>
   <data name="VirtualDesktopAssignmentClearedMessage" xml:space="preserve"><value>L'affectation au bureau virtuel a été supprimée.
 
 L'instance apparaîtra désormais sur tous les bureaux et sera masquée d'Alt+Tab.
