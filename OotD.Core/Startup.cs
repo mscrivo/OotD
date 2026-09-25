@@ -142,6 +142,8 @@ public static class Startup
 
                 System.Windows.Forms.Application.EnableVisualStyles();
                 System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+                // Follow the Windows light/dark app theme (#187).
+                System.Windows.Forms.Application.SetColorMode(SystemColorMode.System);
 
                 _logger.Info("Starting the instance manager and loading instances.");
                 _instanceManager = new InstanceManager();

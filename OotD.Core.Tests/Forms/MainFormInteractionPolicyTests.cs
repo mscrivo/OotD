@@ -26,6 +26,31 @@ public class MainFormInteractionPolicyTests
         result.Should().Be((MainFormWindowPolicy.ResizeDirection)expectedDirection);
     }
 
+    [Theory]
+    [InlineData(15, 0, 2)] // along the top edge, within the corner length -> top-left
+    [InlineData(0, 15, 2)] // along the left edge, within the corner length -> top-left
+    [InlineData(16, 0, 3)] // just past the corner length -> top
+    [InlineData(5, 50, 1)] // inside the edge width -> left
+    [InlineData(6, 50, 0)] // just past the edge width -> none
+    [InlineData(184, 199, 6)] // bottom edge near the right corner -> bottom-right
+    [InlineData(199, 184, 6)] // right edge near the bottom corner -> bottom-right
+    [InlineData(199, 183, 5)] // right edge above the corner length -> right
+    [InlineData(15, 15, 0)] // inside both corner lengths but not near an edge -> none
+    [InlineData(0, 199, 8)]
+    [InlineData(199, 0, 4)]
+    public void GetResizeDirection_WithWiderEdgesAndCorners_ReturnsExpectedDirection(
+        int x,
+        int y,
+        int expectedDirection)
+    {
+        // Act
+        var result = MainFormWindowPolicy.GetResizeDirection(new Point(x, y), new Size(200, 200),
+            lockPosition: false, edgeWidth: 6, cornerLength: 16);
+
+        // Assert
+        result.Should().Be((MainFormWindowPolicy.ResizeDirection)expectedDirection);
+    }
+
     [Fact]
     public void GetResizeDirection_WhenPositionIsLocked_ReturnsNoneEvenAtResizeBorder()
     {

@@ -20,57 +20,68 @@ internal static class MainFormWindowPolicy
         return screenAreas.Any(area => area.IntersectsWith(windowBounds));
     }
 
-    internal static ResizeDirection GetResizeDirection(Point location, Size formSize, bool lockPosition)
+    /// <summary>
+    ///     Returns the resize direction for a point in form client coordinates. Edges are grabbable within
+    ///     <paramref name="edgeWidth" /> of the form's outer edge; corners also extend <paramref name="cornerLength" />
+    ///     along each adjoining edge so they're easier to hit.
+    /// </summary>
+    internal static ResizeDirection GetResizeDirection(Point location, Size formSize, bool lockPosition,
+        int edgeWidth = DefaultResizeEdgeWidth, int cornerLength = DefaultResizeEdgeWidth)
     {
         if (lockPosition)
         {
             return ResizeDirection.None;
         }
 
-        if (location is { X: < ResizeBorderWidth, Y: < ResizeBorderWidth })
+        var nearLeft = location.X < edgeWidth;
+        var nearRight = location.X >= formSize.Width - edgeWidth;
+        var nearTop = location.Y < edgeWidth;
+        var nearBottom = location.Y >= formSize.Height - edgeWidth;
+
+        var alongLeft = location.X < cornerLength;
+        var alongRight = location.X >= formSize.Width - cornerLength;
+        var alongTop = location.Y < cornerLength;
+        var alongBottom = location.Y >= formSize.Height - cornerLength;
+
+        if ((nearTop && alongLeft) || (nearLeft && alongTop))
         {
             return ResizeDirection.TopLeft;
         }
 
-        if (location.X < ResizeBorderWidth && location.Y > formSize.Height - ResizeBorderWidth)
+        if ((nearBottom && alongLeft) || (nearLeft && alongBottom))
         {
             return ResizeDirection.BottomLeft;
         }
 
-        if (location.X > formSize.Width - ResizeBorderWidth && location.Y > formSize.Height - ResizeBorderWidth)
+        if ((nearBottom && alongRight) || (nearRight && alongBottom))
         {
             return ResizeDirection.BottomRight;
         }
 
-        if (location.X > formSize.Width - ResizeBorderWidth && location.Y < ResizeBorderWidth)
+        if ((nearTop && alongRight) || (nearRight && alongTop))
         {
             return ResizeDirection.TopRight;
         }
 
-        if (location.X < ResizeBorderWidth)
+        if (nearLeft)
         {
             return ResizeDirection.Left;
         }
 
-        if (location.X > formSize.Width - ResizeBorderWidth)
+        if (nearRight)
         {
             return ResizeDirection.Right;
         }
 
-        if (location.Y < ResizeBorderWidth)
+        if (nearTop)
         {
             return ResizeDirection.Top;
         }
 
-        if (location.Y > formSize.Height - ResizeBorderWidth)
-        {
-            return ResizeDirection.Bottom;
-        }
-
-        return ResizeDirection.None;
+        return nearBottom ? ResizeDirection.Bottom : ResizeDirection.None;
     }
 
-    private const int ResizeBorderWidth = 4;
+    private const int DefaultResizeEdgeWidth = 4;
 
     internal static Cursor GetCursorForResizeDirection(ResizeDirection resizeDirection)
     {

@@ -340,7 +340,7 @@ public class InstanceManagerTests : IDisposable
         menu.Items["RenameInstanceMenu"]!.Available.Should().BeTrue();
         menu.Items["ExitMenu"]!.Available.Should().BeFalse();
         menu.Items["Separator6"]!.Available.Should().BeFalse();
-        menu.Items["Work"]!.BackColor.Should().Be(Color.Gainsboro);
+        menu.Items["Work"]!.BackColor.Should().Be(SystemColors.ControlLight);
         secondSubmenu.DropDown.Should().BeSameAs(menu);
         foreach (var name in handlers.Keys.Where(name => name != "ResetConfigMenu"))
         {
