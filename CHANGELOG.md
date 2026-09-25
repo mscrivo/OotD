@@ -17,6 +17,16 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 - Redesigned the New Email button icon so it's clearly visible on both light and dark header bars
 - Slimmed the window border
 - The top edge and top corners of a window are now easier to grab for resizing
+- Startup errors now explain what went wrong and how to fix it, instead of showing a raw error:
+  - If only the new Outlook for Windows is installed, OotD now says that classic Outlook is required ([#255](https://github.com/mscrivo/OotD/issues/255), [#239](https://github.com/mscrivo/OotD/issues/239))
+  - If Outlook can't be started (for example, because Outlook or OotD is running as administrator), OotD explains how to resolve it ([#299](https://github.com/mscrivo/OotD/issues/299), [#211](https://github.com/mscrivo/OotD/issues/211), [#179](https://github.com/mscrivo/OotD/issues/179))
+  - If Outlook's components are damaged or not registered, OotD explains how to repair Office ([#224](https://github.com/mscrivo/OotD/issues/224), [#166](https://github.com/mscrivo/OotD/issues/166), [#173](https://github.com/mscrivo/OotD/issues/173))
+  - If Outlook is switched to the new Outlook, startup errors say to turn off the "New Outlook" toggle
+  - These messages are translated into Spanish, Japanese, Portuguese (Brazil) and Chinese (Simplified)
+
+### Fixed
+
+- A window whose saved folder no longer exists (for example, after removing an account) now falls back to the default calendar instead of failing to load ([#151](https://github.com/mscrivo/OotD/issues/151))
 
 ## [5.3.0] - 2026-08-15
 

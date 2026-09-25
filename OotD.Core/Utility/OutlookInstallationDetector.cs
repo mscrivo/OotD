@@ -16,7 +16,10 @@ public enum OutlookDetectionError
     OfficeNotInstalled,
     UnsupportedVersion,
     OutlookExecutableNotFound,
-    OutlookLocationNotFound
+    OutlookLocationNotFound,
+
+    /// <summary>Classic Outlook isn't usable, but the new Outlook for Windows is installed.</summary>
+    ClassicOutlookNotInstalled
 }
 
 /// <summary>
@@ -46,6 +49,9 @@ public interface IOutlookEnvironment
 
     /// <summary>The "Bitness" value ("x86"/"x64") recorded for the given Office version, or null/empty if absent.</summary>
     string? GetBitness(double officeVersion);
+
+    /// <summary>True if the new Outlook for Windows (which OotD doesn't support) is installed.</summary>
+    bool IsNewOutlookInstalled();
 }
 
 /// <summary>
@@ -59,6 +65,17 @@ public static class OutlookInstallationDetector
     public const double MinimumSupportedVersion = 14;
 
     public static OutlookInstallation Detect(IOutlookEnvironment environment)
+    {
+        var installation = DetectClassicOutlook(environment);
+
+        // People with only the new Outlook for Windows are the most common source of "can't find Office"
+        // reports, so tell them specifically that classic Outlook is required.
+        return !installation.IsUsable && environment.IsNewOutlookInstalled()
+            ? new OutlookInstallation(OutlookDetectionError.ClassicOutlookNotInstalled, string.Empty)
+            : installation;
+    }
+
+    private static OutlookInstallation DetectClassicOutlook(IOutlookEnvironment environment)
     {
         var version = environment.GetInstalledOfficeVersions().DefaultIfEmpty(0).Max();
 

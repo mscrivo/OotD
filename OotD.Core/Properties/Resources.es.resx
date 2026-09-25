@@ -406,13 +406,6 @@
   <data name="Windows_RPC_Server_is_not_available" xml:space="preserve">
     <value>The Windows RPC Server is not available. Please wait try loading Outlook on the Desktop in a few minutes.  If you still get the same error, you may have a problem with your windows installation.</value>
   </data>
-  <data name="Incorrect_bittedness_of_OotD" xml:space="preserve">
-    <value>It appears you are attempting to run the incorrect version of Outlook on the Desktop.
-
-If you have 64-bit Office installed please use the 64-bit Outlook on the Desktop.
-
-If you have 32-bit Office installed, please use the 32-bit Outlook on the Desktop.</value>
-  </data>
   <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\icons\appicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -561,5 +554,32 @@ Nota: La ventana ahora aparecerá en Alt+Tab para garantizar el comportamiento c
   </data>
   <data name="TodoList" xml:space="preserve">
     <value>Lista de tareas pendientes</value>
+  </data>
+  <data name="ClassicOutlookRequired" xml:space="preserve">
+    <value>Outlook on the Desktop requiere el Outlook clásico (Outlook 2010 o posterior, incluido Outlook para Microsoft 365), pero no parece estar instalado.
+
+El nuevo Outlook para Windows no es compatible: no incluye el Outlook View Control que Outlook on the Desktop utiliza para mostrar su calendario y correo.
+
+Instale el Outlook clásico e inténtelo de nuevo.</value>
+  </data>
+  <data name="OutlookServerExecFailure" xml:space="preserve">
+    <value>No se pudo iniciar Outlook para Outlook on the Desktop (CO_E_SERVER_EXEC_FAILURE).
+
+Esto suele significar que Outlook y Outlook on the Desktop se están ejecutando con permisos diferentes (por ejemplo, uno de ellos se ejecuta como administrador) o que Outlook se ha quedado bloqueado al iniciarse.
+
+Cierre Outlook por completo (compruebe en el Administrador de tareas que no quede ningún proceso OUTLOOK.EXE), asegúrese de que ni Outlook ni Outlook on the Desktop estén configurados para ejecutarse como administrador e inténtelo de nuevo.</value>
+  </data>
+  <data name="OutlookRegistrationBroken" xml:space="preserve">
+    <value>Los componentes de automatización de Outlook no están registrados correctamente. Esto suele ocurrir después de una actualización de Office interrumpida o incompleta.
+
+Para solucionarlo, repare Office: abra Configuración &gt; Aplicaciones &gt; Aplicaciones instaladas, busque Microsoft 365 (o Microsoft Office), elija Modificar y, a continuación, Reparación en línea. Después, reinicie el equipo e inténtelo de nuevo.</value>
+  </data>
+  <data name="OutlookClassNotRegistered" xml:space="preserve">
+    <value>Los componentes de Outlook que necesita Outlook on the Desktop no están registrados en este equipo.
+
+Esto suele significar que el Outlook clásico no está instalado (el nuevo Outlook para Windows no los incluye). Si el Outlook clásico está instalado, repare Office: abra Configuración &gt; Aplicaciones &gt; Aplicaciones instaladas, busque Microsoft 365 (o Microsoft Office), elija Modificar y, a continuación, Reparación en línea.</value>
+  </data>
+  <data name="NewOutlookEnabledHint" xml:space="preserve">
+    <value>Nota: Outlook está configurado para usar el nuevo Outlook para Windows, que Outlook on the Desktop no admite. Desactive el botón "Nuevo Outlook" en Outlook para volver al Outlook clásico e inténtelo de nuevo.</value>
   </data>
 </root>

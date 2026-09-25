@@ -142,16 +142,53 @@ public class OutlookInstallationDetectorTests
         new OutlookInstallation(OutlookDetectionError.OfficeNotInstalled, "").IsUsable.Should().BeFalse();
     }
 
+    [Fact]
+    public void Detect_WhenNoOfficeButNewOutlookInstalled_ReturnsClassicOutlookNotInstalled()
+    {
+        var env = new FakeOutlookEnvironment { NewOutlookInstalled = true };
+
+        OutlookInstallationDetector.Detect(env).Error.Should().Be(OutlookDetectionError.ClassicOutlookNotInstalled);
+    }
+
+    [Fact]
+    public void Detect_WhenOfficeWithoutOutlookButNewOutlookInstalled_ReturnsClassicOutlookNotInstalled()
+    {
+        // Microsoft 365 apps without classic Outlook: Office keys exist, but no Outlook App Path.
+        var env = new FakeOutlookEnvironment { Versions = [16], InstallPath = null, NewOutlookInstalled = true };
+
+        OutlookInstallationDetector.Detect(env).Error.Should().Be(OutlookDetectionError.ClassicOutlookNotInstalled);
+    }
+
+    [Fact]
+    public void Detect_WhenClassicOutlookUsableAndNewOutlookInstalled_ReturnsUsable()
+    {
+        var env = new FakeOutlookEnvironment
+        {
+            Versions = [16],
+            InstallPath = @"C:\Office",
+            ExeExists = true,
+            Bitness = _ => "x64",
+            NewOutlookInstalled = true
+        };
+
+        var result = OutlookInstallationDetector.Detect(env);
+
+        result.IsUsable.Should().BeTrue();
+        result.Bitness.Should().Be("x64");
+    }
+
     private sealed class FakeOutlookEnvironment : IOutlookEnvironment
     {
         public List<double> Versions { get; init; } = [];
         public string? InstallPath { get; init; }
         public bool ExeExists { get; init; }
         public Func<double, string?> Bitness { get; init; } = _ => null;
+        public bool NewOutlookInstalled { get; init; }
 
         public IReadOnlyList<double> GetInstalledOfficeVersions() => Versions;
         public string? GetOutlookInstallPath() => InstallPath;
         public bool OutlookExecutableExists(string installPath) => ExeExists;
         public string? GetBitness(double officeVersion) => Bitness(officeVersion);
+        public bool IsNewOutlookInstalled() => NewOutlookInstalled;
     }
 }

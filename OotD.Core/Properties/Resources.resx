@@ -406,12 +406,32 @@
   <data name="Windows_RPC_Server_is_not_available" xml:space="preserve">
     <value>The Windows RPC Server is not available. Please wait try loading Outlook on the Desktop in a few minutes.  If you still get the same error, you may have a problem with your windows installation.</value>
   </data>
-  <data name="Incorrect_bittedness_of_OotD" xml:space="preserve">
-    <value>It appears you are attempting to run the incorrect version of Outlook on the Desktop.
+  <data name="ClassicOutlookRequired" xml:space="preserve">
+    <value>Outlook on the Desktop requires classic Outlook (Outlook 2010 or later, including Outlook for Microsoft 365), but it doesn't appear to be installed.
 
-If you have 64-bit Office installed please use the 64-bit Outlook on the Desktop.
+The new Outlook for Windows isn't supported: it doesn't include the Outlook View Control that Outlook on the Desktop uses to show your calendar and mail.
 
-If you have 32-bit Office installed, please use the 32-bit Outlook on the Desktop.</value>
+Please install classic Outlook and try again.</value>
+  </data>
+  <data name="OutlookServerExecFailure" xml:space="preserve">
+    <value>Outlook could not be started for Outlook on the Desktop (CO_E_SERVER_EXEC_FAILURE).
+
+This usually means Outlook and Outlook on the Desktop are running with different permissions (for example, one of them is running as administrator), or Outlook is stuck starting up.
+
+Close Outlook completely (check Task Manager for any remaining OUTLOOK.EXE processes), make sure neither Outlook nor Outlook on the Desktop is set to run as administrator, then try again.</value>
+  </data>
+  <data name="OutlookRegistrationBroken" xml:space="preserve">
+    <value>Outlook's automation components are not registered correctly. This usually happens after an interrupted or partial Office update.
+
+To fix it, repair Office: open Settings &gt; Apps &gt; Installed apps, find Microsoft 365 (or Microsoft Office), choose Modify, then Online Repair. Restart your PC afterwards and try again.</value>
+  </data>
+  <data name="OutlookClassNotRegistered" xml:space="preserve">
+    <value>The Outlook components that Outlook on the Desktop needs are not registered on this PC.
+
+This usually means classic Outlook isn't installed (the new Outlook for Windows doesn't include them). If classic Outlook is installed, repair Office: open Settings &gt; Apps &gt; Installed apps, find Microsoft 365 (or Microsoft Office), choose Modify, then Online Repair.</value>
+  </data>
+  <data name="NewOutlookEnabledHint" xml:space="preserve">
+    <value>Note: Outlook is currently switched to the new Outlook for Windows, which Outlook on the Desktop doesn't support. Turn off the "New Outlook" toggle in Outlook to switch back to classic Outlook, then try again.</value>
   </data>
   <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\icons\appicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

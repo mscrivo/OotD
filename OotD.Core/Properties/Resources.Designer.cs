@@ -471,6 +471,15 @@ namespace OotD.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Outlook on the Desktop requires classic Outlook (Outlook 2010 or later, including Outlook for Microsoft 365), but it doesn't appear to be installed.[rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ClassicOutlookRequired {
+            get {
+                return ResourceManager.GetString("ClassicOutlookRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         internal static string Close {
@@ -684,19 +693,6 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to It appears you are attempting to run the incorrect version of Outlook on the Desktop.
-        ///
-        ///If you have 64-bit Office installed please use the 64-bit Outlook on the Desktop.
-        ///
-        ///If you have 32-bit Office installed, please use the 32-bit Outlook on the Desktop..
-        /// </summary>
-        internal static string Incorrect_bittedness_of_OotD {
-            get {
-                return ResourceManager.GetString("Incorrect_bittedness_of_OotD", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Please install Microsoft Office and try again..
         /// </summary>
         internal static string InstallOutlookMsg {
@@ -794,6 +790,15 @@ namespace OotD.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Note: Outlook is currently switched to the new Outlook for Windows, which Outlook on the Desktop doesn't support. Turn off the "New Outlook" toggle in Outlook to switch back to classic Outlook, then try again..
+        /// </summary>
+        internal static string NewOutlookEnabledHint {
+            get {
+                return ResourceManager.GetString("NewOutlookEnabledHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Next {
@@ -868,6 +873,15 @@ namespace OotD.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Outlook components that Outlook on the Desktop needs are not registered on this PC.[rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string OutlookClassNotRegistered {
+            get {
+                return ResourceManager.GetString("OutlookClassNotRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to find Outlook on your system at the reported location of:
         ///{0}.
         /// </summary>
@@ -901,6 +915,24 @@ namespace OotD.Properties {
         internal static string OutlookNotRunning {
             get {
                 return ResourceManager.GetString("OutlookNotRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outlook's automation components are not registered correctly. This usually happens after an interrupted or partial Office update.[rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string OutlookRegistrationBroken {
+            get {
+                return ResourceManager.GetString("OutlookRegistrationBroken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Outlook could not be started for Outlook on the Desktop (CO_E_SERVER_EXEC_FAILURE).[rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string OutlookServerExecFailure {
+            get {
+                return ResourceManager.GetString("OutlookServerExecFailure", resourceCulture);
             }
         }
         

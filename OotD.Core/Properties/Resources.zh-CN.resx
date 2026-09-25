@@ -406,9 +406,6 @@
   <data name="Windows_RPC_Server_is_not_available" xml:space="preserve">
     <value>Windows RPC 服务器不可用。请稍后几分钟再尝试启动 Outlook on the Desktop。如果仍然出现相同错误，可能是 Windows 安装存在问题。</value>
   </data>
-  <data name="Incorrect_bittedness_of_OotD" xml:space="preserve">
-    <value>您似乎正在运行错误版本的 Outlook on the Desktop。\\n\\n如果您安装的是 64 位 Office，请使用 64 位 Outlook on the Desktop。\\n\\n如果您安装的是 32 位 Office，请使用 32 位 Outlook on the Desktop。</value>
-  </data>
   <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\icons\appicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -546,5 +543,32 @@
   </data>
   <data name="TodoList" xml:space="preserve">
     <value>待办事项列表</value>
+  </data>
+  <data name="ClassicOutlookRequired" xml:space="preserve">
+    <value>Outlook on the Desktop 需要经典版 Outlook (Outlook 2010 或更高版本，包括 Outlook for Microsoft 365)，但似乎未安装。
+
+不支持新版 Outlook for Windows：它不包含 Outlook on the Desktop 用于显示日历和邮件的 Outlook View Control。
+
+请安装经典版 Outlook，然后重试。</value>
+  </data>
+  <data name="OutlookServerExecFailure" xml:space="preserve">
+    <value>无法为 Outlook on the Desktop 启动 Outlook (CO_E_SERVER_EXEC_FAILURE)。
+
+这通常表示 Outlook 和 Outlook on the Desktop 以不同的权限运行 (例如，其中一个以管理员身份运行)，或者 Outlook 在启动时卡住。
+
+请完全关闭 Outlook (在任务管理器中检查是否还有 OUTLOOK.EXE 进程)，确保 Outlook 和 Outlook on the Desktop 都未设置为以管理员身份运行，然后重试。</value>
+  </data>
+  <data name="OutlookRegistrationBroken" xml:space="preserve">
+    <value>Outlook 的自动化组件未正确注册。这通常发生在 Office 更新被中断或未完成之后。
+
+要解决此问题，请修复 Office：打开“设置”&gt;“应用”&gt;“已安装的应用”，找到 Microsoft 365 (或 Microsoft Office)，选择“修改”，然后选择“联机修复”。完成后重新启动电脑，然后重试。</value>
+  </data>
+  <data name="OutlookClassNotRegistered" xml:space="preserve">
+    <value>此电脑上未注册 Outlook on the Desktop 所需的 Outlook 组件。
+
+这通常表示未安装经典版 Outlook (新版 Outlook for Windows 不包含这些组件)。如果已安装经典版 Outlook，请修复 Office：打开“设置”&gt;“应用”&gt;“已安装的应用”，找到 Microsoft 365 (或 Microsoft Office)，选择“修改”，然后选择“联机修复”。</value>
+  </data>
+  <data name="NewOutlookEnabledHint" xml:space="preserve">
+    <value>注意：Outlook 当前设置为使用新版 Outlook for Windows，而 Outlook on the Desktop 不支持新版 Outlook。请在 Outlook 中关闭“新版 Outlook”开关以切换回经典版 Outlook，然后重试。</value>
   </data>
 </root>
