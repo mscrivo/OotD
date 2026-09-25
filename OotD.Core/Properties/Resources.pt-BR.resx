@@ -117,32 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Position" xml:space="preserve">
-    <value>Posicao</value>
-  </data>
   <data name="Hide" xml:space="preserve">
     <value>Ocultar</value>
   </data>
   <data name="ErrorCaption" xml:space="preserve">
     <value>Erro do Outlook on the Desktop</value>
   </data>
-  <data name="Opaque" xml:space="preserve">
-    <value>Opaco</value>
-  </data>
   <data name="ErrorLaunchingWebsite" xml:space="preserve">
-    <value>Nao foi possivel abrir o site.</value>
-  </data>
-  <data name="PreferencesTitle" xml:space="preserve">
-    <value>Preferencias do Outlook on the Desktop</value>
+    <value>Não foi possível abrir o site.</value>
   </data>
   <data name="Calendar" xml:space="preserve">
-    <value>Calendario</value>
-  </data>
-  <data name="Height" xml:space="preserve">
-    <value>Altura</value>
-  </data>
-  <data name="CancelButton" xml:space="preserve">
-    <value>&amp;Cancelar</value>
+    <value>Calendário</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -167,10 +152,10 @@
     <value>..\Resources\Icons\28.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AddInstance" xml:space="preserve">
-    <value>Adicionar instancia</value>
+    <value>Adicionar instância</value>
   </data>
   <data name="DisableEditing" xml:space="preserve">
-    <value>Desativar edicao</value>
+    <value>Desativar edição</value>
   </data>
   <data name="Show" xml:space="preserve">
     <value>Mostrar</value>
@@ -178,11 +163,8 @@
   <data name="SelectFolder" xml:space="preserve">
     <value>Selecionar pasta ...</value>
   </data>
-  <data name="Wide" xml:space="preserve">
-    <value>Largo</value>
-  </data>
   <data name="ErrorSettingDimensions" xml:space="preserve">
-    <value>Ocorreu um erro ao definir as dimensoes. Isso geralmente acontece depois que voce redimensiona a area de trabalho. Defina novamente as dimensoes desejadas.</value>
+    <value>Ocorreu um erro ao definir as dimensões. Isso geralmente acontece depois que você redimensiona a área de trabalho. Defina novamente as dimensões desejadas.</value>
   </data>
   <data name="_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\3.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -193,17 +175,8 @@
   <data name="ErrorInitializingApp" xml:space="preserve">
     <value>Ocorreu um erro ao inicializar o aplicativo:</value>
   </data>
-  <data name="Transparent" xml:space="preserve">
-    <value>Transparente</value>
-  </data>
-  <data name="ProductName" xml:space="preserve">
-    <value>Outlook on the Desktop</value>
-  </data>
   <data name="Tasks" xml:space="preserve">
     <value>Tarefas</value>
-  </data>
-  <data name="AboutDialogTitle" xml:space="preserve">
-    <value>Sobre o Outlook on the Desktop</value>
   </data>
   <data name="_23" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\23.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -220,14 +193,11 @@
   <data name="OKButton" xml:space="preserve">
     <value>&amp;OK</value>
   </data>
-  <data name="Width" xml:space="preserve">
-    <value>Largura</value>
-  </data>
   <data name="Opacity" xml:space="preserve">
-    <value>Opacidade:</value>
+    <value>Opacidade: </value>
   </data>
   <data name="ErrorSettingFolder" xml:space="preserve">
-    <value>Ocorreu um erro ao mudar para a pasta especificada. Ela pode nao ser compativel com o Outlook on the Desktop.</value>
+    <value>Ocorreu um erro ao mudar para a pasta especificada. Ela pode não ser compatível com o Outlook on the Desktop.</value>
   </data>
   <data name="_17" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\17.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -239,34 +209,16 @@
     <value>..\Resources\Icons\11.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="NewInstanceName" xml:space="preserve">
-    <value>Nome da nova instancia</value>
-  </data>
-  <data name="CancelConfirmation" xml:space="preserve">
-    <value>Tem certeza de que deseja cancelar?</value>
-  </data>
-  <data name="Copyright" xml:space="preserve">
-    <value>Direitos autorais</value>
-  </data>
-  <data name="Narrow" xml:space="preserve">
-    <value>Estreito</value>
+    <value>Nome da nova instância</value>
   </data>
   <data name="ErrorSettingOpacity" xml:space="preserve">
-    <value>Ocorreu um erro ao definir a opacidade; o padrao de 50% foi usado. Tente defini-la novamente.</value>
-  </data>
-  <data name="Preferences" xml:space="preserve">
-    <value>Preferencias</value>
+    <value>Ocorreu um erro ao definir a opacidade; o padrão de 50% foi usado. Tente defini-la novamente.</value>
   </data>
   <data name="RemoveInstanceConfirmation" xml:space="preserve">
-    <value>Tem certeza de que deseja remover esta instancia?</value>
-  </data>
-  <data name="ErrorSavingSettings" xml:space="preserve">
-    <value>Erro ao salvar configuracoes</value>
-  </data>
-  <data name="Tall" xml:space="preserve">
-    <value>Alto</value>
+    <value>Tem certeza de que deseja remover esta instância?</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Notas</value>
+    <value>Anotações</value>
   </data>
   <data name="_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\5.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -277,23 +229,17 @@
   <data name="Inbox" xml:space="preserve">
     <value>Caixa de entrada</value>
   </data>
-  <data name="Short" xml:space="preserve">
-    <value>Baixo</value>
-  </data>
   <data name="Office2010Requirement" xml:space="preserve">
     <value>Este programa requer o Microsoft Outlook 2010 ou superior.</value>
   </data>
   <data name="_21" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\21.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Version" xml:space="preserve">
-    <value>Versao</value>
-  </data>
   <data name="ConfirmationCaption" xml:space="preserve">
-    <value>Confirmacao</value>
+    <value>Confirmação</value>
   </data>
   <data name="ProgramIsAlreadyRunningCaption" xml:space="preserve">
-    <value>Ja em execucao</value>
+    <value>Já em execução</value>
   </data>
   <data name="InstallOutlookMsg" xml:space="preserve">
     <value>Instale o Microsoft Office e tente novamente.</value>
@@ -322,15 +268,6 @@
   <data name="WeekXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\week.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Fechar</value>
-  </data>
-  <data name="WebSite" xml:space="preserve">
-    <value>Site</value>
-  </data>
-  <data name="Separator" xml:space="preserve">
-    <value>-</value>
-  </data>
   <data name="Exit" xml:space="preserve">
     <value>Sair</value>
   </data>
@@ -344,7 +281,7 @@
     <value>..\Resources\Icons\7.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ProgramIsAlreadyRunning" xml:space="preserve">
-    <value>Outlook on the Desktop ja esta em execucao.</value>
+    <value>O Outlook on the Desktop já está em execução.</value>
   </data>
   <data name="_12" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\12.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -365,16 +302,13 @@
     <value>Iniciar com o Windows</value>
   </data>
   <data name="OotdRunning" xml:space="preserve">
-    <value>Outlook on the Desktop esta em execucao</value>
+    <value>O Outlook on the Desktop está em execução</value>
   </data>
   <data name="WorkWeekXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WorkWeek.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="_26" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\26.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="EnableEditing" xml:space="preserve">
-    <value>Ativar edicao</value>
   </data>
   <data name="_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\15.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -386,31 +320,25 @@
     <value>..\Resources\Icons\25.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RightClickToConfigure" xml:space="preserve">
-    <value>Clique com o botao direito neste icone para configurar o Outlook on the Desktop.</value>
+    <value>Clique com o botão direito neste ícone para configurar o Outlook on the Desktop.</value>
   </data>
   <data name="LockPosition" xml:space="preserve">
-    <value>Bloquear posicao</value>
-  </data>
-  <data name="Transparency_Slider_Locked_Message" xml:space="preserve">
-    <value>Voce deve desbloquear o formulario antes de tentar alterar o nivel de transparencia.</value>
+    <value>Bloquear posição</value>
   </data>
   <data name="Transparency_Slider_Help_Message" xml:space="preserve">
-    <value>Deslize para alterar o nivel de transparencia desta janela</value>
-  </data>
-  <data name="Form_Move_Locked_Message" xml:space="preserve">
-    <value>Voce deve desbloquear o formulario antes de tentar mover a janela.</value>
+    <value>Deslize para alterar o nível de transparência desta janela</value>
   </data>
   <data name="Form_Move_Help_Message" xml:space="preserve">
-    <value>Clique e segure este cabecalho para mover a janela</value>
+    <value>Clique e segure este cabeçalho para mover a janela</value>
   </data>
   <data name="Windows_RPC_Server_is_not_available" xml:space="preserve">
-    <value>O servidor RPC do Windows nao esta disponivel. Aguarde alguns minutos e tente carregar o Outlook on the Desktop novamente. Se o mesmo erro continuar, pode haver um problema na instalacao do Windows.</value>
+    <value>O servidor RPC do Windows não está disponível. Aguarde alguns minutos e tente carregar o Outlook on the Desktop novamente. Se o mesmo erro continuar, pode haver um problema na instalação do Windows.</value>
   </data>
   <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\icons\appicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Verificar atualizacoes</value>
+    <value>Verificar atualizações</value>
   </data>
   <data name="Next" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\next.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -437,97 +365,108 @@
     <value>..\Resources\Images\month.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Toggle_Day_View" xml:space="preserve">
-    <value>Alternar para visualizacao diaria</value>
+    <value>Alternar para visualização diária</value>
   </data>
   <data name="Move_Previous" xml:space="preserve">
     <value>Anterior</value>
   </data>
   <data name="Move_Next" xml:space="preserve">
-    <value>Proximo</value>
+    <value>Próximo</value>
   </data>
   <data name="Go_to_Today" xml:space="preserve">
     <value>Ir para hoje</value>
   </data>
   <data name="Toggle_Work_Week_View" xml:space="preserve">
-    <value>Alternar para visualizacao de semana util</value>
+    <value>Alternar para visualização de semana de trabalho</value>
   </data>
   <data name="Toggle_Month_View" xml:space="preserve">
-    <value>Alternar para visualizacao mensal</value>
+    <value>Alternar para visualização mensal</value>
   </data>
   <data name="Toggle_Full_Week_View" xml:space="preserve">
-    <value>Alternar para visualizacao de semana completa</value>
+    <value>Alternar para visualização de semana completa</value>
   </data>
   <data name="ViewTypeNotSupported" xml:space="preserve">
-    <value>Nao foi possivel definir a visualizacao. Sua versao do Outlook pode nao oferecer suporte a ela.</value>
+    <value>Não foi possível definir a visualização. Sua versão do Outlook pode não oferecer suporte a ela.</value>
   </data>
   <data name="NewEmail" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NewEmail.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ChildProcessErrorMessage" xml:space="preserve">
-    <value>Ocorreu um erro desconhecido ao tentar executar o OotD. Envie um bug em https://github.com/mscrivo/OotD/issues e anexe seu arquivo de log, localizado em: {0}</value>
+    <value>Ocorreu um erro desconhecido ao tentar executar o OotD. Relate o problema em https://github.com/mscrivo/OotD/issues e anexe seu arquivo de log, localizado em: {0}</value>
   </data>
   <data name="OutlookKeyNotFoundError" xml:space="preserve">
-    <value>Nao foi possivel encontrar detalhes da instalacao do Office. Tem certeza de que o Office esta instalado?</value>
+    <value>Não foi possível encontrar detalhes da instalação do Office. Tem certeza de que o Office está instalado?</value>
   </data>
   <data name="OutlookExeNotFoundError" xml:space="preserve">
-    <value>Nao foi possivel encontrar o Outlook no sistema no local informado:\\n{0}</value>
+    <value>Não foi possível encontrar o Outlook no sistema no local informado:
+{0}</value>
   </data>
   <data name="OutlookLocationKeyNotFoundError" xml:space="preserve">
-    <value>Nao foi possivel localizar o executavel do Outlook no sistema</value>
+    <value>Não foi possível localizar o executável do Outlook no sistema</value>
   </data>
   <data name="AboutOotD" xml:space="preserve">
     <value>Sobre {0}</value>
   </data>
   <data name="AboutVersion" xml:space="preserve">
-    <value>Versao {0}</value>
+    <value>Versão {0}</value>
   </data>
   <data name="OutlookNotRunning" xml:space="preserve">
-    <value>O OotD detectou que o Outlook nao esta em execucao. Talvez ele tenha travado ou sido fechado acidentalmente. O OotD nao pode funcionar sem ele e precisara ser reiniciado. O OotD sera fechado agora.</value>
+    <value>O OotD detectou que o Outlook não está em execução. Talvez ele tenha travado ou sido fechado acidentalmente. O OotD não pode funcionar sem ele e precisará ser reiniciado. O OotD será fechado agora.</value>
   </data>
   <data name="Percentage" xml:space="preserve">
     <value>%</value>
   </data>
   <data name="RestoreDefaults" xml:space="preserve">
-    <value>Restaurar padroes</value>
+    <value>Restaurar padrões</value>
   </data>
   <data name="RestoreDefaultsConfirmation" xml:space="preserve">
-    <value>Isto removera todas as configuracoes e instancias salvas do Outlook on the Desktop no registro.\\n\\nDeseja continuar?</value>
+    <value>Isso removerá do registro todas as configurações e instâncias salvas do Outlook on the Desktop.
+
+Deseja continuar?</value>
   </data>
   <data name="Required" xml:space="preserve">
-    <value>Obrigatorio</value>
+    <value>Obrigatório</value>
   </data>
   <data name="RenameInstance" xml:space="preserve">
-    <value>Renomear instancia</value>
+    <value>Renomear instância</value>
   </data>
   <data name="RenameThisInstance" xml:space="preserve">
-    <value>Renomear esta instancia</value>
+    <value>Renomear esta instância</value>
   </data>
   <data name="RemoveThisInstance" xml:space="preserve">
-    <value>Remover esta instancia</value>
+    <value>Remover esta instância</value>
   </data>
   <data name="MoveToVirtualDesktop" xml:space="preserve">
-    <value>Mover para area de trabalho virtual</value>
+    <value>Mover para a área de trabalho virtual</value>
   </data>
   <data name="VirtualDesktopFeatureNotSupported" xml:space="preserve">
-    <value>Os recursos de area de trabalho virtual nao sao suportados neste sistema.</value>
+    <value>Os recursos de área de trabalho virtual não são compatíveis com este sistema.</value>
   </data>
   <data name="VirtualDesktopFeatureNotAvailableCaption" xml:space="preserve">
-    <value>Recurso nao disponivel</value>
+    <value>Recurso não disponível</value>
   </data>
   <data name="SuccessCaption" xml:space="preserve">
     <value>Sucesso</value>
   </data>
   <data name="VirtualDesktopAssignmentClearedMessage" xml:space="preserve">
-    <value>A atribuicao de area de trabalho virtual foi removida.\\n\\nA instancia agora aparecera em todas as areas de trabalho e ficara oculta no Alt+Tab.\\n\\nDeseja reiniciar o aplicativo agora para garantir que todas as alteracoes tenham efeito?</value>
+    <value>A atribuição de área de trabalho virtual foi removida.
+
+A instância agora aparecerá em todas as áreas de trabalho e ficará oculta no Alt+Tab.
+
+Deseja reiniciar o aplicativo agora para garantir que todas as alterações tenham efeito?</value>
   </data>
   <data name="VirtualDesktopAssignmentAppliedMessage" xml:space="preserve">
-    <value>A instancia foi movida para a area de trabalho virtual selecionada.\\n\\nObservacao: a janela agora aparecera no Alt+Tab para garantir o comportamento correto da area de trabalho virtual.\\n\\nDeseja reiniciar o aplicativo agora para garantir que todas as alteracoes tenham efeito?</value>
+    <value>A instância foi movida para a área de trabalho virtual selecionada.
+
+Observação: a janela agora aparecerá no Alt+Tab para garantir o comportamento correto da área de trabalho virtual.
+
+Deseja reiniciar o aplicativo agora para garantir que todas as alterações tenham efeito?</value>
   </data>
   <data name="VirtualDesktopMoveFailedMessage" xml:space="preserve">
-    <value>Falha ao mover a janela para a area de trabalho virtual selecionada.</value>
+    <value>Falha ao mover a janela para a área de trabalho virtual selecionada.</value>
   </data>
   <data name="OperationFailedCaption" xml:space="preserve">
-    <value>Operacao falhou</value>
+    <value>Falha na operação</value>
   </data>
   <data name="ErrorCaptionShort" xml:space="preserve">
     <value>Erro</value>
@@ -536,10 +475,10 @@
     <value>Erro: {0}</value>
   </data>
   <data name="OutlookViews" xml:space="preserve">
-    <value>Visualizacoes do Outlook</value>
+    <value>Visualizações do Outlook</value>
   </data>
   <data name="DefaultView" xml:space="preserve">
-    <value>Visualizacao padrao</value>
+    <value>Visualização padrão</value>
   </data>
   <data name="TodoList" xml:space="preserve">
     <value>Lista de tarefas</value>

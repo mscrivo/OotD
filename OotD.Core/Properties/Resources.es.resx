@@ -117,32 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Position" xml:space="preserve">
-    <value>Position</value>
-  </data>
   <data name="Hide" xml:space="preserve">
     <value>Ocultar</value>
   </data>
   <data name="ErrorCaption" xml:space="preserve">
     <value>Error de Outlook on the Desktop</value>
   </data>
-  <data name="Opaque" xml:space="preserve">
-    <value>Opaque</value>
-  </data>
   <data name="ErrorLaunchingWebsite" xml:space="preserve">
-    <value>Could not launch web site.</value>
-  </data>
-  <data name="PreferencesTitle" xml:space="preserve">
-    <value>Outlook on the Desktop Preferences</value>
+    <value>No se pudo abrir el sitio web.</value>
   </data>
   <data name="Calendar" xml:space="preserve">
     <value>Calendario</value>
-  </data>
-  <data name="Height" xml:space="preserve">
-    <value>Height</value>
-  </data>
-  <data name="CancelButton" xml:space="preserve">
-    <value>&amp;Cancel</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -178,9 +163,6 @@
   <data name="SelectFolder" xml:space="preserve">
     <value>Seleccionar carpeta ...</value>
   </data>
-  <data name="Wide" xml:space="preserve">
-    <value>Wide</value>
-  </data>
   <data name="ErrorSettingDimensions" xml:space="preserve">
     <value>Se produjo un error al establecer las dimensiones. Esto suele ocurrir después de cambiar el tamaño del escritorio. Vuelve a establecer tus dimensiones preferidas.</value>
   </data>
@@ -193,17 +175,8 @@
   <data name="ErrorInitializingApp" xml:space="preserve">
     <value>Se produjo un error al inicializar la aplicación:</value>
   </data>
-  <data name="Transparent" xml:space="preserve">
-    <value>Transparent</value>
-  </data>
-  <data name="ProductName" xml:space="preserve">
-    <value>Outlook on the Desktop</value>
-  </data>
   <data name="Tasks" xml:space="preserve">
     <value>Tareas</value>
-  </data>
-  <data name="AboutDialogTitle" xml:space="preserve">
-    <value>Acerca de Outlook on the Desktop</value>
   </data>
   <data name="_23" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\23.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -218,10 +191,7 @@
     <value>..\Resources\Icons\4.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="OKButton" xml:space="preserve">
-    <value>&amp;OK</value>
-  </data>
-  <data name="Width" xml:space="preserve">
-    <value>Width</value>
+    <value>&amp;Aceptar</value>
   </data>
   <data name="Opacity" xml:space="preserve">
     <value>Opacidad: </value>
@@ -241,29 +211,11 @@
   <data name="NewInstanceName" xml:space="preserve">
     <value>Nombre de la nueva instancia</value>
   </data>
-  <data name="CancelConfirmation" xml:space="preserve">
-    <value>Are you sure you want to cancel?</value>
-  </data>
-  <data name="Copyright" xml:space="preserve">
-    <value>Copyright</value>
-  </data>
-  <data name="Narrow" xml:space="preserve">
-    <value>Narrow</value>
-  </data>
   <data name="ErrorSettingOpacity" xml:space="preserve">
     <value>Se produjo un error al establecer la opacidad; se usó el valor predeterminado del 50%. Inténtalo de nuevo.</value>
   </data>
-  <data name="Preferences" xml:space="preserve">
-    <value>Preferencias</value>
-  </data>
   <data name="RemoveInstanceConfirmation" xml:space="preserve">
     <value>¿Seguro que quieres eliminar esta instancia?</value>
-  </data>
-  <data name="ErrorSavingSettings" xml:space="preserve">
-    <value>Error Saving Settings</value>
-  </data>
-  <data name="Tall" xml:space="preserve">
-    <value>Tall</value>
   </data>
   <data name="Notes" xml:space="preserve">
     <value>Notas</value>
@@ -277,17 +229,11 @@
   <data name="Inbox" xml:space="preserve">
     <value>Bandeja de entrada</value>
   </data>
-  <data name="Short" xml:space="preserve">
-    <value>Short</value>
-  </data>
   <data name="Office2010Requirement" xml:space="preserve">
-    <value>This program requires Microsoft Outlook 2010 or higher.</value>
+    <value>Este programa requiere Microsoft Outlook 2010 o posterior.</value>
   </data>
   <data name="_21" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\21.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Version" xml:space="preserve">
-    <value>Version</value>
   </data>
   <data name="ConfirmationCaption" xml:space="preserve">
     <value>Confirmación</value>
@@ -296,7 +242,7 @@
     <value>Ya en ejecución</value>
   </data>
   <data name="InstallOutlookMsg" xml:space="preserve">
-    <value>Please install Microsoft Office and try again.</value>
+    <value>Instala Microsoft Office e inténtalo de nuevo.</value>
   </data>
   <data name="_13" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\13.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -311,7 +257,7 @@
     <value>..\Resources\month.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="MissingRequirementsCapation" xml:space="preserve">
-    <value>Missing Requirements</value>
+    <value>Faltan requisitos</value>
   </data>
   <data name="_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\30.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -321,15 +267,6 @@
   </data>
   <data name="WeekXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\week.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>Cerrar</value>
-  </data>
-  <data name="WebSite" xml:space="preserve">
-    <value>Web Site</value>
-  </data>
-  <data name="Separator" xml:space="preserve">
-    <value>-</value>
   </data>
   <data name="Exit" xml:space="preserve">
     <value>Salir</value>
@@ -373,9 +310,6 @@
   <data name="_26" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\26.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="EnableEditing" xml:space="preserve">
-    <value>Habilitar edición</value>
-  </data>
   <data name="_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\15.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -386,25 +320,19 @@
     <value>..\Resources\Icons\25.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RightClickToConfigure" xml:space="preserve">
-    <value>Haz clic derecho en este ícono para configurar Outlook on the Desktop.</value>
+    <value>Haz clic con el botón derecho en este icono para configurar Outlook on the Desktop.</value>
   </data>
   <data name="LockPosition" xml:space="preserve">
     <value>Bloquear posición</value>
   </data>
-  <data name="Transparency_Slider_Locked_Message" xml:space="preserve">
-    <value>You must unlock the form before attempting to change the transparency level.</value>
-  </data>
   <data name="Transparency_Slider_Help_Message" xml:space="preserve">
-    <value>Slide to change this windows transparency level</value>
-  </data>
-  <data name="Form_Move_Locked_Message" xml:space="preserve">
-    <value>You must unlock the form before attempting to move the window.</value>
+    <value>Desliza para cambiar el nivel de transparencia de esta ventana</value>
   </data>
   <data name="Form_Move_Help_Message" xml:space="preserve">
-    <value>Click and hold this header to move the window</value>
+    <value>Haz clic en este encabezado y mantenlo presionado para mover la ventana</value>
   </data>
   <data name="Windows_RPC_Server_is_not_available" xml:space="preserve">
-    <value>The Windows RPC Server is not available. Please wait try loading Outlook on the Desktop in a few minutes.  If you still get the same error, you may have a problem with your windows installation.</value>
+    <value>El servidor RPC de Windows no está disponible. Espera unos minutos e intenta cargar Outlook on the Desktop de nuevo. Si sigue apareciendo el mismo error, es posible que haya un problema con tu instalación de Windows.</value>
   </data>
   <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\icons\appicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -446,7 +374,7 @@
     <value>Siguiente</value>
   </data>
   <data name="Go_to_Today" xml:space="preserve">
-    <value>Go to Today</value>
+    <value>Ir a hoy</value>
   </data>
   <data name="Toggle_Work_Week_View" xml:space="preserve">
     <value>Cambiar a vista de semana laboral</value>
@@ -458,23 +386,23 @@
     <value>Cambiar a vista semanal completa</value>
   </data>
   <data name="ViewTypeNotSupported" xml:space="preserve">
-    <value>No se puede establecer la vista. Es posible que tu versión de Outlook no sea compatible.</value>
+    <value>No se puede establecer la vista. Es posible que tu versión de Outlook no la admita.</value>
   </data>
   <data name="NewEmail" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NewEmail.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ChildProcessErrorMessage" xml:space="preserve">
-    <value>There was an unknown error trying to run OotD.  Please submit a bug at https://github.com/mscrivo/OotD/issues and attach your log file, located in: {0}</value>
+    <value>Se produjo un error desconocido al intentar ejecutar OotD. Informa del error en https://github.com/mscrivo/OotD/issues y adjunta tu archivo de registro, que se encuentra en: {0}</value>
   </data>
   <data name="OutlookKeyNotFoundError" xml:space="preserve">
-    <value>Unable to find details of Office installation.  Are you sure Office is installed?</value>
+    <value>No se encontraron los detalles de la instalación de Office. ¿Seguro que Office está instalado?</value>
   </data>
   <data name="OutlookExeNotFoundError" xml:space="preserve">
-    <value>Unable to find Outlook on your system at the reported location of:
+    <value>No se encontró Outlook en la ubicación indicada:
 {0}</value>
   </data>
   <data name="OutlookLocationKeyNotFoundError" xml:space="preserve">
-    <value>Unable to locate Outlook executable on your system</value>
+    <value>No se pudo encontrar el ejecutable de Outlook en el sistema</value>
   </data>
   <data name="AboutOotD" xml:space="preserve">
     <value>Acerca de {0}</value>
@@ -483,7 +411,7 @@
     <value>Versión {0}</value>
   </data>
   <data name="OutlookNotRunning" xml:space="preserve">
-    <value>OotD detected that Outlook is not running. Perhaps it crashed or was closed accidentally. OotD cannot run without it and will need to be restarted. OotD will now close. </value>
+    <value>OotD ha detectado que Outlook no se está ejecutando. Es posible que se haya bloqueado o que se haya cerrado por accidente. OotD no puede funcionar sin él y tendrá que reiniciarse. OotD se cerrará ahora. </value>
   </data>
   <data name="Percentage" xml:space="preserve">
     <value>%</value>
@@ -558,28 +486,28 @@ Nota: La ventana ahora aparecerá en Alt+Tab para garantizar el comportamiento c
   <data name="ClassicOutlookRequired" xml:space="preserve">
     <value>Outlook on the Desktop requiere el Outlook clásico (Outlook 2010 o posterior, incluido Outlook para Microsoft 365), pero no parece estar instalado.
 
-El nuevo Outlook para Windows no es compatible: no incluye el Outlook View Control que Outlook on the Desktop utiliza para mostrar su calendario y correo.
+El nuevo Outlook para Windows no es compatible: no incluye el Outlook View Control que Outlook on the Desktop utiliza para mostrar tu calendario y tu correo.
 
-Instale el Outlook clásico e inténtelo de nuevo.</value>
+Instala el Outlook clásico e inténtalo de nuevo.</value>
   </data>
   <data name="OutlookServerExecFailure" xml:space="preserve">
     <value>No se pudo iniciar Outlook para Outlook on the Desktop (CO_E_SERVER_EXEC_FAILURE).
 
 Esto suele significar que Outlook y Outlook on the Desktop se están ejecutando con permisos diferentes (por ejemplo, uno de ellos se ejecuta como administrador) o que Outlook se ha quedado bloqueado al iniciarse.
 
-Cierre Outlook por completo (compruebe en el Administrador de tareas que no quede ningún proceso OUTLOOK.EXE), asegúrese de que ni Outlook ni Outlook on the Desktop estén configurados para ejecutarse como administrador e inténtelo de nuevo.</value>
+Cierra Outlook por completo (comprueba en el Administrador de tareas que no quede ningún proceso OUTLOOK.EXE), asegúrate de que ni Outlook ni Outlook on the Desktop estén configurados para ejecutarse como administrador e inténtalo de nuevo.</value>
   </data>
   <data name="OutlookRegistrationBroken" xml:space="preserve">
     <value>Los componentes de automatización de Outlook no están registrados correctamente. Esto suele ocurrir después de una actualización de Office interrumpida o incompleta.
 
-Para solucionarlo, repare Office: abra Configuración &gt; Aplicaciones &gt; Aplicaciones instaladas, busque Microsoft 365 (o Microsoft Office), elija Modificar y, a continuación, Reparación en línea. Después, reinicie el equipo e inténtelo de nuevo.</value>
+Para solucionarlo, repara Office: abre Configuración &gt; Aplicaciones &gt; Aplicaciones instaladas, busca Microsoft 365 (o Microsoft Office), elige Modificar y, a continuación, Reparación en línea. Después, reinicia el equipo e inténtalo de nuevo.</value>
   </data>
   <data name="OutlookClassNotRegistered" xml:space="preserve">
     <value>Los componentes de Outlook que necesita Outlook on the Desktop no están registrados en este equipo.
 
-Esto suele significar que el Outlook clásico no está instalado (el nuevo Outlook para Windows no los incluye). Si el Outlook clásico está instalado, repare Office: abra Configuración &gt; Aplicaciones &gt; Aplicaciones instaladas, busque Microsoft 365 (o Microsoft Office), elija Modificar y, a continuación, Reparación en línea.</value>
+Esto suele significar que el Outlook clásico no está instalado (el nuevo Outlook para Windows no los incluye). Si el Outlook clásico está instalado, repara Office: abre Configuración &gt; Aplicaciones &gt; Aplicaciones instaladas, busca Microsoft 365 (o Microsoft Office), elige Modificar y, a continuación, Reparación en línea.</value>
   </data>
   <data name="NewOutlookEnabledHint" xml:space="preserve">
-    <value>Nota: Outlook está configurado para usar el nuevo Outlook para Windows, que Outlook on the Desktop no admite. Desactive el botón "Nuevo Outlook" en Outlook para volver al Outlook clásico e inténtelo de nuevo.</value>
+    <value>Nota: Outlook está configurado para usar el nuevo Outlook para Windows, que Outlook on the Desktop no admite. Desactiva la opción "Nuevo Outlook" en Outlook para volver al Outlook clásico e inténtalo de nuevo.</value>
   </data>
 </root>

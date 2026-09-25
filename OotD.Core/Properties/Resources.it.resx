@@ -5,34 +5,59 @@
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <data name="About" xml:space="preserve"><value>Informazioni</value></data>
-  <data name="AboutDialogTitle" xml:space="preserve"><value>Informazioni su Outlook on the Desktop</value></data>
   <data name="AboutOotD" xml:space="preserve"><value>Informazioni su {0}</value></data>
   <data name="AboutVersion" xml:space="preserve"><value>Versione {0}</value></data>
   <data name="AddInstance" xml:space="preserve"><value>Aggiungi istanza</value></data>
   <data name="Calendar" xml:space="preserve"><value>Calendario</value></data>
   <data name="CheckForUpdates" xml:space="preserve"><value>Controlla aggiornamenti</value></data>
-  <data name="Close" xml:space="preserve"><value>Chiudi</value></data>
+  <data name="ChildProcessErrorMessage" xml:space="preserve"><value>Si è verificato un errore sconosciuto durante l'esecuzione di OotD. Segnala il problema su https://github.com/mscrivo/OotD/issues e allega il file di log, che si trova in: {0}</value></data>
+  <data name="ClassicOutlookRequired" xml:space="preserve"><value>Outlook on the Desktop richiede la versione classica di Outlook (Outlook 2010 o versione successiva, incluso Outlook per Microsoft 365), che non sembra essere installata.
+
+Il nuovo Outlook per Windows non è supportato: non include l'Outlook View Control che Outlook on the Desktop usa per mostrare il calendario e la posta.
+
+Installa la versione classica di Outlook e riprova.</value></data>
   <data name="ConfirmationCaption" xml:space="preserve"><value>Conferma</value></data>
   <data name="Contacts" xml:space="preserve"><value>Contatti</value></data>
   <data name="DisableEditing" xml:space="preserve"><value>Disabilita modifica</value></data>
-  <data name="EnableEditing" xml:space="preserve"><value>Abilita modifica</value></data>
   <data name="ErrorCaption" xml:space="preserve"><value>Errore di Outlook on the Desktop</value></data>
   <data name="ErrorInitializingApp" xml:space="preserve"><value>Si è verificato un errore durante l'inizializzazione dell'applicazione:</value></data>
+  <data name="ErrorLaunchingWebsite" xml:space="preserve"><value>Impossibile aprire il sito web.</value></data>
   <data name="ErrorSettingDimensions" xml:space="preserve"><value>Si è verificato un errore durante l'impostazione delle dimensioni. Questo accade spesso dopo il ridimensionamento del desktop. Imposta nuovamente le dimensioni preferite.</value></data>
   <data name="ErrorSettingFolder" xml:space="preserve"><value>Si è verificato un errore nel passaggio alla cartella specificata. Potrebbe non essere compatibile con Outlook on the Desktop.</value></data>
   <data name="ErrorSettingOpacity" xml:space="preserve"><value>Si è verificato un errore durante l'impostazione dell'opacità; è stato usato il valore predefinito del 50%. Riprova.</value></data>
   <data name="Exit" xml:space="preserve"><value>Esci</value></data>
+  <data name="Form_Move_Help_Message" xml:space="preserve"><value>Fai clic su questa intestazione e tieni premuto per spostare la finestra</value></data>
+  <data name="Go_to_Today" xml:space="preserve"><value>Vai a oggi</value></data>
   <data name="Hide" xml:space="preserve"><value>Nascondi</value></data>
   <data name="HideAll" xml:space="preserve"><value>Nascondi tutto</value></data>
   <data name="Inbox" xml:space="preserve"><value>Posta in arrivo</value></data>
+  <data name="InstallOutlookMsg" xml:space="preserve"><value>Installa Microsoft Office e riprova.</value></data>
   <data name="LockPosition" xml:space="preserve"><value>Blocca posizione</value></data>
+  <data name="MissingRequirementsCapation" xml:space="preserve"><value>Requisiti mancanti</value></data>
   <data name="Move_Next" xml:space="preserve"><value>Avanti</value></data>
   <data name="Move_Previous" xml:space="preserve"><value>Indietro</value></data>
   <data name="NewInstanceName" xml:space="preserve"><value>Nome nuova istanza</value></data>
+  <data name="NewOutlookEnabledHint" xml:space="preserve"><value>Nota: Outlook è attualmente impostato per usare il nuovo Outlook per Windows, che Outlook on the Desktop non supporta. Disattiva l'opzione "Nuovo Outlook" in Outlook per tornare alla versione classica, quindi riprova.</value></data>
   <data name="Notes" xml:space="preserve"><value>Note</value></data>
+  <data name="Office2010Requirement" xml:space="preserve"><value>Questo programma richiede Microsoft Outlook 2010 o versione successiva.</value></data>
   <data name="Opacity" xml:space="preserve"><value>Opacità: </value></data>
   <data name="OotdRunning" xml:space="preserve"><value>Outlook on the Desktop è in esecuzione</value></data>
-  <data name="Preferences" xml:space="preserve"><value>Preferenze</value></data>
+  <data name="OutlookClassNotRegistered" xml:space="preserve"><value>I componenti di Outlook necessari a Outlook on the Desktop non sono registrati su questo PC.
+
+Di solito significa che la versione classica di Outlook non è installata (il nuovo Outlook per Windows non li include). Se la versione classica di Outlook è installata, ripristina Office: apri Impostazioni &gt; App &gt; App installate, trova Microsoft 365 (o Microsoft Office), scegli Modifica e poi Ripristino online.</value></data>
+  <data name="OutlookExeNotFoundError" xml:space="preserve"><value>Impossibile trovare Outlook nel percorso indicato:
+{0}</value></data>
+  <data name="OutlookKeyNotFoundError" xml:space="preserve"><value>Impossibile trovare le informazioni sull'installazione di Office. Sei sicuro che Office sia installato?</value></data>
+  <data name="OutlookLocationKeyNotFoundError" xml:space="preserve"><value>Impossibile individuare l'eseguibile di Outlook nel sistema.</value></data>
+  <data name="OutlookNotRunning" xml:space="preserve"><value>OotD ha rilevato che Outlook non è in esecuzione. Potrebbe essersi arrestato in modo anomalo o essere stato chiuso per errore. OotD non può funzionare senza Outlook e dovrà essere riavviato. OotD verrà chiuso ora.</value></data>
+  <data name="OutlookRegistrationBroken" xml:space="preserve"><value>I componenti di automazione di Outlook non sono registrati correttamente. Di solito succede dopo un aggiornamento di Office interrotto o incompleto.
+
+Per risolvere il problema, ripristina Office: apri Impostazioni &gt; App &gt; App installate, trova Microsoft 365 (o Microsoft Office), scegli Modifica e poi Ripristino online. Al termine, riavvia il PC e riprova.</value></data>
+  <data name="OutlookServerExecFailure" xml:space="preserve"><value>Impossibile avviare Outlook per Outlook on the Desktop (CO_E_SERVER_EXEC_FAILURE).
+
+Di solito significa che Outlook e Outlook on the Desktop vengono eseguiti con autorizzazioni diverse (ad esempio, uno dei due viene eseguito come amministratore) oppure che Outlook si è bloccato durante l'avvio.
+
+Chiudi completamente Outlook (controlla in Gestione attività che non siano rimasti processi OUTLOOK.EXE), assicurati che né Outlook né Outlook on the Desktop siano impostati per l'esecuzione come amministratore, quindi riprova.</value></data>
   <data name="ProgramIsAlreadyRunning" xml:space="preserve"><value>Outlook on the Desktop è già in esecuzione.</value></data>
   <data name="ProgramIsAlreadyRunningCaption" xml:space="preserve"><value>Già in esecuzione</value></data>
   <data name="RemoveInstanceConfirmation" xml:space="preserve"><value>Vuoi davvero rimuovere questa istanza?</value></data>
@@ -50,6 +75,7 @@ Vuoi continuare?</value></data>
   <data name="Toggle_Full_Week_View" xml:space="preserve"><value>Attiva vista settimana completa</value></data>
   <data name="Toggle_Month_View" xml:space="preserve"><value>Attiva vista mensile</value></data>
   <data name="Toggle_Work_Week_View" xml:space="preserve"><value>Attiva vista settimana lavorativa</value></data>
+  <data name="Transparency_Slider_Help_Message" xml:space="preserve"><value>Trascina per modificare il livello di trasparenza di questa finestra</value></data>
   <data name="ViewTypeNotSupported" xml:space="preserve"><value>Impossibile impostare la visualizzazione. La tua versione di Outlook potrebbe non supportarla.</value></data>
   <data name="Required" xml:space="preserve"><value>Obbligatorio</value></data>
   <data name="RenameInstance" xml:space="preserve"><value>Rinomina istanza</value></data>
@@ -76,4 +102,5 @@ Vuoi riavviare l'applicazione ora per assicurarti che tutte le modifiche abbiano
   <data name="OutlookViews" xml:space="preserve"><value>Viste di Outlook</value></data>
   <data name="DefaultView" xml:space="preserve"><value>Vista predefinita</value></data>
   <data name="TodoList" xml:space="preserve"><value>Elenco attività</value></data>
+  <data name="Windows_RPC_Server_is_not_available" xml:space="preserve"><value>Il server RPC di Windows non è disponibile. Attendi qualche minuto e prova di nuovo ad avviare Outlook on the Desktop. Se l'errore si ripresenta, potrebbe esserci un problema con l'installazione di Windows.</value></data>
 </root>

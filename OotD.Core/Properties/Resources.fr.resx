@@ -5,39 +5,64 @@
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <data name="About" xml:space="preserve"><value>À propos</value></data>
-  <data name="AboutDialogTitle" xml:space="preserve"><value>À propos d'Outlook on the Desktop</value></data>
   <data name="AboutOotD" xml:space="preserve"><value>À propos de {0}</value></data>
   <data name="AboutVersion" xml:space="preserve"><value>Version {0}</value></data>
   <data name="AddInstance" xml:space="preserve"><value>Ajouter une instance</value></data>
   <data name="Calendar" xml:space="preserve"><value>Calendrier</value></data>
   <data name="CheckForUpdates" xml:space="preserve"><value>Rechercher des mises à jour</value></data>
-  <data name="Close" xml:space="preserve"><value>Fermer</value></data>
+  <data name="ChildProcessErrorMessage" xml:space="preserve"><value>Une erreur inconnue s'est produite lors de l'exécution d'OotD. Veuillez signaler le problème sur https://github.com/mscrivo/OotD/issues et joindre votre fichier journal, situé dans : {0}</value></data>
+  <data name="ClassicOutlookRequired" xml:space="preserve"><value>Outlook on the Desktop nécessite Outlook classique (Outlook 2010 ou version ultérieure, y compris Outlook pour Microsoft 365), qui ne semble pas être installé.
+
+Le nouvel Outlook pour Windows n'est pas pris en charge : il n'inclut pas l'Outlook View Control qu'Outlook on the Desktop utilise pour afficher votre calendrier et vos e-mails.
+
+Veuillez installer Outlook classique, puis réessayer.</value></data>
   <data name="ConfirmationCaption" xml:space="preserve"><value>Confirmation</value></data>
   <data name="Contacts" xml:space="preserve"><value>Contacts</value></data>
   <data name="DisableEditing" xml:space="preserve"><value>Désactiver la modification</value></data>
-  <data name="EnableEditing" xml:space="preserve"><value>Activer la modification</value></data>
   <data name="ErrorCaption" xml:space="preserve"><value>Erreur Outlook on the Desktop</value></data>
   <data name="ErrorInitializingApp" xml:space="preserve"><value>Une erreur s'est produite lors de l'initialisation de l'application :</value></data>
+  <data name="ErrorLaunchingWebsite" xml:space="preserve"><value>Impossible d'ouvrir le site web.</value></data>
   <data name="ErrorSettingDimensions" xml:space="preserve"><value>Une erreur s'est produite lors du réglage des dimensions. Cela arrive généralement après un changement de résolution. Veuillez définir à nouveau vos dimensions préférées.</value></data>
   <data name="ErrorSettingFolder" xml:space="preserve"><value>Une erreur s'est produite lors du changement vers le dossier spécifié. Il est possible qu'il ne soit pas compatible avec Outlook on the Desktop.</value></data>
   <data name="ErrorSettingOpacity" xml:space="preserve"><value>Une erreur s'est produite lors du réglage de l'opacité. La valeur par défaut de 50 % a été utilisée. Veuillez réessayer.</value></data>
   <data name="Exit" xml:space="preserve"><value>Quitter</value></data>
+  <data name="Form_Move_Help_Message" xml:space="preserve"><value>Cliquez sur cet en-tête et maintenez le bouton enfoncé pour déplacer la fenêtre</value></data>
+  <data name="Go_to_Today" xml:space="preserve"><value>Aller à aujourd'hui</value></data>
   <data name="Hide" xml:space="preserve"><value>Masquer</value></data>
   <data name="HideAll" xml:space="preserve"><value>Tout masquer</value></data>
   <data name="Inbox" xml:space="preserve"><value>Boîte de réception</value></data>
+  <data name="InstallOutlookMsg" xml:space="preserve"><value>Veuillez installer Microsoft Office, puis réessayer.</value></data>
   <data name="LockPosition" xml:space="preserve"><value>Verrouiller la position</value></data>
+  <data name="MissingRequirementsCapation" xml:space="preserve"><value>Configuration requise manquante</value></data>
   <data name="Move_Next" xml:space="preserve"><value>Suivant</value></data>
   <data name="Move_Previous" xml:space="preserve"><value>Précédent</value></data>
   <data name="NewInstanceName" xml:space="preserve"><value>Nom de la nouvelle instance</value></data>
+  <data name="NewOutlookEnabledHint" xml:space="preserve"><value>Remarque : Outlook est actuellement configuré pour utiliser le nouvel Outlook pour Windows, qui n'est pas pris en charge par Outlook on the Desktop. Désactivez le bouton « Nouvel Outlook » dans Outlook pour revenir à Outlook classique, puis réessayez.</value></data>
   <data name="Notes" xml:space="preserve"><value>Notes</value></data>
+  <data name="Office2010Requirement" xml:space="preserve"><value>Ce programme nécessite Microsoft Outlook 2010 ou une version ultérieure.</value></data>
   <data name="Opacity" xml:space="preserve"><value>Opacité : </value></data>
   <data name="OotdRunning" xml:space="preserve"><value>Outlook on the Desktop est en cours d'exécution</value></data>
-  <data name="Preferences" xml:space="preserve"><value>Préférences</value></data>
+  <data name="OutlookClassNotRegistered" xml:space="preserve"><value>Les composants Outlook dont Outlook on the Desktop a besoin ne sont pas inscrits sur ce PC.
+
+Cela signifie généralement qu'Outlook classique n'est pas installé (le nouvel Outlook pour Windows ne les inclut pas). Si Outlook classique est installé, réparez Office : ouvrez Paramètres &gt; Applications &gt; Applications installées, recherchez Microsoft 365 (ou Microsoft Office), choisissez Modifier, puis Réparation en ligne.</value></data>
+  <data name="OutlookExeNotFoundError" xml:space="preserve"><value>Impossible de trouver Outlook à l'emplacement indiqué :
+{0}</value></data>
+  <data name="OutlookKeyNotFoundError" xml:space="preserve"><value>Impossible de trouver les informations sur l'installation d'Office. Office est-il bien installé ?</value></data>
+  <data name="OutlookLocationKeyNotFoundError" xml:space="preserve"><value>Impossible de localiser l'exécutable d'Outlook sur votre système.</value></data>
+  <data name="OutlookNotRunning" xml:space="preserve"><value>OotD a détecté qu'Outlook n'est pas en cours d'exécution. Il a peut-être planté ou a été fermé par erreur. OotD ne peut pas fonctionner sans Outlook et devra être redémarré. OotD va maintenant se fermer.</value></data>
+  <data name="OutlookRegistrationBroken" xml:space="preserve"><value>Les composants d'automatisation d'Outlook ne sont pas inscrits correctement. Cela se produit généralement après une mise à jour d'Office interrompue ou incomplète.
+
+Pour résoudre le problème, réparez Office : ouvrez Paramètres &gt; Applications &gt; Applications installées, recherchez Microsoft 365 (ou Microsoft Office), choisissez Modifier, puis Réparation en ligne. Redémarrez ensuite votre PC et réessayez.</value></data>
+  <data name="OutlookServerExecFailure" xml:space="preserve"><value>Impossible de démarrer Outlook pour Outlook on the Desktop (CO_E_SERVER_EXEC_FAILURE).
+
+Cela signifie généralement qu'Outlook et Outlook on the Desktop s'exécutent avec des autorisations différentes (par exemple, l'un d'eux est exécuté en tant qu'administrateur) ou qu'Outlook est bloqué au démarrage.
+
+Fermez complètement Outlook (vérifiez dans le Gestionnaire des tâches qu'aucun processus OUTLOOK.EXE n'est encore en cours), assurez-vous que ni Outlook ni Outlook on the Desktop ne sont configurés pour s'exécuter en tant qu'administrateur, puis réessayez.</value></data>
   <data name="ProgramIsAlreadyRunning" xml:space="preserve"><value>Outlook on the Desktop est déjà en cours d'exécution.</value></data>
   <data name="ProgramIsAlreadyRunningCaption" xml:space="preserve"><value>Déjà en cours d'exécution</value></data>
   <data name="RemoveInstanceConfirmation" xml:space="preserve"><value>Voulez-vous vraiment supprimer cette instance ?</value></data>
   <data name="RestoreDefaults" xml:space="preserve"><value>Restaurer les valeurs par défaut</value></data>
-  <data name="RestoreDefaultsConfirmation" xml:space="preserve"><value>Cela supprimera toutes les configurations et instances Outlook on the Desktop enregistrées dans le registre.
+  <data name="RestoreDefaultsConfirmation" xml:space="preserve"><value>Cela supprimera du registre tous les paramètres et toutes les instances enregistrés d'Outlook on the Desktop.
 
 Voulez-vous continuer ?</value></data>
   <data name="RightClickToConfigure" xml:space="preserve"><value>Cliquez avec le bouton droit sur cette icône pour configurer Outlook on the Desktop.</value></data>
@@ -50,6 +75,7 @@ Voulez-vous continuer ?</value></data>
   <data name="Toggle_Full_Week_View" xml:space="preserve"><value>Basculer en vue semaine complète</value></data>
   <data name="Toggle_Month_View" xml:space="preserve"><value>Basculer en vue mois</value></data>
   <data name="Toggle_Work_Week_View" xml:space="preserve"><value>Basculer en vue semaine de travail</value></data>
+  <data name="Transparency_Slider_Help_Message" xml:space="preserve"><value>Faites glisser pour modifier le niveau de transparence de cette fenêtre</value></data>
   <data name="ViewTypeNotSupported" xml:space="preserve"><value>Impossible de définir la vue. Votre version d'Outlook ne la prend peut-être pas en charge.</value></data>
   <data name="Required" xml:space="preserve"><value>Obligatoire</value></data>
   <data name="RenameInstance" xml:space="preserve"><value>Renommer l'instance</value></data>
@@ -58,7 +84,7 @@ Voulez-vous continuer ?</value></data>
   <data name="MoveToVirtualDesktop" xml:space="preserve"><value>Déplacer vers un bureau virtuel</value></data>
   <data name="VirtualDesktopFeatureNotSupported" xml:space="preserve"><value>Les fonctionnalités de bureau virtuel ne sont pas prises en charge sur ce système.</value></data>
   <data name="VirtualDesktopFeatureNotAvailableCaption" xml:space="preserve"><value>Fonctionnalité non disponible</value></data>
-  <data name="SuccessCaption" xml:space="preserve"><value>Succès</value></data>
+  <data name="SuccessCaption" xml:space="preserve"><value>Opération réussie</value></data>
   <data name="VirtualDesktopAssignmentClearedMessage" xml:space="preserve"><value>L'affectation au bureau virtuel a été supprimée.
 
 L'instance apparaîtra désormais sur tous les bureaux et sera masquée d'Alt+Tab.
@@ -76,4 +102,5 @@ Souhaitez-vous redémarrer l'application maintenant pour vous assurer que tous l
   <data name="OutlookViews" xml:space="preserve"><value>Vues Outlook</value></data>
   <data name="DefaultView" xml:space="preserve"><value>Vue par défaut</value></data>
   <data name="TodoList" xml:space="preserve"><value>Liste des tâches</value></data>
+  <data name="Windows_RPC_Server_is_not_available" xml:space="preserve"><value>Le serveur RPC de Windows n'est pas disponible. Veuillez patienter quelques minutes, puis réessayer de lancer Outlook on the Desktop. Si la même erreur se reproduit, votre installation de Windows présente peut-être un problème.</value></data>
 </root>
