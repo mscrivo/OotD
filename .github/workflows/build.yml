@@ -243,15 +243,10 @@ jobs:
 
           Copy-Item -Path $signedInstaller.FullName -Destination $env:INSTALLER_OUTPUT_DIR -Force
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v7
-        with:
-          name: Installer
-          path: ${{ env.INSTALLER_OUTPUT_DIR }}\*.exe
-          archive: false
-
       # The unsigned uploads only exist so SignPath can fetch them. Remove them once signing has
       # succeeded so the signed installer is the only one that can be downloaded from the run.
+      # This must run before the signed upload: with archive: false, artifacts are named after
+      # the file, so the signed installer would otherwise clash with the unsigned one.
       - name: Delete unsigned artifacts
         if: github.event_name == 'push'
         shell: pwsh
@@ -264,3 +259,9 @@ jobs:
           ) | ForEach-Object {
             gh api --method DELETE "repos/${{ github.repository }}/actions/artifacts/$_"
           }
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          path: ${{ env.INSTALLER_OUTPUT_DIR }}\*.exe
+          archive: false
