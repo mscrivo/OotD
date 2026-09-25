@@ -211,7 +211,7 @@ public partial class InstanceManager : Form
             menu.Items.Insert(0, new ToolStripMenuItem(instanceName)
             {
                 Name = instanceName,
-                BackColor = Color.Gainsboro
+                BackColor = SystemColors.ControlLight
             });
 
             if (!menu.Items.ContainsKey("AddInstanceSeparator"))
