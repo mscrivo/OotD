@@ -7,6 +7,17 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+### Added
+
+- Dark mode: OotD now follows the Windows light/dark app setting for its tray menu, header bar, instance manager and dialogs ([#187](https://github.com/mscrivo/OotD/issues/187))
+  - Note: the Outlook calendar and mail content is drawn by Outlook itself and stays light
+
+### Changed
+
+- Redesigned the New Email button icon so it's clearly visible on both light and dark header bars
+- Slimmed the window border
+- The top edge and top corners of a window are now easier to grab for resizing
+
 ## [5.3.0] - 2026-08-15
 
 ### Changed
