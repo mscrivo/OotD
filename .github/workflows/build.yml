@@ -5,7 +5,7 @@ on:
     branches: ["**"]
 
 permissions:
-  actions: read
+  actions: write
   contents: read
 
 jobs:
@@ -247,4 +247,20 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: Installer
-          path: ServerStaging
+          path: ${{ env.INSTALLER_OUTPUT_DIR }}\*.exe
+          archive: false
+
+      # The unsigned uploads only exist so SignPath can fetch them. Remove them once signing has
+      # succeeded so the signed installer is the only one that can be downloaded from the run.
+      - name: Delete unsigned artifacts
+        if: github.event_name == 'push'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          @(
+            '${{ steps.upload-unsigned-app.outputs.artifact-id }}'
+            '${{ steps.upload-unsigned-installer.outputs.artifact-id }}'
+          ) | ForEach-Object {
+            gh api --method DELETE "repos/${{ github.repository }}/actions/artifacts/$_"
+          }
