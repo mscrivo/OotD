@@ -7,6 +7,8 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+## [5.5.0] - 2026-09-25
+
 ### Added
 
 - Dark mode: OotD now follows the Windows light/dark app setting for its tray menu, header bar, instance manager and dialogs ([#187](https://github.com/mscrivo/OotD/issues/187))
@@ -22,12 +24,13 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
   - If Outlook can't be started (for example, because Outlook or OotD is running as administrator), OotD explains how to resolve it ([#299](https://github.com/mscrivo/OotD/issues/299), [#211](https://github.com/mscrivo/OotD/issues/211), [#179](https://github.com/mscrivo/OotD/issues/179))
   - If Outlook's components are damaged or not registered, OotD explains how to repair Office ([#224](https://github.com/mscrivo/OotD/issues/224), [#166](https://github.com/mscrivo/OotD/issues/166), [#173](https://github.com/mscrivo/OotD/issues/173))
   - If Outlook is switched to the new Outlook, startup errors say to turn off the "New Outlook" toggle
-  - These messages are translated into Spanish, Japanese, Portuguese (Brazil) and Chinese (Simplified)
+  - These messages are translated into German, French, Italian, Spanish, Japanese, Portuguese (Brazil) and Chinese (Simplified)
 
 ### Fixed
 
 - A window whose saved folder no longer exists (for example, after removing an account) now falls back to the default calendar instead of failing to load ([#151](https://github.com/mscrivo/OotD/issues/151))
 - The transparency slider in the header bar is no longer cut off at 100% display scaling
+- Reviewed all translations and filled in text that was still showing in English
 
 ## [5.3.0] - 2026-08-15
 
