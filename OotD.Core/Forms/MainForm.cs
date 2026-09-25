@@ -40,9 +40,13 @@ using static OotD.Forms.MainFormWindowPolicy;
 ///     This is the form that hosts the outlook view control. One of these will exist for each instance.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public partial class MainForm : Form
+public partial class MainForm : Form, IMessageFilter
 {
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+    // Size of the invisible resize grips just inside the window edges, in logical (96 DPI) pixels.
+    private const int ResizeEdgeWidth = 6;
+    private const int ResizeCornerLength = 16;
 
     private readonly StickyWindow _stickyWindow;
     private string? _customFolder;
@@ -798,9 +802,72 @@ public partial class MainForm : Form
                 UnsafeNativeMethods.SendWindowToBack(this);
                 m.Result = nint.Zero;
                 break;
+
+            // Child controls defer WM_SETCURSOR to their parent first; claim it inside the resize grips.
+            case UnsafeNativeMethods.WM_SETCURSOR
+                when GetResizeDirectionAtCursor() is var direction and not ResizeDirection.None:
+
+                Cursor.Current = GetCursorForResizeDirection(direction);
+                m.Result = 1;
+                return;
         }
 
         base.WndProc(ref m);
+    }
+
+    protected override void OnHandleCreated(EventArgs e)
+    {
+        base.OnHandleCreated(e);
+        Application.AddMessageFilter(this);
+    }
+
+    protected override void OnHandleDestroyed(EventArgs e)
+    {
+        Application.RemoveMessageFilter(this);
+        base.OnHandleDestroyed(e);
+    }
+
+    /// <summary>
+    ///     The window has no visible border, so the resize grips sit just inside its edges, on top of the
+    ///     header and the Outlook view control. Those child windows get the mouse messages, so intercept
+    ///     them here and turn presses near an edge into a resize.
+    /// </summary>
+    bool IMessageFilter.PreFilterMessage(ref Message m)
+    {
+        if (m.Msg is not (UnsafeNativeMethods.WM.WM_MOUSEMOVE or UnsafeNativeMethods.WM_LBUTTONDOWN)
+            || m.HWnd == Handle
+            || !UnsafeNativeMethods.IsChild(Handle, m.HWnd))
+        {
+            return false;
+        }
+
+        var direction = GetResizeDirectionAtCursor();
+        if (direction == ResizeDirection.None)
+        {
+            return false;
+        }
+
+        if (m.Msg == UnsafeNativeMethods.WM.WM_MOUSEMOVE)
+        {
+            Cursor.Current = GetCursorForResizeDirection(direction);
+            return true;
+        }
+
+        // temporarily hide Outlook View Control because it makes resizing really slow
+        ViewControlHostPanel.Visible = false;
+        ResizeForm(direction);
+        return true;
+    }
+
+    private ResizeDirection GetResizeDirectionAtCursor()
+    {
+        if (!IsHandleCreated || WindowState == FormWindowState.Maximized)
+        {
+            return ResizeDirection.None;
+        }
+
+        return GetResizeDirection(PointToClient(Cursor.Position), Size, GlobalPreferences.LockPosition,
+            LogicalToDeviceUnits(ResizeEdgeWidth), LogicalToDeviceUnits(ResizeCornerLength));
     }
 
 
@@ -1027,7 +1094,7 @@ public partial class MainForm : Form
 
     private void MainForm_MouseMove(object sender, MouseEventArgs e)
     {
-        ResizeDir = GetResizeDirection(e.Location, new Size(Width, Height), GlobalPreferences.LockPosition);
+        ResizeDir = GetResizeDirectionAtCursor();
     }
 
 

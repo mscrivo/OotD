@@ -29,6 +29,8 @@ internal static partial class UnsafeNativeMethods
     internal const int WM_PARENTNOTIFY = 0x0210;
     internal const int WM_NCACTIVATE = 0x86;
     internal const int WM_RBUTTONDOWN = 0x0204;
+    internal const int WM_LBUTTONDOWN = 0x0201;
+    internal const int WM_SETCURSOR = 0x0020;
     internal const int WM_WINDOWPOSCHANGING = 70;
 
     private static readonly nint HWND_BOTTOM = new(1);
@@ -42,6 +44,10 @@ internal static partial class UnsafeNativeMethods
 
     [LibraryImport("dwmapi.dll")]
     private static partial int DwmSetWindowAttribute(nint hwnd, int attr, ref int attrValue, int attrSize);
+
+    [LibraryImport("user32.dll", EntryPoint = "IsChild")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static partial bool IsChild(nint hWndParent, nint hWnd);
 
     [LibraryImport("user32.dll", EntryPoint = "ReleaseCapture")]
     [return: MarshalAs(UnmanagedType.Bool)]
