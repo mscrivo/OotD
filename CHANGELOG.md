@@ -27,6 +27,7 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 ### Fixed
 
 - A window whose saved folder no longer exists (for example, after removing an account) now falls back to the default calendar instead of failing to load ([#151](https://github.com/mscrivo/OotD/issues/151))
+- The transparency slider in the header bar is no longer cut off at 100% display scaling
 
 ## [5.3.0] - 2026-08-15
 

@@ -76,6 +76,9 @@ public partial class MainForm : Form, IMessageFilter
             // did before dark mode, rather than as a patchy mix of light and dark (#187).
             ViewControlHostPanel.BackColor = OutlookViewControl.BackColor = Color.FromArgb(240, 240, 240);
             ViewControlHostPanel.ForeColor = OutlookViewControl.ForeColor = Color.Black;
+
+            FitTransparencySliderToHeader();
+            HeaderPanel.Resize += (_, _) => FitTransparencySliderToHeader();
         }
         catch (COMException loE)
         {
@@ -1196,6 +1199,21 @@ public partial class MainForm : Form, IMessageFilter
     {
         ResizeDir = ResizeDirection.None;
         Cursor = Cursors.Default;
+    }
+
+    /// <summary>
+    ///     The trackbar sizes its thumb and padding in raw pixels, so at 100% scaling it ends up taller
+    ///     than the header and the thumb gets clipped. Shrink the thumb to fit and centre it vertically.
+    /// </summary>
+    private void FitTransparencySliderToHeader()
+    {
+        const int defaultThumbSize = 16;
+        var headerHeight = HeaderPanel.ClientSize.Height;
+        var thumbSize = Math.Max(1, Math.Min(defaultThumbSize, headerHeight - LogicalToDeviceUnits(4)));
+
+        TransparencySlider.IndentHeight = 0;
+        TransparencySlider.TrackerSize = new Size(thumbSize, thumbSize);
+        TransparencySlider.Top = (headerHeight - TransparencySlider.Height) / 2;
     }
 
     private void NewEmailButton_MouseHover(object sender, EventArgs e)
