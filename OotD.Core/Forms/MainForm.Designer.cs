@@ -308,7 +308,7 @@ namespace OotD.Forms
             this.NewEmailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.NewEmailButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NewEmailButton.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.NewEmailButton.Image = ((System.Drawing.Image)(resources.GetObject("NewEmailButton.Image")));
+            this.NewEmailButton.Image = global::OotD.Properties.Resources.NewEmail;
             this.NewEmailButton.Location = new System.Drawing.Point(324, -1);
             this.NewEmailButton.Name = "NewEmailButton";
             this.NewEmailButton.Size = new System.Drawing.Size(22, 19);
@@ -534,7 +534,7 @@ namespace OotD.Forms
             this.MinimumSize = new System.Drawing.Size(325, 125);
             this.Name = "MainForm";
             this.Opacity = 1;
-            this.Padding = new System.Windows.Forms.Padding(4);
+            this.Padding = new System.Windows.Forms.Padding(3);
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
