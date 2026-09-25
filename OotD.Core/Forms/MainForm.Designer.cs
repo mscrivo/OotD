@@ -68,16 +68,16 @@ namespace OotD.Forms
             this.ExitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.HeaderPanel = new System.Windows.Forms.Panel();
-            this.NewEmailButton = new System.Windows.Forms.Button();
+            this.NewEmailButton = new OotD.Controls.HeaderButton();
             this.TransparencySlider = new MACTrackBarLib.MACTrackBar();
             this.LabelCurrentDate = new System.Windows.Forms.Label();
-            this.ButtonPrevious = new System.Windows.Forms.Button();
-            this.ButtonNext = new System.Windows.Forms.Button();
-            this.TodayButton = new System.Windows.Forms.Button();
-            this.WorkWeekButton = new System.Windows.Forms.Button();
-            this.MonthButton = new System.Windows.Forms.Button();
-            this.WeekButton = new System.Windows.Forms.Button();
-            this.DayButton = new System.Windows.Forms.Button();
+            this.ButtonPrevious = new OotD.Controls.HeaderButton();
+            this.ButtonNext = new OotD.Controls.HeaderButton();
+            this.TodayButton = new OotD.Controls.HeaderButton();
+            this.WorkWeekButton = new OotD.Controls.HeaderButton();
+            this.MonthButton = new OotD.Controls.HeaderButton();
+            this.WeekButton = new OotD.Controls.HeaderButton();
+            this.DayButton = new OotD.Controls.HeaderButton();
             this.LabelBackground = new System.Windows.Forms.Label();
             this.ViewControlHostPanel = new System.Windows.Forms.Panel();
             this.OpacityLabel = new ToolStripLabel("Opacity: ##%");
@@ -578,17 +578,17 @@ namespace OotD.Forms
         internal Panel HeaderPanel;
         private Panel ViewControlHostPanel;
         private AxViewCtl OutlookViewControl;
-        private Button DayButton;
+        private OotD.Controls.HeaderButton DayButton;
         private NotifyIcon NotifyIcon;
-        private Button MonthButton;
-        private Button WeekButton;
-        private Button WorkWeekButton;
+        private OotD.Controls.HeaderButton MonthButton;
+        private OotD.Controls.HeaderButton WeekButton;
+        private OotD.Controls.HeaderButton WorkWeekButton;
         public ToolTip ToolTip;
         private System.Windows.Forms.Timer WindowMessageTimer;
         private ToolStripSeparator Separator6;
-        private Button TodayButton;
-        private Button ButtonNext;
-        private Button ButtonPrevious;
+        private OotD.Controls.HeaderButton TodayButton;
+        private OotD.Controls.HeaderButton ButtonNext;
+        private OotD.Controls.HeaderButton ButtonPrevious;
         public Label LabelCurrentDate;
         public ToolStripLabel OpacityLabel;
 #pragma warning disable CS3003 // Type is not CLS-compliant
@@ -596,6 +596,6 @@ namespace OotD.Forms
 #pragma warning restore CS3003 // Type is not CLS-compliant
         private Label LabelBackground;
         private ToolStripMenuItem TodosMenu;
-        private Button NewEmailButton;
+        private OotD.Controls.HeaderButton NewEmailButton;
     }
 }

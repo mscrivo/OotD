@@ -66,6 +66,12 @@ public partial class MainForm : Form
         try
         {
             InitializeComponent();
+
+            // The Outlook view control can't render dark, but it partially honours the ambient colours
+            // it inherits from its container. Pin them to the light-mode values so it renders as it
+            // did before dark mode, rather than as a patchy mix of light and dark (#187).
+            ViewControlHostPanel.BackColor = OutlookViewControl.BackColor = Color.FromArgb(240, 240, 240);
+            ViewControlHostPanel.ForeColor = OutlookViewControl.ForeColor = Color.Black;
         }
         catch (COMException loE)
         {
