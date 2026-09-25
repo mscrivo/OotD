@@ -14,6 +14,7 @@ public class OutlookStartupDiagnosticsTests
     [InlineData(0x8002801D, OutlookStartupProblem.RegistrationBroken)]
     [InlineData(0x8002802B, OutlookStartupProblem.RegistrationBroken)]
     [InlineData(0x80029C4A, OutlookStartupProblem.RegistrationBroken)]
+    [InlineData(0x800700C1, OutlookStartupProblem.RegistrationBroken)]
     [InlineData(0x80020009, OutlookStartupProblem.Unknown)] // DISP_E_EXCEPTION
     public void Classify_WithComException_MapsHResult(uint hresult, OutlookStartupProblem expected)
     {
@@ -27,6 +28,15 @@ public class OutlookStartupDiagnosticsTests
     {
         // What a failed QueryInterface for Outlook's Application interface surfaces as.
         var exception = new InvalidCastException("Unable to cast COM object of type 'System.__ComObject'");
+
+        OutlookStartupDiagnostics.Classify(exception).Should().Be(OutlookStartupProblem.RegistrationBroken);
+    }
+
+    [Fact]
+    public void Classify_WithBadImageFormatFromComActivation_ReturnsRegistrationBroken()
+    {
+        // Creating Outlook.Application when its registered server isn't a valid executable.
+        var exception = new BadImageFormatException("not a valid Win32 application") { HResult = unchecked((int)0x800700C1) };
 
         OutlookStartupDiagnostics.Classify(exception).Should().Be(OutlookStartupProblem.RegistrationBroken);
     }

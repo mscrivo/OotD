@@ -37,6 +37,10 @@ public static class OutlookStartupDiagnostics
     private const int TYPE_E_ELEMENTNOTFOUND = unchecked((int)0x8002802B);
     private const int TYPE_E_CANTLOADLIBRARY = unchecked((int)0x80029C4A);
 
+    // HRESULT_FROM_WIN32(ERROR_BAD_EXE_FORMAT): Outlook's COM registration points at a broken or
+    // wrong-architecture executable.
+    private const int E_BAD_EXE_FORMAT = unchecked((int)0x800700C1);
+
     public static OutlookStartupProblem Classify(Exception exception)
     {
         for (var ex = exception; ex != null; ex = ex.InnerException)
@@ -51,6 +55,7 @@ public static class OutlookStartupDiagnostics
                 case TYPE_E_LIBNOTREGISTERED:
                 case TYPE_E_ELEMENTNOTFOUND:
                 case TYPE_E_CANTLOADLIBRARY:
+                case E_BAD_EXE_FORMAT:
                     return OutlookStartupProblem.RegistrationBroken;
             }
 

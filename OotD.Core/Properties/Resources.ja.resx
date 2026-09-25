@@ -544,4 +544,31 @@
   <data name="TodoList" xml:space="preserve">
     <value>To-Do リスト</value>
   </data>
+  <data name="ClassicOutlookRequired" xml:space="preserve">
+    <value>Outlook on the Desktop を使用するには、クラシック Outlook (Outlook 2010 以降、Outlook for Microsoft 365 を含む) が必要ですが、インストールされていないようです。
+
+新しい Outlook for Windows はサポートされていません。Outlook on the Desktop が予定表やメールの表示に使用する Outlook View Control が含まれていないためです。
+
+クラシック Outlook をインストールしてから、もう一度お試しください。</value>
+  </data>
+  <data name="OutlookServerExecFailure" xml:space="preserve">
+    <value>Outlook on the Desktop 用に Outlook を起動できませんでした (CO_E_SERVER_EXEC_FAILURE)。
+
+通常、Outlook と Outlook on the Desktop が異なる権限で実行されている (たとえば、どちらかが管理者として実行されている) か、Outlook の起動が停止していることが原因です。
+
+Outlook を完全に終了し (タスク マネージャーで OUTLOOK.EXE プロセスが残っていないか確認してください)、Outlook と Outlook on the Desktop のどちらも管理者として実行するよう設定されていないことを確認してから、もう一度お試しください。</value>
+  </data>
+  <data name="OutlookRegistrationBroken" xml:space="preserve">
+    <value>Outlook のオートメーション コンポーネントが正しく登録されていません。これは通常、Office の更新が中断された場合や完了しなかった場合に発生します。
+
+修正するには Office を修復してください。[設定] &gt; [アプリ] &gt; [インストールされているアプリ] を開き、Microsoft 365 (または Microsoft Office) を探して [変更] を選択し、[オンライン修復] を選択します。その後、PC を再起動してから、もう一度お試しください。</value>
+  </data>
+  <data name="OutlookClassNotRegistered" xml:space="preserve">
+    <value>Outlook on the Desktop に必要な Outlook コンポーネントがこの PC に登録されていません。
+
+通常、クラシック Outlook がインストールされていないことが原因です (新しい Outlook for Windows にはこれらのコンポーネントが含まれていません)。クラシック Outlook がインストールされている場合は、Office を修復してください。[設定] &gt; [アプリ] &gt; [インストールされているアプリ] を開き、Microsoft 365 (または Microsoft Office) を探して [変更] を選択し、[オンライン修復] を選択します。</value>
+  </data>
+  <data name="NewOutlookEnabledHint" xml:space="preserve">
+    <value>注: Outlook は現在、新しい Outlook for Windows を使用するように設定されていますが、Outlook on the Desktop はこれをサポートしていません。Outlook で [新しい Outlook] トグルをオフにしてクラシック Outlook に戻してから、もう一度お試しください。</value>
+  </data>
 </root>

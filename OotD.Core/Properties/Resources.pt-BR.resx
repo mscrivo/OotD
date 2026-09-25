@@ -544,4 +544,31 @@
   <data name="TodoList" xml:space="preserve">
     <value>Lista de tarefas</value>
   </data>
+  <data name="ClassicOutlookRequired" xml:space="preserve">
+    <value>O Outlook on the Desktop requer o Outlook clássico (Outlook 2010 ou superior, incluindo o Outlook para Microsoft 365), mas ele não parece estar instalado.
+
+O novo Outlook para Windows não é compatível: ele não inclui o Outlook View Control que o Outlook on the Desktop usa para mostrar seu calendário e seus emails.
+
+Instale o Outlook clássico e tente novamente.</value>
+  </data>
+  <data name="OutlookServerExecFailure" xml:space="preserve">
+    <value>Não foi possível iniciar o Outlook para o Outlook on the Desktop (CO_E_SERVER_EXEC_FAILURE).
+
+Isso geralmente significa que o Outlook e o Outlook on the Desktop estão sendo executados com permissões diferentes (por exemplo, um deles está sendo executado como administrador) ou que o Outlook travou durante a inicialização.
+
+Feche o Outlook completamente (verifique no Gerenciador de Tarefas se ainda há algum processo OUTLOOK.EXE), certifique-se de que nem o Outlook nem o Outlook on the Desktop estejam configurados para ser executados como administrador e tente novamente.</value>
+  </data>
+  <data name="OutlookRegistrationBroken" xml:space="preserve">
+    <value>Os componentes de automação do Outlook não estão registrados corretamente. Isso geralmente acontece após uma atualização do Office interrompida ou incompleta.
+
+Para corrigir, repare o Office: abra Configurações &gt; Aplicativos &gt; Aplicativos instalados, localize o Microsoft 365 (ou Microsoft Office), escolha Modificar e depois Reparo Online. Em seguida, reinicie o computador e tente novamente.</value>
+  </data>
+  <data name="OutlookClassNotRegistered" xml:space="preserve">
+    <value>Os componentes do Outlook de que o Outlook on the Desktop precisa não estão registrados neste computador.
+
+Isso geralmente significa que o Outlook clássico não está instalado (o novo Outlook para Windows não os inclui). Se o Outlook clássico estiver instalado, repare o Office: abra Configurações &gt; Aplicativos &gt; Aplicativos instalados, localize o Microsoft 365 (ou Microsoft Office), escolha Modificar e depois Reparo Online.</value>
+  </data>
+  <data name="NewOutlookEnabledHint" xml:space="preserve">
+    <value>Observação: o Outlook está configurado para usar o novo Outlook para Windows, que não é compatível com o Outlook on the Desktop. Desative a opção "Novo Outlook" no Outlook para voltar ao Outlook clássico e tente novamente.</value>
+  </data>
 </root>
