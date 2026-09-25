@@ -406,9 +406,6 @@
   <data name="Windows_RPC_Server_is_not_available" xml:space="preserve">
     <value>Windows RPC サーバーを利用できません。数分後に Outlook on the Desktop の読み込みを再試行してください。同じエラーが続く場合は、Windows のインストールに問題がある可能性があります。</value>
   </data>
-  <data name="Incorrect_bittedness_of_OotD" xml:space="preserve">
-    <value>Outlook on the Desktop の誤ったバージョンを実行しているようです。\\n\\n64 ビット版 Office を使用している場合は、64 ビット版 Outlook on the Desktop を使用してください。\\n\\n32 ビット版 Office を使用している場合は、32 ビット版 Outlook on the Desktop を使用してください。</value>
-  </data>
   <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\icons\appicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

@@ -80,10 +80,10 @@ public partial class MainForm : Form, IMessageFilter
         catch (COMException loE)
         {
             _logger.Error("Error initializing main view: {0}", loE);
-            if ((uint)loE.ErrorCode == 0x80040154)
+            if (OutlookStartupDiagnostics.Classify(loE) == OutlookStartupProblem.ClassNotRegistered)
             {
-                MessageBox.Show(this, Resources.Incorrect_bittedness_of_OotD, Resources.ErrorCaption,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, OutlookStartupDiagnostics.GetMessage(loE, NewOutlook.IsEnabled()),
+                    Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
         }
@@ -124,7 +124,7 @@ public partial class MainForm : Form, IMessageFilter
         catch (Exception ex)
         {
             _logger.Error(ex, "Error initializing window.");
-            MessageBox.Show(this, Resources.ErrorInitializingApp + Environment.NewLine + ex.Message,
+            MessageBox.Show(this, OutlookStartupDiagnostics.GetMessage(ex, NewOutlook.IsEnabled()),
                 Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             throw;
         }
@@ -183,10 +183,23 @@ public partial class MainForm : Form, IMessageFilter
         // empty. 
         if (string.IsNullOrEmpty(Preferences.OutlookFolderStoreId))
         {
-            // Set the MAPI Folder Details and the IDs.
-            Preferences.OutlookFolderName = nameof(FolderViewType.Calendar);
-            Preferences.OutlookFolderStoreId = GetFolderFromViewType(FolderViewType.Calendar)?.StoreID;
-            Preferences.OutlookFolderEntryId = GetFolderFromViewType(FolderViewType.Calendar)?.EntryID;
+            ResetFolderToDefaultCalendar();
+        }
+
+        // The saved folder may no longer exist (e.g. its account was removed or Outlook's views were reset
+        // with /cleanviews). Fall back to the default calendar rather than failing to load the instance.
+        try
+        {
+            OutlookViewControl.Folder = Preferences.OutlookFolderName;
+        }
+        catch (COMException ex)
+        {
+            _logger.Warn(ex,
+                $"Could not open saved folder '{Preferences.OutlookFolderName}', falling back to the default calendar.");
+            ResetFolderToDefaultCalendar();
+            Preferences.OutlookFolderView = string.Empty;
+            Preferences.ViewXml = string.Empty;
+            OutlookViewControl.Folder = Preferences.OutlookFolderName;
         }
 
         SetMAPIFolder();
@@ -251,12 +264,19 @@ public partial class MainForm : Form, IMessageFilter
 
 
 
+    private void ResetFolderToDefaultCalendar()
+    {
+        var calendar = GetFolderFromViewType(FolderViewType.Calendar);
+        Preferences.OutlookFolderName = nameof(FolderViewType.Calendar);
+        Preferences.OutlookFolderStoreId = calendar?.StoreID;
+        Preferences.OutlookFolderEntryId = calendar?.EntryID;
+    }
+
     private void InitializeViewsFromPreferences()
     {
-        // Sets the view control folder from preferences. 
-        OutlookViewControl.Folder = Preferences.OutlookFolderName;
+        // The view control's folder was already applied (and validated) at the start of LoadSettings.
 
-        // Sets the selected view from preferences. 
+        // Sets the selected view from preferences.
         try
         {
             if (!string.IsNullOrEmpty(Preferences.OutlookFolderView))

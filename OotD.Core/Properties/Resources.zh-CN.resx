@@ -406,9 +406,6 @@
   <data name="Windows_RPC_Server_is_not_available" xml:space="preserve">
     <value>Windows RPC 服务器不可用。请稍后几分钟再尝试启动 Outlook on the Desktop。如果仍然出现相同错误，可能是 Windows 安装存在问题。</value>
   </data>
-  <data name="Incorrect_bittedness_of_OotD" xml:space="preserve">
-    <value>您似乎正在运行错误版本的 Outlook on the Desktop。\\n\\n如果您安装的是 64 位 Office，请使用 64 位 Outlook on the Desktop。\\n\\n如果您安装的是 32 位 Office，请使用 32 位 Outlook on the Desktop。</value>
-  </data>
   <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\icons\appicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

@@ -406,9 +406,6 @@
   <data name="Windows_RPC_Server_is_not_available" xml:space="preserve">
     <value>O servidor RPC do Windows nao esta disponivel. Aguarde alguns minutos e tente carregar o Outlook on the Desktop novamente. Se o mesmo erro continuar, pode haver um problema na instalacao do Windows.</value>
   </data>
-  <data name="Incorrect_bittedness_of_OotD" xml:space="preserve">
-    <value>Parece que voce esta tentando executar a versao incorreta do Outlook on the Desktop.\\n\\nSe voce tiver o Office 64 bits instalado, use a versao 64 bits do Outlook on the Desktop.\\n\\nSe voce tiver o Office 32 bits instalado, use a versao 32 bits do Outlook on the Desktop.</value>
-  </data>
   <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\icons\appicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

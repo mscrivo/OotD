@@ -133,8 +133,9 @@ public static class Startup
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(Resources.ErrorInitializingApp + ' ' + ex, Resources.ErrorCaption,
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _logger.Error(ex, "Error starting Outlook.");
+                    MessageBox.Show(OutlookStartupDiagnostics.GetMessage(ex, NewOutlook.IsEnabled()),
+                        Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -244,7 +245,10 @@ public static class Startup
             }
         }
 
-        MessageBox.Show(Resources.ErrorInitializingApp + ' ' + Resources.Windows_RPC_Server_is_not_available,
+        MessageBox.Show(
+            OutlookStartupDiagnostics.WithNewOutlookHint(
+                Resources.ErrorInitializingApp + ' ' + Resources.Windows_RPC_Server_is_not_available,
+                NewOutlook.IsEnabled()),
             Resources.ErrorCaption,
             MessageBoxButtons.OK, MessageBoxIcon.Error);
 

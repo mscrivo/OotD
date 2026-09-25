@@ -83,6 +83,11 @@ public static class Program
                 MessageBox.Show(Resources.OutlookLocationKeyNotFoundError, Resources.ErrorCaption,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 break;
+            case OutlookDetectionError.ClassicOutlookNotInstalled:
+                _logger.Error("Classic Outlook not found, but the new Outlook for Windows is installed.");
+                MessageBox.Show(Resources.ClassicOutlookRequired, Resources.MissingRequirementsCapation,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                break;
         }
     }
 
@@ -165,6 +170,13 @@ public static class Program
             }
 
             return bitness;
+        }
+
+        public bool IsNewOutlookInstalled()
+        {
+            var installed = NewOutlook.IsInstalled();
+            logger.Info($"New Outlook for Windows installed: {installed}");
+            return installed;
         }
 
         private RegistryKey? OpenWowOutlookKey(double officeVersion)
