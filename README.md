@@ -31,7 +31,7 @@ The full release history is on the [legacy release notes](https://outlookonthede
 - Windows 10 or newer
 - Classic Microsoft Outlook 2010 or newer (the new Outlook for Windows is not supported)
 
-The installer downloads and installs the .NET 10 Desktop Runtime if it isn't already present.
+The installer downloads and installs the .NET 11 Desktop Runtime if it isn't already present.
 
 ## Supported Languages
 
@@ -53,7 +53,7 @@ Outlook on the Desktop currently includes these UI language resources:
 
 ### Build Requirements
 
-- .NET 10 SDK (the version is pinned in `global.json`)
+- .NET 11 SDK (the version is pinned in `global.json`)
 - Visual Studio 2026 or newer recommended
 
 ### Building and testing
