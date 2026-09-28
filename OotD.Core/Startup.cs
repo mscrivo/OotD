@@ -32,6 +32,7 @@ public static class Startup
     internal static NameSpace? OutlookNameSpace;
     private static MAPIFolder? _outlookFolder;
     private static Explorer? _outlookExplorer;
+    private static IntPtr _outlookExplorerHwnd;
     private static readonly Timer _checkIfOutlookIsRunningTimer = new() { Interval = 3000 };
 
     internal static bool UpdateDetected;
@@ -85,24 +86,60 @@ public static class Startup
                     // is to get this global instance of the active explorer and keep it going until the user closes the app.
                     _outlookExplorer = _outlookFolder.GetExplorer();
 
+                    // Add-ins (e.g. CalDAV Synchronizer) can Activate() this normally hidden explorer from
+                    // their NewExplorer handler. If the user then closes it and it was Outlook's last window,
+                    // Outlook quits, so hide it again whenever it shows up.
+                    // Grab its HWND now: later IOleWindow calls from event handlers or the timer fail with
+                    // RPC_E_CANTCALLOUT_ININPUTSYNCCALL, but the HWND is stable for the explorer's lifetime.
+                    TryCacheExplorerWindow();
+
+                    var explorerEvents = (ExplorerEvents_10_Event)_outlookExplorer;
+                    // Activate is dispatched input-synchronously; defer until activation has finished.
+                    explorerEvents.Activate += () =>
+                    {
+                        if (_instanceManager is { IsHandleCreated: true })
+                        {
+                            _instanceManager.BeginInvoke(HideExplorerWindow);
+                        }
+                    };
+                    explorerEvents.Close += () =>
+                    {
+                        _logger.Info("OotD's Outlook explorer was closed externally; releasing it.");
+                        _outlookExplorer = null;
+                        _outlookExplorerHwnd = IntPtr.Zero;
+                    };
+                    // NewExplorer handlers may already have shown it before we subscribed.
+                    HideExplorerWindow();
+
                     _checkIfOutlookIsRunningTimer.Elapsed += (_, _) =>
                     {
+                        // Catch anything that showed the explorer without raising Activate.
+                        if (_outlookExplorerHwnd != IntPtr.Zero)
+                        {
+                            HideExplorerWindow();
+                        }
+                        else if (_instanceManager is { IsHandleCreated: true })
+                        {
+                            _instanceManager.BeginInvoke(HideExplorerWindow);
+                        }
+
                         // capture the field so a concurrent DisposeOutlookObjects (which nulls it
                         // during normal shutdown) isn't mistaken for a dead Outlook.
-                        var outlookExplorer = _outlookExplorer;
-                        if (outlookExplorer == null)
+                        var outlookNameSpace = OutlookNameSpace;
+                        if (outlookNameSpace == null)
                         {
                             return;
                         }
 
                         try
                         {
-                            // try to access the explorer and if it throws that means
-                            // Outlook is dead.
-                            _ = outlookExplorer.CurrentView;
+                            // try to access the namespace and if it throws that means Outlook is dead.
+                            // Don't probe the explorer: it can be closed while Outlook keeps running.
+                            _ = outlookNameSpace.CurrentProfileName;
                         }
-                        catch
+                        catch (Exception ex)
                         {
+                            _logger.Error(ex, "Outlook liveness check failed; assuming Outlook has exited.");
                             _checkIfOutlookIsRunningTimer.Stop();
 
                             // System.Timers.Timer fires on a thread-pool thread; marshal the
@@ -165,6 +202,37 @@ public static class Startup
                 MessageBox.Show(Resources.ProgramIsAlreadyRunning, Resources.ProgramIsAlreadyRunningCaption,
                     MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
+        }
+    }
+
+    private static void TryCacheExplorerWindow()
+    {
+        if (_outlookExplorerHwnd != IntPtr.Zero || _outlookExplorer is not UnsafeNativeMethods.IOleWindow oleWindow)
+        {
+            return;
+        }
+
+        try
+        {
+            oleWindow.GetWindow(out var hwnd);
+            _outlookExplorerHwnd = hwnd;
+            _logger.Debug($"OotD's Outlook explorer window: 0x{hwnd:X}");
+        }
+        catch (Exception ex)
+        {
+            _logger.Debug(ex, "Could not get OotD's Outlook explorer window.");
+        }
+    }
+
+    private static void HideExplorerWindow()
+    {
+        TryCacheExplorerWindow();
+
+        var hwnd = _outlookExplorerHwnd;
+        if (hwnd != IntPtr.Zero && UnsafeNativeMethods.IsWindowVisible(hwnd))
+        {
+            _logger.Info("OotD's Outlook explorer became visible (likely activated by an add-in); hiding it.");
+            UnsafeNativeMethods.ShowWindow(hwnd, UnsafeNativeMethods.SW_HIDE);
         }
     }
 

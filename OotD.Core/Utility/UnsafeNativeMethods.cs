@@ -344,6 +344,22 @@ internal static partial class UnsafeNativeMethods
     [return: MarshalAs(UnmanagedType.Bool)]
     internal static extern bool IsWindowVisible(IntPtr hwnd);
 
+    internal const int SW_HIDE = 0;
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    // Outlook Explorer/Inspector objects implement IOleWindow, which is the only way to get their HWND.
+    [ComImport]
+    [Guid("00000114-0000-0000-C000-000000000046")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IOleWindow
+    {
+        void GetWindow(out IntPtr phwnd);
+        void ContextSensitiveHelp([MarshalAs(UnmanagedType.Bool)] bool fEnterMode);
+    }
+
     #endregion
 }
 #pragma warning restore IDE1006 // Naming Styles
