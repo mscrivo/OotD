@@ -93,6 +93,28 @@ public class TaskSchedulingTests : IDisposable
         _adapter.LastCreatedUserName.Should().Be(Environment.UserName);
     }
 
+    [Fact]
+    public void EnsureOotDStartupTask_WhenTaskTargetExists_ShouldLeaveTaskUnchanged()
+    {
+        _adapter.TaskActionTargetExistsResult = _ => true;
+
+        TaskScheduling.EnsureOotDStartupTask(_logger);
+
+        _adapter.CreateStartupTaskDefinitionCallCount.Should().Be(0);
+        _adapter.LastTaskName.Should().Be("Outlook on the Desktop");
+    }
+
+    [Fact]
+    public void EnsureOotDStartupTask_WhenTaskMissingOrStale_ShouldCreateTask()
+    {
+        _adapter.TaskActionTargetExistsResult = _ => false;
+
+        TaskScheduling.EnsureOotDStartupTask(_logger);
+
+        _adapter.CreateStartupTaskDefinitionCallCount.Should().Be(1);
+        _adapter.LastCreatedTaskName.Should().Be("Outlook on the Desktop");
+    }
+
     public void Dispose()
     {
         TaskScheduling.TaskServiceAdapter = _originalAdapter;
@@ -101,6 +123,7 @@ public class TaskSchedulingTests : IDisposable
     private sealed class FakeTaskServiceAdapter : TaskScheduling.ITaskServiceAdapter
     {
         public Func<string, bool> TaskExistsResult { get; set; } = _ => false;
+        public Func<string, bool> TaskActionTargetExistsResult { get; set; } = _ => false;
         public Action<string, string, string> CreateStartupTaskDefinitionAction { get; set; } = (_, _, _) => { };
 
         public int TaskExistsCallCount { get; private set; }
@@ -119,6 +142,12 @@ public class TaskSchedulingTests : IDisposable
             TaskExistsCallCount++;
             LastTaskName = taskName;
             return TaskExistsResult(taskName);
+        }
+
+        public bool TaskActionTargetExists(string taskName)
+        {
+            LastTaskName = taskName;
+            return TaskActionTargetExistsResult(taskName);
         }
 
         public void CreateStartupTaskDefinition(string taskName, string xmlPath, string userName)

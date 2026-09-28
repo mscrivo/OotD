@@ -234,6 +234,8 @@ public class GlobalPreferencesTests : IDisposable
 
         public bool TaskExists(string taskName) => _exists;
 
+        public bool TaskActionTargetExists(string taskName) => _exists;
+
         public void CreateStartupTaskDefinition(string taskName, string xmlPath, string userName)
         {
             Calls.Add("create");

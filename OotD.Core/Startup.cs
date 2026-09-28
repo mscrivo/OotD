@@ -272,7 +272,7 @@ public static class Startup
 
         if (opts.CreateStartupEntry)
         {
-            TaskScheduling.CreateOotDStartupTask(_logger);
+            TaskScheduling.EnsureOotDStartupTask(_logger);
             Environment.Exit(0);
         }
 
