@@ -7,6 +7,15 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+## [5.5.1] - 2026-09-28
+
+### Fixed
+
+- Outlook no longer pops up a window when OotD starts with some add-ins installed (for example, CalDAV Synchronizer), and closing that window no longer makes OotD report that Outlook isn't running
+- Updating OotD no longer overwrites a customised "Outlook on the Desktop" startup task
+- Windows now stay behind other applications as intended; the desktop pinning helper was never actually being created
+- A window no longer stays on top of other applications after closing an Outlook right-click menu
+
 ## [5.5.0] - 2026-09-25
 
 ### Added
