@@ -798,18 +798,6 @@ public partial class MainForm : Form, IMessageFilter
 
                 break;
 
-            case UnsafeNativeMethods.WM_NCACTIVATE:
-
-                // after the context menu is gone, we can resend the window to the back.
-                if (m.WParam.ToInt32() == 1 && _outlookContextMenuActivated && !WindowMessageTimer.Enabled)
-                {
-                    _outlookContextMenuActivated = false;
-                    UnsafeNativeMethods.SendWindowToBack(this);
-                    m.Result = nint.Zero;
-                }
-
-                break;
-
             case UnsafeNativeMethods.WM_WINDOWPOSCHANGING
                 when !_outlookContextMenuActivated &&
                      !Startup.UpdateDetected &&
@@ -1375,7 +1363,17 @@ public partial class MainForm : Form, IMessageFilter
 
     private void WindowMessageTimer_Tick(object sender, EventArgs e)
     {
+        // The menu opens when the right button is released; keep the window on top until it's closed.
+        // Polling (rather than waiting for WM_NCACTIVATE) also covers the case where the window was already
+        // active, where no activation message ever arrives after the menu closes.
+        if ((MouseButtons & MouseButtons.Right) != 0 || PopupMenuDetector.IsMenuOpen())
+        {
+            return;
+        }
+
         WindowMessageTimer.Enabled = false;
+        _outlookContextMenuActivated = false;
+        UnsafeNativeMethods.SendWindowToBack(this);
     }
 
     /// <summary>
