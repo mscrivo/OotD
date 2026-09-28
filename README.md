@@ -41,7 +41,7 @@ Outlook on the Desktop currently includes these UI language resources:
 
 ### Build Requirements
 
-- .NET 10 SDK for building from source
+- .NET 11 SDK for building from source
 - Visual Studio 2022 or newer recommended
 
 ### What the build produces

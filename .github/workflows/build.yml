@@ -17,7 +17,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      APP_OUTPUT_DIR: OotD.Launcher\bin\Release\net10.0-windows7.0
+      APP_OUTPUT_DIR: OotD.Launcher\bin\Release\net11.0-windows7.0
       APP_SIGNING_STAGING_DIR: signing\app
       INSTALLER_OUTPUT_DIR: ServerStaging
       INSTALLER_SIGNING_STAGING_DIR: signing\installer
