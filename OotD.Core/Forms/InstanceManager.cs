@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.Globalization;
 using System.Linq;
-using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -14,18 +13,20 @@ using OotD.Events;
 using OotD.Preferences;
 using OotD.Properties;
 using OotD.Utility;
+using static OotD.Forms.InstanceManagerTrayPolicy;
 
 namespace OotD.Forms;
 
+/// <summary>
+///     Owns the tray icon and every <see cref="MainForm" /> instance. The testable menu, tray icon and
+///     placement logic lives in <see cref="InstanceManagerTrayPolicy" /> and
+///     <see cref="InstanceManagerPlacementPolicy" />; what remains here wires Outlook-hosted forms, the
+///     update checker and modal dialogs together.
+/// </summary>
+[ExcludeFromCodeCoverage(Justification = "Shell that hosts Outlook-backed MainForms, NetSparkle and modal dialogs.")]
 public partial class InstanceManager : Form
 {
     private const string AppCastUrl = "https://outlookonthedesktop.com/ootdAppcast.xml";
-    private const string AutoUpdateInstanceName = "AutoUpdate";
-    private const int CascadeOffset = 30;
-    private const string CalendarMenuName = "CalendarMenu";
-    private const string AboutMenuName = "AboutMenu";
-    private const string CheckForUpdatesMenuName = "CheckForUpdatesMenu";
-    private const string ResetConfigMenuName = "ResetConfigMenu";
 
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly Graphics _graphics;
@@ -179,162 +180,27 @@ public partial class InstanceManager : Form
 
     private ContextMenuStrip CreateMultipleInstanceMenu()
     {
-        var menu = new ContextMenuStrip();
-        menu.Items.Add(new ToolStripMenuItem(Resources.AddInstance, null, AddInstanceMenu_Click, "AddInstanceMenu"));
-        menu.Items.Add(new ToolStripSeparator());
-        menu.Items.Add(new ToolStripSeparator());
-        menu.Items.Add(new ToolStripMenuItem(Resources.StartWithWindows, null, StartWithWindowsMenu_Click,
-            "StartWithWindows"));
-        menu.Items.Add(new ToolStripSeparator());
-        menu.Items.Add(new ToolStripMenuItem(Resources.HideAll, null, HideShowAllMenu_Click, "HideShowMenu"));
-        menu.Items.Add(new ToolStripMenuItem(Resources.LockPosition, null, LockPositionMenu_Click, "LockPositionMenu"));
-        menu.Items.Add(new ToolStripMenuItem(Resources.DisableEditing, null, DisableEnableEditingMenu_Click,
-            "DisableEnableEditingMenu"));
-        menu.Items.Add(new ToolStripSeparator());
-        menu.Items.Add(new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, AboutMenuName));
-        menu.Items.Add(new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click,
-            CheckForUpdatesMenuName));
-        menu.Items.Add(new ToolStripMenuItem(Resources.RestoreDefaults, null, ResetConfigMenu_Click, ResetConfigMenuName));
-        menu.Items.Add(new ToolStripSeparator());
-        menu.Items.Add(new ToolStripMenuItem(Resources.Exit, null, ExitMenu_Click, "ExitMenu"));
-        return menu;
-    }
-
-    internal static ToolStripMenuItem CreateInstanceSubmenu(ContextMenuStrip menu, string instanceName)
-    {
-        if (!menu.Items.ContainsKey(instanceName))
+        return InstanceManagerTrayPolicy.CreateMultipleInstanceMenu(new Dictionary<string, EventHandler>
         {
-            menu.Items.Insert(0, new ToolStripMenuItem(instanceName)
-            {
-                Name = instanceName,
-                BackColor = SystemColors.ControlLight
-            });
-
-            if (!menu.Items.ContainsKey("AddInstanceSeparator"))
-            {
-                menu.Items.Insert(1, new ToolStripSeparator { Name = "AddInstanceSeparator" });
-            }
-        }
-
-        SetInstanceMenuVisibility(menu, true);
-        return new ToolStripMenuItem(instanceName, null, null, instanceName) { DropDown = menu };
-    }
-
-    internal static void SetInstanceMenuVisibility(ContextMenuStrip menu, bool multipleInstances)
-    {
-        menu.Items["RemoveInstanceMenu"]!.Visible = multipleInstances;
-        menu.Items["RenameInstanceMenu"]!.Visible = multipleInstances;
-        menu.Items["Separator6"]!.Visible = !multipleInstances;
-        menu.Items["ExitMenu"]!.Visible = !multipleInstances;
-
-        foreach (var name in new[] { "AddInstanceMenu", AboutMenuName, "StartWithWindows", "LockPositionMenu",
-                     CheckForUpdatesMenuName })
-        {
-            if (menu.Items[name] is { } item)
-            {
-                item.Visible = !multipleInstances;
-            }
-        }
-    }
-
-    internal static void ConfigureSingleInstanceMenu(ContextMenuStrip menu,
-        IReadOnlyDictionary<string, EventHandler> handlers)
-    {
-        TrimSingleInstanceMenuItems(menu);
-        SetInstanceMenuVisibility(menu, false);
-        if (EnsureMenuItem(menu, 0, Resources.AddInstance, "AddInstanceMenu", handlers))
-        {
-            menu.Items.Insert(1, new ToolStripSeparator { Name = "AddInstanceSeparator" });
-        }
-
-        EnsureMenuItem(menu, 12, Resources.StartWithWindows, "StartWithWindows", handlers);
-        EnsureMenuItem(menu, 15, Resources.LockPosition, "LockPositionMenu", handlers);
-        EnsureMenuItem(menu, 20, Resources.CheckForUpdates, CheckForUpdatesMenuName, handlers);
-        EnsureMenuItem(menu, 20, Resources.About, AboutMenuName, handlers);
-        var exitIndex = menu.Items.IndexOfKey("ExitMenu");
-        EnsureMenuItem(menu, exitIndex < 0 ? menu.Items.Count : exitIndex, Resources.RestoreDefaults,
-            ResetConfigMenuName, handlers);
-    }
-
-    private static bool EnsureMenuItem(ContextMenuStrip menu, int index, string text, string name,
-        IReadOnlyDictionary<string, EventHandler> handlers)
-    {
-        if (menu.Items.ContainsKey(name))
-        {
-            return false;
-        }
-
-        menu.Items.Insert(index, new ToolStripMenuItem(text, null, handlers[name], name));
-        return true;
+            ["AddInstanceMenu"] = AddInstanceMenu_Click,
+            ["StartWithWindows"] = StartWithWindowsMenu_Click,
+            ["HideShowMenu"] = HideShowAllMenu_Click,
+            ["LockPositionMenu"] = LockPositionMenu_Click,
+            ["DisableEnableEditingMenu"] = DisableEnableEditingMenu_Click,
+            [AboutMenuName] = AboutMenu_Click,
+            [CheckForUpdatesMenuName] = CheckForUpdates_Click,
+            [ResetConfigMenuName] = ResetConfigMenu_Click,
+            ["ExitMenu"] = ExitMenu_Click
+        });
     }
 
     private void ReorderBottomMenuItems()
     {
-        ReorderBottomMenuItems(
+        InstanceManagerTrayPolicy.ReorderBottomMenuItems(
             trayIcon.ContextMenuStrip,
             () => new ToolStripMenuItem(Resources.About, null, AboutMenu_Click, AboutMenuName),
             () => new ToolStripMenuItem(Resources.CheckForUpdates, null, CheckForUpdates_Click,
                 CheckForUpdatesMenuName));
-    }
-
-    internal static IEnumerable<string> FilterInstanceNames(IEnumerable<string> subKeyNames)
-    {
-        return subKeyNames.Where(instanceName => instanceName != AutoUpdateInstanceName);
-    }
-
-    internal static string ResolveSingleInstanceName(int instanceCount, IReadOnlyList<string> subKeyNames,
-        string defaultInstanceName)
-    {
-        if (instanceCount != 1 || subKeyNames.Count == 0)
-        {
-            return defaultInstanceName;
-        }
-
-        var instanceName = subKeyNames[0];
-        return instanceName == AutoUpdateInstanceName ? defaultInstanceName : instanceName;
-    }
-
-    internal static void TrimSingleInstanceMenuItems(ContextMenuStrip menu)
-    {
-        while (menu.Items.Count > 0 && menu.Items[0].Name != CalendarMenuName)
-        {
-            menu.Items.RemoveAt(0);
-        }
-    }
-
-    internal static void ReorderBottomMenuItems(ContextMenuStrip? menu,
-        Func<ToolStripMenuItem> createAboutMenu,
-        Func<ToolStripMenuItem> createCheckForUpdatesMenu)
-    {
-        if (menu == null)
-        {
-            return;
-        }
-
-        if (menu.Items[ResetConfigMenuName] is not ToolStripMenuItem resetDefaultsMenu)
-        {
-            return;
-        }
-
-        var aboutMenu = menu.Items[AboutMenuName] as ToolStripMenuItem;
-        var checkForUpdatesMenu = menu.Items[CheckForUpdatesMenuName] as ToolStripMenuItem;
-
-        if (aboutMenu != null)
-        {
-            menu.Items.Remove(aboutMenu);
-        }
-
-        if (checkForUpdatesMenu != null)
-        {
-            menu.Items.Remove(checkForUpdatesMenu);
-        }
-
-        aboutMenu ??= createAboutMenu();
-        checkForUpdatesMenu ??= createCheckForUpdatesMenu();
-
-        var resetDefaultsIndex = menu.Items.IndexOf(resetDefaultsMenu);
-        menu.Items.Insert(resetDefaultsIndex, aboutMenu);
-        menu.Items.Insert(resetDefaultsIndex + 1, checkForUpdatesMenu);
     }
 
     private void ChangeTrayIconDate()
@@ -347,18 +213,10 @@ public partial class InstanceManager : Form
             return;
         }
 
-        // get new instance of the resource manager.  This will allow us to look up a resource by name.
-        var resourceManager = new ResourceManager("OotD.Properties.Resources", typeof(Resources).Assembly);
-
-        // find the icon for the today's day of the month and replace the tray icon with it, compensate for user's DPI settings.
-        using var dateIcon = (Icon)resourceManager.GetObject("_" + today.Date.Day, CultureInfo.CurrentCulture)!;
-
         // dispose the outgoing icon so its GDI handle isn't leaked.
         var previousIcon = trayIcon.Icon;
 
-        trayIcon.Icon = _graphics.DpiX < 96f
-            ? new Icon(dateIcon, new Size(16, 16))
-            : new Icon(dateIcon, new Size(32, 32));
+        trayIcon.Icon = CreateDateIcon(today.Day, _graphics.DpiX);
 
         previousIcon?.Dispose();
         _currentTrayIconDay = today.Day;
@@ -384,7 +242,7 @@ public partial class InstanceManager : Form
 
     private void AddInstanceMenu_Click(object? sender, EventArgs e)
     {
-        var result = InputBox.Show(this, "", Resources.NewInstanceName, string.Empty, InputBox_Validating);
+        var result = InputBox.Show(this, "", Resources.NewInstanceName, string.Empty, ValidateInstanceName);
         if (!result.Ok)
         {
             return;
@@ -402,34 +260,14 @@ public partial class InstanceManager : Form
             .Select(instance => instance.Value.Bounds)
             .ToArray();
 
-        var currentWorkingArea = Screen.FromHandle(Handle).WorkingArea;
-        var orderedWorkingAreas = OrderWorkingAreas(currentWorkingArea,
-            Screen.AllScreens.Select(screen => screen.WorkingArea));
-        var preferredStart = GetCascadedStartPoint(currentWorkingArea, newInstance.Size, occupiedBounds);
+        var selectedLocation = InstanceManagerPlacementPolicy.SelectNewInstanceLocation(
+            Screen.FromHandle(Handle).WorkingArea,
+            Screen.AllScreens.Select(screen => screen.WorkingArea),
+            newInstance.Size,
+            occupiedBounds);
 
-        Point? selectedLocation = null;
-        foreach (var area in orderedWorkingAreas)
-        {
-            var preferredForArea = area.Contains(preferredStart ?? Point.Empty)
-                ? preferredStart
-                : null;
-
-            var candidate = FindNonOverlappingLocation(area, newInstance.Size, occupiedBounds, preferredForArea);
-            var candidateBounds = new Rectangle(candidate, newInstance.Size);
-            if (occupiedBounds.Any(existing => existing.IntersectsWith(candidateBounds)))
-            {
-                continue;
-            }
-
-            selectedLocation = candidate;
-            break;
-        }
-
-        selectedLocation ??= FindNonOverlappingLocation(currentWorkingArea, newInstance.Size, occupiedBounds,
-            preferredStart);
-
-        newInstance.Left = selectedLocation.Value.X;
-        newInstance.Top = selectedLocation.Value.Y;
+        newInstance.Left = selectedLocation.X;
+        newInstance.Top = selectedLocation.Y;
 
         // Make sure the newly added instance is visible above existing windows.
         newInstance.BringToFront();
@@ -438,116 +276,6 @@ public partial class InstanceManager : Form
         // Save the new position so that it's correctly loaded on next run
         newInstance.Preferences.Left = newInstance.Left;
         newInstance.Preferences.Top = newInstance.Top;
-    }
-
-    internal static Point FindNonOverlappingLocation(Rectangle workingArea, Size windowSize,
-        IReadOnlyCollection<Rectangle> occupiedBounds, Point? preferredStart = null)
-    {
-        var maxX = Math.Max(workingArea.Left, workingArea.Right - windowSize.Width);
-        var maxY = Math.Max(workingArea.Top, workingArea.Bottom - windowSize.Height);
-
-        const int PlacementStep = 30;
-
-        var bestLocation = new Point(workingArea.Left, workingArea.Top);
-        var smallestOverlapArea = int.MaxValue;
-
-        if (preferredStart.HasValue)
-        {
-            var preferred = new Point(
-                Math.Min(Math.Max(preferredStart.Value.X, workingArea.Left), maxX),
-                Math.Min(Math.Max(preferredStart.Value.Y, workingArea.Top), maxY));
-
-            if (IsNonOverlappingCandidate(new Rectangle(preferred, windowSize), occupiedBounds, out var overlapArea))
-            {
-                return preferred;
-            }
-
-            smallestOverlapArea = overlapArea;
-            bestLocation = preferred;
-        }
-
-        for (var y = workingArea.Top; y <= maxY; y += PlacementStep)
-        {
-            for (var x = workingArea.Left; x <= maxX; x += PlacementStep)
-            {
-                var candidate = new Rectangle(x, y, windowSize.Width, windowSize.Height);
-
-                if (IsNonOverlappingCandidate(candidate, occupiedBounds, out var overlapArea))
-                {
-                    return candidate.Location;
-                }
-
-                if (overlapArea >= smallestOverlapArea)
-                {
-                    continue;
-                }
-
-                smallestOverlapArea = overlapArea;
-                bestLocation = candidate.Location;
-            }
-        }
-
-        return bestLocation;
-    }
-
-    internal static IReadOnlyList<Rectangle> OrderWorkingAreas(Rectangle currentWorkingArea,
-        IEnumerable<Rectangle> allWorkingAreas)
-    {
-        return [.. allWorkingAreas.OrderByDescending(area => area == currentWorkingArea)];
-    }
-
-    internal static Point? GetCascadedStartPoint(Rectangle workingArea, Size windowSize,
-        IReadOnlyCollection<Rectangle> occupiedBounds)
-    {
-        if (occupiedBounds.Count == 0)
-        {
-            return null;
-        }
-
-        var anchor = occupiedBounds
-            .OrderByDescending(rect => rect.Top)
-            .ThenByDescending(rect => rect.Left)
-            .First();
-
-        var maxX = Math.Max(workingArea.Left, workingArea.Right - windowSize.Width);
-        var maxY = Math.Max(workingArea.Top, workingArea.Bottom - windowSize.Height);
-
-        var x = Math.Min(Math.Max(anchor.Left + CascadeOffset, workingArea.Left), maxX);
-        var y = Math.Min(Math.Max(anchor.Top + CascadeOffset, workingArea.Top), maxY);
-
-        return new Point(x, y);
-    }
-
-    private static bool IsNonOverlappingCandidate(Rectangle candidate, IReadOnlyCollection<Rectangle> occupiedBounds,
-        out int overlapArea)
-    {
-        overlapArea = 0;
-        var intersectsExisting = false;
-
-        foreach (var existing in occupiedBounds)
-        {
-            if (!candidate.IntersectsWith(existing))
-            {
-                continue;
-            }
-
-            intersectsExisting = true;
-            var intersection = Rectangle.Intersect(candidate, existing);
-            overlapArea += intersection.Width * intersection.Height;
-        }
-
-        return !intersectsExisting;
-    }
-
-    private static void InputBox_Validating(object? sender, InputBoxValidatingEventArgs e)
-    {
-        if (!string.IsNullOrWhiteSpace(e.Text))
-        {
-            return;
-        }
-
-        e.Cancel = true;
-        e.Message = Resources.ResourceManager.GetString("Required")!;
     }
 
     private static void AboutMenu_Click(object? sender, EventArgs e)
@@ -566,17 +294,8 @@ public partial class InstanceManager : Form
 
     private void StartWithWindowsMenu_Click(object? sender, EventArgs e)
     {
-        var startWithWindowsMenu = trayIcon.ContextMenuStrip!.Items["StartWithWindows"] as ToolStripMenuItem;
-        if (startWithWindowsMenu is { Checked: true })
-        {
-            GlobalPreferences.StartWithWindows = false;
-            startWithWindowsMenu.Checked = false;
-        }
-        else
-        {
-            GlobalPreferences.StartWithWindows = true;
-            startWithWindowsMenu?.Checked = true;
-        }
+        ToggleMenuCheck(trayIcon.ContextMenuStrip!.Items["StartWithWindows"],
+            check => GlobalPreferences.StartWithWindows = check);
     }
 
     private void HideShowAllMenu_Click(object? sender, EventArgs e)
@@ -590,55 +309,9 @@ public partial class InstanceManager : Form
             _mainFormInstances.Values.Select(instance => ((Form)instance, instance.TrayMenu)).ToArray());
     }
 
-    internal static void ShowHideInstances(ContextMenuStrip menu,
-        IReadOnlyCollection<(Form Form, ContextMenuStrip Menu)> instances)
-    {
-        var visible = ResolveVisibility(menu.Items["HideShowMenu"]!.Text);
-        if (visible == null)
-        {
-            return;
-        }
-
-        foreach (var (form, instanceMenu) in instances)
-        {
-            form.Visible = visible.Value;
-            instanceMenu.Items["HideShowMenu"]!.Text = GetVisibilityMenuText(visible.Value, 1);
-        }
-
-        menu.Items["HideShowMenu"]!.Text = GetVisibilityMenuText(visible.Value, instances.Count);
-    }
-
-    private static bool? ResolveVisibility(string? menuText)
-    {
-        if (menuText == Resources.HideAll || menuText == Resources.Hide)
-        {
-            return false;
-        }
-
-        return menuText == Resources.ShowAll || menuText == Resources.Show ? true : null;
-    }
-
-    private static string GetVisibilityMenuText(bool visible, int instanceCount)
-    {
-        return visible
-            ? instanceCount == 1 ? Resources.Hide : Resources.HideAll
-            : instanceCount == 1 ? Resources.Show : Resources.ShowAll;
-    }
-
     private void LockPositionMenu_Click(object? sender, EventArgs e)
     {
-        var lockPositionMenu = trayIcon.ContextMenuStrip!.Items["LockPositionMenu"] as ToolStripMenuItem;
-        if (lockPositionMenu is { Checked: true })
-        {
-            lockPositionMenu.Checked = false;
-            LockOrUnlock(false);
-        }
-        else
-        {
-            lockPositionMenu?.Checked = true;
-
-            LockOrUnlock(true);
-        }
+        ToggleMenuCheck(trayIcon.ContextMenuStrip!.Items["LockPositionMenu"], LockOrUnlock);
     }
 
     private void LockOrUnlock(bool @lock)
@@ -696,36 +369,8 @@ public partial class InstanceManager : Form
 
     private void DisableEnableAllInstances()
     {
-        var disableEditingMenu = trayIcon.ContextMenuStrip!.Items["DisableEnableEditingMenu"] as ToolStripMenuItem;
-
-        if (disableEditingMenu is { Checked: true })
-        {
-            foreach (var (_, mainForm) in _mainFormInstances)
-            {
-                mainForm.Enabled = true;
-
-                if (mainForm.TrayMenu.Items["DisableEnableEditingMenu"] is ToolStripMenuItem instanceDisableEditingMenu)
-                {
-                    instanceDisableEditingMenu.Checked = !instanceDisableEditingMenu.Checked;
-                }
-            }
-
-            disableEditingMenu.Checked = false;
-        }
-        else
-        {
-            foreach (var (_, mainForm) in _mainFormInstances)
-            {
-                mainForm.Enabled = false;
-
-                if (mainForm.TrayMenu.Items["DisableEnableEditingMenu"] is ToolStripMenuItem instanceDisableEditingMenu)
-                {
-                    instanceDisableEditingMenu.Checked = !instanceDisableEditingMenu.Checked;
-                }
-            }
-
-            disableEditingMenu?.Checked = true;
-        }
+        ToggleEditing(trayIcon.ContextMenuStrip!.Items["DisableEnableEditingMenu"],
+            _mainFormInstances.Values.Select(mainForm => ((Control)mainForm, mainForm.TrayMenu)));
     }
 
     private void InstanceRemovedEventHandler(object? sender, InstanceRemovedEventArgs e)
@@ -744,12 +389,7 @@ public partial class InstanceManager : Form
 
     private void InstanceRenamedEventHandler(object? sender, InstanceRenamedEventArgs e)
     {
-        var menuItem = trayIcon.ContextMenuStrip?.Items[e.OldInstanceName];
-        if (menuItem != null)
-        {
-            menuItem.Text = e.NewInstanceName;
-            menuItem.Name = e.NewInstanceName;
-        }
+        RenameInstanceMenuItem(trayIcon.ContextMenuStrip, e.OldInstanceName, e.NewInstanceName);
     }
 
     private void InstanceContextMenu_DropDownOpened(object? sender, EventArgs e)

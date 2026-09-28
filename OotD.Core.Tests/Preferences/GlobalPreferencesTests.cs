@@ -193,6 +193,60 @@ public class GlobalPreferencesTests : IDisposable
         isFirstRunProperty!.PropertyType.Should().Be<bool>();
     }
 
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void LockPosition_RoundTripsThroughPreferencesKey(bool value)
+    {
+        GlobalPreferences.LockPosition = value;
+
+        GlobalPreferences.LockPosition.Should().Be(value);
+    }
+
+    [Fact]
+    public void StartWithWindows_CreatesAndRemovesTheStartupTask()
+    {
+        var originalAdapter = TaskScheduling.TaskServiceAdapter;
+        var adapter = new RecordingTaskServiceAdapter();
+        TaskScheduling.TaskServiceAdapter = adapter;
+        try
+        {
+            GlobalPreferences.StartWithWindows.Should().BeFalse();
+
+            GlobalPreferences.StartWithWindows = true;
+            GlobalPreferences.StartWithWindows.Should().BeTrue();
+
+            GlobalPreferences.StartWithWindows = false;
+            GlobalPreferences.StartWithWindows.Should().BeFalse();
+            adapter.Calls.Should().Equal("create", "delete");
+        }
+        finally
+        {
+            TaskScheduling.TaskServiceAdapter = originalAdapter;
+        }
+    }
+
+    private sealed class RecordingTaskServiceAdapter : TaskScheduling.ITaskServiceAdapter
+    {
+        private bool _exists;
+
+        public List<string> Calls { get; } = [];
+
+        public bool TaskExists(string taskName) => _exists;
+
+        public void CreateStartupTaskDefinition(string taskName, string xmlPath, string userName)
+        {
+            Calls.Add("create");
+            _exists = true;
+        }
+
+        public void DeleteTask(string taskName)
+        {
+            Calls.Add("delete");
+            _exists = false;
+        }
+    }
+
     public void Dispose()
     {
         PreferencesRegistry.RootPath = _originalRootPath;

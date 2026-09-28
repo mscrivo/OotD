@@ -280,6 +280,57 @@ public class InputBoxTests : IDisposable
         GetValidator(inputBox).Should().BeNull();
     }
 
+    [Fact]
+    public void Show_WhenAccepted_ReturnsEnteredTextAndConfiguresDialog()
+    {
+        InputBoxValidatingEventHandler validator = (_, _) => { };
+
+        var result = InputBox.Show(_ownerForm!, "Enter a name", "New Instance", "Work", validator, form =>
+        {
+            form.Owner.Should().BeSameAs(_ownerForm);
+            form.Text.Should().Be("New Instance");
+            GetPrivateField<Label>(form, "PromptLabel").Text.Should().Be("Enter a name");
+            GetValidator(form).Should().BeSameAs(validator);
+            GetPrivateField<TextBox>(form, "InputTextBox").Text = "Home";
+            return DialogResult.OK;
+        });
+
+        result.Ok.Should().BeTrue();
+        result.Text.Should().Be("Home");
+    }
+
+    [Fact]
+    public void Show_WhenCancelled_ReturnsEmptyResult()
+    {
+        var result = InputBox.Show(_ownerForm!, "", "Caption", "Work", (_, _) => { },
+            _ => DialogResult.Cancel);
+
+        result.Ok.Should().BeFalse();
+        result.Text.Should().BeNullOrEmpty();
+    }
+
+    [Fact]
+    public void InputTextBox_Validating_WithoutValidator_ShouldNotCancel()
+    {
+        using var inputBox = CreateInputBox();
+        var validatingArgs = new System.ComponentModel.CancelEventArgs();
+
+        InvokePrivateMethod(inputBox, "InputTextBox_Validating", inputBox, validatingArgs);
+
+        validatingArgs.Cancel.Should().BeFalse();
+    }
+
+    [Fact]
+    public void OkButton_Click_ShouldKeepValidator()
+    {
+        using var inputBox = CreateInputBox();
+        SetValidator(inputBox, (_, _) => { });
+
+        InvokePrivateMethod(inputBox, "OkButton_Click", inputBox, EventArgs.Empty);
+
+        GetValidator(inputBox).Should().NotBeNull();
+    }
+
     public void Dispose()
     {
         _ownerForm?.Dispose();

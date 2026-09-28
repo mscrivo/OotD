@@ -42,6 +42,15 @@ public partial class InputBox : Form
     public static InputBoxResult Show(Form owner, string instructions, string caption, string defaultValue,
         InputBoxValidatingEventHandler validator)
     {
+        return Show(owner, instructions, caption, defaultValue, validator, form => form.ShowDialog());
+    }
+
+    /// <summary>
+    ///     Overload that lets tests replace the modal <see cref="Form.ShowDialog()" /> call.
+    /// </summary>
+    internal static InputBoxResult Show(Form owner, string instructions, string caption, string defaultValue,
+        InputBoxValidatingEventHandler validator, Func<InputBox, DialogResult> showDialog)
+    {
         using var form = new InputBox();
         form.Owner = owner;
         form.PromptLabel.Text = instructions;
@@ -49,7 +58,7 @@ public partial class InputBox : Form
         form.InputTextBox.Text = defaultValue;
         form.Validator = validator;
 
-        var result = form.ShowDialog();
+        var result = showDialog(form);
 
         var inputBoxResult = new InputBoxResult();
         if (result != DialogResult.OK)

@@ -1,4 +1,4 @@
-﻿namespace OotD.Core.Tests.Forms;
+namespace OotD.Core.Tests.Forms;
 
 using Microsoft.Win32;
 using OotD.Forms;
@@ -80,7 +80,7 @@ public class InstanceManagerTests : IDisposable
         var size = new Size(300, 200);
 
         // Act
-        var location = InstanceManager.FindNonOverlappingLocation(workingArea, size, []);
+        var location = InstanceManagerPlacementPolicy.FindNonOverlappingLocation(workingArea, size, []);
 
         // Assert
         location.Should().Be(new Point(100, 100));
@@ -95,7 +95,7 @@ public class InstanceManagerTests : IDisposable
         var occupied = new[] { new Rectangle(0, 0, 100, 100) };
 
         // Act
-        var location = InstanceManager.FindNonOverlappingLocation(workingArea, size, occupied);
+        var location = InstanceManagerPlacementPolicy.FindNonOverlappingLocation(workingArea, size, occupied);
 
         // Assert
         // Step size is 30px; x=120 is the first non-overlapping candidate on row 0.
@@ -115,7 +115,7 @@ public class InstanceManagerTests : IDisposable
         };
 
         // Act
-        var location = InstanceManager.FindNonOverlappingLocation(workingArea, size, occupied);
+        var location = InstanceManagerPlacementPolicy.FindNonOverlappingLocation(workingArea, size, occupied);
         var placed = new Rectangle(location, size);
 
         // Assert
@@ -133,7 +133,7 @@ public class InstanceManagerTests : IDisposable
         var preferredStart = new Point(240, 180);
 
         // Act
-        var location = InstanceManager.FindNonOverlappingLocation(workingArea, size, occupied, preferredStart);
+        var location = InstanceManagerPlacementPolicy.FindNonOverlappingLocation(workingArea, size, occupied, preferredStart);
 
         // Assert
         location.Should().Be(preferredStart);
@@ -147,7 +147,7 @@ public class InstanceManagerTests : IDisposable
         var size = new Size(100, 100);
 
         // Act
-        var result = InstanceManager.GetCascadedStartPoint(workingArea, size, []);
+        var result = InstanceManagerPlacementPolicy.GetCascadedStartPoint(workingArea, size, []);
 
         // Assert
         result.Should().BeNull();
@@ -166,7 +166,7 @@ public class InstanceManagerTests : IDisposable
         };
 
         // Act
-        var result = InstanceManager.GetCascadedStartPoint(workingArea, size, occupied);
+        var result = InstanceManagerPlacementPolicy.GetCascadedStartPoint(workingArea, size, occupied);
 
         // Assert
         // Anchor is the lowest window (260,180). +30 offset is clamped to max valid origin (250,150).
@@ -188,7 +188,7 @@ public class InstanceManagerTests : IDisposable
         };
 
         // Act
-        var location = InstanceManager.FindNonOverlappingLocation(workingArea, size, occupied);
+        var location = InstanceManagerPlacementPolicy.FindNonOverlappingLocation(workingArea, size, occupied);
         var placed = new Rectangle(location, size);
 
         // Assert
@@ -218,8 +218,8 @@ public class InstanceManagerTests : IDisposable
         };
 
         // Act
-        var location1 = InstanceManager.FindNonOverlappingLocation(workingArea, size, occupied);
-        var location2 = InstanceManager.FindNonOverlappingLocation(workingArea, size, occupied);
+        var location1 = InstanceManagerPlacementPolicy.FindNonOverlappingLocation(workingArea, size, occupied);
+        var location2 = InstanceManagerPlacementPolicy.FindNonOverlappingLocation(workingArea, size, occupied);
         var placed = new Rectangle(location1, size);
 
         // Assert
@@ -250,7 +250,7 @@ public class InstanceManagerTests : IDisposable
         };
 
         // Act
-        var ordered = InstanceManager.OrderWorkingAreas(current, areas);
+        var ordered = InstanceManagerPlacementPolicy.OrderWorkingAreas(current, areas);
 
         // Assert
         ordered[0].Should().Be(current);
@@ -266,7 +266,7 @@ public class InstanceManagerTests : IDisposable
         var areas = new[] { area1, area2 };
 
         // Act
-        var ordered = InstanceManager.OrderWorkingAreas(current, areas);
+        var ordered = InstanceManagerPlacementPolicy.OrderWorkingAreas(current, areas);
 
         // Assert
         ordered.Should().Equal(area1, area2);
@@ -279,7 +279,7 @@ public class InstanceManagerTests : IDisposable
         var subKeyNames = new[] { "AutoUpdate", "Default Instance", "Work", "Home" };
 
         // Act
-        var result = InstanceManager.FilterInstanceNames(subKeyNames).ToArray();
+        var result = InstanceManagerTrayPolicy.FilterInstanceNames(subKeyNames).ToArray();
 
         // Assert
         result.Should().Equal("Default Instance", "Work", "Home");
@@ -296,7 +296,7 @@ public class InstanceManagerTests : IDisposable
         string expected)
     {
         // Act
-        var result = InstanceManager.ResolveSingleInstanceName(instanceCount, subKeyNames, defaultInstanceName);
+        var result = InstanceManagerTrayPolicy.ResolveSingleInstanceName(instanceCount, subKeyNames, defaultInstanceName);
 
         // Assert
         result.Should().Be(expected);
@@ -313,7 +313,7 @@ public class InstanceManagerTests : IDisposable
         menu.Items.Add(new ToolStripMenuItem("Inbox") { Name = "InboxMenu" });
 
         // Act
-        InstanceManager.TrimSingleInstanceMenuItems(menu);
+        InstanceManagerTrayPolicy.TrimSingleInstanceMenuItems(menu);
 
         // Assert
         menu.Items.Cast<ToolStripItem>().Select(item => item.Name)
@@ -329,11 +329,11 @@ public class InstanceManagerTests : IDisposable
             "AboutMenu", "ResetConfigMenu" }.ToDictionary(name => name,
             name => new EventHandler((_, _) => clicked.Add(name)));
 
-        InstanceManager.ConfigureSingleInstanceMenu(menu, handlers);
+        InstanceManagerTrayPolicy.ConfigureSingleInstanceMenu(menu, handlers);
         var originalOrder = menu.Items.Cast<ToolStripItem>().Select(item => item.Name).ToArray();
 
-        using var firstSubmenu = InstanceManager.CreateInstanceSubmenu(menu, "Work");
-        using var secondSubmenu = InstanceManager.CreateInstanceSubmenu(menu, "Work");
+        using var firstSubmenu = InstanceManagerTrayPolicy.CreateInstanceSubmenu(menu, "Work");
+        using var secondSubmenu = InstanceManagerTrayPolicy.CreateInstanceSubmenu(menu, "Work");
         menu.Items.Cast<ToolStripItem>().Count(item => item.Name == "Work").Should().Be(1);
         menu.Items.Cast<ToolStripItem>().Count(item => item.Name == "AddInstanceSeparator").Should().Be(1);
         menu.Items["RemoveInstanceMenu"]!.Available.Should().BeTrue();
@@ -347,8 +347,8 @@ public class InstanceManagerTests : IDisposable
             menu.Items[name]!.Available.Should().BeFalse();
         }
 
-        InstanceManager.ConfigureSingleInstanceMenu(menu, handlers);
-        InstanceManager.ConfigureSingleInstanceMenu(menu, handlers);
+        InstanceManagerTrayPolicy.ConfigureSingleInstanceMenu(menu, handlers);
+        InstanceManagerTrayPolicy.ConfigureSingleInstanceMenu(menu, handlers);
 
         menu.Items.Cast<ToolStripItem>().Select(item => item.Name).Should().Equal(originalOrder);
         menu.Items["RemoveInstanceMenu"]!.Available.Should().BeFalse();
@@ -376,8 +376,8 @@ public class InstanceManagerTests : IDisposable
         var handlers = new[] { "StartWithWindows", "LockPositionMenu", "CheckForUpdatesMenu", "AboutMenu",
             "ResetConfigMenu" }.ToDictionary(name => name, _ => new EventHandler((_, _) => { }));
 
-        InstanceManager.ConfigureSingleInstanceMenu(menu, handlers);
-        InstanceManager.ConfigureSingleInstanceMenu(menu, handlers);
+        InstanceManagerTrayPolicy.ConfigureSingleInstanceMenu(menu, handlers);
+        InstanceManagerTrayPolicy.ConfigureSingleInstanceMenu(menu, handlers);
 
         menu.Items["AddInstanceMenu"].Should().BeSameAs(addItem);
         menu.Items["AddInstanceSeparator"].Should().BeSameAs(separator);
@@ -391,8 +391,8 @@ public class InstanceManagerTests : IDisposable
     {
         using var menu = CreateInstanceMenu();
 
-        using var submenu = InstanceManager.CreateInstanceSubmenu(menu, "Home");
-        using var repeatedSubmenu = InstanceManager.CreateInstanceSubmenu(menu, "Home");
+        using var submenu = InstanceManagerTrayPolicy.CreateInstanceSubmenu(menu, "Home");
+        using var repeatedSubmenu = InstanceManagerTrayPolicy.CreateInstanceSubmenu(menu, "Home");
 
         menu.Items[0].Name.Should().Be("Home");
         menu.Items[1].Name.Should().Be("AddInstanceSeparator");
@@ -423,7 +423,7 @@ public class InstanceManagerTests : IDisposable
             instances.Add((secondForm, secondMenu));
         }
 
-        InstanceManager.ShowHideInstances(menu, instances);
+        InstanceManagerTrayPolicy.ShowHideInstances(menu, instances);
 
         firstForm.RequestedVisibility.Should().Be(!initiallyVisible);
         firstMenu.Items["HideShowMenu"]!.Text.Should().Be(initiallyVisible ? Resources.Show : Resources.Hide);
@@ -442,7 +442,7 @@ public class InstanceManagerTests : IDisposable
         using var menu = CreateInstanceMenu();
         menu.Items["HideShowMenu"]!.Text = "Unknown";
 
-        InstanceManager.ShowHideInstances(menu, new[] { ((Form)form, menu) });
+        InstanceManagerTrayPolicy.ShowHideInstances(menu, new[] { ((Form)form, menu) });
 
         form.RequestedVisibility.Should().BeNull();
         menu.Items["HideShowMenu"]!.Text.Should().Be("Unknown");
@@ -481,7 +481,7 @@ public class InstanceManagerTests : IDisposable
         menu.Items.Add(new ToolStripMenuItem("About") { Name = "AboutMenu" });
 
         // Act
-        InstanceManager.TrimSingleInstanceMenuItems(menu);
+        InstanceManagerTrayPolicy.TrimSingleInstanceMenuItems(menu);
 
         // Assert
         menu.Items.Count.Should().Be(0);
@@ -499,7 +499,7 @@ public class InstanceManagerTests : IDisposable
         menu.Items.Add(new ToolStripMenuItem("Updates") { Name = "CheckForUpdatesMenu" });
 
         // Act
-        InstanceManager.ReorderBottomMenuItems(
+        InstanceManagerTrayPolicy.ReorderBottomMenuItems(
             menu,
             () => throw new InvalidOperationException("About should already exist"),
             () => throw new InvalidOperationException("Check for updates should already exist"));
@@ -520,7 +520,7 @@ public class InstanceManagerTests : IDisposable
         menu.Items.Add(new ToolStripMenuItem("Exit") { Name = "ExitMenu" });
 
         // Act
-        InstanceManager.ReorderBottomMenuItems(
+        InstanceManagerTrayPolicy.ReorderBottomMenuItems(
             menu,
             () => new ToolStripMenuItem("About") { Name = "AboutMenu" },
             () => new ToolStripMenuItem("Updates") { Name = "CheckForUpdatesMenu" });
@@ -540,7 +540,7 @@ public class InstanceManagerTests : IDisposable
         menu.Items.Add(new ToolStripMenuItem("Exit") { Name = "ExitMenu" });
 
         // Act
-        InstanceManager.ReorderBottomMenuItems(
+        InstanceManagerTrayPolicy.ReorderBottomMenuItems(
             menu,
             () => new ToolStripMenuItem("About") { Name = "AboutMenu" },
             () => new ToolStripMenuItem("Updates") { Name = "CheckForUpdatesMenu" });

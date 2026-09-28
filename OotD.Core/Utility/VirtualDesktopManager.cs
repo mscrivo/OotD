@@ -12,8 +12,24 @@ namespace OotD.Utility;
 internal static class VirtualDesktopManager
 {
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-    private static IVirtualDesktopManager? _virtualDesktopManager;
-    private static IVirtualDesktopManagerInternal? _virtualDesktopManagerInternal;
+
+    /// <summary>
+    ///     The public virtual desktop COM API, created by the static constructor. Overridable so tests can
+    ///     substitute a fake.
+    /// </summary>
+    internal static IVirtualDesktopManager? DesktopManager { get; set; }
+
+    /// <summary>
+    ///     The undocumented virtual desktop COM API used for enumeration, created by the static constructor.
+    ///     Overridable so tests can substitute a fake.
+    /// </summary>
+    internal static IVirtualDesktopManagerInternal? DesktopManagerInternal { get; set; }
+
+    /// <summary>
+    ///     HKCU-relative path to Explorer's virtual desktop state. Overridable so tests can point it at a
+    ///     throwaway key; production code never sets it.
+    /// </summary>
+    internal static string RegistryPath { get; set; } = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops";
 
     static VirtualDesktopManager()
     {
@@ -23,7 +39,7 @@ internal static class VirtualDesktopManager
             var vdmType = Type.GetTypeFromCLSID(CLSID_VirtualDesktopManager);
             if (vdmType != null)
             {
-                _virtualDesktopManager = (IVirtualDesktopManager?)Activator.CreateInstance(vdmType);
+                DesktopManager = (IVirtualDesktopManager?)Activator.CreateInstance(vdmType);
             }
 
             // Initialize internal API for desktop enumeration
@@ -38,7 +54,7 @@ internal static class VirtualDesktopManager
                         var managerInternalGuid = typeof(IVirtualDesktopManagerInternal).GUID;
                         var serviceGuid = SID_VirtualDesktopManagerInternal;
                         var obj = serviceProvider.QueryService(ref serviceGuid, ref managerInternalGuid);
-                        _virtualDesktopManagerInternal = obj as IVirtualDesktopManagerInternal;
+                        DesktopManagerInternal = obj as IVirtualDesktopManagerInternal;
                         _logger.Debug("Internal Virtual Desktop API initialized successfully");
                     }
                 }
@@ -57,7 +73,7 @@ internal static class VirtualDesktopManager
     /// <summary>
     ///     Checks if virtual desktop features are available.
     /// </summary>
-    public static bool IsVirtualDesktopSupported => _virtualDesktopManager != null;
+    public static bool IsVirtualDesktopSupported => DesktopManager != null;
 
     /// <summary>
     ///     Gets the GUID of the virtual desktop that contains the specified window.
@@ -66,12 +82,12 @@ internal static class VirtualDesktopManager
     {
         try
         {
-            if (_virtualDesktopManager == null)
+            if (DesktopManager == null)
             {
                 return null;
             }
 
-            var hr = _virtualDesktopManager.GetWindowDesktopId(hwnd, out var desktopId);
+            var hr = DesktopManager.GetWindowDesktopId(hwnd, out var desktopId);
             if (hr == 0 && desktopId != Guid.Empty)
             {
                 return desktopId;
@@ -92,12 +108,12 @@ internal static class VirtualDesktopManager
     {
         try
         {
-            if (_virtualDesktopManager == null)
+            if (DesktopManager == null)
             {
                 return false;
             }
 
-            var result = _virtualDesktopManager.MoveWindowToDesktop(hwnd, desktopId);
+            var result = DesktopManager.MoveWindowToDesktop(hwnd, desktopId);
 
             if (result == 0)
             {
@@ -124,7 +140,7 @@ internal static class VirtualDesktopManager
 
         try
         {
-            if (_virtualDesktopManager == null)
+            if (DesktopManager == null)
             {
                 return desktops;
             }
@@ -132,7 +148,7 @@ internal static class VirtualDesktopManager
             _logger.Debug("Getting virtual desktops list");
 
             // Method 1: Try internal API first
-            if (_virtualDesktopManagerInternal != null)
+            if (DesktopManagerInternal != null)
             {
                 try
                 {
@@ -220,8 +236,7 @@ internal static class VirtualDesktopManager
         {
             // Virtual desktop IDs are stored in the registry
             // Windows 10: HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops
-            using var key = Registry.CurrentUser.OpenSubKey(
-                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops");
+            using var key = Registry.CurrentUser.OpenSubKey(RegistryPath);
 
             if (key == null)
             {
@@ -287,8 +302,7 @@ internal static class VirtualDesktopManager
         try
         {
             // Windows 11 stores desktop names in a different location
-            using var key = Registry.CurrentUser.OpenSubKey(
-                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops\Desktops");
+            using var key = Registry.CurrentUser.OpenSubKey($@"{RegistryPath}\Desktops");
 
             if (key == null)
             {
@@ -327,14 +341,14 @@ internal static class VirtualDesktopManager
     {
         var desktops = new List<VirtualDesktopInfo>();
 
-        if (_virtualDesktopManagerInternal == null)
+        if (DesktopManagerInternal == null)
         {
             return desktops;
         }
 
         try
         {
-            var desktopArray = _virtualDesktopManagerInternal.GetDesktops(IntPtr.Zero);
+            var desktopArray = DesktopManagerInternal.GetDesktops(IntPtr.Zero);
             if (desktopArray == null)
             {
                 return desktops;
@@ -391,7 +405,7 @@ internal static class VirtualDesktopManager
     {
         try
         {
-            if (_virtualDesktopManager == null)
+            if (DesktopManager == null)
             {
                 return null;
             }
@@ -399,8 +413,7 @@ internal static class VirtualDesktopManager
             // Try reading from registry first (most reliable)
             try
             {
-                using var key = Registry.CurrentUser.OpenSubKey(
-                    @"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VirtualDesktops");
+                using var key = Registry.CurrentUser.OpenSubKey(RegistryPath);
                 var currentDesktopBytes = key?.GetValue("CurrentVirtualDesktop") as byte[];
                 if (currentDesktopBytes != null && currentDesktopBytes.Length == 16)
                 {
@@ -415,11 +428,11 @@ internal static class VirtualDesktopManager
             }
 
             // Try internal API
-            if (_virtualDesktopManagerInternal != null)
+            if (DesktopManagerInternal != null)
             {
                 try
                 {
-                    var currentDesktop = _virtualDesktopManagerInternal.GetCurrentDesktop(IntPtr.Zero);
+                    var currentDesktop = DesktopManagerInternal.GetCurrentDesktop(IntPtr.Zero);
                     if (currentDesktop != null)
                     {
                         currentDesktop.GetID(out var id);
@@ -474,12 +487,12 @@ internal static class VirtualDesktopManager
     {
         try
         {
-            if (_virtualDesktopManager == null)
+            if (DesktopManager == null)
             {
                 return true;
             }
 
-            return _virtualDesktopManager.IsWindowOnCurrentVirtualDesktop(hwnd) == 0;
+            return DesktopManager.IsWindowOnCurrentVirtualDesktop(hwnd) == 0;
         }
         catch (Exception ex)
         {
