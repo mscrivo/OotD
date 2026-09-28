@@ -45,7 +45,7 @@ internal static class DesktopPinning
 
         try
         {
-            var wndProc = AnchorWndProc;
+            UnsafeNativeMethods.WndProc wndProc = AnchorWndProc;
             _wndProcHandle = GCHandle.Alloc(wndProc);
 
             var wc = new UnsafeNativeMethods.WNDCLASSEX

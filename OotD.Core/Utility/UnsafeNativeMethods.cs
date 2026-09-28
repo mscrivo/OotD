@@ -35,7 +35,7 @@ internal static partial class UnsafeNativeMethods
     // Window style / class constants used to create the hidden desktop anchor helper window.
     internal const uint WS_EX_TOOLWINDOW = 0x80;
     internal const uint WS_POPUP = 0x80000000;
-    internal const uint WS_DISABLED = 0x1;
+    internal const uint WS_DISABLED = 0x08000000;
     internal const int CW_USEDEFAULT = unchecked((int)0x80000000);
 
     [LibraryImport("dwmapi.dll")]
@@ -104,7 +104,7 @@ internal static partial class UnsafeNativeMethods
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     internal static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
-    [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf8)]
+    [LibraryImport("kernel32.dll", EntryPoint = "GetModuleHandleA", StringMarshalling = StringMarshalling.Utf8)]
     internal static partial IntPtr GetModuleHandle(string? lpModuleName);
 
     [LibraryImport("kernel32.dll", EntryPoint = "GetProcAddress", StringMarshalling = StringMarshalling.Utf8)]
@@ -124,7 +124,8 @@ internal static partial class UnsafeNativeMethods
     [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf8)]
     internal static partial IntPtr GetModuleHandleA(string? lpModuleName);
 
-    [LibraryImport("user32.dll")]
+    // ANSI to match RegisterClassExA; LibraryImport never probes for A/W suffixes.
+    [LibraryImport("user32.dll", EntryPoint = "DefWindowProcA")]
     internal static partial nint DefWindowProc(IntPtr hWnd, uint uMsg, nint wParam, nint lParam);
 
     /// <summary>
@@ -318,6 +319,9 @@ internal static partial class UnsafeNativeMethods
     }
 
     internal delegate bool EnumWindowsProc(IntPtr hwnd, IntPtr lParam);
+
+    // Non-generic so Marshal.GetFunctionPointerForDelegate accepts it.
+    internal delegate nint WndProc(IntPtr hWnd, uint uMsg, nint wParam, nint lParam);
 
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
