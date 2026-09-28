@@ -19,8 +19,10 @@ Outlook on the Desktop (OotD) is a Windows application that places a live Micros
 
 ## Requirements
 
-- Windows 7 or newer
-- Microsoft Outlook 2010 or newer installed
+- Windows 10 or newer
+- Classic Microsoft Outlook 2010 or newer (the new Outlook for Windows is not supported)
+
+The installer downloads and installs the .NET 10 Desktop Runtime if it isn't already present.
 
 ## Supported Languages
 
@@ -41,8 +43,21 @@ Outlook on the Desktop currently includes these UI language resources:
 
 ### Build Requirements
 
-- .NET 10 SDK for building from source
-- Visual Studio 2022 or newer recommended
+- .NET 10 SDK (the version is pinned in `global.json`)
+- Visual Studio 2026 or newer recommended
+
+### Building and testing
+
+`NetSparkle` and `MACTrackBarLib` are git submodules, so clone recursively:
+
+```sh
+git clone --recurse-submodules https://github.com/mscrivo/OotD.git
+cd OotD
+dotnet build OutlookDesktop.slnx
+dotnet test --project OotD.Core.Tests/OotD.Core.Tests.csproj
+```
+
+If you've already cloned without submodules, run `git submodule update --init`.
 
 ### What the build produces
 
@@ -57,11 +72,10 @@ Outlook on the Desktop currently includes these UI language resources:
 | `OotD.Core/`       | Main application code, Windows Forms UI, preferences, controls, and Outlook integration |
 | `OotD.Core.Tests/` | Unit and integration-style tests for the core app                                       |
 | `OotD.Launcher/`   | Startup launcher that selects the correct executable for Outlook bitness                |
-| `OotD.x86/`        | 32-bit build target, files symlinked to OotD.Core                                       |
-| `OotD.x64/`        | 64-bit build target, files symlinked to OotD.Core                                       |
-| `NetSparkle/`      | Auto-update dependency source                                                           |
-| `MACTrackBarLib/`  | Custom trackbar dependency source                                                       |
-| `ServerStaging/`   | Staged installer and release assets                                                     |
+| `OotD.x86/`        | Thin 32-bit host executable that runs `OotD.Core`, for 32-bit Outlook                   |
+| `OotD.x64/`        | Thin 64-bit host executable that runs `OotD.Core`, for 64-bit Outlook                   |
+| `NetSparkle/`      | Auto-update dependency source (git submodule)                                           |
+| `MACTrackBarLib/`  | Custom trackbar dependency source (git submodule)                                       |
 
 ## Contributing
 
