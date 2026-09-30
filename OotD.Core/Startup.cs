@@ -146,8 +146,12 @@ public static class Startup
                             // message box and shutdown onto the UI thread when we have one.
                             static void NotifyAndExit()
                             {
-                                MessageBox.Show(Resources.OutlookNotRunning, Resources.ErrorCaption,
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                // Switching on "New Outlook" closes classic Outlook, so point that out
+                                // rather than leaving the user to think Outlook crashed.
+                                MessageBox.Show(
+                                    OutlookStartupDiagnostics.WithNewOutlookHint(Resources.OutlookNotRunning,
+                                        NewOutlook.IsEnabled()),
+                                    Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                                 Environment.Exit(-1);
                             }
