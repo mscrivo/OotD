@@ -306,7 +306,7 @@ public partial class MainForm : Form, IMessageFilter
         if (ShouldPersistViewXmlForFolder(Preferences.OutlookFolderName,
                 GetFolderFromViewType(FolderViewType.Calendar)?.Name))
         {
-            OutlookViewControl.ViewXML = Preferences.ViewXml;
+            SetViewXml(Preferences.ViewXml!);
         }
         else
         {
@@ -1231,8 +1231,26 @@ public partial class MainForm : Form, IMessageFilter
 
     private void SetViewXml(string value)
     {
+        value = ApplyOutlookTimeScale(value, GetOutlookCalendarViewXml());
         OutlookViewControl.ViewXML = value;
         Preferences.ViewXml = value;
+    }
+
+    /// <summary>
+    ///     Returns the XML of the view the user has selected for the calendar in Outlook itself, so settings made
+    ///     there (such as the time scale) can be carried over to OotD's calendar views.
+    /// </summary>
+    private static string? GetOutlookCalendarViewXml()
+    {
+        try
+        {
+            return (GetFolderFromViewType(FolderViewType.Calendar)?.CurrentView as View)?.XML;
+        }
+        catch (Exception ex)
+        {
+            _logger.Debug(ex, "Could not read Outlook's calendar view XML.");
+            return null;
+        }
     }
 
     private void DayButton_Click(object sender, EventArgs e)

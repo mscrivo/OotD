@@ -7,6 +7,10 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+### Fixed
+
+- Calendar views now use the time scale set in Outlook (for example, 15 minute increments) instead of always showing 30 minute slots
+
 ## [5.5.1] - 2026-09-28
 
 ### Fixed
