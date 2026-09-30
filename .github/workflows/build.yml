@@ -16,6 +16,10 @@ jobs:
 
     runs-on: windows-latest
 
+    outputs:
+      line-coverage: ${{ steps.coverage.outputs.line }}
+      branch-coverage: ${{ steps.coverage.outputs.branch }}
+
     env:
       APP_OUTPUT_DIR: OotD.Launcher\bin\Release\net10.0-windows7.0
       APP_SIGNING_STAGING_DIR: signing\app
@@ -71,6 +75,7 @@ jobs:
           reportgenerator -reports:"TestResults/**/coverage.cobertura*.xml" -targetdir:"CoverageReport" -reporttypes:"Html;Cobertura" -assemblyfilters:"+OotD.*;-NetSparkle*;-MACTrackBarLib*" -filefilters:"-*.Designer.cs;-*Resources.Designer.cs;-*LibraryImports.g.cs;-*\\obj\\*"
 
       - name: Publish coverage summary
+        id: coverage
         if: always()
         shell: pwsh
         run: |
@@ -104,6 +109,11 @@ jobs:
           )
 
           ($summaryLines -join "`n") | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+
+          # Feeds the README coverage badges (see the coverage-badges job).
+          $inv = [Globalization.CultureInfo]::InvariantCulture
+          "line=$($lineRate.ToString('0.0', $inv))" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "branch=$($branchRate.ToString('0.0', $inv))" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v7
@@ -265,3 +275,46 @@ jobs:
         with:
           path: ${{ env.INSTALLER_OUTPUT_DIR }}\*.exe
           archive: false
+
+  # Keeps the README coverage badges current. Only this job can write to the repo, and it only
+  # touches the orphan `badges` branch, which holds the shields.io endpoint JSON as a single commit.
+  coverage-badges:
+    needs: build
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.line-coverage != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: coverage-badges
+      cancel-in-progress: false
+
+    steps:
+      - name: Publish coverage badges
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LINE_COVERAGE: ${{ needs.build.outputs.line-coverage }}
+          BRANCH_COVERAGE: ${{ needs.build.outputs.branch-coverage }}
+        run: |
+          set -euo pipefail
+
+          color() {
+            awk -v p="$1" 'BEGIN {
+              if (p >= 90) print "brightgreen"; else if (p >= 80) print "green";
+              else if (p >= 70) print "yellowgreen"; else if (p >= 60) print "yellow";
+              else if (p >= 50) print "orange"; else print "red" }'
+          }
+          badge() {
+            printf '{"schemaVersion":1,"label":"%s","message":"%s%%","color":"%s"}\n' "$1" "$2" "$(color "$2")"
+          }
+
+          git init -q badges
+          cd badges
+          git checkout -q --orphan badges
+          badge "line coverage" "$LINE_COVERAGE" > line-coverage.json
+          badge "branch coverage" "$BRANCH_COVERAGE" > branch-coverage.json
+
+          git add .
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -q -m "Coverage badges for ${GITHUB_SHA::7}"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:badges
