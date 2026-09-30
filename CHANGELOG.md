@@ -7,6 +7,8 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+## [5.6.1] - 2026-09-30
+
 ### Fixed
 
 - OotD now restarts after installing an update from "Install and relaunch"; previously it closed and stayed closed
