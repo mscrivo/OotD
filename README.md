@@ -2,6 +2,8 @@
 
 ![Latest Version](https://img.shields.io/github/v/release/mscrivo/OotD)
 [![Build Status](https://github.com/mscrivo/OotD/actions/workflows/build.yml/badge.svg)](https://github.com/mscrivo/OotD/actions/workflows/build.yml)
+[![Line Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mscrivo/OotD/badges/line-coverage.json)](https://github.com/mscrivo/OotD/actions/workflows/build.yml?query=branch%3Amain)
+[![Branch Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mscrivo/OotD/badges/branch-coverage.json)](https://github.com/mscrivo/OotD/actions/workflows/build.yml?query=branch%3Amain)
 [![CodeQL](https://github.com/mscrivo/OotD/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/mscrivo/OotD/actions/workflows/codeql-analysis.yml)
 [![GitHub Downloads](https://img.shields.io/github/downloads/mscrivo/OotD/total.svg)](https://github.com/mscrivo/OotD/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
