@@ -7,6 +7,10 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+### Fixed
+
+- When classic Outlook closes because Outlook was switched to the new Outlook for Windows, OotD now says so instead of suggesting Outlook crashed
+
 ## [5.6.1] - 2026-09-30
 
 ### Fixed
