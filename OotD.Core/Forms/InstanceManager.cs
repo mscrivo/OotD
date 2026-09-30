@@ -28,6 +28,10 @@ public partial class InstanceManager : Form
 {
     private const string AppCastUrl = "https://outlookonthedesktop.com/ootdAppcast.xml";
 
+    // Release installers are Authenticode-signed through the SignPath Foundation's open source program. The updater
+    // refuses to run a downloaded installer that isn't validly signed by this publisher.
+    private const string TrustedInstallerPublisher = "SignPath Foundation";
+
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private readonly Graphics _graphics;
     private readonly Dictionary<string, MainForm> _mainFormInstances = [];
@@ -53,6 +57,7 @@ public partial class InstanceManager : Form
         _sparkle.UpdateDetected += OnSparkleOnUpdateDetectedShowWithToast;
         _sparkle.UpdateWindowDismissed += OnSparkleOnUpdateWindowDismissed;
         _sparkle.CustomInstallerArguments = "/silent";
+        _sparkle.TrustedInstallerPublisher = TrustedInstallerPublisher;
 
         // check for updates every 20 days, but don't check on first run because we'll have 2 tooltips popup and will likely confuse the user.
         _sparkle.StartLoop(!GlobalPreferences.IsFirstRun, TimeSpan.FromDays(20));
