@@ -11,6 +11,10 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 - Calendar views now use the time scale set in Outlook (for example, 15 minute increments) instead of always showing 30 minute slots
 
+### Security
+
+- The updater now checks that a downloaded update is signed by OotD's publisher and refuses to install it if it isn't
+
 ## [5.5.1] - 2026-09-28
 
 ### Fixed
