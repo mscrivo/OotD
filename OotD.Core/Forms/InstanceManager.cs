@@ -247,7 +247,8 @@ public partial class InstanceManager : Form
 
     private void AddInstanceMenu_Click(object? sender, EventArgs e)
     {
-        var result = InputBox.Show(this, "", Resources.NewInstanceName, string.Empty, ValidateInstanceName);
+        var result = InputBox.Show(this, "", Resources.NewInstanceName, string.Empty,
+            CreateInstanceNameValidator(PreferencesRegistry.GetSubKeyNames()));
         if (!result.Ok)
         {
             return;
@@ -394,6 +395,12 @@ public partial class InstanceManager : Form
 
     private void InstanceRenamedEventHandler(object? sender, InstanceRenamedEventArgs e)
     {
+        // Re-key the instance so LoadInstances finds it under its new name instead of opening a duplicate.
+        if (_mainFormInstances.Remove(e.OldInstanceName, out var instance))
+        {
+            _mainFormInstances[e.NewInstanceName] = instance;
+        }
+
         RenameInstanceMenuItem(trayIcon.ContextMenuStrip, e.OldInstanceName, e.NewInstanceName);
     }
 

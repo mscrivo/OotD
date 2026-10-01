@@ -130,22 +130,35 @@ public class InstanceManagerTrayPolicyTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData("   ")]
-    public void ValidateInstanceName_RejectsBlankNames(string? name)
+    public void InstanceNameValidator_RejectsBlankNames(string? name)
     {
         var args = new InputBoxValidatingEventArgs { Text = name! };
 
-        InstanceManagerTrayPolicy.ValidateInstanceName(null, args);
+        InstanceManagerTrayPolicy.CreateInstanceNameValidator([])(this, args);
 
         args.Cancel.Should().BeTrue();
         args.Message.Should().Be(Resources.ResourceManager.GetString("Required"));
     }
 
+    [Theory]
+    [InlineData("Work")]
+    [InlineData("WORK")]
+    public void InstanceNameValidator_RejectsTakenNamesIgnoringCase(string name)
+    {
+        var args = new InputBoxValidatingEventArgs { Text = name };
+
+        InstanceManagerTrayPolicy.CreateInstanceNameValidator(["Home", "Work"])(this, args);
+
+        args.Cancel.Should().BeTrue();
+        args.Message.Should().Be(Resources.InstanceNameTaken);
+    }
+
     [Fact]
-    public void ValidateInstanceName_AcceptsNonBlankNames()
+    public void InstanceNameValidator_AcceptsNamesThatAreFree()
     {
         var args = new InputBoxValidatingEventArgs { Text = "Work" };
 
-        InstanceManagerTrayPolicy.ValidateInstanceName(null, args);
+        InstanceManagerTrayPolicy.CreateInstanceNameValidator(["Home"])(this, args);
 
         args.Cancel.Should().BeFalse();
         args.Message.Should().BeNull();
@@ -185,7 +198,7 @@ public class InstanceManagerTrayPolicyTests
     }
 
     [Fact]
-    public void SelectNewInstanceLocation_CascadesFromLowestWindowWhenThatSlotIsFree()
+    public void SelectNewInstanceLocation_SnapsFlushAgainstAnExistingWindow()
     {
         var current = new Rectangle(0, 0, 1000, 800);
         Rectangle[] occupied = [new Rectangle(0, 0, 100, 100)];

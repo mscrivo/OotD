@@ -208,6 +208,9 @@
   <data name="_11" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icons\11.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="InstanceNameTaken" xml:space="preserve">
+    <value>Ya existe una instancia con este nombre.</value>
+  </data>
   <data name="NewInstanceName" xml:space="preserve">
     <value>Nombre de la nueva instancia</value>
   </data>

@@ -9,6 +9,9 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ### Fixed
 
+- Adding or renaming an instance no longer accepts the name of another instance, which made the two share settings
+- Renaming an instance without changing its name, or changing only its capitalization, no longer erases its settings
+- Adding an instance after renaming another no longer opens a second copy of the renamed instance
 - When classic Outlook closes because Outlook was switched to the new Outlook for Windows, OotD now says so instead of suggesting Outlook crashed
 
 ## [5.6.1] - 2026-09-30

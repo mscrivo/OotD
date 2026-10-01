@@ -98,6 +98,44 @@ public class RegistryHelperTests : IDisposable
     }
 
     [Fact]
+    public void RenameSubKey_ToTheSameName_ShouldKeepTheKey()
+    {
+        // Arrange
+        using var parentKey = Registry.CurrentUser.CreateSubKey(_testRootPath);
+        using var sourceKey = parentKey.CreateSubKey("Work");
+        sourceKey.SetValue("Value", "kept");
+
+        // Act
+        RegistryHelper.RenameSubKey(parentKey, "Work", "Work");
+
+        // Assert
+        using var key = parentKey.OpenSubKey("Work");
+        key.Should().NotBeNull();
+        key!.GetValue("Value").Should().Be("kept");
+    }
+
+    [Fact]
+    public void RenameSubKey_ChangingOnlyCase_ShouldKeepValuesAndApplyTheNewCase()
+    {
+        // Arrange
+        using var parentKey = Registry.CurrentUser.CreateSubKey(_testRootPath);
+        using (var sourceKey = parentKey.CreateSubKey("work"))
+        {
+            sourceKey.SetValue("Value", "kept");
+            sourceKey.CreateSubKey("Nested")!.Dispose();
+        }
+
+        // Act
+        RegistryHelper.RenameSubKey(parentKey, "work", "Work");
+
+        // Assert
+        parentKey.GetSubKeyNames().Should().Equal("Work");
+        using var key = parentKey.OpenSubKey("Work");
+        key!.GetValue("Value").Should().Be("kept");
+        key.GetSubKeyNames().Should().Equal("Nested");
+    }
+
+    [Fact]
     public void RenameSubKey_WhenSourceKeyDoesNotExist_ShouldThrowArgumentException()
     {
         // Arrange

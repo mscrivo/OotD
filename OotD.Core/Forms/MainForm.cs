@@ -1049,8 +1049,12 @@ public partial class MainForm : Form, IMessageFilter
     private void RenameInstanceMenu_Click(object sender, EventArgs e)
     {
         var title = Resources.ResourceManager.GetString("RenameInstance")!;
-        var result = InputBox.Show(this, "", title, InstanceName, InputBox_Validating);
-        if (!result.Ok)
+        var otherInstanceNames = PreferencesRegistry.GetSubKeyNames()
+            .Where(name => !string.Equals(name, InstanceName, StringComparison.OrdinalIgnoreCase))
+            .ToArray();
+        var result = InputBox.Show(this, "", title, InstanceName,
+            InstanceManagerTrayPolicy.CreateInstanceNameValidator(otherInstanceNames));
+        if (!result.Ok || result.Text == InstanceName)
         {
             return;
         }
@@ -1068,17 +1072,6 @@ public partial class MainForm : Form, IMessageFilter
         Preferences = new InstancePreferences(InstanceName);
 
         OnInstanceRenamed(this, new InstanceRenamedEventArgs(oldInstanceName, InstanceName));
-    }
-
-    private static void InputBox_Validating(object sender, InputBoxValidatingEventArgs e)
-    {
-        if (!string.IsNullOrWhiteSpace(e.Text))
-        {
-            return;
-        }
-
-        e.Cancel = true;
-        e.Message = Resources.ResourceManager.GetString("Required")!;
     }
 
     private void MainForm_MouseDown(object sender, MouseEventArgs e)

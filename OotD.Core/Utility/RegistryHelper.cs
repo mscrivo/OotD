@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using System;
+using Microsoft.Win32;
 
 namespace OotD.Utility;
 
@@ -19,6 +20,20 @@ internal static class RegistryHelper
     /// <returns>True if succeeds</returns>
     public static void RenameSubKey(RegistryKey parentKey, string subKeyName, string newSubKeyName)
     {
+        if (subKeyName == newSubKeyName)
+        {
+            return;
+        }
+
+        // Registry key names ignore case, so a case-only rename would copy the key onto itself and then delete
+        // it. Move it out of the way first.
+        if (string.Equals(subKeyName, newSubKeyName, StringComparison.OrdinalIgnoreCase))
+        {
+            var temporaryName = $"{newSubKeyName}.{Guid.NewGuid():N}";
+            RenameSubKey(parentKey, subKeyName, temporaryName);
+            subKeyName = temporaryName;
+        }
+
         CopyKey(parentKey, subKeyName, newSubKeyName);
         parentKey.DeleteSubKeyTree(subKeyName);
     }

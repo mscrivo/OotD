@@ -691,6 +691,15 @@ namespace OotD.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An instance with this name already exists..
+        /// </summary>
+        internal static string InstanceNameTaken {
+            get {
+                return ResourceManager.GetString("InstanceNameTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Instance Name.
         /// </summary>
         internal static string NewInstanceName {
