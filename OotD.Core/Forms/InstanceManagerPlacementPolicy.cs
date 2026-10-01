@@ -10,25 +10,23 @@ namespace OotD.Forms;
 /// </summary>
 internal static class InstanceManagerPlacementPolicy
 {
-    private const int CascadeOffset = 30;
-
     /// <summary>
     ///     Picks a location for a new instance window: the first working area (current screen first) with a
-    ///     non-overlapping slot, preferring a cascade from the most recently placed window, falling back to the
+    ///     non-overlapping slot, preferring a spot flush against an existing window's edge, falling back to the
     ///     least-overlapping spot on the current screen.
     /// </summary>
     internal static Point SelectNewInstanceLocation(Rectangle currentWorkingArea,
         IEnumerable<Rectangle> allWorkingAreas, Size windowSize, IReadOnlyCollection<Rectangle> occupiedBounds)
     {
-        var preferredStart = GetCascadedStartPoint(currentWorkingArea, windowSize, occupiedBounds);
-
         foreach (var area in OrderWorkingAreas(currentWorkingArea, allWorkingAreas))
         {
-            var preferredForArea = area.Contains(preferredStart ?? Point.Empty)
-                ? preferredStart
-                : null;
+            var snapped = FindSnappedLocation(area, windowSize, occupiedBounds);
+            if (snapped.HasValue)
+            {
+                return snapped.Value;
+            }
 
-            var candidate = FindNonOverlappingLocation(area, windowSize, occupiedBounds, preferredForArea);
+            var candidate = FindNonOverlappingLocation(area, windowSize, occupiedBounds);
             var candidateBounds = new Rectangle(candidate, windowSize);
             if (occupiedBounds.Any(existing => existing.IntersectsWith(candidateBounds)))
             {
@@ -38,11 +36,59 @@ internal static class InstanceManagerPlacementPolicy
             return candidate;
         }
 
-        return FindNonOverlappingLocation(currentWorkingArea, windowSize, occupiedBounds, preferredStart);
+        return FindNonOverlappingLocation(currentWorkingArea, windowSize, occupiedBounds);
+    }
+
+    /// <summary>
+    ///     Finds a spot within <paramref name="workingArea" /> that sits flush against an edge of an existing window
+    ///     without overlapping any of them, choosing the one closest to the center of the existing windows so the
+    ///     group stays compact. Returns null when no such spot exists.
+    /// </summary>
+    internal static Point? FindSnappedLocation(Rectangle workingArea, Size windowSize,
+        IReadOnlyCollection<Rectangle> occupiedBounds)
+    {
+        if (occupiedBounds.Count == 0)
+        {
+            return null;
+        }
+
+        var group = occupiedBounds.Aggregate(Rectangle.Union);
+        var groupCenter = new Point(group.Left + group.Width / 2, group.Top + group.Height / 2);
+
+        return occupiedBounds
+            .SelectMany(anchor => GetSnapCandidates(anchor, windowSize))
+            .Select((location, order) => (location, order))
+            .Where(candidate =>
+            {
+                var bounds = new Rectangle(candidate.location, windowSize);
+                return workingArea.Contains(bounds) && !occupiedBounds.Any(existing => existing.IntersectsWith(bounds));
+            })
+            .OrderBy(candidate => DistanceSquared(
+                new Point(candidate.location.X + windowSize.Width / 2, candidate.location.Y + windowSize.Height / 2),
+                groupCenter))
+            .ThenBy(candidate => candidate.order)
+            .Select(candidate => (Point?)candidate.location)
+            .FirstOrDefault();
+    }
+
+    /// <summary>
+    ///     Locations flush against each side of <paramref name="anchor" />, aligned to either end of that side.
+    ///     Order is the tie-breaker: right, below, left, then above.
+    /// </summary>
+    internal static IEnumerable<Point> GetSnapCandidates(Rectangle anchor, Size windowSize)
+    {
+        yield return new Point(anchor.Right, anchor.Top);
+        yield return new Point(anchor.Right, anchor.Bottom - windowSize.Height);
+        yield return new Point(anchor.Left, anchor.Bottom);
+        yield return new Point(anchor.Right - windowSize.Width, anchor.Bottom);
+        yield return new Point(anchor.Left - windowSize.Width, anchor.Top);
+        yield return new Point(anchor.Left - windowSize.Width, anchor.Bottom - windowSize.Height);
+        yield return new Point(anchor.Left, anchor.Top - windowSize.Height);
+        yield return new Point(anchor.Right - windowSize.Width, anchor.Top - windowSize.Height);
     }
 
     internal static Point FindNonOverlappingLocation(Rectangle workingArea, Size windowSize,
-        IReadOnlyCollection<Rectangle> occupiedBounds, Point? preferredStart = null)
+        IReadOnlyCollection<Rectangle> occupiedBounds)
     {
         var maxX = Math.Max(workingArea.Left, workingArea.Right - windowSize.Width);
         var maxY = Math.Max(workingArea.Top, workingArea.Bottom - windowSize.Height);
@@ -51,21 +97,6 @@ internal static class InstanceManagerPlacementPolicy
 
         var bestLocation = new Point(workingArea.Left, workingArea.Top);
         var smallestOverlapArea = int.MaxValue;
-
-        if (preferredStart.HasValue)
-        {
-            var preferred = new Point(
-                Math.Min(Math.Max(preferredStart.Value.X, workingArea.Left), maxX),
-                Math.Min(Math.Max(preferredStart.Value.Y, workingArea.Top), maxY));
-
-            if (IsNonOverlappingCandidate(new Rectangle(preferred, windowSize), occupiedBounds, out var overlapArea))
-            {
-                return preferred;
-            }
-
-            smallestOverlapArea = overlapArea;
-            bestLocation = preferred;
-        }
 
         for (var y = workingArea.Top; y <= maxY; y += PlacementStep)
         {
@@ -97,26 +128,11 @@ internal static class InstanceManagerPlacementPolicy
         return [.. allWorkingAreas.OrderByDescending(area => area == currentWorkingArea)];
     }
 
-    internal static Point? GetCascadedStartPoint(Rectangle workingArea, Size windowSize,
-        IReadOnlyCollection<Rectangle> occupiedBounds)
+    private static long DistanceSquared(Point a, Point b)
     {
-        if (occupiedBounds.Count == 0)
-        {
-            return null;
-        }
-
-        var anchor = occupiedBounds
-            .OrderByDescending(rect => rect.Top)
-            .ThenByDescending(rect => rect.Left)
-            .First();
-
-        var maxX = Math.Max(workingArea.Left, workingArea.Right - windowSize.Width);
-        var maxY = Math.Max(workingArea.Top, workingArea.Bottom - windowSize.Height);
-
-        var x = Math.Min(Math.Max(anchor.Left + CascadeOffset, workingArea.Left), maxX);
-        var y = Math.Min(Math.Max(anchor.Top + CascadeOffset, workingArea.Top), maxY);
-
-        return new Point(x, y);
+        long dx = a.X - b.X;
+        long dy = a.Y - b.Y;
+        return dx * dx + dy * dy;
     }
 
     private static bool IsNonOverlappingCandidate(Rectangle candidate, IReadOnlyCollection<Rectangle> occupiedBounds,
