@@ -1,4 +1,5 @@
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace OotD.Preferences;
 
@@ -19,4 +20,13 @@ internal static class PreferencesRegistry
     /// </summary>
     internal static string RootPath { get; set; } =
         $@"Software\{Application.CompanyName}\{Application.ProductName}";
+
+    /// <summary>
+    ///     Names of every subkey under the root: one per instance, plus OotD's own non-instance keys.
+    /// </summary>
+    internal static string[] GetSubKeyNames()
+    {
+        using var rootKey = Registry.CurrentUser.OpenSubKey(RootPath);
+        return rootKey?.GetSubKeyNames() ?? [];
+    }
 }

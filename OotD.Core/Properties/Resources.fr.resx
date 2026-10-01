@@ -36,6 +36,7 @@ Veuillez installer Outlook classique, puis réessayer.</value></data>
   <data name="MissingRequirementsCapation" xml:space="preserve"><value>Configuration requise manquante</value></data>
   <data name="Move_Next" xml:space="preserve"><value>Suivant</value></data>
   <data name="Move_Previous" xml:space="preserve"><value>Précédent</value></data>
+  <data name="InstanceNameTaken" xml:space="preserve"><value>Une instance portant ce nom existe déjà.</value></data>
   <data name="NewInstanceName" xml:space="preserve"><value>Nom de la nouvelle instance</value></data>
   <data name="NewOutlookEnabledHint" xml:space="preserve"><value>Remarque : Outlook est actuellement configuré pour utiliser le nouvel Outlook pour Windows, qui n'est pas pris en charge par Outlook on the Desktop. Désactivez le bouton « Nouvel Outlook » dans Outlook pour revenir à Outlook classique, puis réessayez.</value></data>
   <data name="Notes" xml:space="preserve"><value>Notes</value></data>

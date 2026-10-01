@@ -259,15 +259,25 @@ internal static class InstanceManagerTrayPolicy
         }
     }
 
-    internal static void ValidateInstanceName(object? sender, InputBoxValidatingEventArgs e)
+    /// <summary>
+    ///     Builds a validator that rejects blank names and any name in <paramref name="takenNames" />. Registry key
+    ///     names ignore case, so the comparison does too.
+    /// </summary>
+    internal static InputBoxValidatingEventHandler CreateInstanceNameValidator(IReadOnlyCollection<string> takenNames)
     {
-        if (!string.IsNullOrWhiteSpace(e.Text))
+        return (_, e) =>
         {
-            return;
-        }
-
-        e.Cancel = true;
-        e.Message = Resources.ResourceManager.GetString("Required")!;
+            if (string.IsNullOrWhiteSpace(e.Text))
+            {
+                e.Cancel = true;
+                e.Message = Resources.ResourceManager.GetString("Required")!;
+            }
+            else if (takenNames.Contains(e.Text, StringComparer.OrdinalIgnoreCase))
+            {
+                e.Cancel = true;
+                e.Message = Resources.InstanceNameTaken;
+            }
+        };
     }
 
     /// <summary>
