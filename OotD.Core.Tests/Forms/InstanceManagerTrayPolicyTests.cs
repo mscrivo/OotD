@@ -206,8 +206,21 @@ public class InstanceManagerTrayPolicyTests
         var location = InstanceManagerPlacementPolicy.SelectNewInstanceLocation(current, [current],
             new Size(100, 100), occupied);
 
-        // The cascade point (30,30) overlaps the anchor, so the first free grid slot on row 0 wins.
-        location.Should().Be(new Point(120, 0));
+        location.Should().Be(new Point(100, 0));
+    }
+
+    [Fact]
+    public void SelectNewInstanceLocation_PrefersSnappingOnTheCurrentScreen()
+    {
+        var current = new Rectangle(0, 0, 1000, 800);
+        var other = new Rectangle(1000, 0, 1000, 800);
+        Rectangle[] occupied = [new Rectangle(1200, 100, 300, 300), new Rectangle(400, 300, 300, 200)];
+
+        var location = InstanceManagerPlacementPolicy.SelectNewInstanceLocation(current, [other, current],
+            new Size(200, 200), occupied);
+
+        current.Contains(new Rectangle(location, new Size(200, 200))).Should().BeTrue();
+        location.Should().Be(new Point(700, 300));
     }
 
     [Fact]

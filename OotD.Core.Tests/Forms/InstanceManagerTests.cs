@@ -124,53 +124,98 @@ public class InstanceManagerTests : IDisposable
     }
 
     [Fact]
-    public void FindNonOverlappingLocation_WithPreferredStartThatIsFree_ShouldUsePreferredStart()
+    public void FindSnappedLocation_WithNoOccupiedWindows_ShouldReturnNull()
     {
         // Arrange
-        var workingArea = new Rectangle(0, 0, 500, 400);
-        var size = new Size(100, 100);
-        var occupied = new[] { new Rectangle(0, 0, 100, 100) };
-        var preferredStart = new Point(240, 180);
-
-        // Act
-        var location = InstanceManagerPlacementPolicy.FindNonOverlappingLocation(workingArea, size, occupied, preferredStart);
-
-        // Assert
-        location.Should().Be(preferredStart);
-    }
-
-    [Fact]
-    public void GetCascadedStartPoint_WithNoOccupiedWindows_ShouldReturnNull()
-    {
-        // Arrange
-        var workingArea = new Rectangle(0, 0, 500, 400);
+        var workingArea = new Rectangle(0, 0, 1000, 800);
         var size = new Size(100, 100);
 
         // Act
-        var result = InstanceManagerPlacementPolicy.GetCascadedStartPoint(workingArea, size, []);
+        var location = InstanceManagerPlacementPolicy.FindSnappedLocation(workingArea, size, []);
 
         // Assert
-        result.Should().BeNull();
+        location.Should().BeNull();
     }
 
     [Fact]
-    public void GetCascadedStartPoint_WithOccupiedWindows_ShouldReturnOffsetAndClampedPoint()
+    public void FindSnappedLocation_WithSingleWindow_ShouldPlaceFlushToTheRight()
     {
         // Arrange
-        var workingArea = new Rectangle(0, 0, 350, 250);
+        var workingArea = new Rectangle(0, 0, 1000, 800);
+        var size = new Size(100, 100);
+        var occupied = new[] { new Rectangle(100, 100, 200, 200) };
+
+        // Act
+        var location = InstanceManagerPlacementPolicy.FindSnappedLocation(workingArea, size, occupied);
+
+        // Assert
+        // Every side of a square anchor is equally close, so the right-first tie-break decides.
+        location.Should().Be(new Point(300, 100));
+    }
+
+    [Fact]
+    public void FindSnappedLocation_WhenRightSideIsOffScreen_ShouldPlaceOnTheClosestOtherSide()
+    {
+        // Arrange
+        var workingArea = new Rectangle(0, 0, 1000, 800);
+        var size = new Size(150, 150);
+        var occupied = new[] { new Rectangle(800, 0, 200, 300) };
+
+        // Act
+        var location = InstanceManagerPlacementPolicy.FindSnappedLocation(workingArea, size, occupied);
+
+        // Assert
+        // The anchor is taller than it is wide, so its left side is closer to its center than its bottom.
+        location.Should().Be(new Point(650, 0));
+    }
+
+    [Fact]
+    public void FindSnappedLocation_WhenOnlyBelowFits_ShouldAlignToTheLeftEdge()
+    {
+        // Arrange
+        var workingArea = new Rectangle(0, 0, 1000, 800);
+        var size = new Size(300, 200);
+        var occupied = new[] { new Rectangle(0, 0, 1000, 200) };
+
+        // Act
+        var location = InstanceManagerPlacementPolicy.FindSnappedLocation(workingArea, size, occupied);
+
+        // Assert
+        location.Should().Be(new Point(0, 200));
+    }
+
+    [Fact]
+    public void FindSnappedLocation_WithTwoWindowsInARow_ShouldFillBelowToKeepTheGroupCompact()
+    {
+        // Arrange
+        var workingArea = new Rectangle(0, 0, 1000, 800);
         var size = new Size(100, 100);
         var occupied = new[]
         {
-            new Rectangle(260, 180, 100, 100),
-            new Rectangle(50, 30, 100, 100)
+            new Rectangle(0, 0, 100, 100),
+            new Rectangle(100, 0, 100, 100)
         };
 
         // Act
-        var result = InstanceManagerPlacementPolicy.GetCascadedStartPoint(workingArea, size, occupied);
+        var location = InstanceManagerPlacementPolicy.FindSnappedLocation(workingArea, size, occupied);
 
         // Assert
-        // Anchor is the lowest window (260,180). +30 offset is clamped to max valid origin (250,150).
-        result.Should().Be(new Point(250, 150));
+        location.Should().Be(new Point(0, 100));
+    }
+
+    [Fact]
+    public void FindSnappedLocation_WhenNoEdgeHasRoom_ShouldReturnNull()
+    {
+        // Arrange
+        var workingArea = new Rectangle(0, 0, 300, 300);
+        var size = new Size(100, 100);
+        var occupied = new[] { new Rectangle(0, 0, 300, 300) };
+
+        // Act
+        var location = InstanceManagerPlacementPolicy.FindSnappedLocation(workingArea, size, occupied);
+
+        // Assert
+        location.Should().BeNull();
     }
 
     [Fact]
