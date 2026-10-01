@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
@@ -63,9 +64,11 @@ public partial class MainForm : Form, IMessageFilter
     /// <param name="instanceName">The name of the instance to display.</param>
     public MainForm(string instanceName)
     {
+        var stopwatch = Stopwatch.StartNew();
         try
         {
             InitializeComponent();
+            _logger.Debug($"{instanceName}: creating the Outlook view control took {stopwatch.ElapsedMilliseconds} ms");
 
             // The Outlook view control can't render dark, but it partially honours the ambient colours
             // it inherits from its container. Pin them to the light-mode values so it renders as it
@@ -185,6 +188,33 @@ public partial class MainForm : Form, IMessageFilter
             ResetFolderToDefaultCalendar();
         }
 
+        TimeStartupStep("opening the saved folder", OpenSavedFolder);
+
+        TimeStartupStep("looking up the folder", SetMAPIFolder);
+
+        SetWindowOpacity();
+
+        SetInitialPosition();
+
+        SetSelectedMenuItem();
+
+        TimeStartupStep("applying the saved view", InitializeViewsFromPreferences);
+
+        // Get a copy of the possible outlook views for the selected folder and populate the context menu for this instance. 
+        TimeStartupStep("listing the folder's views", UpdateOutlookViewsList);
+
+        // Sets whether the instance is allowed to be edited or not
+        if (Preferences.DisableEditing)
+        {
+            DisableEnableEditing();
+        }
+
+        // Apply virtual desktop assignment if configured
+        ApplyVirtualDesktopAssignment();
+    }
+
+    private void OpenSavedFolder()
+    {
         // The saved folder may no longer exist (e.g. its account was removed or Outlook's views were reset
         // with /cleanviews). Fall back to the default calendar rather than failing to load the instance.
         try
@@ -200,28 +230,16 @@ public partial class MainForm : Form, IMessageFilter
             Preferences.ViewXml = string.Empty;
             OutlookViewControl.Folder = Preferences.OutlookFolderName;
         }
+    }
 
-        SetMAPIFolder();
-
-        SetWindowOpacity();
-
-        SetInitialPosition();
-
-        SetSelectedMenuItem();
-
-        InitializeViewsFromPreferences();
-
-        // Get a copy of the possible outlook views for the selected folder and populate the context menu for this instance. 
-        UpdateOutlookViewsList();
-
-        // Sets whether the instance is allowed to be edited or not
-        if (Preferences.DisableEditing)
-        {
-            DisableEnableEditing();
-        }
-
-        // Apply virtual desktop assignment if configured
-        ApplyVirtualDesktopAssignment();
+    /// <summary>
+    ///     Runs one step of loading this instance and logs how long it took, to help diagnose slow startups.
+    /// </summary>
+    private void TimeStartupStep(string description, System.Action step)
+    {
+        var stopwatch = Stopwatch.StartNew();
+        step();
+        _logger.Debug($"{InstanceName}: {description} took {stopwatch.ElapsedMilliseconds} ms");
     }
 
     /// <summary>

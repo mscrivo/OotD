@@ -14,6 +14,7 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 ### Changed
 
 - A newly added instance now opens flush against the edge of an existing pane, keeping the group compact, instead of in the first free spot on the screen
+- At startup, all instances now appear together once they have loaded, instead of one at a time
 
 ### Fixed
 
