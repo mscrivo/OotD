@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
@@ -118,6 +119,7 @@ public partial class InstanceManager : Form
             var menu = CreateMultipleInstanceMenu();
             trayIcon.ContextMenuStrip = menu;
             var insertionIndex = 2;
+            var newInstances = new List<MainForm>();
             foreach (var instanceName in instanceNames)
             {
                 var instance = GetOrCreateInstance(instanceName, out var newlyAdded);
@@ -129,8 +131,14 @@ public partial class InstanceManager : Form
                 var submenu = CreateInstanceSubmenu(instance.TrayMenu, instanceName);
                 submenu.DropDownOpened += InstanceContextMenu_DropDownOpened;
                 menu.Items.Insert(insertionIndex++, submenu);
-                ShowNewInstance(instance, newlyAdded);
+                if (newlyAdded)
+                {
+                    newInstances.Add(instance);
+                }
             }
+
+            // Build every pane before showing any, so they appear together rather than one at a time.
+            newInstances.ForEach(ShowNewInstance);
         }
         else
         {
@@ -146,7 +154,10 @@ public partial class InstanceManager : Form
                 [AboutMenuName] = AboutMenu_Click,
                 [ResetConfigMenuName] = ResetConfigMenu_Click
             });
-            ShowNewInstance(instance, newlyAdded);
+            if (newlyAdded)
+            {
+                ShowNewInstance(instance);
+            }
         }
 
         ReorderBottomMenuItems();
@@ -165,20 +176,17 @@ public partial class InstanceManager : Form
         if (newlyAdded)
         {
             _logger.Debug($"Instantiating instance {instanceName}");
+            var stopwatch = Stopwatch.StartNew();
             instance = new MainForm(instanceName);
+            _logger.Debug($"Instantiated instance {instanceName} in {stopwatch.ElapsedMilliseconds} ms");
             _mainFormInstances.Add(instanceName, instance);
         }
 
         return instance!;
     }
 
-    private static void ShowNewInstance(MainForm instance, bool newlyAdded)
+    private static void ShowNewInstance(MainForm instance)
     {
-        if (!newlyAdded)
-        {
-            return;
-        }
-
         instance.Show();
         UnsafeNativeMethods.SendWindowToBack(instance);
     }
