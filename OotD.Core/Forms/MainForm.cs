@@ -930,11 +930,38 @@ public partial class MainForm : Form, IMessageFilter
     /// <param name="e"></param>
     private void SelectFolderMenu_Click(object? sender, EventArgs e)
     {
+        PickCustomFolder();
+    }
+
+    /// <summary>
+    ///     Lets the user pick any Outlook folder for this instance, as Select Folder in the tray menu does.
+    /// </summary>
+    internal void PickCustomFolder()
+    {
         var oFolder = Startup.OutlookNameSpace?.PickFolder();
         if (oFolder != null)
         {
             UpdateCustomFolder(oFolder);
         }
+    }
+
+    /// <summary>
+    ///     Switches this instance to one of Outlook's default folders, as picking it from the tray menu does.
+    /// </summary>
+    internal void ShowDefaultFolder(FolderViewType folderViewType)
+    {
+        var menuItem = folderViewType switch
+        {
+            FolderViewType.Calendar => CalendarMenu,
+            FolderViewType.Contacts => ContactsMenu,
+            FolderViewType.Inbox => InboxMenu,
+            FolderViewType.Notes => NotesMenu,
+            FolderViewType.Tasks => TasksMenu,
+            FolderViewType.Todo => TodosMenu,
+            _ => throw new ArgumentOutOfRangeException(nameof(folderViewType), folderViewType, null)
+        };
+
+        DefaultFolderTypesClicked(folderViewType, menuItem);
     }
 
     private void CustomFolderMenu_Click(object? sender, EventArgs e)

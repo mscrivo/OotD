@@ -211,8 +211,14 @@
   <data name="InstanceNameTaken" xml:space="preserve">
     <value>この名前のインスタンスは既に存在します。</value>
   </data>
-  <data name="NewInstanceName" xml:space="preserve">
-    <value>新しいインスタンス名</value>
+  <data name="NewInstanceFolderLabel" xml:space="preserve">
+    <value>表示：</value>
+  </data>
+  <data name="NewInstanceNameLabel" xml:space="preserve">
+    <value>名前：</value>
+  </data>
+  <data name="NewInstanceNameInstructions" xml:space="preserve">
+    <value>この名前は、通知領域アイコンのメニューで新しいインスタンスを識別するために使われます。</value>
   </data>
   <data name="ErrorSettingOpacity" xml:space="preserve">
     <value>不透明度の設定中にエラーが発生したため、既定値 50% を使用しました。再度設定してください。</value>

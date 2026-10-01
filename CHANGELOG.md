@@ -7,6 +7,10 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+### Added
+
+- Adding an instance now lets you choose which folder it shows (Calendar, Contacts, Inbox, Notes, Tasks, To-Do List, or any other folder), and explains that the name is how the instance appears in the tray menu
+
 ### Fixed
 
 - Adding or renaming an instance no longer accepts the name of another instance, which made the two share settings

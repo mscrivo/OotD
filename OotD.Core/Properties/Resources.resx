@@ -211,8 +211,14 @@
   <data name="InstanceNameTaken" xml:space="preserve">
     <value>An instance with this name already exists.</value>
   </data>
-  <data name="NewInstanceName" xml:space="preserve">
-    <value>New Instance Name</value>
+  <data name="NewInstanceFolderLabel" xml:space="preserve">
+    <value>Show:</value>
+  </data>
+  <data name="NewInstanceNameLabel" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="NewInstanceNameInstructions" xml:space="preserve">
+    <value>This name identifies the new instance in the tray icon menu.</value>
   </data>
   <data name="ErrorSettingOpacity" xml:space="preserve">
     <value>There was an error setting the opacity, default of 50% used.  Please try setting it again.</value>

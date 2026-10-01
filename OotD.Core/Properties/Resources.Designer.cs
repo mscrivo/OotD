@@ -700,11 +700,29 @@ namespace OotD.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Instance Name.
+        ///   Looks up a localized string similar to Show:.
         /// </summary>
-        internal static string NewInstanceName {
+        internal static string NewInstanceFolderLabel {
             get {
-                return ResourceManager.GetString("NewInstanceName", resourceCulture);
+                return ResourceManager.GetString("NewInstanceFolderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        internal static string NewInstanceNameLabel {
+            get {
+                return ResourceManager.GetString("NewInstanceNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This name identifies the new instance in the tray icon menu..
+        /// </summary>
+        internal static string NewInstanceNameInstructions {
+            get {
+                return ResourceManager.GetString("NewInstanceNameInstructions", resourceCulture);
             }
         }
         
