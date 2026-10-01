@@ -7,6 +7,8 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+## [5.7.0] - 2026-10-01
+
 ### Added
 
 - Adding an instance now lets you choose which folder it shows (Calendar, Contacts, Inbox, Notes, Tasks, To-Do List, or any other folder), and explains that the name is how the instance appears in the tray menu
