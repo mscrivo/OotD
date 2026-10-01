@@ -37,7 +37,9 @@ Bitte installieren Sie das klassische Outlook und versuchen Sie es erneut.</valu
   <data name="Move_Next" xml:space="preserve"><value>Weiter</value></data>
   <data name="Move_Previous" xml:space="preserve"><value>Zurück</value></data>
   <data name="InstanceNameTaken" xml:space="preserve"><value>Es gibt bereits eine Instanz mit diesem Namen.</value></data>
-  <data name="NewInstanceName" xml:space="preserve"><value>Neuer Instanzname</value></data>
+  <data name="NewInstanceFolderLabel" xml:space="preserve"><value>Anzeigen:</value></data>
+  <data name="NewInstanceNameLabel" xml:space="preserve"><value>Name:</value></data>
+  <data name="NewInstanceNameInstructions" xml:space="preserve"><value>Unter diesem Namen erscheint die neue Instanz im Menü des Infobereichssymbols.</value></data>
   <data name="NewOutlookEnabledHint" xml:space="preserve"><value>Hinweis: Outlook ist derzeit auf das neue Outlook für Windows umgestellt, das von Outlook on the Desktop nicht unterstützt wird. Deaktivieren Sie in Outlook den Schalter „Neues Outlook“, um zum klassischen Outlook zurückzukehren, und versuchen Sie es dann erneut.</value></data>
   <data name="Notes" xml:space="preserve"><value>Notizen</value></data>
   <data name="Office2010Requirement" xml:space="preserve"><value>Dieses Programm erfordert Microsoft Outlook 2010 oder höher.</value></data>

@@ -211,8 +211,14 @@
   <data name="InstanceNameTaken" xml:space="preserve">
     <value>Já existe uma instância com este nome.</value>
   </data>
-  <data name="NewInstanceName" xml:space="preserve">
-    <value>Nome da nova instância</value>
+  <data name="NewInstanceFolderLabel" xml:space="preserve">
+    <value>Mostrar:</value>
+  </data>
+  <data name="NewInstanceNameLabel" xml:space="preserve">
+    <value>Nome:</value>
+  </data>
+  <data name="NewInstanceNameInstructions" xml:space="preserve">
+    <value>Este nome identifica a nova instância no menu do ícone da bandeja do sistema.</value>
   </data>
   <data name="ErrorSettingOpacity" xml:space="preserve">
     <value>Ocorreu um erro ao definir a opacidade; o padrão de 50% foi usado. Tente defini-la novamente.</value>

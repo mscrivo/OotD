@@ -211,8 +211,14 @@
   <data name="InstanceNameTaken" xml:space="preserve">
     <value>已存在同名实例。</value>
   </data>
-  <data name="NewInstanceName" xml:space="preserve">
-    <value>新实例名称</value>
+  <data name="NewInstanceFolderLabel" xml:space="preserve">
+    <value>显示：</value>
+  </data>
+  <data name="NewInstanceNameLabel" xml:space="preserve">
+    <value>名称：</value>
+  </data>
+  <data name="NewInstanceNameInstructions" xml:space="preserve">
+    <value>此名称用于在系统托盘图标菜单中标识新实例。</value>
   </data>
   <data name="ErrorSettingOpacity" xml:space="preserve">
     <value>设置不透明度时出错，已使用默认值 50%。请重试。</value>

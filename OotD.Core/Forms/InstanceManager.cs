@@ -247,22 +247,23 @@ public partial class InstanceManager : Form
 
     private void AddInstanceMenu_Click(object? sender, EventArgs e)
     {
-        var result = InputBox.Show(this, "", Resources.NewInstanceName, string.Empty,
-            CreateInstanceNameValidator(PreferencesRegistry.GetSubKeyNames()));
-        if (!result.Ok)
+        using var dialog = new NewInstanceDialog(CreateInstanceNameValidator(PreferencesRegistry.GetSubKeyNames()));
+        if (dialog.ShowDialog(this) != DialogResult.OK)
         {
             return;
         }
 
+        var instanceName = dialog.InstanceName;
+
         // trigger the tray icon context menu to show the second instance
-        var mainForm = new MainForm(result.Text);
+        var mainForm = new MainForm(instanceName);
         mainForm.Dispose();
 
         LoadInstances();
 
-        var newInstance = _mainFormInstances[result.Text];
+        var newInstance = _mainFormInstances[instanceName];
         var occupiedBounds = _mainFormInstances
-            .Where(instance => instance.Key != result.Text)
+            .Where(instance => instance.Key != instanceName)
             .Select(instance => instance.Value.Bounds)
             .ToArray();
 
@@ -282,6 +283,15 @@ public partial class InstanceManager : Form
         // Save the new position so that it's correctly loaded on next run
         newInstance.Preferences.Left = newInstance.Left;
         newInstance.Preferences.Top = newInstance.Top;
+
+        if (dialog.SelectedFolder is { } folderViewType)
+        {
+            newInstance.ShowDefaultFolder(folderViewType);
+        }
+        else
+        {
+            newInstance.PickCustomFolder();
+        }
     }
 
     private static void AboutMenu_Click(object? sender, EventArgs e)

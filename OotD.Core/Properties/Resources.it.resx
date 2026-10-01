@@ -37,7 +37,9 @@ Installa la versione classica di Outlook e riprova.</value></data>
   <data name="Move_Next" xml:space="preserve"><value>Avanti</value></data>
   <data name="Move_Previous" xml:space="preserve"><value>Indietro</value></data>
   <data name="InstanceNameTaken" xml:space="preserve"><value>Esiste già un'istanza con questo nome.</value></data>
-  <data name="NewInstanceName" xml:space="preserve"><value>Nome nuova istanza</value></data>
+  <data name="NewInstanceFolderLabel" xml:space="preserve"><value>Mostra:</value></data>
+  <data name="NewInstanceNameLabel" xml:space="preserve"><value>Nome:</value></data>
+  <data name="NewInstanceNameInstructions" xml:space="preserve"><value>Questo nome identifica la nuova istanza nel menu dell'icona nell'area di notifica.</value></data>
   <data name="NewOutlookEnabledHint" xml:space="preserve"><value>Nota: Outlook è attualmente impostato per usare il nuovo Outlook per Windows, che Outlook on the Desktop non supporta. Disattiva l'opzione "Nuovo Outlook" in Outlook per tornare alla versione classica, quindi riprova.</value></data>
   <data name="Notes" xml:space="preserve"><value>Note</value></data>
   <data name="Office2010Requirement" xml:space="preserve"><value>Questo programma richiede Microsoft Outlook 2010 o versione successiva.</value></data>
