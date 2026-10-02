@@ -7,7 +7,7 @@ using OotD.Properties;
 public class ResourceLocalizationSmokeTests
 {
     private static readonly string[] _supportedCultures =
-        ["en-US", "es-ES", "de-DE", "fr-FR", "it-IT", "ja-JP", "pt-BR", "zh-CN"];
+        ["en-US", "es-ES", "de-DE", "fr-FR", "it-IT", "ja-JP", "ko-KR", "pt-BR", "zh-CN"];
     private static readonly string[] _requiredStringKeys =
     [
         "RestoreDefaults",

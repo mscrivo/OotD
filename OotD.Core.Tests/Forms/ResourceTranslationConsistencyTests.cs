@@ -12,7 +12,7 @@ using OotD.Properties;
 /// </summary>
 public partial class ResourceTranslationConsistencyTests
 {
-    public static TheoryData<string> TranslatedCultures => ["de", "es", "fr", "it", "ja", "pt-BR", "zh-CN"];
+    public static TheoryData<string> TranslatedCultures => ["de", "es", "fr", "it", "ja", "ko", "pt-BR", "zh-CN"];
 
     [Theory]
     [MemberData(nameof(TranslatedCultures))]

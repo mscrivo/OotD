@@ -7,6 +7,10 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+### Added
+
+- Korean translation
+
 ## [5.7.0] - 2026-10-01
 
 ### Added

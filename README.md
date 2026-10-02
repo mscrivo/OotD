@@ -37,6 +37,7 @@ Outlook on the Desktop currently includes these UI language resources:
 - Italian (`it`)
 - Portuguese, Brazil (`pt-BR`)
 - Japanese (`ja`)
+- Korean (`ko`)
 - Chinese, Simplified (`zh-CN`)
 
 ---
