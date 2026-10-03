@@ -11,6 +11,14 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 - Korean translation
 
+### Changed
+
+- Internal cleanup: removed unused code and one third-party library, making the app a little smaller
+
+### Fixed
+
+- Startup error messages (shown when Outlook can't be found) now appear in Japanese, Korean, Brazilian Portuguese and Simplified Chinese
+
 ## [5.7.0] - 2026-10-01
 
 ### Added
