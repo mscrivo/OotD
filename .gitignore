@@ -31,3 +31,6 @@ README.html
 /.vs
 CoverageReport/
 *.csproj.lscache
+
+# Copied into project folders on build by the NLog.Schema package
+NLog.xsd

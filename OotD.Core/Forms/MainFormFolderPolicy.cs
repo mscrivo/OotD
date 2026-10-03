@@ -40,19 +40,9 @@ internal static class MainFormFolderPolicy
         FolderViewType.Todo
     ];
 
-    /// <summary>
-    /// </summary>
-    /// <param name="fullPath"></param>
-    /// <returns></returns>
     internal static string GetFolderNameFromFullPath(string? fullPath)
     {
-        if (fullPath != null)
-        {
-            return fullPath.Substring(fullPath.LastIndexOf('\\') + 1,
-                fullPath.Length - fullPath.LastIndexOf('\\') - 1);
-        }
-
-        return string.Empty;
+        return fullPath?[(fullPath.LastIndexOf('\\') + 1)..] ?? string.Empty;
     }
 
     internal static string GetFolderPath(string folderPath)

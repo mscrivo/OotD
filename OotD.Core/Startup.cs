@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using CommandLine;
 using Microsoft.Office.Interop.Outlook;
 using NLog;
 using OotD.Forms;
@@ -19,7 +19,7 @@ using Timer = System.Timers.Timer;
 namespace OotD;
 
 // Application composition root: Outlook COM bootstrap, single-instance mutex and WinForms message
-// loop. No unit-testable logic (command-line parsing is covered via Options), so excluded from coverage.
+// loop. No unit-testable logic, so excluded from coverage.
 [ExcludeFromCodeCoverage]
 public static class Startup
 {
@@ -44,7 +44,7 @@ public static class Startup
     /// </summary>
     public static void Run(string[] args)
     {
-        Parser.Default.ParseArguments<Options>(args).WithParsed(ProcessCommandLineArgs);
+        ProcessCommandLineArgs(args);
 
         _logger.Debug("Checking to see if there is an instance running.");
 
@@ -264,9 +264,11 @@ public static class Startup
         }
     }
 
-    private static void ProcessCommandLineArgs(Options opts)
+    private static void ProcessCommandLineArgs(string[] args)
     {
-        if (opts.StartDebugger)
+        bool Has(string shortName, string longName) => args.Contains(shortName) || args.Contains(longName);
+
+        if (Has("-d", "--debug"))
         {
             if (!Debugger.IsAttached)
             {
@@ -274,13 +276,13 @@ public static class Startup
             }
         }
 
-        if (opts.CreateStartupEntry)
+        if (Has("-s", "--createStartupEntry"))
         {
             TaskScheduling.EnsureOotDStartupTask(_logger);
             Environment.Exit(0);
         }
 
-        if (opts.RemoveStartupEntry)
+        if (Has("-r", "--removeStartupEntry"))
         {
             TaskScheduling.RemoveOotDStartupTask(_logger);
             Environment.Exit(0);

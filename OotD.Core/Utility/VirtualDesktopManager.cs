@@ -480,26 +480,6 @@ internal static class VirtualDesktopManager
         return null;
     }
 
-    /// <summary>
-    ///     Checks if a window is on the current virtual desktop.
-    /// </summary>
-    public static bool IsWindowOnCurrentDesktop(IntPtr hwnd)
-    {
-        try
-        {
-            if (DesktopManager == null)
-            {
-                return true;
-            }
-
-            return DesktopManager.IsWindowOnCurrentVirtualDesktop(hwnd) == 0;
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, "Failed to check if window is on current desktop");
-            return true;
-        }
-    }
 }
 
 /// <summary>

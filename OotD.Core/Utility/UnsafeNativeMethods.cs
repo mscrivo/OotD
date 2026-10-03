@@ -94,24 +94,8 @@ internal static partial class UnsafeNativeMethods
     [LibraryImport("user32.dll")]
     internal static partial IntPtr GetShellWindow();
 
-    [LibraryImport("user32.dll", EntryPoint = "FindWindowExA", StringMarshalling = StringMarshalling.Utf8)]
-    internal static partial IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter,
-        string? lpClassName, string? lpWindowName);
-
-    [LibraryImport("user32.dll", EntryPoint = "GetAncestor")]
-    internal static partial IntPtr GetAncestor(IntPtr hWnd, uint gaFlags);
-
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     internal static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
-
-    [LibraryImport("kernel32.dll", EntryPoint = "GetModuleHandleA", StringMarshalling = StringMarshalling.Utf8)]
-    internal static partial IntPtr GetModuleHandle(string? lpModuleName);
-
-    [LibraryImport("kernel32.dll", EntryPoint = "GetProcAddress", StringMarshalling = StringMarshalling.Utf8)]
-    internal static partial IntPtr GetProcAddress(IntPtr hModule, string procName);
-
-    [LibraryImport("user32.dll")]
-    internal static partial uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
     [LibraryImport("user32.dll", EntryPoint = "CreateWindowExA", StringMarshalling = StringMarshalling.Utf8)]
     internal static partial IntPtr CreateWindowEx(uint dwExStyle, string lpClassName, string? lpWindowName,

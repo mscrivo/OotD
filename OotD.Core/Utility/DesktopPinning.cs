@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace OotD.Utility;
 
 /// <summary>
 ///     Pins windows to the desktop so that they always render behind other application windows.
 ///     A hidden helper window is created and pinned to the very bottom of the z-order; pinned
-///     windows are inserted directly behind it (or behind the real desktop icon host, WorkerW /
-///     Progman on Windows 11 24H2+). This keeps the window at the bottom of the stack so it never
-///     floats above other apps.
+///     windows are inserted directly behind it. This keeps the window at the bottom of the stack
+///     so it never floats above other apps.
 /// </summary>
 internal static class DesktopPinning
 {
-    private const string WorkerWClass = "WorkerW";
-    private const string ProgmanClass = "Progman";
-    private const string ShellDefViewClass = "SHELLDLL_DefView";
     private const string AnchorClassName = "OotDDesktopAnchor";
     private const string HelperWindowTitle = "OotD Positioning Helper";
 
-    private const uint GA_PARENT = 1;
     private const uint CS_HREDRAW = 0x2;
     private const uint CS_VREDRAW = 0x1;
     private const int SWP_NOSIZE = 0x0001;
@@ -118,121 +112,5 @@ internal static class DesktopPinning
         }
 
         return UnsafeNativeMethods.DefWindowProc(hWnd, uMsg, wParam, lParam);
-    }
-
-    private static IntPtr GetDesktopAnchorWindow()
-    {
-        try
-        {
-            var shellWindow = GetDefaultShellWindow();
-            if (shellWindow == IntPtr.Zero)
-            {
-                return IntPtr.Zero;
-            }
-
-            if (ShouldUseShellWindowAsDesktopIconsHost())
-            {
-                // Windows 11 24H2+ moved SHELLDLL_DefView to be a direct child of Progman, so the
-                // shell window itself hosts the desktop icons.
-                return UnsafeNativeMethods.FindWindowEx(shellWindow, IntPtr.Zero, ShellDefViewClass, null) != IntPtr.Zero
-                    ? shellWindow
-                    : IntPtr.Zero;
-            }
-
-            var defView = FindShellDefView();
-            if (defView == IntPtr.Zero)
-            {
-                return IntPtr.Zero;
-            }
-
-            var parent = UnsafeNativeMethods.GetAncestor(defView, GA_PARENT);
-            if (parent == IntPtr.Zero || parent == shellWindow)
-            {
-                return IntPtr.Zero;
-            }
-
-            return GetClassName(parent) == WorkerWClass ? parent : IntPtr.Zero;
-        }
-        catch
-        {
-            // If any of the native calls fail (e.g. in a test environment without a full desktop),
-            // fall back to HWND_BOTTOM behavior by returning zero.
-            return IntPtr.Zero;
-        }
-    }
-
-    private static IntPtr GetDefaultShellWindow()
-    {
-        var shellWindow = UnsafeNativeMethods.GetShellWindow();
-        if (shellWindow == IntPtr.Zero)
-        {
-            return IntPtr.Zero;
-        }
-
-        return GetClassName(shellWindow) == ProgmanClass ? shellWindow : IntPtr.Zero;
-    }
-
-    private static IntPtr FindShellDefView()
-    {
-        var shellWindow = GetDefaultShellWindow();
-        if (shellWindow != IntPtr.Zero)
-        {
-            var defView = UnsafeNativeMethods.FindWindowEx(shellWindow, IntPtr.Zero, ShellDefViewClass, null);
-            if (defView != IntPtr.Zero)
-            {
-                return defView;
-            }
-        }
-
-        // Fallback: scan for a WorkerW window in the shell process that hosts SHELLDLL_DefView.
-        var workerW = IntPtr.Zero;
-        while ((workerW = UnsafeNativeMethods.FindWindowEx(IntPtr.Zero, workerW, WorkerWClass, null)) != IntPtr.Zero)
-        {
-            if (!UnsafeNativeMethods.IsWindowVisible(workerW))
-            {
-                continue;
-            }
-
-            if (BelongToSameProcess(GetDefaultShellWindow(), workerW))
-            {
-                var defView = UnsafeNativeMethods.FindWindowEx(workerW, IntPtr.Zero, ShellDefViewClass, null);
-                if (defView != IntPtr.Zero)
-                {
-                    return defView;
-                }
-            }
-        }
-
-        return IntPtr.Zero;
-    }
-
-    /// <summary>
-    ///     Windows 11 24H2 reordered the desktop shell window hierarchy: SHELLDLL_DefView became a
-    ///     direct child of Progman instead of living inside a WorkerW. The presence of
-    ///     GetCurrentMonitorTopologyId in user32.dll is only found on that build and later, so it
-    ///     doubles as a version check.
-    /// </summary>
-    private static bool ShouldUseShellWindowAsDesktopIconsHost()
-    {
-        var user32 = UnsafeNativeMethods.GetModuleHandle("user32");
-        return UnsafeNativeMethods.GetProcAddress(user32, "GetCurrentMonitorTopologyId") != IntPtr.Zero;
-    }
-
-    private static string GetClassName(IntPtr hWnd)
-    {
-        var className = new StringBuilder(64);
-        return UnsafeNativeMethods.GetClassName(hWnd, className, className.Capacity) > 0 ? className.ToString() : string.Empty;
-    }
-
-    private static bool BelongToSameProcess(IntPtr hwndA, IntPtr hwndB)
-    {
-        if (hwndA == IntPtr.Zero || hwndB == IntPtr.Zero)
-        {
-            return false;
-        }
-
-        UnsafeNativeMethods.GetWindowThreadProcessId(hwndA, out var processIdA);
-        UnsafeNativeMethods.GetWindowThreadProcessId(hwndB, out var processIdB);
-        return processIdA == processIdB;
     }
 }

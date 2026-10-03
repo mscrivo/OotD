@@ -98,21 +98,6 @@ public class VirtualDesktopManagerTests
     }
 
     [Fact]
-    public void IsWindowOnCurrentDesktop_WithInvalidHandle_ShouldNotThrow()
-    {
-        SkipIfCi();
-
-        // Arrange
-        var invalidHandle = IntPtr.Zero;
-
-        // Act
-        var action = () => VirtualDesktopManager.IsWindowOnCurrentDesktop(invalidHandle);
-
-        // Assert
-        action.Should().NotThrow();
-    }
-
-    [Fact]
     public void VirtualDesktopInfo_ShouldHaveIdAndNameProperties()
     {
         // Arrange & Act
