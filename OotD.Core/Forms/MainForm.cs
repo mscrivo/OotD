@@ -26,7 +26,6 @@ namespace OotD.Forms;
 
 using static OotD.Forms.MainFormCalendarNavigation;
 using static OotD.Forms.MainFormFolderPolicy;
-using static OotD.Forms.MainFormMenuPolicy;
 using static OotD.Forms.MainFormToolbarPolicy;
 using static OotD.Forms.MainFormViewXmlPolicy;
 using static OotD.Forms.MainFormVirtualDesktopPolicy;
@@ -560,18 +559,17 @@ public partial class MainForm : Form, IMessageFilter
 
     private void ShowHideDesktopComponent()
     {
-        var nextState = GetNextVisibilityState(Visible, Resources.Show, Resources.Hide);
-        HideShowMenu.Text = nextState.MenuText;
-        Visible = nextState.Visible;
+        Visible = !Visible;
+        HideShowMenu.Text = Visible ? Resources.Hide : Resources.Show;
     }
 
 
     private void DisableEnableEditing()
     {
-        var nextState = GetNextEditingState(OutlookViewControl.Enabled);
-        DisableEnableEditingMenu.Checked = nextState.MenuChecked;
-        Preferences.DisableEditing = nextState.DisableEditingPreference;
-        OutlookViewControl.Enabled = nextState.Enabled;
+        var disable = OutlookViewControl.Enabled;
+        DisableEnableEditingMenu.Checked = disable;
+        Preferences.DisableEditing = disable;
+        OutlookViewControl.Enabled = !disable;
     }
 
 
@@ -1328,8 +1326,8 @@ public partial class MainForm : Form, IMessageFilter
 
         SetCurrentViewControlAsActiveIfNecessary(mode, ButtonPrevious, ref Startup.LastPreviousButtonClicked);
 
-        var (type, offset) = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
-        var targetDate = GetCalendarNavigationTargetDate(OutlookViewControl.SelectedDate, type, offset * -1);
+        var offset = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
+        var targetDate = GetCalendarNavigationTargetDate(OutlookViewControl.SelectedDate, mode, -offset);
         OutlookViewControl.GoToDate(targetDate.ToString(CultureInfo.InvariantCulture));
     }
 
@@ -1340,8 +1338,8 @@ public partial class MainForm : Form, IMessageFilter
 
         SetCurrentViewControlAsActiveIfNecessary(mode, ButtonNext, ref Startup.LastNextButtonClicked);
 
-        var (type, offset) = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
-        var targetDate = GetCalendarNavigationTargetDate(OutlookViewControl.SelectedDate, type, offset);
+        var offset = GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
+        var targetDate = GetCalendarNavigationTargetDate(OutlookViewControl.SelectedDate, mode, offset);
         OutlookViewControl.GoToDate(targetDate.ToString(CultureInfo.InvariantCulture));
     }
 

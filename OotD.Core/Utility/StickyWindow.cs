@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -17,7 +16,7 @@ public sealed class StickyWindow : NativeWindow
     /// <summary>
     ///     Global List of registered StickyWindows
     /// </summary>
-    private static readonly ArrayList _globalStickyWindows = [];
+    private static readonly List<Form> _globalStickyWindows = [];
 
     #region StickyWindow Constructor
 
@@ -625,7 +624,7 @@ public sealed class StickyWindow : NativeWindow
         _originalForm.Bounds = _formRect;
     }
 
-    private IEnumerable<Rectangle> GetOtherWindowBounds() => _globalStickyWindows.OfType<Form>()
+    private IEnumerable<Rectangle> GetOtherWindowBounds() => _globalStickyWindows
         .Where(form => form != _originalForm).Select(form => form.Bounds);
 
     internal static Rectangle ComputeMoveBounds(Rectangle bounds, Point mousePoint, Point mouseOffset,

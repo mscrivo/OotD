@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using OotD.Utility;
 
 namespace OotD.Core.Tests.Utility;
@@ -35,7 +36,9 @@ public class DesktopPinningTests
 
         anchor.Should().NotBe(IntPtr.Zero);
         DesktopPinning.GetPinnedAnchorWindow().Should().Be(anchor);
-        Invoke<string>("GetClassName", anchor).Should().Be("OotDDesktopAnchor");
+        var className = new StringBuilder(64);
+        UnsafeNativeMethods.GetClassName(anchor, className, className.Capacity);
+        className.ToString().Should().Be("OotDDesktopAnchor");
     }
 
     [Fact]
@@ -68,45 +71,6 @@ public class DesktopPinningTests
             (nint)0, (nint)0);
 
         result.Should().Be(0);
-    }
-
-    [Fact]
-    public void GetDesktopAnchorWindow_ReturnsZeroOrADesktopIconHost()
-    {
-        var anchor = Invoke<IntPtr>("GetDesktopAnchorWindow");
-
-        if (anchor != IntPtr.Zero)
-        {
-            Invoke<string>("GetClassName", anchor).Should().BeOneOf("Progman", "WorkerW");
-        }
-    }
-
-    [Fact]
-    public void FindShellDefView_ReturnsZeroOrShellView()
-    {
-        var defView = Invoke<IntPtr>("FindShellDefView");
-
-        if (defView != IntPtr.Zero)
-        {
-            Invoke<string>("GetClassName", defView).Should().Be("SHELLDLL_DefView");
-        }
-    }
-
-    [Fact]
-    public void BelongToSameProcess_ComparesOwningProcesses()
-    {
-        using var first = new Form();
-        using var second = new Form();
-
-        Invoke<bool>("BelongToSameProcess", first.Handle, second.Handle).Should().BeTrue();
-        Invoke<bool>("BelongToSameProcess", IntPtr.Zero, second.Handle).Should().BeFalse();
-        Invoke<bool>("BelongToSameProcess", first.Handle, IntPtr.Zero).Should().BeFalse();
-    }
-
-    [Fact]
-    public void GetClassName_ForInvalidWindow_ReturnsEmpty()
-    {
-        Invoke<string>("GetClassName", IntPtr.Zero).Should().BeEmpty();
     }
 
     [Fact]

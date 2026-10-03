@@ -143,40 +143,6 @@ public class MainFormInteractionPolicyTests
     }
 
     [Theory]
-    [InlineData(true, false, "Show")]
-    [InlineData(false, true, "Hide")]
-    public void GetNextVisibilityState_WithCurrentVisibility_ReturnsExpectedState(
-        bool currentlyVisible,
-        bool expectedVisible,
-        string expectedMenuText)
-    {
-        // Act
-        var result = MainFormMenuPolicy.GetNextVisibilityState(currentlyVisible, "Show", "Hide");
-
-        // Assert
-        result.Visible.Should().Be(expectedVisible);
-        result.MenuText.Should().Be(expectedMenuText);
-    }
-
-    [Theory]
-    [InlineData(true, false, true, true)]
-    [InlineData(false, true, false, false)]
-    public void GetNextEditingState_WithCurrentEnabledState_ReturnsExpectedState(
-        bool currentlyEnabled,
-        bool expectedEnabled,
-        bool expectedMenuChecked,
-        bool expectedPreference)
-    {
-        // Act
-        var result = MainFormMenuPolicy.GetNextEditingState(currentlyEnabled);
-
-        // Assert
-        result.Enabled.Should().Be(expectedEnabled);
-        result.MenuChecked.Should().Be(expectedMenuChecked);
-        result.DisableEditingPreference.Should().Be(expectedPreference);
-    }
-
-    [Theory]
     [InlineData("Day", "Calendar", "<view />", "Calendar", "<view />")]
     [InlineData("Day", "Inbox", "<view />", "Calendar", "")]
     [InlineData("Day", null, "<view />", "Calendar", "")]

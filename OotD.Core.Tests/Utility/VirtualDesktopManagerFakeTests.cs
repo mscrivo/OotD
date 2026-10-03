@@ -47,7 +47,6 @@ public class VirtualDesktopManagerFakeTests : IDisposable
         VirtualDesktopManager.MoveWindowToDesktop(1, Guid.NewGuid()).Should().BeFalse();
         VirtualDesktopManager.GetVirtualDesktops().Should().BeEmpty();
         VirtualDesktopManager.GetCurrentDesktopId().Should().BeNull();
-        VirtualDesktopManager.IsWindowOnCurrentDesktop(1).Should().BeTrue();
     }
 
     [Fact]
@@ -87,24 +86,6 @@ public class VirtualDesktopManagerFakeTests : IDisposable
         _manager.ThrowOnCall = true;
 
         VirtualDesktopManager.MoveWindowToDesktop(42, Guid.NewGuid()).Should().BeFalse();
-    }
-
-    [Theory]
-    [InlineData(0, true)]
-    [InlineData(1, false)]
-    public void IsWindowOnCurrentDesktop_MapsHresult(int hresult, bool expected)
-    {
-        _manager.IsOnCurrentResult = hresult;
-
-        VirtualDesktopManager.IsWindowOnCurrentDesktop(1).Should().Be(expected);
-    }
-
-    [Fact]
-    public void IsWindowOnCurrentDesktop_WhenComCallThrows_AssumesCurrentDesktop()
-    {
-        _manager.ThrowOnCall = true;
-
-        VirtualDesktopManager.IsWindowOnCurrentDesktop(1).Should().BeTrue();
     }
 
     [Fact]
@@ -252,16 +233,11 @@ public class VirtualDesktopManagerFakeTests : IDisposable
     private sealed class FakeDesktopManager : IVirtualDesktopManager
     {
         public Func<IntPtr, (int Result, Guid Id)> GetWindowDesktopIdImpl { get; set; } = _ => (1, Guid.Empty);
-        public int IsOnCurrentResult { get; set; }
         public int MoveResult { get; set; }
         public bool ThrowOnCall { get; set; }
         public (IntPtr Window, Guid DesktopId)? MovedTo { get; private set; }
 
-        public int IsWindowOnCurrentVirtualDesktop(IntPtr topLevelWindow)
-        {
-            ThrowIfRequested();
-            return IsOnCurrentResult;
-        }
+        public int IsWindowOnCurrentVirtualDesktop(IntPtr topLevelWindow) => throw new NotSupportedException();
 
         public int GetWindowDesktopId(IntPtr topLevelWindow, out Guid desktopId)
         {

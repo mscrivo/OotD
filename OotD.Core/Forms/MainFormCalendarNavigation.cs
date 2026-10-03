@@ -17,19 +17,14 @@ internal static class MainFormCalendarNavigation
             : selectedDate.AddDays(offset);
     }
 
-    internal static (CurrentCalendarView type, int offset) GetNextPreviousOffsetBasedOnCalendarViewMode(
-        CurrentCalendarView mode)
+    internal static int GetNextPreviousOffsetBasedOnCalendarViewMode(CurrentCalendarView mode)
     {
-        var offset = mode switch
+        return mode switch
         {
-            CurrentCalendarView.Day => (CurrentCalendarView.Day, 1),
-            CurrentCalendarView.Week => (CurrentCalendarView.Week, 7),
-            CurrentCalendarView.WorkWeek => (CurrentCalendarView.WorkWeek, 7),
-            CurrentCalendarView.Month => (CurrentCalendarView.Month, 1),
+            CurrentCalendarView.Day or CurrentCalendarView.Month => 1,
+            CurrentCalendarView.Week or CurrentCalendarView.WorkWeek => 7,
             _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
         };
-
-        return offset;
     }
 
     internal static CurrentCalendarView GetCalendarViewModeFromViewXml(string viewXml)

@@ -62,21 +62,15 @@ public class MainFormCalendarNavigationTests
     }
 
     [Theory]
-    [InlineData(CurrentCalendarView.Day, CurrentCalendarView.Day, 1)]
-    [InlineData(CurrentCalendarView.Week, CurrentCalendarView.Week, 7)]
-    [InlineData(CurrentCalendarView.WorkWeek, CurrentCalendarView.WorkWeek, 7)]
-    [InlineData(CurrentCalendarView.Month, CurrentCalendarView.Month, 1)]
+    [InlineData(CurrentCalendarView.Day, 1)]
+    [InlineData(CurrentCalendarView.Week, 7)]
+    [InlineData(CurrentCalendarView.WorkWeek, 7)]
+    [InlineData(CurrentCalendarView.Month, 1)]
     public void GetNextPreviousOffsetBasedOnCalendarViewMode_WithSupportedModes_ReturnsExpectedOffset(
         CurrentCalendarView mode,
-        CurrentCalendarView expectedType,
         int expectedOffset)
     {
-        // Act
-        var (type, offset) = MainFormCalendarNavigation.GetNextPreviousOffsetBasedOnCalendarViewMode(mode);
-
-        // Assert
-        type.Should().Be(expectedType);
-        offset.Should().Be(expectedOffset);
+        MainFormCalendarNavigation.GetNextPreviousOffsetBasedOnCalendarViewMode(mode).Should().Be(expectedOffset);
     }
 
     [Theory]

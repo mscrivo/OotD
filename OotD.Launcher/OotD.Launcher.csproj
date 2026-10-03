@@ -23,10 +23,6 @@
     <None Include="..\OotD.Core\app.manifest">
       <Link>app.manifest</Link>
     </None>
-    <None Include="..\OotD.Core\NLog.xsd">
-      <Link>NLog.xsd</Link>
-      <SubType>Designer</SubType>
-    </None>
     <None Include="..\OotD.Core\NLog.config">
       <Link>NLog.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -46,16 +42,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\OotD.Core\Properties\Resources.es.resx" Link="Properties\Resources.es.resx">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\OotD.Core\Properties\Resources.de.resx" Link="Properties\Resources.de.resx">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\OotD.Core\Properties\Resources.fr.resx" Link="Properties\Resources.fr.resx">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\OotD.Core\Properties\Resources.it.resx" Link="Properties\Resources.it.resx">
+    <EmbeddedResource Include="..\OotD.Core\Properties\Resources.*.resx" LinkBase="Properties">
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
