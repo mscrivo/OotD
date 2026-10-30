@@ -7,6 +7,10 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+### Fixed
+
+- OotD no longer fails with "There was an unknown error trying to run OotD" when started from a folder other than its install folder (for example, from a startup shortcut or another program) ([#175](https://github.com/mscrivo/OotD/issues/175))
+
 ## [5.7.1] - 2026-10-03
 
 ### Added
