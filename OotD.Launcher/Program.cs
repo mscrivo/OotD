@@ -42,7 +42,8 @@ public static class Program
 
         try
         {
-            var processStartInfo = SetupRunCommand(new ProcessStartInfo(exeName), args);
+            var processStartInfo =
+                SetupRunCommand(new ProcessStartInfo(Path.Combine(AppContext.BaseDirectory, exeName)), args);
             Process.Start(processStartInfo);
         }
         catch (Exception e)
@@ -92,7 +93,9 @@ public static class Program
         startInfo.CreateNoWindow = true;
         startInfo.WindowStyle = ProcessWindowStyle.Hidden;
         startInfo.UseShellExecute = true;
-        startInfo.WorkingDirectory = Directory.GetCurrentDirectory();
+        // Not the current directory: launched from e.g. a Run key it's System32, so neither the child exe nor the
+        // files it loads relative to its working directory (the startup task XML) would be found (#175).
+        startInfo.WorkingDirectory = AppContext.BaseDirectory;
         startInfo.LoadUserProfile = true;
         startInfo.Arguments = string.Join(" ", args);
 
