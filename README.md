@@ -6,6 +6,7 @@
 [![Branch Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mscrivo/OotD/badges/branch-coverage.json)](https://github.com/mscrivo/OotD/actions/workflows/build.yml?query=branch%3Amain)
 [![CodeQL](https://github.com/mscrivo/OotD/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/mscrivo/OotD/actions/workflows/codeql-analysis.yml)
 [![GitHub Downloads](https://img.shields.io/github/downloads/mscrivo/OotD/total.svg)](https://github.com/mscrivo/OotD/releases)
+[![Since 2007](https://img.shields.io/badge/since-2007-blue)](https://github.com/mscrivo/OotD/commit/3f77dc5c65fa841b417bd445f1e0672f3633c17b)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Outlook on the Desktop (OotD) is a Windows application that places a live Microsoft Outlook view directly on your desktop. It is designed to keep your calendar and other Outlook content visible all day without needing to keep Outlook in the foreground.
