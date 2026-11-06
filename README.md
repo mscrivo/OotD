@@ -6,12 +6,18 @@
 [![Branch Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/mscrivo/OotD/badges/branch-coverage.json)](https://github.com/mscrivo/OotD/actions/workflows/build.yml?query=branch%3Amain)
 [![CodeQL](https://github.com/mscrivo/OotD/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/mscrivo/OotD/actions/workflows/codeql-analysis.yml)
 [![GitHub Downloads](https://img.shields.io/github/downloads/mscrivo/OotD/total.svg)](https://github.com/mscrivo/OotD/releases)
-[![Since 2007](https://img.shields.io/badge/since-2007-blue)](https://github.com/mscrivo/OotD/commit/3f77dc5c65fa841b417bd445f1e0672f3633c17b)
+[![Since 2005](https://img.shields.io/badge/since-2005-blue)](https://outlookonthedesktop.com/legacy-release-notes)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Outlook on the Desktop (OotD) is a Windows application that places a live Microsoft Outlook view directly on your desktop. It is designed to keep your calendar and other Outlook content visible all day without needing to keep Outlook in the foreground.
 
 [Official Website](https://outlookonthedesktop.com) | [Download](https://outlookonthedesktop.com/download)
+
+## History
+
+OotD 1.0 shipped on September 29, 2005. This repo's commit history goes back to April 2007, and the project moved to GitHub in 2012. Twenty years and over a million downloads later, it is still free, open source and actively maintained, with signed releases and automatic updates.
+
+The full release history is on the [legacy release notes](https://outlookonthedesktop.com/legacy-release-notes) and [current release notes](https://outlookonthedesktop.com/release-notes) pages.
 
 ## Screenshots
 
