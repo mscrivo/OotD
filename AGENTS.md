@@ -11,11 +11,17 @@ A release spans this repo and the website repo (`../outlookonthedesktop.com`), w
    - Commit `chore: bump version to X.Y.Z` and push to `main`.
 3. **Wait for the `build` workflow** on that commit (`gh run watch`). It signs the app and installer via SignPath and uploads the signed `ootd-X.Y.Z.exe` as a run artifact.
 4. **Create the GitHub release** with tag `X.Y.Z` on `main`, title `X.Y.Z`, attaching the signed installer:
+
    ```sh
-   gh run download <run-id> -D <tmp-dir>
+   # The installer artifact is uploaded with archive: false, so `gh run download` fails ("not a valid zip"); fetch it raw:
+   aid=$(gh api repos/mscrivo/OotD/actions/runs/<run-id>/artifacts --jq '.artifacts[]|select(.name=="ootd-X.Y.Z.exe")|.id')
+   gh api repos/mscrivo/OotD/actions/artifacts/$aid/zip > <tmp-dir>/ootd-X.Y.Z.exe
+   # Sanity check: Get-AuthenticodeSignature should be Valid, signed by SignPath Foundation
    gh release create X.Y.Z <tmp-dir>/ootd-X.Y.Z.exe --target main --title X.Y.Z --notes-file <notes.md>
    ```
+
    Release notes body format (copy the previous release, `gh release view`):
+
    ```md
    > [!IMPORTANT]
    > OotD only works with Outlook Classic, not the "new" Outlook that Microsoft is pushing on everyone. If you have the "new" Outlook, you will need to switch back to the classic version to use OotD.
@@ -26,6 +32,7 @@ A release spans this repo and the website repo (`../outlookonthedesktop.com`), w
 
    **Full Changelog**: https://github.com/mscrivo/OotD/compare/<prev>...X.Y.Z
    ```
+
    Omit empty sections.
 5. **Update the website** (`../outlookonthedesktop.com`), one commit `chore: release X.Y.Z`, push to `main` (CI deploys):
    - `public/ootdAppcast.xml`: `<title>Version X.Y.Z</title>`, `<pubDate>` = the release's `publishedAt` in RFC 822 (`Sat, 03 Oct 2026 15:31:32 +0000`), enclosure `url`, `sparkle:version`, and `length` = installer size in bytes (`gh release view X.Y.Z --json publishedAt,assets`).
