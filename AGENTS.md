@@ -33,7 +33,7 @@ A release spans this repo and the website repo (`../outlookonthedesktop.com`), w
    **Full Changelog**: https://github.com/mscrivo/OotD/compare/<prev>...X.Y.Z
    ```
 
-   Omit empty sections.
+   Omit empty sections. Publishing the release triggers `.github/workflows/winget.yml`, which opens the winget-pkgs PR for the new version.
 5. **Update the website** (`../outlookonthedesktop.com`), one commit `chore: release X.Y.Z`, push to `main` (CI deploys):
    - `public/ootdAppcast.xml`: `<title>Version X.Y.Z</title>`, `<pubDate>` = the release's `publishedAt` in RFC 822 (`Sat, 03 Oct 2026 15:31:32 +0000`), enclosure `url`, `sparkle:version`, and `length` = installer size in bytes (`gh release view X.Y.Z --json publishedAt,assets`).
    - `public/ootdReleaseNotes.md`: prepend a `## X.Y.Z` section (same Important note, then `New:` / `Changes:` / `Fixes:` lists).
