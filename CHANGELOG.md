@@ -7,6 +7,12 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+## [5.7.2] - 2026-11-05
+
+### Changed
+
+- Updated to the latest .NET runtime (10.0.14), which includes security fixes
+
 ### Fixed
 
 - OotD no longer fails with "There was an unknown error trying to run OotD" when started from a folder other than its install folder (for example, from a startup shortcut or another program) ([#175](https://github.com/mscrivo/OotD/issues/175))
