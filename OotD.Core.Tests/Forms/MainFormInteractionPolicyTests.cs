@@ -196,7 +196,7 @@ public class MainFormInteractionPolicyTests
         result.Should().BeTrue();
     }
 
-    public static TheoryData<int, Cursor> CursorMappings => new()
+    public static TheoryData<int, Cursor> CursorMappings { get; } = new()
     {
         { 1, Cursors.SizeWE },
         { 5, Cursors.SizeWE },
