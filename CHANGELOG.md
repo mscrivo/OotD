@@ -7,6 +7,8 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+## [5.8.0] - 2026-11-12
+
 ### Changed
 
 - Upgraded to .NET 11 (11.0.0). The installer downloads and installs the .NET 11 Desktop Runtime if it isn't already present
