@@ -318,8 +318,10 @@ public partial class InstanceManager : Form
 
     private void StartWithWindowsMenu_Click(object? sender, EventArgs e)
     {
-        ToggleMenuCheck(trayIcon.ContextMenuStrip!.Items["StartWithWindows"],
-            check => GlobalPreferences.StartWithWindows = check);
+        // Re-read rather than flip: an elevated change can be declined at the UAC prompt.
+        var item = (ToolStripMenuItem)trayIcon.ContextMenuStrip!.Items["StartWithWindows"]!;
+        GlobalPreferences.StartWithWindows = !item.Checked;
+        item.Checked = GlobalPreferences.StartWithWindows;
     }
 
     private void HideShowAllMenu_Click(object? sender, EventArgs e)

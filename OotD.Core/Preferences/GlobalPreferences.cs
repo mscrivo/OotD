@@ -1,4 +1,7 @@
-﻿using Microsoft.Win32;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using Microsoft.Win32;
 using NLog;
 
 namespace OotD.Preferences;
@@ -20,16 +23,41 @@ internal static class GlobalPreferences
         get => TaskScheduling.OotDScheduledTaskExists();
         set
         {
-            if (value)
+            try
             {
-                TaskScheduling.CreateOotDStartupTask(_logger);
+                if (value)
+                {
+                    TaskScheduling.CreateOotDStartupTask(_logger);
+                }
+                else
+                {
+                    TaskScheduling.RemoveOotDStartupTask(_logger);
+                }
             }
-            else
+            catch (UnauthorizedAccessException)
             {
-                TaskScheduling.RemoveOotDStartupTask(_logger);
+                // Tasks registered by an elevated installer before the ACL fix can only be changed by an admin.
+                RunElevated(value ? "--createStartupEntry" : "--removeStartupEntry");
             }
         }
     }
+
+    internal static Action<string> RunElevated { get; set; } = args =>
+    {
+        try
+        {
+            using var process = Process.Start(new ProcessStartInfo(Environment.ProcessPath!, args)
+            {
+                UseShellExecute = true,
+                Verb = "runas"
+            });
+            process?.WaitForExit();
+        }
+        catch (Win32Exception e) when (e.NativeErrorCode == 1223) // ERROR_CANCELLED: UAC prompt declined
+        {
+            _logger.Info("Elevation declined; startup task left unchanged");
+        }
+    };
 
     public static bool LockPosition
     {

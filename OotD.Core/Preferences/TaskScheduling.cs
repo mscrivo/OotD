@@ -110,7 +110,13 @@ internal static class TaskScheduling
             var taskDefinition = ts.NewTaskFromFile(xmlPath);
             var logonTrigger = (LogonTrigger)taskDefinition.Triggers[0];
             logonTrigger.UserId = userName;
-            ts.RootFolder.RegisterTaskDefinition(taskName, taskDefinition);
+
+            // When the installer registers this elevated, the default ACL makes Administrators the owner and gives
+            // the user read-only access, so the non-elevated app can't remove it later. Grant the user full access.
+            var userSid = System.Security.Principal.WindowsIdentity.GetCurrent().User!.Value;
+            ts.RootFolder.RegisterTaskDefinition(taskName, taskDefinition, TaskCreation.CreateOrUpdate,
+                taskDefinition.Principal.UserId, null, taskDefinition.Principal.LogonType,
+                $"D:(A;;FA;;;BA)(A;;FA;;;SY)(A;;FA;;;{userSid})");
         }
 
         public void DeleteTask(string taskName)
