@@ -226,9 +226,33 @@ public class GlobalPreferencesTests : IDisposable
         }
     }
 
-    private sealed class RecordingTaskServiceAdapter : TaskScheduling.ITaskServiceAdapter
+    [Theory]
+    [InlineData(false, "--removeStartupEntry")]
+    [InlineData(true, "--createStartupEntry")]
+    public void StartWithWindows_WhenAccessDenied_RetriesElevated(bool value, string expectedArgs)
     {
-        private bool _exists;
+        var originalAdapter = TaskScheduling.TaskServiceAdapter;
+        var originalRunElevated = GlobalPreferences.RunElevated;
+        TaskScheduling.TaskServiceAdapter = new RecordingTaskServiceAdapter(exists: true, accessDenied: true);
+        string? elevatedArgs = null;
+        GlobalPreferences.RunElevated = args => elevatedArgs = args;
+        try
+        {
+            GlobalPreferences.StartWithWindows = value;
+
+            elevatedArgs.Should().Be(expectedArgs);
+        }
+        finally
+        {
+            TaskScheduling.TaskServiceAdapter = originalAdapter;
+            GlobalPreferences.RunElevated = originalRunElevated;
+        }
+    }
+
+    private sealed class RecordingTaskServiceAdapter(bool exists = false, bool accessDenied = false)
+        : TaskScheduling.ITaskServiceAdapter
+    {
+        private bool _exists = exists;
 
         public List<string> Calls { get; } = [];
 
@@ -238,12 +262,14 @@ public class GlobalPreferencesTests : IDisposable
 
         public void CreateStartupTaskDefinition(string taskName, string xmlPath, string userName)
         {
+            if (accessDenied) throw new UnauthorizedAccessException();
             Calls.Add("create");
             _exists = true;
         }
 
         public void DeleteTask(string taskName)
         {
+            if (accessDenied) throw new UnauthorizedAccessException();
             Calls.Add("delete");
             _exists = false;
         }

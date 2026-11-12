@@ -7,6 +7,10 @@ For releases prior to 5.1.1, see the [GitHub releases page](https://github.com/m
 
 ## [Unreleased]
 
+### Fixed
+
+- Turning off "Start with Windows" no longer crashes with "Access is denied" when the startup task was created by the installer. OotD now asks for administrator permission to remove it, and new startup tasks can be changed without it
+
 ## [5.7.2] - 2026-11-05
 
 ### Changed
